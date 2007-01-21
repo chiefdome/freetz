@@ -1,3 +1,6 @@
+revision 4:
+- more W701V fixes
+- added some iptable-modules
 revision 3:
 - updated openvpn-Package to 0.6b
 - updated .version

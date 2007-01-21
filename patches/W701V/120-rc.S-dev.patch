@@ -1,9 +1,9 @@
 --- etc/init.d/rc.S.orig	2006-03-20 17:33:06.000000000 +0100
 +++ etc/init.d/rc.S	2006-03-20 17:34:33.000000000 +0100
-@@ -9,8 +9,12 @@
- prevlevel=N
- umask 022
- export PATH runlevel prevlevel
+@@ -84,8 +83,12 @@
+ ##########################################################################################
+ # rc.S for 2.6 Kernel
+ ##########################################################################################
 -mount -n /proc
 -mount /var
 +mount -o nosuid -t tmpfs dev /dev
@@ -25,3 +25,4 @@
  proc             /proc          proc    defaults                  0       0
  ramfs		     /var		    ramfs	defaults			      0       0
 +sysfs		 /sys		sysfs	nosuid,nodev,noexec	  0	  0
+
