@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Linux kernel version: 2.6.13.1
-# Wed Jan 10 00:56:19 2007
+# Sat Jan 20 16:19:59 2007
 #
 CONFIG_MIPS=y
 # CONFIG_MIPS64 is not set
@@ -1089,6 +1089,7 @@ CONFIG_SQUASHFS_FRAGMENT_CACHE_SIZE=3
 # CONFIG_QNX4FS_FS is not set
 # CONFIG_SYSV_FS is not set
 # CONFIG_UFS_FS is not set
+CONFIG_UNION_FS=m
 
 #
 # Network File Systems

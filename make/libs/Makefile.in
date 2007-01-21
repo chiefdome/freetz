@@ -32,3 +32,7 @@ endif
 ifeq ($(strip $(DS_LIB_libz)),y)
 LIBS+=zlib
 endif
+
+ifeq ($(strip $(DS_LIB_libreadline)),y)
+LIBS+=readline
+endif

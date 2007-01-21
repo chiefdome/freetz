@@ -161,7 +161,15 @@ $(KERNEL_DIR)/.modules: $(KERNEL_BUILD_DIR)/$(KERNEL_IMAGE)
 		KERNEL_LAYOUT="$(KERNEL_BOARD_REF)" \
 		ARCH=$(KERNEL_ARCH) \
 		INSTALL_MOD_PATH="$(shell pwd)/$(KERNEL_BUILD_DIR)/modules/" \
-		modules modules_install
+		modules
+	export PATH=$(KERNEL_MAKE_PATH):$(PATH); \
+	$(MAKE) -C $(KERNEL_BUILD_DIR)/kernel/linux-2.6.13.1 \
+		CROSS_COMPILE="$(KERNEL_CROSS)" \
+		KERNEL_MAKE_PATH="$(KERNEL_MAKE_PATH):$(PATH)" \
+		KERNEL_LAYOUT="$(KERNEL_BOARD_REF)" \
+		ARCH=$(KERNEL_ARCH) \
+		INSTALL_MOD_PATH="$(shell pwd)/$(KERNEL_BUILD_DIR)/modules/" \
+		modules_install
 	touch $@
 
 kernel-precompiled: $(KERNEL_BUILD_DIR)/$(KERNEL_IMAGE) \
