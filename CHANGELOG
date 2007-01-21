@@ -1,3 +1,9 @@
+revision 3:
+- updated openvpn-Package to 0.6b
+- updated .version
+- fixed W701V patch
+- added avm-ftpd-remove patch
+
 revision 2:
 - fixed modules_install with parallel make
 - added unionfs 

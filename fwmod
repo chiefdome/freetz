@@ -596,6 +596,8 @@ then
 	( cd "$FILESYSTEM_MOD_DIR" && ( ln -s var/tmp tmp ; ln -s var/mod mod ))
 	# Set version and options
 	SUBVERSION_FILE="${BASE_DIR}/.version"
+	FIRMWAREVERSION_FILE="${FILESYSTEM_MOD_DIR}/etc/.version"
+	FIRMWAREVERSION="$(cat $FIRMWAREVERSION_FILE)"
 
 	if [ ! -r "$SUBVERSION_FILE" ]
 	then
@@ -1235,7 +1237,7 @@ then
 		exit 1
 	fi
 
-	modimage="firmware_${DS_TYPE_STRING}.${DS_TYPE_LANG_STRING}.image"
+	modimage="firmware_${DS_TYPE_STRING}_${FIRMWAREVERSION}-${SUBVERSION}.${DS_TYPE_LANG_STRING}.image"
 
 	# Pack firmare image (use old tar for compatibility)
 	echo "packing ${modimage}"

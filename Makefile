@@ -188,7 +188,7 @@ firmware: tools $(DL_IMAGE) $(PACKAGES) package-list exclude-lists
 endif
 	@rm -f firmware_*.image
 	@./fwmod -d $(BUILD_DIR) $(DL_IMAGE)
-	@mv $(BUILD_DIR)/firmware_$(DS_TYPE_STRING).$(DS_TYPE_LANG_STRING).image ./
+	@mv $(BUILD_DIR)/firmware_$(DS_TYPE_STRING)*.image ./
 
 test: $(BUILD_DIR)/.modified
 	@echo "no tests defined"
