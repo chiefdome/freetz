@@ -1237,7 +1237,7 @@ then
 		exit 1
 	fi
 
-	modimage="firmware_${DS_TYPE_STRING}_${FIRMWAREVERSION}-${SUBVERSION}.${DS_TYPE_LANG_STRING}.image"
+	modimage="${DS_TYPE_STRING}_${FIRMWAREVERSION}-${SUBVERSION}.${DS_TYPE_LANG_STRING}_`date +%Y%m%d`.image"
 
 	# Pack firmare image (use old tar for compatibility)
 	echo "packing ${modimage}"

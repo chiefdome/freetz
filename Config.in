@@ -83,9 +83,9 @@ config DS_TYPE_LANG_STRING
 
 config DS_TYPE_STRING
 	string
-	default "fon_wlan_7170"		if DS_TYPE_FON_WLAN_7170 && ! DS_TYPE_LABOR
-	default "fon_wlan_7170_labor"	if DS_TYPE_FON_WLAN_7170 && DS_TYPE_LABOR
-	default "fon_wlan_7141"		if DS_TYPE_FON_WLAN_7141
+	default "7170"		if DS_TYPE_FON_WLAN_7170 && ! DS_TYPE_LABOR
+	default "7170_labor"	if DS_TYPE_FON_WLAN_7170 && DS_TYPE_LABOR
+	default "7141"		if DS_TYPE_FON_WLAN_7141
 	default "W701V"			if DS_TYPE_SPEEDPORT_W701V
 	default "W900V"			if DS_TYPE_SPEEDPORT_W900V
 	default "custom"		if DS_TYPE_CUSTOM

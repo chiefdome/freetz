@@ -26,9 +26,11 @@ $(INADYN_DIR)/.unpacked: $(DL_DIR)/$(INADYN_SOURCE)
 $(INADYN_DIR)/$(INADYN_TARGET_BINARY): $(INADYN_DIR)/.unpacked
 	PATH="$(TARGET_PATH)" \
 	$(MAKE) CC="mipsel-linux-gcc" STRIP="mipsel-linux-strip" \
-	CFLAGS="-Os -pipe -Wa,--trap -mips32 -march=mips32 -msoft-float" \
+	CFLAGS="$(TARGET_CFLAGS)" \
 	LDFLAGS="-static-libgcc" \
-	 -C $(INADYN_DIR)/inadyn
+	-C $(INADYN_DIR)/inadyn 
+
+
 
 $(PACKAGES_DIR)/.$(INADYN_PKG_NAME): $(DL_DIR)/$(INADYN_PKG_SOURCE)
 	@tar -C $(PACKAGES_DIR) -xjf $(DL_DIR)/$(INADYN_PKG_SOURCE)
