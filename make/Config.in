@@ -26,6 +26,7 @@ source make/samba/Config.in
 source make/screen/Config.in
 source make/stunnel/Config.in
 source make/tor/Config.in
+source make/virtualip-cgi/Config.in
 source make/vpnc/Config.in
 
 comment "Extensions"
@@ -41,7 +42,6 @@ comment "Unstable"
 
 source make/firewall-cgi/Config.in
 source make/mini_fo/Config.in
-source make/virtualip-cgi/Config.in
 
 comment "Obsolete"
 

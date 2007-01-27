@@ -1,3 +1,6 @@
+revision 8:
+- update to busybox-1.4.0
+- added some kernel-modules (ntfs, cifs, smbfs)
 revision 5:
 - fixed W701V-webmenu patch
 revision 4:

@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Linux kernel version: 2.6.13.1
-# Sun Jan 21 21:58:59 2007
+# Sat Jan 27 12:10:44 2007
 #
 CONFIG_MIPS=y
 # CONFIG_MIPS64 is not set
@@ -1023,7 +1023,10 @@ CONFIG_EXT3_FS_XATTR=y
 CONFIG_JBD=m
 # CONFIG_JBD_DEBUG is not set
 CONFIG_FS_MBCACHE=m
-# CONFIG_REISERFS_FS is not set
+CONFIG_REISERFS_FS=m
+# CONFIG_REISERFS_CHECK is not set
+# CONFIG_REISERFS_PROC_INFO is not set
+# CONFIG_REISERFS_FS_XATTR is not set
 # CONFIG_JFS_FS is not set
 # CONFIG_FS_POSIX_ACL is not set
 
@@ -1056,7 +1059,9 @@ CONFIG_MSDOS_FS=m
 CONFIG_VFAT_FS=m
 CONFIG_FAT_DEFAULT_CODEPAGE=437
 CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
-# CONFIG_NTFS_FS is not set
+CONFIG_NTFS_FS=m
+# CONFIG_NTFS_DEBUG is not set
+# CONFIG_NTFS_RW is not set
 
 #
 # Pseudo filesystems
@@ -1099,7 +1104,7 @@ CONFIG_SQUASHFS_FRAGMENT_CACHE_SIZE=3
 # CONFIG_QNX4FS_FS is not set
 # CONFIG_SYSV_FS is not set
 # CONFIG_UFS_FS is not set
-CONFIG_UNION_FS=m
+# CONFIG_UNION_FS is not set
 
 #
 # Network File Systems
@@ -1121,8 +1126,12 @@ CONFIG_NFS_COMMON=y
 CONFIG_SUNRPC=m
 # CONFIG_RPCSEC_GSS_KRB5 is not set
 # CONFIG_RPCSEC_GSS_SPKM3 is not set
-# CONFIG_SMB_FS is not set
-# CONFIG_CIFS is not set
+CONFIG_SMB_FS=m
+# CONFIG_SMB_NLS_DEFAULT is not set
+CONFIG_CIFS=m
+# CONFIG_CIFS_STATS is not set
+# CONFIG_CIFS_XATTR is not set
+# CONFIG_CIFS_EXPERIMENTAL is not set
 # CONFIG_NCP_FS is not set
 CONFIG_CODA_FS=m
 # CONFIG_CODA_FS_OLD_API is not set
