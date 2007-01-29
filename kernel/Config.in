@@ -9,9 +9,7 @@ config DS_MODULE_nbd
 	bool "nbd.ko"
 	default n
 
-config DS_MODULE_coda
-	bool "coda.ko"   
-	default n 
+
 		        
 config DS_MODULE_cdrom
 	bool "cdrom.ko"   
@@ -99,9 +97,13 @@ endmenu
 menu "fs"
 
 
-config DS_MODULE_unionfs
-	bool "unionfs.ko"
-	default n
+config DS_MODULE_cifs
+	bool "cifs.ko"   
+	default n 
+
+config DS_MODULE_coda
+	bool "coda.ko"   
+	default n 
 
 config DS_MODULE_ext3
 	bool "ext3.ko"
@@ -164,17 +166,21 @@ config DS_MODULE_nls_iso8859_1
 	bool "nls_iso8859-1.ko"
 	default n
 
-#config DS_MODULE_ntfs
-#	bool "ntfs.ko"
-#	default n
+config DS_MODULE_ntfs
+	bool "ntfs.ko"
+	default n
 
-#config DS_MODULE_reiserfs
-#	bool "reiserfs.ko"
-#	default n
+config DS_MODULE_reiserfs
+	bool "reiserfs.ko"
+	default n
 
-#config DS_MODULE_smbfs
-#	bool "smbfs.ko"
-#	default n
+config DS_MODULE_smbfs
+	bool "smbfs.ko"
+	default n
+
+config DS_MODULE_unionfs
+	bool "unionfs.ko"
+	default n
 
 config DS_MODULE_vfat
 	bool "vfat.ko"

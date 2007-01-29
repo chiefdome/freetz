@@ -185,7 +185,8 @@ kernel-precompiled: $(KERNEL_BUILD_DIR)/$(KERNEL_IMAGE) \
 		--exclude=lib/modules/2.6.13.1-ohio/kernel/net/bluetooth \
 		. | tar -xf - -C $(KERNEL_MODULES_DIR)
 	cp  $(KERNEL_BUILD_DIR)/kernel/linux-2.6.13.1/System.map $(KERNEL_TARGET_DIR)/System.map
-	$(SOURCE_DIR)/depmod.pl -b $(KERNEL_MODULES_DIR)/lib/modules/2.6.13.1-ohio \
+#	$(SOURCE_DIR)/depmod.pl -b $(KERNEL_MODULES_DIR)/lib/modules/2.6.13.1-ohio \
+	$(SOURCE_DIR)/depmod.pl -b $(KERNEL_MODULES_DIR)/lib/modules/2.6.13.1-ar7 \
 		-F $(KERNEL_BUILD_DIR)/kernel/linux-2.6.13.1/System.map
 	echo "$(KERNEL_SUBVERSION)" > $(KERNEL_TARGET_DIR)/.version-$(KERNEL_REF)-$(AVM_VERSION)
 
@@ -207,7 +208,8 @@ kernel-menuconfig: $(KERNEL_DIR)/.unpacked $(KERNEL_CONFIG_FILE)
 kernel-source: $(KERNEL_DIR)/.unpacked
 
 kernel-clean:
-	-$(MAKE) -C $(KERNEL_BUILD_DIR) \
+	export PATH=$(KERNEL_MAKE_PATH):$(PATH); \
+	$(MAKE) -C $(KERNEL_BUILD_DIR) \
 		CROSS_COMPILE="$(KERNEL_CROSS)" \
 		KERNEL_MAKE_PATH="$(KERNEL_MAKE_PATH):$(PATH)" \
 		BOARD_REF="$(KERNEL_BOARD_REF)" \
