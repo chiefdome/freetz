@@ -1,5 +1,8 @@
 revision 9:
 - fixed calllist for labor-firmwares (foncalls.patch)
+- update to busybox-1.4.1
+- cpmac-ioctl.patch
+- kernel-printk.patch
 revision 8:
 - update to busybox-1.4.0
 - added some kernel-modules (ntfs, cifs, smbfs)
