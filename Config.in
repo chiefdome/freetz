@@ -349,16 +349,6 @@ config DS_PATCH_USBSTORAGE
         help
 	    Change the name of USB storage dir to uStorXY
 
-config DS_PATCH_ORANGE
-	bool "Patch webmenu orange"
-	depends on DS_TYPE_FON_WLAN_7141 || \
-		   DS_TYPE_FON_WLAN_7170 || \
-		   DS_TYPE_SPEEDPORT_W701V || \
-		   DS_TYPE_CUSTOM
-	default n
-        help
-	    Makes the webinterface orange
-
 comment "Mod"
 
 choice

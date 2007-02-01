@@ -1,4 +1,6 @@
-revision 9:
+revision 11:
+- added shadow000's webinterface mod (orangebox)
+revision 10:
 - fixed calllist for labor-firmwares (foncalls.patch)
 - update to busybox-1.4.1
 - cpmac-ioctl.patch

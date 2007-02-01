@@ -29,6 +29,10 @@ source make/tor/Config.in
 source make/virtualip-cgi/Config.in
 source make/vpnc/Config.in
 
+comment "Orangebox Webinterface"
+
+source make/orangebox/Config.in
+
 comment "Extensions"
 
 source make/syslogd-cgi/Config.in
@@ -36,12 +40,12 @@ source make/wol-cgi/Config.in
 
 comment "Testing"
 
+source make/mini_fo/Config.in
 source make/transmission/Config.in
 
 comment "Unstable"
 
 source make/firewall-cgi/Config.in
-source make/mini_fo/Config.in
 
 comment "Obsolete"
 
