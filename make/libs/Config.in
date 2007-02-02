@@ -51,7 +51,7 @@ config DS_LIB_libuClibcxx
 endmenu
 
 menu "iptables"
-#depends on DS_REPLACE_KERNEL
+depends on DS_REPLACE_KERNEL
 
 config DS_LIB_libipt_addrtype
 	bool "libipt_addrtype.so"
@@ -316,6 +316,14 @@ menu "libncurses"
 
 config DS_LIB_libncurses
 	bool "libncurses.so"
+	default n
+
+endmenu
+
+menu "libpcap"
+
+config DS_LIB_libpcap
+	bool "libpcap.so"
 	default n
 
 endmenu

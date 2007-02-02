@@ -1,3 +1,7 @@
+revision 13:
+- added libpcap
+- added knock-package
+- updatet 7141 to 40.04.30
 revision 12:
 - added cpmaccfg-package
 revision 11:

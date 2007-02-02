@@ -19,6 +19,7 @@ source make/checkmaild/Config.in
 source make/dnsmasq/Config.in
 source make/dropbear/Config.in
 source make/inadyn/Config.in
+source make/knock/Config.in
 source make/mc/Config.in
 source make/openvpn/Config.in
 source make/privoxy/Config.in
@@ -40,8 +41,8 @@ source make/wol-cgi/Config.in
 
 comment "Testing"
 
-source make/mini_fo/Config.in
 source make/transmission/Config.in
+source make/mini_fo/Config.in
 
 comment "Unstable"
 
