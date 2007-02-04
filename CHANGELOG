@@ -1,3 +1,5 @@
+revision 14:
+- target toolchain update (binutils 2.17, gcc-4.1.1, uclibc-0.9.28.1)
 revision 13:
 - added libpcap
 - added knock-package

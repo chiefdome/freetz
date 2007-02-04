@@ -514,7 +514,7 @@ config DS_TARGET_CFLAGS
 	default "-Os -W -Wall -pipe -march=mips32 -mips32 -Wa,--trap -msoft-float"
 
 config DS_KERNEL_CROSS
-	string "Kernel cross (mipsel-glibc-linux-gcc 3.3.2)" if DS_EXTERNAL_COMPILER
+	string "Kernel cross (mipsel-glibc-linux-gcc 3.4.5)" if DS_EXTERNAL_COMPILER
 	default "mipsel-unknown-linux-gnu-"
 
 config DS_KERNEL_MAKE_PATH

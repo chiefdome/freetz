@@ -1,7 +1,7 @@
 Retrieved from http://sources.redhat.com/ml/binutils/2004-04/msg00646.html
 Fixes
 localealias.s:544: Error: junk at end of line, first unrecognized character is `,' 
-when building glibc-2.3.2 with gcc-3.4.0 and binutils-2.15.90.0.3
+when building glibc-2.3.2 with gcc-3.4.0 and binutils-2.17.90.0.3
 
 Paths adjusted to match crosstool's patcher.
 
@@ -57,9 +57,9 @@ Andreas.
 	* read.c (read_a_source_file): Ignore unknown text after line
 	comment character.  Fix misleading comment.
 
---- binutils/gas/read.c.~1.78.~	2004-04-23 08:58:23.000000000 +0200
-+++ binutils/gas/read.c	2004-04-23 21:49:01.000000000 +0200
-@@ -1002,10 +1002,14 @@ read_a_source_file (char *name)
+--- binutils-2.17/gas/read.c.~1.78.~	2004-04-23 08:58:23.000000000 +0200
++++ binutils-2.17/gas/read.c	2004-04-23 21:49:01.000000000 +0200
+@@ -1008,10 +1008,14 @@ read_a_source_file (char *name)
  	      unsigned int new_length;
  	      char *tmp_buf = 0;
  
@@ -76,7 +76,7 @@ Andreas.
  	      s += 4;
  
  	      sb_new (&sbuf);
-@@ -1104,7 +1104,7 @@ read_a_source_file (char *name)
+@@ -1110,7 +1110,7 @@ read_a_source_file (char *name)
  	    continue;
  #endif
  	  input_line_pointer--;
