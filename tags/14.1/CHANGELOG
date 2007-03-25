@@ -1,0 +1,142 @@
+$Id$
+
+TODO:
+- classpath, jamvm
+- give W900V a AVM-Webinterface (from 7150)
+- orangebox (?)
+- bird and netsnmp don't build with more than one job
+- deco
+
+=== release ds-0.2.9_26-14.1 ===
+
+- fixed jamvm patch (100-fix-trace.patch)
+- fixed typo in deco.mk
+- changed all library-dependencies in packages makefiles. Hopefully there will
+  be no more sensless configure runs.
+- add "--exclude .svn" to tar for all package-targets
+- added gdb
+- fixed deco.mk (forgot ncurses dependency, wrong path)
+- removed ar7kernel-loader
+- added evalzmaloader (thanks Enrik) http://www.wehavemorefun.de/fritzbox/EVA
+- fix error with download and external toolchain:
+  uClibc-libs are not in /root/lib
+- updated download toolchain to 0.2
+- add/remove patches for (non-working) uClibc-0.9.28.3/1
+- fix 7170 Labor patches
+
+=== release ds-0.2.9_26-14 ===
+
+- fix precompiled toolchain download URL in toolchain/make/download-toolchain.mk
+- add forgotten cpmaccfg in make/Config.in
+- remove precompiled libs from root/lib
+- Moving all files back to SVN project's trunk, because we have given up plans
+  to merge the repository with Danisahne's Sourceforge repository one day
+  (licencing issues concerning AVM copyrighted file patches). So we thought we
+  could as well have our own trunk again.
+- added download location for toolchain (thanks @ DPR)
+- updated orangebox to 1.05
+- fixed download toolchain
+- disable tr069 if selected openssl
+- updated orangebox to 1.02
+- fix dropbear-sshd-only package
+- try different binutil download locations (stable, developer) for target toolchain
+- fixed rebuilding of a kernel with different modules
+- small fixes in download-toolchain.mk, kernel/Config.in and make/deco/Config.in
+- worked on precompiled toolchain
+- fixed netsnmp-package
+- added busybox patch
+- updated 7050 to 04.31
+- updated 7170_phone_labor to 6572
+- added deco and tinyproxy
+- prepare for downloadable toolchain (i386)
+- added more packages to ./packages
+- updated netsnmp-package to 0.2
+- added tinyproxy-1.7.0 package
+- added deco-39 package
+- new patch fixes mc-4.5.0 build error on GNOME systems
+- change in lzma.mk (dos2unix no more needed, thanks aholler)
+- remove getcons (not working for me)
+- fixed typo in menuconfig (uClibc-version)
+- fixed busybox patch (440-httpd_chdir.patch)
+- added fon_7150
+- fixed openvpn-lzo_conf
+- fixed download location of target toolchain binutils
+- fixed openvpn-lzo.cgi
+- fixed Config.in
+- fixed pingtunnel/Config.in
+- fixed jamvm/Config.in
+- fixed target "openvpn-package" (exclude .svn directories)
+- added ./packages/openvpn-2.1_rc2/
+- updated openssl to 0.9.8e
+- updated to openvpn-2.1_rc2-dsmod-0.6c
+- removed ./dl/openvpn-2.1_rc2-dsmod-0.6b.tar.bz2
+- fixed bug in modhosts (http://www.ip-phone-forum.de/showthread.php?t=128048)
+- removed packages from dl/
+- updated bird.mk
+- added 2170, 3131, 3170 and 5050 (untested)
+- added cifsmount (Package and kernel-patch)
+- removed iptables from vpnc-script
+- updated dropbear to 0.49
+- added debootstrap, lynx and netsnmp (thanks to derheimi)
+- added gcc-4.1.2 to toolchain-options
+- fixed classpath, fuse, jamvm, ntfs
+- updated callmonitor to 1.8.3
+- other small changes
+- added 7050
+- updated openvpn to 2.1_rc2
+- downgrade matrixssl to 1.7.3 (because of download-source)
+- fixed ntfs-3g (2 fuse patches)
+- more busybox-patches
+- vpnc updated to 0.4.0
+- updated backup/restore-cgi to Haserl 0.9.x syntax
+- added matrixssl-1-8-3-open (lib)
+- added matrixtunnel-0.2 (package)
+- added Rudi-Shell
+- minor fixes in bird.mk, readline.mk
+- added fuse 2.6.3
+- added ntfs-3g-1.0
+- added classpath-0.93
+- added libffi-sable-3325
+- added jamvm-1.4.5
+- minor fixes in pingtunnel.mk, streamripper.mk, tcpdump.mk and bird.mk
+- added busybox-patch (tar -t segfault)
+- added pingtunnel
+- minor fixes in libpcap-patches, busybox-patches
+- added tcpdump
+- haserl updated to 0.9.16
+- minor changes in file.cgi, modhosts
+- added bird-1.0.11 (thanks to derheimi)
+- added streamripper-1.61.17
+- added libmad-0.15.1b 
+- added Lua scripting language
+- updated dnsmasq to version 2.38
+- updated busybox-patches
+- make target for uclibc-utils
+- added backup/restore-cgi
+- added 7140 30.04.30
+- moved missing files into branch
+- restructured SVN to hold branches (for a later merge into official svn)
+- added haserl
+- target toolchain update (binutils 2.17, gcc-4.1.1, uclibc-0.9.28.1) (edit: not working)
+- added libpcap
+- added knock-package
+- updatet 7141 to 40.04.30
+- added cpmaccfg-package
+- added shadow000's webinterface mod (orangebox)
+- fixed calllist for labor-firmwares (foncalls.patch)
+- update to busybox-1.4.1
+- cpmac-ioctl.patch
+- kernel-printk.patch
+- update to busybox-1.4.0
+- added some kernel-modules (ntfs, cifs, smbfs)
+- fixed W701V-webmenu patch
+- more W701V fixes
+- added some iptable-modules
+- updated openvpn-Package to 0.6b
+- updated .version
+- fixed W701V patch
+- added avm-ftpd-remove patch
+- fixed modules_install with parallel make
+- added unionfs 
+- added libreadline
+- initial checkin
