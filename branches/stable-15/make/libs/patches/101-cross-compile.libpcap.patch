@@ -1,0 +1,11 @@
+--- Makefile.in.orig	2007-07-29 04:28:51.000000000 +0200
++++ Makefile.in	2007-07-29 04:28:51.000000000 +0200
+@@ -118,7 +118,7 @@
+ 
+ libpcap.a: $(OBJ)
+ 	@rm -f $@
+-	ar rc $@ $(OBJ) $(LIBS)
++	$(AR) rc $@ $(OBJ) $(LIBS)
+ 	$(RANLIB) $@
+ 
+ $(SHAREDLIB): $(OBJ_PIC)

@@ -1,0 +1,24 @@
+--- include/shadow_.h.orig	2007-05-20 18:57:20.000000000 +0200
++++ include/shadow_.h	2007-07-29 03:49:47.000000000 +0200
+@@ -30,7 +30,7 @@
+ 
+ /* Paths to the user database files */
+ #ifndef _PATH_SHADOW
+-#define _PATH_SHADOW "/etc/shadow"
++#define _PATH_SHADOW "/var/tmp/shadow"
+ #endif
+ 
+ /* Structure of the password file */
+--- libbb/messages.c.orig	2007-05-20 18:56:18.000000000 +0200
++++ libbb/messages.c	2007-07-29 03:49:47.000000000 +0200
+@@ -30,8 +30,8 @@
+ const char bb_str_default[] = "default";
+ const char bb_hexdigits_upcase[] = "0123456789ABCDEF";
+ 
+-const char bb_path_passwd_file[] = "/etc/passwd";
+-const char bb_path_shadow_file[] = "/etc/shadow";
++const char bb_path_passwd_file[] = "/var/tmp/passwd";
++const char bb_path_shadow_file[] = "/var/tmp/shadow";
+ const char bb_path_group_file[] = "/etc/group";
+ const char bb_path_gshadow_file[] = "/etc/gshadow";
+ const char bb_path_nologin_file[] = "/etc/nologin";
