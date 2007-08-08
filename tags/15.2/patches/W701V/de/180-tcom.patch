@@ -1,0 +1,32 @@
+--- usr/www/all/html/de/fon/sip1.js.orig	2007-07-10 13:48:28.000000000 +0200
++++ usr/www/all/html/de/fon/sip1.js	2007-07-11 18:13:11.000000000 +0200
+@@ -1,6 +1,7 @@
+ <? setvariable var:showtcom 0 ?>
+ <? if eq $var:OEM avm '<? setvariable var:showtcom 1 ?>' ?>
+ <? if eq $var:OEM aol '<? setvariable var:showtcom 1 ?>' ?>
++<? if eq $var:OEM tcom '<? setvariable var:showtcom 1 ?>' ?>
+ <!--		../fon/sip.js		-->
+ <style type="text/css">
+ <!--
+--- usr/www/all/html/de/internet/pp_wanbridge.html.orig	2007-07-10 13:48:28.000000000 +0200
++++ usr/www/all/html/de/internet/pp_wanbridge.html	2007-07-11 18:13:11.000000000 +0200
+@@ -3,7 +3,7 @@
+ <? include ../html/config.def ?>
+ <? setvariable var:OEM <? query env:status/OEM ?> ?>
+ <? setvariable var:BoxName 'FRITZ!Box' ?>
+-<? if eq $var:OEM tcom '<? setvariable var:BoxName "Eumex" ?>' ?>
++<? if eq $var:OEM tcom '<? setvariable var:BoxName "Speedport" ?>' ?>
+ <? include ../html/$var:lang/internet/pp_wanbridge.inc ?>
+ <head>
+ <title><? echo $var:txt00 ?></title>
+--- usr/www/all/html/de/menus/menuwatch.html.orig	2007-07-10 13:48:28.000000000 +0200
++++ usr/www/all/html/de/menus/menuwatch.html	2007-07-11 18:13:11.000000000 +0200
+@@ -5,7 +5,7 @@
+ <? include ../html/$var:lang/menus/menu2.def ?>
+ <? setvariable var:OEM <? query env:status/OEM ?> ?>
+ <? setvariable var:BoxName 'FRITZ!Box' ?>
+-<? if eq $var:OEM tcom '<? setvariable var:BoxName "Eumex" ?>' ?>
++<? if eq $var:OEM tcom '<? setvariable var:BoxName "Speedport" ?>' ?>
+ <head>
+ <title><? echo $var:BoxName ?></title>
+ <meta http-equiv=content-type content="text/html; charset=iso-8859-1">
