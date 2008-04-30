@@ -1,0 +1,22 @@
+--- configure.orig	2007-10-02 22:35:11.000000000 +0200
++++ configure	2007-10-02 22:35:28.000000000 +0200
+@@ -4878,7 +4878,7 @@
+ fi
+ 
+ 
+-CPPFLAGS="-D__UNIX__"
++CPPFLAGS+=" -D__UNIX__"
+ 
+ 
+ THREADLIBS=no
+--- Makefile.in.orig	2007-09-01 19:19:15.000000000 +0200
++++ Makefile.in	2007-10-02 22:33:24.000000000 +0200
+@@ -591,7 +591,7 @@
+ 	esac;
+ 
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+-	$(SHELL) ./config.status --recheck
++	#$(SHELL) ./config.status --recheck
+ 
+ $(top_srcdir)/configure:  $(am__configure_deps)
+ 	cd $(srcdir) && $(AUTOCONF)

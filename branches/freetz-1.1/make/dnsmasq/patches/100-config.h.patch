@@ -1,0 +1,65 @@
+--- src/config.h.orig	2008-02-12 12:03:28.000000000 +0100
++++ src/config.h	2008-02-25 22:04:27.000000000 +0100
+@@ -42,12 +42,12 @@
+ #elif defined(__sun__)
+ #   define LEASEFILE "/var/cache/dnsmasq.leases"
+ #else
+-#   define LEASEFILE "/var/lib/misc/dnsmasq.leases"
++#   define LEASEFILE "/var/tmp/dnsmasq.leases"
+ #endif
+ #if defined(__FreeBSD__)
+ #   define CONFFILE "/usr/local/etc/dnsmasq.conf"
+ #else
+-#   define CONFFILE "/etc/dnsmasq.conf"
++#   define CONFFILE "/mod/etc/dnsmasq.conf"
+ #endif
+ #define DEFLEASE 3600 /* default lease time, 1 hour */
+ #define CHUSER "nobody"
+@@ -223,9 +223,9 @@
+ #define HAVE_DEV_URANDOM
+ #define HAVE_DEV_RANDOM
+ #undef HAVE_SOCKADDR_SA_LEN
+-#if !defined(__ARCH_HAS_MMU__) && !defined(__UCLIBC_HAS_MMU__)
+-#  define NO_FORK
+-#endif
++//#if !defined(__ARCH_HAS_MMU__) && !defined(__UCLIBC_HAS_MMU__)
++//#  define NO_FORK
++//#endif
+ #if defined(__UCLIBC_HAS_IPV6__)
+ #  ifndef IPV6_V6ONLY
+ #    define IPV6_V6ONLY 26
+@@ -318,19 +318,19 @@
+ /* We assume that systems which don't have IPv6
+    headers don't have ntop and pton either */
+ 
+-#if defined(INET6_ADDRSTRLEN) && defined(IPV6_V6ONLY) && !defined(NO_IPV6)
+-#  define HAVE_IPV6
+-#  define ADDRSTRLEN INET6_ADDRSTRLEN
+-#  if defined(SOL_IPV6)
+-#    define IPV6_LEVEL SOL_IPV6
+-#  else
+-#    define IPV6_LEVEL IPPROTO_IPV6
+-#  endif
+-#elif defined(INET_ADDRSTRLEN)
+-#  undef HAVE_IPV6
+-#  define ADDRSTRLEN INET_ADDRSTRLEN
+-#else
+-#  undef HAVE_IPV6
+-#  define ADDRSTRLEN 16 /* 4*3 + 3 dots + NULL */
+-#endif
++//#if defined(INET6_ADDRSTRLEN) && defined(IPV6_V6ONLY) && !defined(NO_IPV6)
++//#  define HAVE_IPV6
++//#  define ADDRSTRLEN INET6_ADDRSTRLEN
++//#  if defined(SOL_IPV6)
++//#    define IPV6_LEVEL SOL_IPV6
++//#  else
++//#    define IPV6_LEVEL IPPROTO_IPV6
++//#  endif
++//#elif defined(INET_ADDRSTRLEN)
++//#  undef HAVE_IPV6
++//#  define ADDRSTRLEN INET_ADDRSTRLEN
++//#else
++#undef HAVE_IPV6
++#define ADDRSTRLEN 16 /* 4*3 + 3 dots + NULL */
++//#endif
+ 
