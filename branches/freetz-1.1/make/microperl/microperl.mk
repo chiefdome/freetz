@@ -5,7 +5,6 @@ $(PKG)_SITE:=ftp://ftp.mpi-sb.mpg.de/pub/perl/CPAN/src/5.0
 $(PKG)_DIR:=$(SOURCE_DIR)/perl-$($(PKG)_VERSION)
 $(PKG)_BINARY:=$($(PKG)_DIR)/microperl
 $(PKG)_TARGET_BINARY:=$($(PKG)_DEST_DIR)/sbin/microperl
-$(PKG)_MODULES:=$($(PKG)_MAKE_DIR)/lib/warnings.pm
 $(PKG)_TARGET_MODULES:=$($(PKG)_TARGET_DIR)/.modules_installed
 $(PKG)_TARGET_MODULES_DIR:=$($(PKG)_DEST_DIR)/usr/lib/perl5/5.8.8
 $(PKG)_TARGET_MODS:=$(subst ",,$(FREETZ_PACKAGE_MICROPERL_MODULES))
@@ -14,7 +13,7 @@ $(PKG_SOURCE_DOWNLOAD)
 $(PKG_UNPACKED)
 $(PKG_CONFIGURED_NOP)
 
-$($(PKG)_BINARY) $($(PKG)_MODULES): $($(PKG)_DIR)/.configured
+$($(PKG)_BINARY): $($(PKG)_DIR)/.configured
 	PATH="$(TARGET_PATH)" \
 		$(MAKE) -C $(MICROPERL_DIR) -f Makefile.micro \
 		CC="$(TARGET_CC)" OPTIMIZE="$(TARGET_CFLAGS)" 
@@ -22,7 +21,7 @@ $($(PKG)_BINARY) $($(PKG)_MODULES): $($(PKG)_DIR)/.configured
 $($(PKG)_TARGET_BINARY): $($(PKG)_BINARY)
 	$(INSTALL_BINARY_STRIP)
 
-$($(PKG)_TARGET_MODULES): $($(PKG)_MODULES)
+$($(PKG)_TARGET_MODULES): $($(PKG)_DIR)/.unpacked
 	mkdir -p $(MICROPERL_TARGET_MODULES_DIR)
 	( \
 		for i in $(patsubst %,$(MICROPERL_TARGET_MODULES_DIR)/%,$(dir $(MICROPERL_TARGET_MODS))); do \
@@ -32,6 +31,7 @@ $($(PKG)_TARGET_MODULES): $($(PKG)_MODULES)
 			cp -dpf $(MICROPERL_DIR)/lib/$$i $(MICROPERL_TARGET_MODULES_DIR)/$$i; \
 		done; \
 	)
+	touch $@
 
 $(pkg):
 
