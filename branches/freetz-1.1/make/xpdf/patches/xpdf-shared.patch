@@ -1,6 +1,6 @@
-diff -ru xpdf-3.02/fofi/Makefile.in xpdf-3.02-shared/fofi/Makefile.in
---- fofi/Makefile.in	2007-02-27 23:05:51.000000000 +0100
-+++ fofi/Makefile.in	2008-05-20 16:41:00.000000000 +0200
+diff -r -u ../xpdf-3.02/fofi/Makefile.in ./fofi/Makefile.in
+--- ../xpdf-3.02/fofi/Makefile.in	2007-02-27 23:05:51.000000000 +0100
++++ ./fofi/Makefile.in	2008-05-20 16:41:00.000000000 +0200
 @@ -14,7 +14,7 @@
  GOOSRCDIR = $(srcdir)/../goo
  GOOLIBDIR = ../goo
@@ -10,9 +10,9 @@ diff -ru xpdf-3.02/fofi/Makefile.in xpdf-3.02-shared/fofi/Makefile.in
  
  CXX = @CXX@
  AR = @AR@
-diff -ru xpdf-3.02/goo/Makefile.in xpdf-3.02-shared/goo/Makefile.in
---- goo/Makefile.in	2007-02-27 23:05:51.000000000 +0100
-+++ goo/Makefile.in	2008-05-20 16:41:47.000000000 +0200
+diff -r -u ../xpdf-3.02/goo/Makefile.in ./goo/Makefile.in
+--- ../xpdf-3.02/goo/Makefile.in	2007-02-27 23:05:51.000000000 +0100
++++ ./goo/Makefile.in	2008-05-20 16:41:47.000000000 +0200
 @@ -11,8 +11,8 @@
  srcdir = @srcdir@
  VPATH = @srcdir@
@@ -24,9 +24,9 @@ diff -ru xpdf-3.02/goo/Makefile.in xpdf-3.02-shared/goo/Makefile.in
  
  CC = @CC@
  CXX = @CXX@
-diff -ru xpdf-3.02/splash/Makefile.in xpdf-3.02-shared/splash/Makefile.in
---- splash/Makefile.in	2007-02-27 23:05:52.000000000 +0100
-+++ splash/Makefile.in	2008-05-20 16:42:11.000000000 +0200
+diff -r -u ../xpdf-3.02/splash/Makefile.in ./splash/Makefile.in
+--- ../xpdf-3.02/splash/Makefile.in	2007-02-27 23:05:52.000000000 +0100
++++ ./splash/Makefile.in	2008-05-20 16:42:11.000000000 +0200
 @@ -16,7 +16,7 @@
  FOFISRCDIR = $(srcdir)/../fofi
  FOFILIBDIR = ../fofi
@@ -36,9 +36,9 @@ diff -ru xpdf-3.02/splash/Makefile.in xpdf-3.02-shared/splash/Makefile.in
  
  CXX = @CXX@
  AR = @AR@
-diff -ru xpdf-3.02/xpdf/Makefile.in xpdf-3.02-shared/xpdf/Makefile.in
---- xpdf/Makefile.in	2007-02-27 23:05:52.000000000 +0100
-+++ xpdf/Makefile.in	2008-05-20 16:44:20.000000000 +0200
+diff -r -u ../xpdf-3.02/xpdf/Makefile.in ./xpdf/Makefile.in
+--- ../xpdf-3.02/xpdf/Makefile.in	2007-02-27 23:05:52.000000000 +0100
++++ ./xpdf/Makefile.in	2008-05-21 13:56:13.000000000 +0200
 @@ -44,6 +44,9 @@
  .SUFFIXES: .cc
  
@@ -107,8 +107,8 @@ diff -ru xpdf-3.02/xpdf/Makefile.in xpdf-3.02-shared/xpdf/Makefile.in
 -	pdfinfo.o
 -PDFINFO_LIBS = -L$(GOOLIBDIR) -lGoo $(OTHERLIBS) -lm
 +	SecurityHandler.o Stream.o UnicodeMap.o XpdfPluginAPI.o XRef.o
-+PDFINFO_OBJS= pdfinfo.o libxpdf.so.1
-+PDFINFO_LIBS =-lm
++PDFINFO_OBJS = pdfinfo.o libxpdf.so.1
++PDFINFO_LIBS = -lm
  
  pdfinfo$(EXE): $(PDFINFO_OBJS) $(GOOLIBDIR)/$(LIBPREFIX)Goo.a
  	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o pdfinfo$(EXE) $(PDFINFO_OBJS) \
@@ -152,15 +152,26 @@ diff -ru xpdf-3.02/xpdf/Makefile.in xpdf-3.02-shared/xpdf/Makefile.in
  
  pdfimages$(EXE): $(PDFIMAGES_OBJS) $(GOOLIBDIR)/$(LIBPREFIX)Goo.a
  	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o pdfimages$(EXE) $(PDFIMAGES_OBJS) \
-@@ -251,4 +255,12 @@
+@@ -245,10 +249,23 @@
+ 	rm -f $(PDFFONTS_OBJS) pdffonts$(EXE)
+ 	rm -f $(PDFTOPPM_OBJS) pdftoppm$(EXE)
+ 	rm -f $(PDFIMAGES_OBJS) pdfimages$(EXE)
++	rm -f libxpdf.so.1
+ 
+ #------------------------------------------------------------------------
+ 
  depend:
  	$(CXX) $(CXXFLAGS) -MM $(CXX_SRC) >Makefile.dep
  
 +#------------------------------------------------------------------------
 +
-+LIB_OBJS = $(sort $(PDFTOPS_LIB_OBJS) $(PDFTOTEXT_LIB_OBJS) \
++# remove object files not needed for pdf{tops,totext,images,fonts,info}
++NOT_NEEDED = SplashOutputDev.o PreScanOutputDev.o XpdfPluginAPI.o \
++	../goo/FixedPoint.o ../goo/gmempp.o
++LIB_OBJS = $(filter-out $(NOT_NEEDED),$(sort \
++	$(PDFTOPS_LIB_OBJS) $(PDFTOTEXT_LIB_OBJS) \
 +	$(PDFIMAGES_LIB_OBJS) $(PDFINFO_LIB_OBJS) $(PDFFONTS_LIB_OBJS) \
-+	$(GOOLIBDIR)/*.o $(SPLASHLIBDIR)/*.o $(FOFILIBDIR)/*.o)
++	$(wildcard $(GOOLIBDIR)/*.o) $(wildcard $(FOFILIBDIR)/*.o)))
 +libxpdf.so.1: $(LIB_OBJS)
 +	$(CXX) -shared $(CXXFLAGS) -Wl,-soname,libxpdf.so.1 -o $@ $(LIB_OBJS)
 +
