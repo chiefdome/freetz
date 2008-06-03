@@ -4,7 +4,7 @@ $(PKG)_SITE:=http://download.m0k.org/transmission/files
 $(PKG)_BINARY:=$($(PKG)_DIR)/cli/transmissioncli
 $(PKG)_TARGET_BINARY:=$($(PKG)_DEST_DIR)/usr/bin/transmissioncli
 
-$(PKG)_DEPENDS_ON := zlib openssl gettext
+$(PKG)_DEPENDS_ON := zlib openssl gettext curl
 
 $(PKG)_CONFIGURE_ENV += PKG_CONFIG_PATH="$(TARGET_MAKE_PATH)/../usr/lib/pkgconfig"
 
