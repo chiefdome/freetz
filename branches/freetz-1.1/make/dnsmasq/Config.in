@@ -1,5 +1,0 @@
-config FREETZ_PACKAGE_DNSMASQ
-	bool "Dnsmasq 2.42"
-	default n
-	help
-		Combined DHCP and DNS Server
