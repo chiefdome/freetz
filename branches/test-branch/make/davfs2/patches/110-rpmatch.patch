@@ -1,0 +1,11 @@
+--- src/webdav.c.orig	2009-09-23 11:56:21.000000000 +0200
++++ src/webdav.c	2009-09-23 11:56:21.000000000 +0200
+@@ -1930,7 +1930,7 @@
+             len = getline(&s, &n, stdin);
+             if (len < 0)
+                 abort();
+-            if (rpmatch(s) < 1)
++            if (*s != 'y' || *s != 'Y')
+                 ret = -1;
+             free(s);
+         }

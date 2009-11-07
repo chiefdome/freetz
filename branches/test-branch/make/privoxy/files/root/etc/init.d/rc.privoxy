@@ -1,0 +1,110 @@
+#!/bin/sh
+
+DAEMON=privoxy
+
+. /etc/init.d/modlibrc
+
+start() {
+	[ ! -d "/mod/etc/$DAEMON" ] && mkdir -p /mod/etc/$DAEMON
+	[ ! -r "/mod/etc/privoxy/default.filter" ] && ln -s /etc/privoxy/default.filter /mod/etc/privoxy/default.filter
+	[ ! -r "/mod/etc/privoxy/default.action" ] && ln -s /etc/privoxy/default.action /mod/etc/privoxy/default.action
+	[ ! -r "/mod/etc/privoxy/standard.action" ] && ln -s /etc/privoxy/standard.action /mod/etc/privoxy/standard.action
+	[ ! -d "/mod/etc/privoxy/templates" ] && ln -s /etc/privoxy/templates /mod/etc/privoxy/templates
+	(
+		if [ -x "/tmp/flash/privoxy/${DAEMON}_conf" ]; then
+			/tmp/flash/privoxy/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/${DAEMON}_conf
+		fi
+	) > /mod/etc/$DAEMON/config
+
+	echo -n 'Starting Privoxy...'
+	$DAEMON --pidfile /var/run/$DAEMON.pid /mod/etc/privoxy/config > /dev/null 2>&1
+	exitval=$?
+
+	if [ "$exitval" -eq 0 ]; then
+		echo 'done.'
+	else
+		echo 'failed.'
+		exit $exitval
+	fi
+}
+
+stop() {
+	echo -n 'Stopping Privoxy...'
+	kill -9 "$(cat /var/run/$DAEMON.pid)" > /dev/null 2>&1
+	exitval=$?
+
+	rm -rf /mod/etc/$DAEMON/config
+	rm -f /var/run/$DAEMON.pid
+	
+	if [ "$exitval" -eq 0 ]; then
+		echo 'done.'
+	else
+		echo 'failed.'
+		exit $exitval
+	fi
+}
+
+case "$1" in
+	""|load)
+		mkdir -p /tmp/flash/privoxy
+		[ -r /tmp/flash/user.filter ] && mv /tmp/flash/user.filter /tmp/flash/privoxy/user.filter
+		[ -r /tmp/flash/user.action ] && mv /tmp/flash/user.action /tmp/flash/privoxy/user.action
+
+		[ -r "/tmp/flash/privoxy/user.filter" ] || cp -f /etc/privoxy/user.filter /tmp/flash/privoxy/user.filter
+		[ -r "/tmp/flash/privoxy/user.action" ] || cp -f /etc/privoxy/user.action /tmp/flash/privoxy/user.action
+
+		deffile='/mod/etc/default.privoxy/filter.def'
+		[ -r "/tmp/flash/privoxy/filter.def" ] && deffile='/tmp/flash/privoxy/filter.def'
+		modreg file 'privoxy__user_filter' 'Privoxy: user.filter' 0 "$deffile"
+
+		deffile='/mod/etc/default.privoxy/action.def'
+		[ -r "/tmp/flash/privoxy/action.def" ] && deffile='/tmp/flash/privoxy/action.def'
+		modreg file 'privoxy__user_action' 'Privoxy: user.actions' 0 "$deffile"
+
+		modreg cgi 'privoxy' 'Privoxy'
+
+		if [ "$PRIVOXY_ENABLED" != "yes" ]; then
+			echo "Privoxy is disabled" 1>&2
+			exit 1;
+		fi
+
+		if [ -e "/var/run/$DAEMON.pid" ]; then
+			echo "Privoxy is already started."
+		else
+			start
+		fi
+		;;
+	unload)
+		stop
+
+		modunreg file 'privoxy__user_filter'
+		modunreg file 'privoxy__user_action'
+		modunreg cgi 'privoxy'
+		;;
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		stop
+		sleep 3
+		start
+		;;
+	status)
+		if [ -z "$(pidof "$DAEMON")" ]; then
+			echo 'stopped'
+		else
+			echo 'running'
+		fi
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0
