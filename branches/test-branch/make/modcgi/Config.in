@@ -1,3 +1,0 @@
-config FREETZ_PACKAGE_MODCGI
-	bool
-	default y
