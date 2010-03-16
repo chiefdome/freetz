@@ -1,5 +1,6 @@
 #!/bin/sh
 
+echo "C:/freetz"
 echo "/:$MOD_HTTPD_USER:$MOD_HTTPD_PASSWD"
 # protect file servers.php to be viewed in clear text via URL with a fantasy password
 [ -h /usr/mww/phpxmail/servers.php ] && echo "/phpxmail/servers.php:$MOD_HTTPD_USER:76advw6djc734hwh"

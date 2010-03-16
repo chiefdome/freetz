@@ -1,0 +1,104 @@
+#!/bin/sh
+# Freetz controller
+
+redirect() {
+    cat << EOF
+Status: 302 Found
+Location: $1
+
+EOF
+    exit
+}
+
+# remove trailing slash from URL
+redirect_folder() {
+# violates RFC (demands absolute URL) but is supported by major browsers
+    redirect "$SCRIPT_NAME${PATH_INFO%/}${QUERY_STRING:+?$QUERY_STRING}"
+}
+
+# redirect within the (virtual) URL tree
+redirect_freetz() {
+    redirect "$SCRIPT_NAME$1"
+}
+
+# pass control to another CGI
+CGI_DIR=${SCRIPT_FILENAME%/*}/cgi-bin
+dispatch() {
+    local name=$1 url_prefix=$2
+    export PATH_INFO=${PATH_INFO#"$url_prefix"}
+    export SCRIPT_NAME="$SCRIPT_NAME$url_prefix"
+    export SCRIPT_FILENAME="$CGI_DIR/$name"
+    exec "$SCRIPT_FILENAME" "$@"
+}
+
+error_not_found() {
+# during development
+    cgi_info
+}
+
+cgi_info() {
+    cat << EOF
+Content-Type: text/plain
+
+REQUEST_URI=$REQUEST_URI
+SCRIPT_NAME=$SCRIPT_NAME
+SCRIPT_FILENAME=$SCRIPT_FILENAME
+PATH_INFO=$PATH_INFO
+
+EOF
+    set | grep -v '^CONFIG_\|^MOD_'
+}
+
+case $PATH_INFO in
+    /)			redirect_freetz /status ;;
+    */)			redirect_folder ;;
+    "")
+    	case $REQUEST_METHOD in
+	    POST) dispatch exec.cgi ;;
+	    *) redirect_freetz /status ;;
+	esac
+	;;
+    /status)		dispatch status.cgi /status ;;
+    /status/?*)
+    	cgi=${PATH_INFO#/status/}
+	if [ "$cgi" = "daemons" ]; then
+	    dispatch daemons.cgi /status/daemons
+	else
+	    QUERY_STRING="cgi=$cgi${QUERY_STRING:+&$QUERY_STRING}"
+	    dispatch pkgstatus.cgi /status
+	fi
+	;;
+
+    /packages)		dispatch packages.cgi /packages ;;
+    /packages/?*/?*)
+    	dispatch extras.cgi /packages
+    	;;
+    /packages/?*)
+    	pkg=${PATH_INFO#/packages/}
+	QUERY_STRING="pkg=$pkg${QUERY_STRING:+&$QUERY_STRING}"
+    	dispatch pkgconf.cgi /packages
+	;;
+
+    /conf)		dispatch settings.cgi /conf ;;
+    /conf/password)
+    	case $REQUEST_METHOD in
+	    POST) dispatch passwd_save.cgi ;;
+	    *) dispatch passwd.cgi /conf/password ;;
+	esac
+	;;
+    /conf/?*)
+    	id=${PATH_INFO#/conf/}
+	QUERY_STRING="id=$id${QUERY_STRING:+&$QUERY_STRING}"
+	dispatch file.cgi "$PATH_INFO"
+	;;
+
+    /shell)		dispatch rudi_shell.cgi ;;
+    /backup)		dispatch backup_restore.cgi ;;
+    /about)		dispatch about.cgi ;;
+    /update)
+    	QUERY_STRING="cmd=firmware_update"
+	dispatch exec.cgi
+	;;
+
+    *)			error_not_found ;;
+esac

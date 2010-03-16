@@ -1,0 +1,77 @@
+--- networking/httpd.c.orig	2010-03-15 16:25:13.000000000 +0100
++++ networking/httpd.c	2010-03-15 16:26:31.000000000 +0100
+@@ -45,6 +45,7 @@
+  * D:*               # Deny from other IP connections
+  * E404:/path/e404.html # /path/e404.html is the 404 (not found) error page
+  * I:index.html      # Show index.html when a directory is requested
++ * C:/run.sh         # treat URLs starting like this as a cgi script
+  *
+  * P:/url:[http://]hostname[:port]/new/path
+  *                   # When /urlXXXXXX is requested, reverse proxy
+@@ -275,6 +276,9 @@
+ #if ENABLE_FEATURE_HTTPD_CONFIG_WITH_SCRIPT_INTERPR
+ 	Htaccess *script_i;     /* config script interpreters */
+ #endif
++#if ENABLE_FEATURE_HTTPD_CGI
++	Htaccess *cgi_urls;     /* config cgi scripts */
++#endif
+ 	char *iobuf;	        /* [IOBUF_SIZE] */
+ #define hdr_buf bb_common_bufsiz1
+ 	char *hdr_ptr;
+@@ -324,6 +328,7 @@
+ #define g_auth            (G.g_auth           )
+ #define mime_a            (G.mime_a           )
+ #define script_i          (G.script_i         )
++#define cgi_urls          (G.cgi_urls         )
+ #define iobuf             (G.iobuf            )
+ #define hdr_ptr           (G.hdr_ptr          )
+ #define hdr_cnt           (G.hdr_cnt          )
+@@ -493,6 +498,9 @@
+ #if ENABLE_FEATURE_HTTPD_CONFIG_WITH_SCRIPT_INTERPR
+ 		free_Htaccess_list(&script_i);
+ #endif
++#if ENABLE_FEATURE_HTTPD_CGI
++		free_Htaccess_list(&cgi_urls);
++#endif
+ 	}
+ 
+ 	filename = opt_c_configFile;
+@@ -684,6 +692,9 @@
+ #if ENABLE_FEATURE_HTTPD_CONFIG_WITH_SCRIPT_INTERPR
+ 		 || (ch == '*' && buf[1] == '.') /* "*.php:/path/php" */
+ #endif
++#if ENABLE_FEATURE_HTTPD_CGI
++		 || (ch == 'C') /* "C:/url/cgi.sh" */
++#endif
+ 		) {
+ 			char *p;
+ 			Htaccess *cur;
+@@ -698,6 +709,13 @@
+ 				cur->next = mime_a;
+ 				mime_a = cur;
+ 			}
++#if ENABLE_FEATURE_HTTPD_CGI
++			else if (ch == 'C') {
++				/* cgi url: prepend to cgi_urls list */
++				cur->next = cgi_urls;
++				cgi_urls = cur;
++			}
++#endif
+ #if ENABLE_FEATURE_HTTPD_CONFIG_WITH_SCRIPT_INTERPR
+ 			else {
+ 				/* script interpreter line: prepend to script_i list */
+@@ -2117,6 +2135,14 @@
+ 		}
+ 		send_cgi_and_exit(urlcopy, prequest, length, cookie, content_type);
+ 	}
++	{
++		Htaccess *cur;
++		for (cur = cgi_urls; cur; cur = cur->next) {
++			if (strncmp(urlcopy, cur->after_colon, strlen(cur->after_colon)) == 0) {
++				send_cgi_and_exit(urlcopy, prequest, length, cookie, content_type);
++			}
++		}
++	}
+ #endif
+ 
+ 	if (urlp[-1] == '/')
