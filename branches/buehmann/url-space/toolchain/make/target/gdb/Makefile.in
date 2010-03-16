@@ -1,0 +1,11 @@
+ifeq ($(strip $(FREETZ_PACKAGE_GDB)),y)
+GDB_TARGETS+=gdb_target
+endif
+
+ifeq ($(strip $(FREETZ_PACKAGE_GDB_SERVER)),y)
+GDB_TARGETS+=gdbserver
+endif
+
+ifeq ($(strip $(FREETZ_PACKAGE_GDB_HOST)),y)
+GDB_TARGETS+=gdbhost
+endif

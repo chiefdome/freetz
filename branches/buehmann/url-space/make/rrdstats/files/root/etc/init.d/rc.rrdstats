@@ -1,0 +1,219 @@
+#!/bin/sh
+
+DAEMON=rrdstats
+
+. /etc/init.d/modlibrc
+
+HTTPD_PID_RRD=/var/run/httpd_rrd.pid
+HTTPD_PID_ONE=/var/run/httpd_one.pid
+
+case "$1" in
+	backup|restore)
+		if [ ! -r "/mod/etc/conf/$DAEMON.cfg" ]; then
+			echo "Error[$DAEMON]: not configured" 1>&2
+			exit 1
+		fi
+		modlib_loadconfig
+		;;
+esac
+
+config() {
+	mkdir -p /tmp/rrdstats/
+	# kein "-p" wg externer Pfade!
+	mkdir $RRDSTATS_RRDDATA 2>/dev/null
+	mkdir $RRDSTATS_RRDTEMP 2>/dev/null
+	rm /var/mod/etc/statpix 2>/dev/null
+	ln -s $(echo "$RRDSTATS_RRDTEMP" | sed 's/\/*$//g') /var/mod/etc/statpix 2>/dev/null
+	show_digitemp
+}
+
+start() {
+	echo -n 'Starting rrdstats...'
+
+	if [ ! -z "$(pidof rrdstats)" ]; then
+		echo 'already running'
+		exit 0
+	fi
+
+	[ "$RRDSTATS_SAVEBACKUP" = yes ] && backup
+
+	mkdir -p /tmp/rrdstats/
+	rm -f /tmp/rrdstats/digitemp_alert*
+
+	stop_webserver
+	if [ "$RRDSTATS_WEBENABLED" = "yes" ]; then
+		if [ "$RRDSTATS_WEB_AUTH" = yes ]; then
+			echo "/:$RRDSTATS_WEB_USER:`httpd -m $RRDSTATS_WEB_PASS`" >/mod/etc/httpd-rrd.conf
+			RRD_CONF="-c /mod/etc/httpd-rrd.conf"
+		fi
+		httpd -P $HTTPD_PID_RRD -p $RRDSTATS_WEBTCPPORT $RRD_CONF -h /mod/pkg/rrdstats/usr/mww-rrd
+	fi
+	if [ -x "`which digitemp`" -a "$RRDSTATS_DIGITEMP_HTTP" = "yes" ]; then
+		if [ "$RRDSTATS_DIGITEMP_AUTH" = yes ]; then
+			echo "/:$RRDSTATS_DIGITEMP_USER:`httpd -m $RRDSTATS_DIGITEMP_PASS`" >/mod/etc/httpd-one.conf
+			ONE_CONF="-c /mod/etc/httpd-one.conf"
+		fi
+		httpd -P $HTTPD_PID_ONE -p $RRDSTATS_DIGITEMP_PORT $ONE_CONF -h /mod/pkg/rrdstats/usr/mww-one
+	fi
+
+	start-stop-daemon -n rrdstats -a /etc/default.rrdstats/rrdstats $RRDSTATS_INTERVAL -b -q -S
+	exitval=$?
+	if [ "$exitval" -eq 0 ]; then
+		echo 'done.'
+	else
+		echo 'failed.'
+		exit $exitval
+	fi
+}
+
+stop() {
+	echo -n 'Stopping rrdstats...'
+	stop_webserver
+	start-stop-daemon -n rrdstats -K >/dev/null 2>&1
+	sleep 1
+	killall -9 rrdstats >/dev/null 2>&1
+	sleep 1
+	if [ -z "$(pidof rrdstats)" ]; then
+		echo 'done.'
+	else
+		echo 'failed.'
+	fi
+}
+
+stop_webserver() {
+	kill -9 "`cat $HTTPD_PID_RRD 2>/dev/null`" 2>/dev/null
+	kill -9 "`cat $HTTPD_PID_ONE 2>/dev/null`" 2>/dev/null
+}
+
+show_digitemp() {
+	modunreg status rrdstats rrdstats/rrddt
+	modunreg file 'rrdstats_dt-conf'
+	modunreg file 'rrdstats_dt-alias'
+	modunreg file 'rrdstats_dt-group'
+	modunreg file 'rrdstats_dt-alert'
+	if [ -x "`which digitemp`" -a "$RRDSTATS_DIGITEMP1W" = yes ]; then
+		modreg status rrdstats DigiTemp rrdstats/rrddt
+		deffile='/mod/etc/default.rrdstats/dt-conf.def'
+		[ -r "/tmp/flash/rrdstats/dt-conf.def" ] && deffile='/tmp/flash/rrdstats/dt-conf.def'
+		modreg file 'rrdstats_dt-conf' 'RRDstats: dt-conf' 0 "$deffile"
+		deffile='/mod/etc/default.rrdstats/dt-alias.def'
+		[ -r "/tmp/flash/rrdstats/dt-alias.def" ] && deffile='/tmp/flash/rrdstats/dt-alias.def'
+		modreg file 'rrdstats_dt-alias' 'RRDstats: dt-alias' 1 "$deffile"
+		deffile='/mod/etc/default.rrdstats/dt-group.def'
+		[ -r "/tmp/flash/rrdstats/dt-group.def" ] && deffile='/tmp/flash/rrdstats/dt-group.def'
+		modreg file 'rrdstats_dt-group' 'RRDstats: dt-group' 1 "$deffile"
+		deffile='/mod/etc/default.rrdstats/dt-alert.def'
+		[ -r "/tmp/flash/rrdstats/dt-alert.def" ] && deffile='/tmp/flash/rrdstats/dt-alert.def'
+		modreg file 'rrdstats_dt-alert' 'RRDstats: dt-alert' 1 "$deffile"
+	fi
+}
+
+backup() {
+	_TIMESTRING=`echo $(date -Iseconds|sed 's/\:/-/g;s/\+.*//g;s/T/_/g')`
+	_BACKUPNAME=$RRDSTATS_RRDBACKUP/$_TIMESTRING
+	if [ `ls $RRDSTATS_RRDDATA/*.rrd 2>/dev/null |wc -w` -le 0 ]; then
+		echo -n 'Backup skipped, no files found...'
+		return
+	fi
+	mkdir $RRDSTATS_RRDBACKUP 2>/dev/null
+	mkdir $_BACKUPNAME 2>/dev/null
+	cp -p $RRDSTATS_RRDDATA/*.rrd $_BACKUPNAME/ 2>/dev/null
+	exitval=$?
+	if [ $exitval -ne 0 ]; then
+		echo 'Backup failed, abort.'
+		exit $exitval
+	fi
+	_BACKUPLOG=$RRDSTATS_RRDBACKUP/backup.log
+	echo $_TIMESTRING >> $_BACKUPLOG
+	if [ "$RRDSTATS_DELBACKUP" = yes ]; then
+		countbackup=`cat $_BACKUPLOG | wc -l`
+		countdelete=$(($countbackup-$RRDSTATS_MAXIMUMBACKUPS))
+		if [ $countdelete -gt 0 ]; then
+			for delname in `head $_BACKUPLOG -n $countdelete`; do
+				rm -rf $RRDSTATS_RRDBACKUP/$delname
+			done
+			tail $_BACKUPLOG -n $(($countbackup-$countdelete)) > $_BACKUPLOG.temp
+			mv $_BACKUPLOG.temp $_BACKUPLOG
+		fi
+	fi
+}
+
+restore() {
+	if [ `ls $RRDSTATS_RRDBACKUP/* 2>/dev/null |wc -w` -le 0 ]; then
+		echo 'Restore skipped, no files found...'
+		return
+	fi
+	[ ! -d "$RRDSTATS_RRDDATA" ] && mkdir -p $RRDSTATS_RRDDATA 2>/dev/null
+	cp -p $RRDSTATS_RRDBACKUP/`echo $(tail -n1 $RRDSTATS_RRDBACKUP/backup.log)`/*.rrd $RRDSTATS_RRDDATA/ 2>/dev/null
+	exitval=$?
+	if [ $exitval -ne 0 ]; then
+		echo 'Restore failed, abort.'
+		exit $exitval
+	fi
+}
+
+case "$1" in
+	config)
+		config
+		;;
+	""|load)
+		modreg cgi rrdstats RRDstats
+		modreg status rrdstats RRDstats rrdstats/stats
+		config
+		if [ "$RRDSTATS_ENABLED" != yes ]; then
+			echo "rrdstats is disabled" 1>&2
+			exit 1
+		fi
+		start
+		;;
+	unload)
+		stop
+		modunreg status rrdstats rrdstats/rrddt
+		modunreg status rrdstats rrdstats/stats
+		modunreg cgi rrdstats
+		modunreg file 'rrdstats_dt-alias'
+		modunreg file 'rrdstats_dt-conf'
+		modunreg file 'rrdstats_dt-group'
+		modunreg file 'rrdstats_dt-alert'
+		;;
+	start)
+		config
+		start
+		;;
+	stop)
+		stop
+		;;
+	backup)
+		echo 'Creating backup of .rrd files'
+		backup
+		echo
+		;;
+	restore)
+		if [ -n "$(pidof rrdstats)" ]; then
+			restart_rrdstats=yes
+			stop
+		fi
+		restore
+		if [ "$restart_rrdstats" = yes ]; then
+			start
+		else
+			exit $exitval
+		fi
+		;;
+	restart)
+		stop
+		config
+		start
+		;;
+	status)
+		if [ -z "$(pidof rrdstats)" ]; then
+			echo 'stopped'
+		else
+			echo 'running'
+		fi
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status|config|backup|restore]" 1>&2
+		exit 1
+		;;
+esac

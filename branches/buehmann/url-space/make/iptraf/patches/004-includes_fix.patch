@@ -1,0 +1,20 @@
+--- src/othptab.c.orig	2010-02-06 16:16:20.000000000 +0000
++++ src/othptab.c	2010-02-06 16:16:20.000000000 +0000
+@@ -17,6 +17,7 @@
+ ***/
+ 
+ #include <asm/types.h>
++#include <sys/types.h>
+ #include <linux/if_ether.h>
+ #include <linux/if_tr.h>
+ #include <winops.h>
+--- src/tr.c.orig	2005-09-13 06:42:54.000000000 +0000
++++ src/tr.c	2010-02-06 16:16:20.000000000 +0000
+@@ -7,6 +7,7 @@
+  */
+ 
+ #include <asm/types.h>
++#include <sys/types.h>
+ #include <linux/if_tr.h>
+ #include <netinet/in.h>
+ 
