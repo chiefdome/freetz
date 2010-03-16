@@ -12,7 +12,6 @@ files
 	etc/default.mod/resolv_conf.def
 	usr/lib/libmodcgi.sh
 	usr/lib/libmodfrm.sh
-	usr/mww/index.html
 	usr/mww/cgi-bin/backup_restore.cgi
 	usr/mww/cgi-bin/create_swap.cgi
 	usr/mww/cgi-bin/daemons.cgi

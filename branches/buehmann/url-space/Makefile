@@ -97,7 +97,7 @@ endif
 
 # Mod archive unpacked incorrectly (heuristics)? -> Error
 ifeq ($(shell MWW=root/usr/mww; \
-	[ ! -L $$MWW/cgi-bin/index.cgi -o ! -x $$MWW/cgi-bin/status.cgi -o -x $$MWW/index.html ] \
+	[ ! -L $$MWW/images -o ! -x $$MWW/cgi-bin/status.cgi -o -x $$MWW/index.html ] \
 	&& echo y\
 ),y)
 $(error File permissions or links are wrong! Please unpack Freetz on a filesystem with Unix-like permissions)
