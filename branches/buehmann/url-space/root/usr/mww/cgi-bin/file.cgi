@@ -44,7 +44,7 @@ if [ -z "$CONFIG_FILE" -o "$sec_level" -gt "$3" ]; then
 else
 	case "$CONFIG_TYPE" in
 		text)
-			echo "<form action=\"/cgi-bin/save.cgi?form=file_$id\" method=\"post\">"
+			echo "<form action=\"/freetz/conf/$id\" method=\"post\">"
 			echo -n '<textarea style="width: '$_width'px;" name="content" rows="'"$TEXT_ROWS"'" cols="60" wrap="off">'
 			[ -r "$CONFIG_FILE" ] && html < "$CONFIG_FILE"
 			echo '</textarea>'

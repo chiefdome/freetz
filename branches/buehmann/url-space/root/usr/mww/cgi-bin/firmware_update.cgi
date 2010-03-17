@@ -36,7 +36,7 @@ $(lang de:"ausgef&uuml;hrt werden. Bei Auswahl des Men&uuml;punkts für Remote-Up
 $(lang de:"30 Sekunden automatisch neu gestartet." en:"")
 <p>
 
-<form action="/cgi-bin/do_update.cgi" method=POST enctype="multipart/form-data" onsubmit="return CheckInput(document.forms[0]);">
+<form action="/freetz/update" method=POST enctype="multipart/form-data" onsubmit="return CheckInput(document.forms[0]);">
 	$(lang de:"Firmware-Image" en:"Firmware image") <input type=file size=50 id="fw_file">
 	<p>
 	$(lang de:"AVM-Dienste ..." en:"")<br>
@@ -49,7 +49,7 @@ $(lang de:"30 Sekunden automatisch neu gestartet." en:"")
 	<p>
 	<input type=submit value="$(lang de:"Firmware hochladen" en:"Upload firmware")" style="width:150px">
 </form>
-<form action="/cgi-bin/status.cgi" method=GET>
+<form action="/freetz/status" method="GET">
 	<input type="submit" value="$(lang de:"Abbrechen" en:"Cancel")" style="width:150px">
 </form>
 

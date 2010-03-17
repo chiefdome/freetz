@@ -1,7 +1,10 @@
 frm_begin() {
-cat << EOF
-<form action="/cgi-bin/save.cgi?form=pkg_$1" method="post">
-EOF
+    local url
+    case $1 in
+	mod) url=/conf ;;
+	*)   url="/packages/$1" ;;
+    esac
+    echo "<form action='/freetz${url}' method='post'>"
 }
 
 frm_end() {

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-PACKAGEURL=/cgi-bin/pkgconf.cgi?pkg=
-SETTINGSURL=/cgi-bin/settings.cgi
+PACKAGEURL=/freetz/packages/
+SETTINGSURL=/freetz/conf
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 . /usr/lib/libmodcgi.sh
 
@@ -11,7 +11,7 @@ stat_begin() {
 
 stat_button() {
 	if ! $3 ; then disabled=" disabled"; else disabled=""; fi
-	echo '<td><form class="btn" action="/cgi-bin/exec.cgi" method="post"><input type="hidden" name="pkg" value="'"$1"'"><input type="hidden" name="cmd" value="'"$2"'"><input type="submit" value="'"$2"'"'"$disabled"'></form></td>'
+	echo '<td><form class="btn" action="/freetz/status/daemons" method="post"><input type="hidden" name="pkg" value="'"$1"'"><input type="hidden" name="cmd" value="'"$2"'"><input type="submit" value="'"$2"'"'"$disabled"'></form></td>'
 }
 
 stat_packagelink() {

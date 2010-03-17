@@ -34,43 +34,43 @@ _cgi_menu() {
 local sub=$1
 cat << EOF
 <div class="menu">
-<div id="status"><a href="/cgi-bin/status.cgi">Status</a></div>
+<div id="status"><a href="/freetz/status">Status</a></div>
 EOF
 
 if [ "$sub" = "status" -a -r /mod/etc/reg/status.reg ]; then
     	local pkg title cgi
 	while IFS='|' read -r pkg title cgi; do
-		echo "<div id='$(_cgi_id "status_$cgi")' class='su'><a href='/cgi-bin/pkgstatus.cgi?cgi=$cgi'>$(html "$title")</a></div>"
+		echo "<div id='$(_cgi_id "status_$cgi")' class='su'><a href='/freetz/status/$cgi'>$(html "$title")</a></div>"
 	done < /mod/etc/reg/status.reg 
 fi
 
 cat << EOF
-<div id="daemons"><a href="/cgi-bin/daemons.cgi">$(lang de:"Dienste" en:"Services")</a></div>
-<div id="settings"><a href="/cgi-bin/settings.cgi">$(lang de:"Einstellungen" en:"Settings")</a></div>
+<div id="daemons"><a href="/freetz/status/daemons">$(lang de:"Dienste" en:"Services")</a></div>
+<div id="settings"><a href="/freetz/conf">$(lang de:"Einstellungen" en:"Settings")</a></div>
 EOF
 
 if [ "$sub" = "settings" -a -r /mod/etc/reg/file.reg ]; then
     	local id title sec def
 	while IFS='|' read -r id title sec def; do
-		echo "<div id='$(_cgi_id "file_$id")' class='su'><a href='/cgi-bin/file.cgi?id=$id'>$(html "$title")</a></div>"
+		echo "<div id='$(_cgi_id "file_$id")' class='su'><a href='/freetz/conf/$id'>$(html "$title")</a></div>"
 	done < /mod/etc/reg/file.reg 
 fi
 
 cat << EOF
-<div id="packages"><a href="/cgi-bin/packages.cgi">$(lang de:"Pakete" en:"Packages")</a></div>
+<div id="packages"><a href="/freetz/packages">$(lang de:"Pakete" en:"Packages")</a></div>
 EOF
 
 if [ "$sub" = "packages" -a -r /mod/etc/reg/cgi.reg ]; then
     	local pkg title
 	while IFS='|' read -r pkg title; do
-		echo "<div id='$(_cgi_id "pkg_$pkg")' class='su'><a href='/cgi-bin/pkgconf.cgi?pkg=$pkg'>$(html "$title")</a></div>"
+		echo "<div id='$(_cgi_id "pkg_$pkg")' class='su'><a href='/freetz/packages/$pkg'>$(html "$title")</a></div>"
 	done < /mod/etc/reg/cgi.reg 
 fi
 
 cat << EOF
 <div id="extras"><a href="/cgi-bin/extras.cgi">Extras</a></div>
-<div id="backup_restore"><a href="/cgi-bin/backup_restore.cgi">$(lang de:"Sichern/Wiederherstellen" en:"Backup/restore")</a></div>
-<div id="rudi_shell"><a href="/cgi-bin/rudi_shell.cgi" target="_blank">$(lang de:"Rudi-Shell" en:"Rudi shell")</a></div>
+<div id="backup_restore"><a href="/freetz/backup">$(lang de:"Sichern/Wiederherstellen" en:"Backup/restore")</a></div>
+<div id="rudi_shell"><a href="/freetz/shell" target="_blank">$(lang de:"Rudi-Shell" en:"Rudi shell")</a></div>
 </div>
 EOF
 }
@@ -121,7 +121,7 @@ cat << EOF
 <table border="0" cellspacing="0" cellpadding="0" align="center" width="$_cgi_total_width">
 <tr>
 <td width="20"><img src="/images/edge_lt.png" width="20" height="40" border="0" alt=""></td>
-<td width="$_cgi_width" id="edgetop"><div class="version">$(html < /etc/.freetz-version)</div><div class="title"><a href="/cgi-bin/index.cgi">Freetz</a>&nbsp;<a href="/cgi-bin/about.cgi" target="_blank">&ndash;</a> <span style="font-style: italic;">$title</span></div></td>
+<td width="$_cgi_width" id="edgetop"><div class="version">$(html < /etc/.freetz-version)</div><div class="title"><a href="/freetz">Freetz</a>&nbsp;<a href="/freetz/about" target="_blank">&ndash;</a> <span style="font-style: italic;">$title</span></div></td>
 <td width="20"><img src="/images/edge_rt.png" width="20" height="40" border="0" alt=""></td>
 </tr>
 <tr>

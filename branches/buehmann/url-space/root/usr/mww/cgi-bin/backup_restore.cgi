@@ -14,7 +14,7 @@ $(lang de:"Freetz sowie sämtlicher sonstiger beim Start geladener Erweiterungen"
 $(lang de:"(z.B. LCR-Updater)." en:"")
 <p>
 
-<form action="/cgi-bin/do_backup.cgi" method=GET>
+<form action="/freetz/backup/download" method=GET>
 	<input type=submit value="$(lang de:"Sichern" en:"Save")">
 </form><p>
 
@@ -29,13 +29,13 @@ $(lang de:"Zeitpunkt der entsprechenden Sicherung versetzt." en:"created the cor
 $(lang de:"alle Einstellungen zu aktivieren. Bitte danach die Einstellungen überprüfen!" en:"configuration. Please remember to double-check all settings afterwards!")</i></b>
 <p>
 
-<form action="/cgi-bin/do_restore.cgi" method=POST enctype="multipart/form-data">
+<form action="/freetz/backup" method=POST enctype="multipart/form-data">
 	<input type=file name="uploadfile"><br>
 	<input type=checkbox name="freetz_only">$(lang de:"Nur Freetz-Einstellungen wiederherstellen" en:"Restore Freetz settings only")<p>
 	<input type=checkbox name="restart" checked>$(lang de:"Neustart nach Wiederherstellung" en:"Reboot after restore")<p>
 	<input type=submit value="$(lang de:"Wiederherstellen" en:"Restore")" style="width:150px">
 </form>
-<form action="/cgi-bin/status.cgi" method=GET>
+<form action="/freetz/status" method=GET>
 	<input type="submit" value="$(lang de:"Abbrechen" en:"Cancel")" style="width:150px">
 </form>
 EOF

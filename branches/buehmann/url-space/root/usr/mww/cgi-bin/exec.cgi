@@ -38,7 +38,7 @@ case "$MOD_CGI_CMD" in
 		else
 			echo 'failed.</pre>'
 		fi
-		back_button /cgi-bin/status.cgi
+		back_button /freetz/status
 		cgi_end
 		;;
 	cleanup)
@@ -46,7 +46,7 @@ case "$MOD_CGI_CMD" in
 		echo -n '<pre>tffs cleanup...'
 		echo 'cleanup' > /proc/tffs
 		echo 'done.</pre>'
-		back_button /cgi-bin/status.cgi
+		back_button /freetz/status
 		cgi_end
 		;;
 	downgrade)
@@ -61,7 +61,7 @@ case "$MOD_CGI_CMD" in
 			mount -o bind /var/tmp/version /etc/version
 			echo 'done.</pre>'
 		fi
-		back_button /cgi-bin/status.cgi
+		back_button /freetz/status
 		cgi_end
 		;;
 	firmware_update)
@@ -85,7 +85,7 @@ case "$MOD_CGI_CMD" in
 		echo -n "" > /var/flash/fw_attrib
 		rm -f /var/flash/fw_attrib
 		echo ' $(lang de:"fertig" en:"done").</pre>'
-		back_button /cgi-bin/status.cgi
+		back_button /freetz/status
 		cgi_end
 		;;
 	restart_dsld)
@@ -96,13 +96,13 @@ case "$MOD_CGI_CMD" in
 		echo -n 'Restarting dsld...<br>'
 		dsld -n
 		echo -n 'done.</pre>'
-		back_button /cgi-bin/status.cgi
+		back_button /freetz/status
 		cgi_end
 		;;
 	reboot)
 		cgi_begin '$(lang de:"Neustart" en:"Reboot")...'
 		echo '<p>$(lang de:"Starte neu" en:"Rebooting")...</p>'
-		echo '<p>$(lang de:"Nach dem Neustart <a href=\"/\" target=\"topframe\"><u>hier</u></a> wieder einloggen." en:"Login <a href=\"/\" target=\"topframe\"><u>here</u></a> after reboot.")</p>'
+		echo '<p>$(lang de:"Nach dem Neustart <a href=\"/\"><u>hier</u></a> wieder einloggen." en:"Login <a href=\"/\"><u>here</u></a> after reboot.")</p>'
 		cgi_end
 		reboot
 		;;
@@ -112,7 +112,7 @@ case "$MOD_CGI_CMD" in
 		echo -n '<pre>'
 		/mod/etc/init.d/rc.$MOD_CGI_PKG start | html
 		echo '</pre>'
-		back_button /cgi-bin/daemons.cgi
+		back_button /freetz/status/daemons
 		cgi_end
 		;;
 	stop)
@@ -121,7 +121,7 @@ case "$MOD_CGI_CMD" in
 		echo -n '<pre>'
 		/mod/etc/init.d/rc.$MOD_CGI_PKG stop | html
 		echo '</pre>'
-		back_button /cgi-bin/daemons.cgi
+		back_button /freetz/status/daemons
 		cgi_end
 		;;
 	restart)
@@ -130,7 +130,7 @@ case "$MOD_CGI_CMD" in
 		echo -n '<pre>'
 		/mod/etc/init.d/rc.$MOD_CGI_PKG restart | html
 		echo '</pre>'
-		back_button /cgi-bin/daemons.cgi
+		back_button /freetz/status/daemons
 		cgi_end
 		;;
 	*)

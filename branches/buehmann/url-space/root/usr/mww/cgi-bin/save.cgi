@@ -75,7 +75,7 @@ echo -n "<pre>"
 
 form=$(cgi_param form | tr -d .)
 
-script=status.cgi
+back_url=
 package=''
 file_id=''
 oldstatus1=''
@@ -89,12 +89,12 @@ case $form in
 
 		if [ -r "/mod/etc/default.$package/$package.cfg" ]; then
 			if [ "$package" = mod ]; then
-				script=settings.cgi
+				back_url=/conf
 				oldstatus1=$(rc_status telnetd)
 				oldstatus2=$(rc_status webcfg)
 				oldstatus3=$(rc_status swap)
 			else
-				script=pkgconf.cgi
+				back_url="/packages/$package"
 				oldstatus1=$(rc_status "$package")
 			fi
 			prefix="$(echo "$package" | tr 'a-z\-' 'A-Z_')_"
@@ -135,12 +135,12 @@ case $form in
 
 		if [ -r "/mod/etc/default.$package/$package.cfg" ]; then
 			if [ "$package" = mod ]; then 
-				script=settings.cgi
+				back_url=/conf
 				oldstatus1=$(rc_status telnetd)
                                 oldstatus2=$(rc_status webcfg)
 				oldstatus3=$(rc_status swap)
 			else 
-				script=pkgconf.cgi
+				back_url="/packages/$package"
                                 oldstatus1=$(rc_status "$package")
                         fi
 			
@@ -159,7 +159,7 @@ case $form in
 		;;
 	file_*)
 		file_id=${form#file_}
-		script=file.cgi
+		back_url="/conf/$file_id"
 
 		[ -e /mod/etc/reg/file.reg ] || touch /mod/etc/reg/file.reg
 
@@ -193,9 +193,6 @@ case $form in
 esac
 
 echo '</pre>'
-echo -n "<p><form action=\"/cgi-bin/$script\">"
-[ -z "$package" ] || echo -n "<input type=\"hidden\" name=\"pkg\" value=\"$package\">"
-[ -z "$file_id" ] || echo -n "<input type=\"hidden\" name=\"id\" value=\"$file_id\">"
-echo '<input type="submit" value="$(lang de:"Zur&uuml;ck" en:"Back")"></form></p>'
+back_button "/freetz${back_url}"
 
 cgi_end

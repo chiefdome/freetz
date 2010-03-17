@@ -62,7 +62,10 @@ case $PATH_INFO in
     /status/?*)
     	cgi=${PATH_INFO#/status/}
 	if [ "$cgi" = "daemons" ]; then
-	    dispatch daemons.cgi /status/daemons
+	    case $REQUEST_METHOD in
+		POST) dispatch exec.cgi ;;
+		*) dispatch daemons.cgi /status/daemons ;;
+	    esac
 	else
 	    QUERY_STRING="cgi=$cgi${QUERY_STRING:+&$QUERY_STRING}"
 	    dispatch pkgstatus.cgi /status
@@ -74,12 +77,30 @@ case $PATH_INFO in
     	dispatch extras.cgi /packages
     	;;
     /packages/?*)
-    	pkg=${PATH_INFO#/packages/}
-	QUERY_STRING="pkg=$pkg${QUERY_STRING:+&$QUERY_STRING}"
-    	dispatch pkgconf.cgi /packages
+	pkg=${PATH_INFO#/packages/}
+    	case $REQUEST_METHOD in
+	    POST)
+	    	QUERY_STRING="form=pkg_$pkg"
+		dispatch save.cgi
+	    	;;
+	    *)
+		QUERY_STRING="pkg=$pkg${QUERY_STRING:+&$QUERY_STRING}"
+		dispatch pkgconf.cgi /packages
+		;;
+	esac
 	;;
 
-    /conf)		dispatch settings.cgi /conf ;;
+    /conf)
+    	case $REQUEST_METHOD in
+	    POST)
+	    	QUERY_STRING="form=pkg_mod"
+		dispatch save.cgi
+		;;
+	    *)
+	    	dispatch settings.cgi /conf
+		;;
+	esac
+	;;
     /conf/password)
     	case $REQUEST_METHOD in
 	    POST) dispatch passwd_save.cgi ;;
@@ -88,16 +109,35 @@ case $PATH_INFO in
 	;;
     /conf/?*)
     	id=${PATH_INFO#/conf/}
-	QUERY_STRING="id=$id${QUERY_STRING:+&$QUERY_STRING}"
-	dispatch file.cgi "$PATH_INFO"
+	case $REQUEST_METHOD in
+	    POST)
+		QUERY_STRING="form=file_$id"
+		dispatch save.cgi
+		;;
+	    *)
+		QUERY_STRING="id=$id${QUERY_STRING:+&$QUERY_STRING}"
+		dispatch file.cgi "$PATH_INFO"
+		;;
+	esac
 	;;
 
     /shell)		dispatch rudi_shell.cgi ;;
-    /backup)		dispatch backup_restore.cgi ;;
+    /backup)
+    	case $REQUEST_METHOD in
+	    POST) dispatch do_restore.cgi ;;
+	    *) dispatch backup_restore.cgi ;;
+	esac
+	;;
+    /backup/download)	dispatch do_backup.cgi ;;
     /about)		dispatch about.cgi ;;
     /update)
-    	QUERY_STRING="cmd=firmware_update"
-	dispatch exec.cgi
+    	case $REQUEST_METHOD in
+	    POST) dispatch do_update.cgi ;;
+	    *)
+		QUERY_STRING="cmd=firmware_update"
+		dispatch exec.cgi
+		;;
+	esac
 	;;
 
     *)			error_not_found ;;

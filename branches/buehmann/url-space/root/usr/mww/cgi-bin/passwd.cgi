@@ -30,7 +30,7 @@ function CheckInput(form) {
 
 <h1>$(lang de:"Passwort ändern" en:"Change password")</h1>
 
-<form action="/cgi-bin/passwd_save.cgi" method=POST onsubmit="return CheckInput(document.forms[0])">
+<form action="/freetz/passwd" method="POST" onsubmit="return CheckInput(document.forms[0])">
 <table border="0" cellspacing="1" cellpadding="0">
 <tr><td>$(lang de:"altes Passwort: " en:"old password ")</td><td><input type="password" size=20 name="oldpassword"></td></tr>
 <tr><td>$(lang de:"neues Passwort: " en:"new password ")</td><td><input type="password" size=20 name="password"></td></tr>

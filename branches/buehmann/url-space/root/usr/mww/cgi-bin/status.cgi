@@ -16,7 +16,13 @@ btn_count=0
 stat_button() {
 	let _btn_width="($_cgi_width-230+16)/3"
 	btn_count=$((btn_count + 1))
-	echo '<div class="btn"><form class="btn" action="/cgi-bin/exec.cgi" method="post"><input type="hidden" name="cmd" value="'"$1"'"><input type="submit" value="'"$2"'" style="width: '$_btn_width'px"></form></div>'
+	echo '<div class="btn"><form class="btn" action="/freetz" method="post"><input type="hidden" name="cmd" value="'"$1"'"><input type="submit" value="'"$2"'" style="width: '$_btn_width'px"></form></div>'
+	[ $btn_count -eq 3 ] && ( btn_count=0; echo '<br style="clear:left">' )
+}
+stat_button_get() {
+	let _btn_width="($_cgi_width-230+16)/3"
+	btn_count=$((btn_count + 1))
+	echo '<div class="btn"><form class="btn" action="'"$1"'"><input type="submit" value="'"$2"'" style="width: '$_btn_width'px"></form></div>'
 	[ $btn_count -eq 3 ] && ( btn_count=0; echo '<br style="clear:left">' )
 }
 
@@ -33,9 +39,9 @@ cgi_begin '$(lang de:"Status" en:"Status")' 'status'
 if default_password_set; then
 	echo '<div style="color: #800000;"><p>$(lang
 		de:"Standard-Passwort gesetzt. Bitte
-		<a href=\"/cgi-bin/passwd.cgi\"><u>hier</u></a> ändern."
+		<a href=\"/freetz/conf/password\"><u>hier</u></a> ändern."
 		en:"Default password set. Please change
-		<a href=\"/cgi-bin/passwd.cgi\"><u>here</u></a>."
+		<a href=\"/freetz/conf/password\"><u>here</u></a>."
 	)</p>'
 fi
 
@@ -61,7 +67,7 @@ for i in $(ls /usr/www/); do
 done
 
 if [ $brands_cnt -gt 1 ]; then 
-	echo '<form class="btn" action="/cgi-bin/exec.cgi" method="post">'
+	echo '<form class="btn" action="/freetz" method="post">'
 	echo '$(lang de:"Branding" en:"Branding"):'
 	echo '<input type="hidden" name="cmd" value="branding">'
 	echo '<select name="branding" size="1">' 
@@ -134,7 +140,7 @@ stat_button restart_dsld '$(lang de:"DSL-Reconnect" en:"Reconnect DSL")'
 stat_button cleanup '$(lang de:"TFFS aufräumen" en:"Clean up TFFS")'
 stat_button fw_attrib '$(lang de:"Attribute bereinigen" en:"Clean up attributes")'
 stat_button downgrade '$(lang de:"Downgrade-Mod" en:"Downgrade mod")'
-stat_button firmware_update '$(lang de:"Firmware-Update" en:"Update firmware")'
+stat_button_get /freetz/update '$(lang de:"Firmware-Update" en:"Update firmware")'
 stat_button reboot '$(lang de:"Reboot" en:"Reboot")'
 
 cgi_end

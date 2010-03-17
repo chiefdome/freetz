@@ -57,7 +57,7 @@ cgi_begin '$(lang de:"Konfiguration wiederherstellen (Restore)" en:"Restore conf
 <? fi ?>
 
 <p>
-<% back_button /cgi-bin/status.cgi "$(lang de:"Zurück zur Übersicht" en:"Back to main page")" %>
+<% back_button /freetz/status "$(lang de:"Zurück zur Übersicht" en:"Back to main page")" %>
 <p>
 
 <? cgi_end ?>

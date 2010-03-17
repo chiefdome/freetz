@@ -14,5 +14,5 @@ rm -f /tmp/ex_update.log;
 %></pre>
 
 <p>
-<% back_button /cgi-bin/status.cgi "$(lang de:"Zurück zur Übersicht" en:"Back to main page")" %>
+<% back_button /freetz/status "$(lang de:"Zurück zur Übersicht" en:"Back to main page")" %>
 <% cgi_end %>
