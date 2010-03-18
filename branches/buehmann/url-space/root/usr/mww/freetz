@@ -1,11 +1,12 @@
 #!/bin/sh
 # Freetz controller
+CR=$'\r'
 
 redirect() {
     cat << EOF
-Status: 302 Found
-Location: $1
-
+Status: 302 Found$CR
+Location: $1$CR
+$CR
 EOF
     exit
 }
@@ -38,8 +39,8 @@ error_not_found() {
 
 cgi_info() {
     cat << EOF
-Content-Type: text/plain
-
+Content-Type: text/plain$CR
+$CR
 REQUEST_URI=$REQUEST_URI
 SCRIPT_NAME=$SCRIPT_NAME
 SCRIPT_FILENAME=$SCRIPT_FILENAME

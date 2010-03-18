@@ -118,15 +118,19 @@ fi
 cat << EOF
 </head>
 <body>
-<table border="0" cellspacing="0" cellpadding="0" align="center" width="$_cgi_total_width">
+<table id="edge" border="0" cellspacing="0" cellpadding="0" align="center" width="$_cgi_total_width">
+<colgroup><col width="20"><col width="*"><col width="20"></colgroup>
 <tr>
-<td width="20"><img src="/images/edge_lt.png" width="20" height="40" border="0" alt=""></td>
-<td width="$_cgi_width" id="edgetop"><div class="version">$(html < /etc/.freetz-version)</div><div class="title"><a href="/freetz">Freetz</a>&nbsp;<a href="/freetz/about" target="_blank">&ndash;</a> <span style="font-style: italic;">$title</span></div></td>
-<td width="20"><img src="/images/edge_rt.png" width="20" height="40" border="0" alt=""></td>
+<td id="edge-top-left"></td>
+<td id="edge-top">
+<div class="version">$(html < /etc/.freetz-version)</div>
+<div class="titlebar"><a href="/cgi-bin/index.cgi" class="logo">Freetz</a>&nbsp;<a href="/cgi-bin/about.cgi" target="_blank">&ndash;</a> <span class="title">$title</span></div>
+</td>
+<td id="edge-top-right"></td>
 </tr>
 <tr>
-<td width="20" id="edgeleft"></td>
-<td width="$_cgi_width" id="content">
+<td id="edge-left"></td>
+<td id="content">
 EOF
 
 local sub
@@ -145,16 +149,16 @@ fi
 cgi_end() {
 cat << EOF
 </td>
-<td width="20" id="edgeright"></td>
+<td id="edge-right"></td>
 </tr>
 <tr>
-<td width="20"><img src="/images/edge_lb.png" width="20" height="20" border="0" alt=""></td>
-<td width="$_cgi_width" id="edgebottom"></td>
-<td width="20"><img src="/images/edge_rb.png" width="20" height="20" border="0" alt=""></td>
+<td id="edge-bottom-left"></td>
+<td id="edge-bottom"></td>
+<td id="edge-bottom-right"></td>
 </tr>
 </table>
 <div id="footer">
-<span class="datetime" title="$(lang de:"System-Zeit des Routers" en:"Router's system time")">$(date +'$(lang de:"%d.%m.%Y" en:"%m/%d/%Y") %H:%M')</span>&nbsp;&ndash;
+<span class="datetime" title="$(lang de:"Systemzeit des Routers" en:"Router's system time")">$(date +'$(lang de:"%d.%m.%Y" en:"%m/%d/%Y") %H:%M')</span>&nbsp;&ndash;
 <span class="uptime" title="Uptime">$(uptime | sed -r 's/.*(up.*), load.*/\1/')</span>&nbsp;&ndash;
 <span class="opt">$(lang de:"optimiert f&uuml;r" en:"optimised for") Mozilla Firefox</span>
 </div>

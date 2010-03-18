@@ -49,7 +49,7 @@ $(lang de:"30 Sekunden automatisch neu gestartet." en:"")
 	<p>
 	<input type=submit value="$(lang de:"Firmware hochladen" en:"Upload firmware")" style="width:150px">
 </form>
-<form action="/freetz/status" method="GET">
+<form action="/freetz/status" method=GET>
 	<input type="submit" value="$(lang de:"Abbrechen" en:"Cancel")" style="width:150px">
 </form>
 
