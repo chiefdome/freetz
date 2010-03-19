@@ -77,6 +77,9 @@ case $PATH_INFO in
     /packages/?*/?*)
     	dispatch extras.cgi /packages
     	;;
+    /extras)
+    	dispatch extras.cgi /extras # FIXME: integrate into /packages?
+	;;
     /packages/?*)
 	pkg=${PATH_INFO#/packages/}
     	case $REQUEST_METHOD in
@@ -123,6 +126,7 @@ case $PATH_INFO in
 	;;
 
     /shell)		dispatch rudi_shell.cgi ;;
+# rudi_shellcmd.cgi and rudi_upload.cgi are called behind the scenes
     /backup)
     	case $REQUEST_METHOD in
 	    POST) dispatch do_restore.cgi ;;
@@ -140,6 +144,15 @@ case $PATH_INFO in
 		;;
 	esac
 	;;
+    /update/external)
+    	case $REQUEST_METHOD in
+	    POST) dispatch do_external.cgi ;;
+	    *)
+		QUERY_STRING="cmd=external_update"
+		dispatch exec.cgi
+		;;
+	esac
+    	;;
 
     *)			error_not_found ;;
 esac
