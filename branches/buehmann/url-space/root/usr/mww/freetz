@@ -84,7 +84,8 @@ case $PATH_INFO in
 	pkg=${PATH_INFO#/packages/}
     	case $REQUEST_METHOD in
 	    POST)
-	    	QUERY_STRING="form=pkg_$pkg"
+# form=def_$pkg might override this settings because it comes last; FIXME
+	    	QUERY_STRING="form=pkg_$pkg${QUERY_STRING:+&$QUERY_STRING}"
 		dispatch save.cgi
 	    	;;
 	    *)
@@ -97,7 +98,7 @@ case $PATH_INFO in
     /conf)
     	case $REQUEST_METHOD in
 	    POST)
-	    	QUERY_STRING="form=pkg_mod"
+	    	QUERY_STRING="form=pkg_mod${QUERY_STRING:+&$QUERY_STRING}"
 		dispatch save.cgi
 		;;
 	    *)
@@ -126,7 +127,10 @@ case $PATH_INFO in
 	;;
 
     /shell)		dispatch rudi_shell.cgi ;;
-# rudi_shellcmd.cgi and rudi_upload.cgi are called behind the scenes
+# /shell/exec is not only target of POST requests; that's why we cannot simply
+# POST to /shell
+    /shell/exec)	dispatch rudi_shellcmd.cgi ;;
+    /shell/upload)	dispatch rudi_upload.cgi ;;
     /backup)
     	case $REQUEST_METHOD in
 	    POST) dispatch do_restore.cgi ;;
