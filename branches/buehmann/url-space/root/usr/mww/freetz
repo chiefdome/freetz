@@ -114,15 +114,10 @@ case $PATH_INFO in
 	;;
     /conf/?*)
     	id=${PATH_INFO#/conf/}
+	QUERY_STRING="id=$id${QUERY_STRING:+&$QUERY_STRING}"
 	case $REQUEST_METHOD in
-	    POST)
-		QUERY_STRING="form=file_$id"
-		dispatch save.cgi
-		;;
-	    *)
-		QUERY_STRING="id=$id${QUERY_STRING:+&$QUERY_STRING}"
-		dispatch file.cgi "$PATH_INFO"
-		;;
+	    POST) dispatch file_save.cgi ;;
+	    *) dispatch file.cgi "$PATH_INFO" ;;
 	esac
 	;;
 

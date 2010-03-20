@@ -77,7 +77,6 @@ form=$(cgi_param form | tr -d .)
 
 back_url=
 package=''
-file_id=''
 oldstatus1=''
 oldstatus2=''
 oldstatus3=''
@@ -156,36 +155,6 @@ case $form in
 			} | html
 		fi
 		pkg_post_def | html
-		;;
-	file_*)
-		file_id=${form#file_}
-		back_url="/conf/$file_id"
-
-		[ -e /mod/etc/reg/file.reg ] || touch /mod/etc/reg/file.reg
-
-		OIFS=$IFS
-		IFS='|'
-		set -- $(grep "^$file_id|" /mod/etc/reg/file.reg)
-		IFS=$OIFS
-
-		[ -r "$4" ] && . "$4"
-
-		if [ -z "$CONFIG_FILE" -o "$sec_level" -gt "$3" ]; then
-			echo "Configuration file not available at the current security level!"
-		else
-			case $CONFIG_TYPE in
-				text)
-					eval "$(modcgi content mod_cgi)"
-					echo -n "Saving $file_id..."
-					echo "$MOD_CGI_CONTENT" > "$CONFIG_FILE"
-					echo 'done.'
-					eval "$CONFIG_SAVE"
-					;;
-				list)
-					eval "$CONFIG_SAVE"
-					;;
-			esac
-		fi
 		;;
 	*)
 		echo "$(lang de:"Fehler: Unbekanntes Formular" en:"Error: unknown form") '$form'"
