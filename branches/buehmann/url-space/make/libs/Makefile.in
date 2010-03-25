@@ -24,6 +24,10 @@ ifeq ($(strip $(FREETZ_LIB_libbluetooth)),y)
 LIBS+=bluez-libs
 endif
 
+ifeq ($(strip $(FREETZ_LIB_libconfig)),y)
+LIBS+=libconfig
+endif
+
 ifeq ($(strip $(FREETZ_LIB_libopenobex)),y)
 LIBS+=openobex
 endif
@@ -208,6 +212,10 @@ endif
 # NB: the following simulates logical OR
 ifneq (,$(strip $(filter y,$(FREETZ_LIB_libblkid) $(FREETZ_LIB_libcom_err) $(FREETZ_LIB_libe2p) $(FREETZ_LIB_libext2fs) $(FREETZ_LIB_libss) $(FREETZ_LIB_libuuid))))
 LIBS+=e2fsprogs
+endif
+
+ifeq ($(strip $(FREETZ_LIB_libfuse)),y)
+LIBS+=fuse
 endif
 
 ifeq ($(strip $(FREETZ_LIB_libgd)),y)

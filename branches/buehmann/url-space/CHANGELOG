@@ -72,13 +72,14 @@ Latest changes:
     * iputils s20071127
     * irssi 0.8.14
     * lftp 4.0.5
+    * libconfig 8.1.2
     * libdnet 1.0.1
     * libfreetz 0.1
     * libgd 2.0.35
     * libogg 1.1.4
     * libsynce 0.10.0
     * libvorbis 1.2.3
-    * libxml 2.7.6
+    * libxml 2.7.7
     * lighttpd 1.4.26
     * mdev 0.6.2: First try to replace AVM's hotplug chain
       depends on 7170, 7240 and 7270.
@@ -108,9 +109,10 @@ Latest changes:
     * synce-dccm 0.9.1
     * synce-serial 0.10.0
     * tcpproxy 2.0.0-beta15
-    * tmux 1.1
+    * tmux 1.2
     * transmission-cgi 0.0.4
     * trickle 1.07
+    * umurmur 0.2.2
     * unrar 3.9.9
     * vnstat 1.10
     * vnstat-cgi 0.6.9
