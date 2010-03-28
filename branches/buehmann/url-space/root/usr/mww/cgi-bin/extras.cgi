@@ -33,7 +33,7 @@ if [ -z "$PATH_INFO" ]; then
 				echo '<ul>'
 				cur_pkg="$pkg"
 			fi
-			echo "<li><a href='/freetz/packages/$pkg/$cgi'>$title</a></li>"
+			echo "<li><a href='$(href extra "$pkg" "$cgi")'>$title</a></li>"
 		done
 		echo '</ul>'
 	}

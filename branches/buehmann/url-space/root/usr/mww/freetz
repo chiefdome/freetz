@@ -39,12 +39,15 @@ error_not_found() {
 
 cgi_info() {
     cat << EOF
+Status: 404 Not Found$CR
 Content-Type: text/plain$CR
 $CR
-REQUEST_URI=$REQUEST_URI
-SCRIPT_NAME=$SCRIPT_NAME
+404 Not Found
+
+    REQUEST_URI=$REQUEST_URI
+    SCRIPT_NAME=$SCRIPT_NAME
 SCRIPT_FILENAME=$SCRIPT_FILENAME
-PATH_INFO=$PATH_INFO
+      PATH_INFO=$PATH_INFO
 
 EOF
     set | grep -v '^CONFIG_\|^MOD_'
