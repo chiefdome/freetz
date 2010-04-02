@@ -1,0 +1,124 @@
+#!/bin/sh
+
+DAEMON=ppp
+
+. /etc/init.d/modlibrc
+
+initial() {
+	modprobe option
+	modprobe ppp_generic
+	modprobe ppp_async
+	modprobe ppp-deflate
+	modprobe slhc
+}
+
+disconnect () {
+	killall -9 ppp_dialer 2>/dev/null
+	killall pppd 2>/dev/null
+	sleep 2
+	cnt=17
+	if [ -n "$(pidof pppd)" ]; then
+		while [ -n "`pidof pppd`" ] && [ $cnt -gt 0 ]; do
+			killall -9 pppd 2>/dev/null
+			let cnt=cnt-1
+			sleep 1
+		done
+	fi
+	[ -z "$PPP_LOGFILE" ] || echo -e "TERMINATED\n`date "+%Y-%m-%d %H:%M,%S"`\n##\n" >> $PPP_LOGFILE
+	[ -e "$PPP_SCRIPT_HUP" ] && . $PPP_SCRIPT_HUP
+	echo "#" > /etc/ppp/resolv.conf
+	[ -n "$(pidof pppd)" ] && return 1
+	return 0
+}
+
+start() {
+	echo -n 'Starting ppp-cgi...'
+	if [ -n "$(pidof ppp_observer)" ] || [ -n "$(pidof ppp_dialer)" ] || [ -n "$(pidof pppd)" ]; then
+		echo 'failed.'
+		exit 1
+	fi
+	start-stop-daemon -n ppp_observer -a /etc/default.ppp/ppp_observer -b -q -S
+	[ -n "$PPP_DIAGTTY" ] && start-stop-daemon -n ppp_logger -a /etc/default.ppp/ppp_logger -b -q -S
+	echo 'done.'
+}
+
+stop() {
+	echo -n 'Stopping ppp-cgi...'
+	if [ -z "$(pidof ppp_observer)" ] && [ -z "$(pidof ppp_dialer)" ] && [ -z "$(pidof pppd)" ]; then
+		echo 'failed.'
+	fi
+	killall -9 ppp_observer 2>/dev/null
+	killall -9 ppp_logger 2>/dev/null
+	kill `cat /var/run/ppp_logger.pid 2>/dev/null` 2>/dev/null
+	rm -rf /tmp/ppp_logger.tmp 2>/dev/null	
+	disconnect
+	if [ $? -ne 0 ]; then
+		echo 'failed.'
+		exit 1
+	fi
+	echo 'done.'
+
+}
+
+case "$1" in
+	""|load)
+		[ ! -d "/mod/etc/ppp" ] && mkdir -p /mod/etc/ppp
+		[ ! -d "/tmp/flash/ppp/peers" ] && mkdir -p /tmp/flash/ppp/peers
+		[ ! -e "/mod/etc/ppp/peers" ] && ln -s /tmp/flash/ppp/peers /mod/etc/ppp/peers
+
+		[ ! -e "/tmp/flash/ppp/peers/dun" ] && /etc/default.${DAEMON}/peers_options > /tmp/flash/ppp/peers/dun
+		[ ! -e "/tmp/flash/ppp/peers/dun.chat" ] && /etc/default.${DAEMON}/peers_chat > /tmp/flash/ppp/peers/dun.chat
+
+		modreg cgi 'ppp' 'PPP'
+		modreg status ppp ppp-cgi ppplog
+
+		deffile='/mod/etc/default.ppp/peers_options.def'
+		[ -r "/tmp/flash/peers_options.def" ] && deffile='/tmp/flash/peers_options.def'
+		modreg file 'peers_options' 'PEERS: options' 0 "$deffile"
+
+		deffile='/mod/etc/default.ppp/peers_chat.def'
+		[ -r "/tmp/flash/peers_chat.def" ] && deffile='/tmp/flash/peers_chat.def'
+		modreg file 'peers_chat' 'PEERS: chat' 0 "$deffile"
+
+		initial
+		if [ "$PPP_ENABLED" != "yes" ]; then
+			echo "ppp-cgi is disabled" 1>&2
+			exit 1;
+		fi
+		start
+		;;
+	unload)
+		modunreg cgi 'ppp'
+		modunreg status ppp ppplog
+		modunreg file 'peers_options'
+		modunreg file 'peers_chat'
+		stop
+		;;
+	start)
+		initial
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		stop
+		sleep 2
+		start
+		;;
+	status)
+		if [ -n "$(pidof ppp_observer)" ] || [ -n "$(pidof ppp_dialer)" ] || [ -n "$(pidof pppd)" ]; then
+			echo 'running'
+		else
+			echo 'stopped'
+		fi
+		;;
+	disconnect)
+		disconnect
+		exit $?
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac

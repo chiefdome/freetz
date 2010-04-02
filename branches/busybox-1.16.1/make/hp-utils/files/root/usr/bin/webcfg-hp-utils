@@ -1,0 +1,9 @@
+#!/bin/sh
+
+DAEMON=hp-utils
+
+. /etc/init.d/modlibrc
+
+homedir=/mod/pkg/hp-utils/usr/mww-hp-utils/
+
+exec httpd "$@" -p "$HP_UTILS_PORT" -c /mod/etc/httpd-$DAEMON.conf -h "$homedir" -r "hp-utils"

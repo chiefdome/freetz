@@ -1,0 +1,14 @@
+Freetz: We build new versions (>=0.9.29) of uClibc without gnu globbing functions.
+The old builds (<=0.9.28) do however contain them.
+
+--- poptconfig.c.orig	2009-04-12 20:14:38.000000000 +0200
++++ poptconfig.c	2009-04-24 09:56:48.000000000 +0200
+@@ -42,7 +42,7 @@
+ /*@=declundef =exportheader =incondefs =protoparammatch =redecl =type @*/
+ #endif	/* __LCLINT__ */
+ 
+-#if !defined(__GLIBC__)
++#if !defined(HAVE_GLOB_PATTERN_P)
+ /* Return nonzero if PATTERN contains any metacharacters.
+    Metacharacters can be quoted with backslashes if QUOTE is nonzero.  */
+ static int

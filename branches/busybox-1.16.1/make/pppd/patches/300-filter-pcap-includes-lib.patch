@@ -1,0 +1,13 @@
+--- pppd/Makefile.linux.orig	2009-07-31 00:40:29.000000000 +0200
++++ pppd/Makefile.linux	2009-07-31 00:40:30.000000000 +0200
+@@ -170,8 +170,8 @@
+ 
+ ifdef FILTER
+ ifneq ($(wildcard /usr/include/pcap-bpf.h),)
+-LIBS    += -lpcap
+-CFLAGS  += -DPPP_FILTER
++LIBS    += -lpcap -L$(STAGING_DIR)/usr/lib
++CFLAGS  += -DPPP_FILTER -I$(STAGING_DIR)/usr/include
+ endif
+ endif
+ 

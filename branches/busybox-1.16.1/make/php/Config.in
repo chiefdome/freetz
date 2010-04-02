@@ -1,0 +1,61 @@
+config FREETZ_PACKAGE_PHP
+	bool "PHP 5.2.13"
+	select FREETZ_LIB_libpcre if ! FREETZ_PACKAGE_PHP_STATIC
+	default n
+	help
+		PHP: Hypertext Preprocessor
+
+		PHP is a widely-used general-purpose scripting language that is especially
+		suited for Web development and can be embedded into HTML. Much of its syntax
+		is borrowed from C, Java and Perl with a couple of unique PHP-specific features
+		thrown in. The goal of the language is to allow web developers to write
+		dynamically generated pages quickly.
+
+config FREETZ_PACKAGE_PHP_WITH_GD
+	bool "build with GD support"
+	depends on FREETZ_PACKAGE_PHP
+	select FREETZ_LIB_libgd if ! FREETZ_PACKAGE_PHP_STATIC
+	default n
+	help
+		This option enables the GD support for PHP
+
+config FREETZ_PACKAGE_PHP_WITH_SQLITE2
+	bool "build with SQLite (v2) support"
+	depends on FREETZ_PACKAGE_PHP
+	default n
+	help
+		This option enables the SQLite (v2) support for PHP
+		NB: SQLite v2 is somewhat deprecated. If you're developing
+		a new application you probably don't want to activate this option.
+
+config FREETZ_PACKAGE_PHP_WITH_SQLITE3
+	bool "build with SQLite (v3) support"
+	depends on FREETZ_PACKAGE_PHP
+	select FREETZ_LIB_libsqlite3 if ! FREETZ_PACKAGE_PHP_STATIC
+	default n
+	help
+		This option enables the SQLite (v3) support for PHP
+
+config FREETZ_PACKAGE_PHP_WITH_LIBXML
+	bool "build with XML support"
+	depends on FREETZ_PACKAGE_PHP
+	select FREETZ_LIB_libxml2 if ! FREETZ_PACKAGE_PHP_STATIC
+	default n
+	help
+		This option enables the XML support for PHP
+
+config FREETZ_PACKAGE_PHP_STATIC
+	bool "Create statically linked binary"
+	depends on FREETZ_PACKAGE_PHP
+	default n
+	help
+		PHP needs the following shared libraries which can be linked in statically
+		by activating this switch:
+		  - libcrypt.so.0
+		  - libc.so.0
+		  - libgcc_s.so.1
+		  - libm.so.0
+		  - libpcre.so.0
+		  - libgd.so.2
+		  - libsqlite3.so.0
+		  - libxml2.so.2

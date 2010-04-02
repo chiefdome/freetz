@@ -1,0 +1,37 @@
+#!/bin/sh
+
+DAEMON=onlinechanged
+
+. /etc/init.d/modlibrc
+
+case "$1" in
+	""|load)
+		deffile="/mod/etc/default.$DAEMON/$DAEMON.def"
+		[ -r /tmp/flash/$DAEMON.def ] && deffile="/tmp/flash/$DAEMON.def"
+		modreg file 'onlinechanged' 'Onlinechanged' 0 "$deffile"
+		modreg daemon --hide onlinechanged
+		
+		echo -n 'Setting up onlinechanged scripting ...'
+		[ ! -f /tmp/flash/$DAEMON-cgi ] && cp /etc/default.$DAEMON/$DAEMON-cgi /tmp/flash/
+		( sh /tmp/flash/$DAEMON-cgi start )&
+		echo 'done.'
+		;;
+	unload)
+		modunreg file 'onlinechanged'
+		modunreg daemon onlinechanged
+		;;
+	start)
+		;;
+	stop)
+		;;
+	restart)
+		;;
+	status)
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|reload|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0
