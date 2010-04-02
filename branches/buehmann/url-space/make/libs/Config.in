@@ -92,7 +92,6 @@ config FREETZ_LIB_libgpg_error
 config FREETZ_LIB_libgcrypt
 	bool "GnuPG crypto library (libgcrypt.so)"
 	select FREETZ_LIB_libgpg_error
-	select FREETZ_LIB_libnsl
 	default n
 	help
 		Libgcrypt is a general-purpose cryptographic library based on the code
@@ -107,6 +106,7 @@ comment "SSL ------------------------------------"
 
 config FREETZ_LIB_libcyassl
 	bool "CyaSSL (libcyassl.so)"
+	select FREETZ_LIB_libm
 	select FREETZ_LIB_libz
 	default n
 	help
@@ -115,12 +115,6 @@ config FREETZ_LIB_libcyassl
 		and an SSL server implementation. yaSSL supports multiple API's, including
 		those defined by SSL and TLS. yaSSL also supports an OpenSSL compatibility
 		interface.
-
-		In Freetz, currently no package depends on CyaSSL, but the OpenSSL
-		compatibility interface might one day enable us to port applications like
-		Stunnel or even OpenVPN (maybe a bit too ambitious, but who knows?) to this
-		lightweight SSL library. The testsuite runs fine on the target system,
-		I (kriegaex) tried it.
 
 config FREETZ_LIB_libmatrixssl
 	bool "MatrixSSL (libmatrixssl.so)"
@@ -189,6 +183,39 @@ config FREETZ_LIB_libavmhmac
 	help
 		Our libavmhmac only forwards functions to openssl's libcrypto where AVM
 		wrote their own implementations. We have no clue why they did this.
+
+comment "GnuTLS ---------------------------------"
+config FREETZ_LIB_libgnutls
+	bool "GnuTLS library (libgnutls.so)"
+	select FREETZ_LIB_libgpg_error
+	select FREETZ_LIB_libgcrypt
+	select FREETZ_LIB_libtasn1
+	select FREETZ_LIB_libz
+	default n
+	help
+		GnuTLS is a project that aims to develop a library which provides a
+		secure layer, over a reliable transport layer. Currently the GnuTLS
+		library implements the SSL 3.0, TLS 1.0, and TLS 1.1 protocols.
+
+config FREETZ_LIB_libgnutls_extra
+	bool "GnuTLS extra library (libgnutls-extra.so)"
+	depends on FREETZ_LIB_libgnutls
+	default n
+	help
+		GnuTLS extra library
+
+config FREETZ_LIB_libgnutls_openssl
+	bool "GnuTLS openssl compatibility library (libgnutls-openssl.so)"
+	depends on FREETZ_LIB_libgnutls
+	default n
+	help
+		GnuTLS OpenSSL compatibility layer library
+
+config FREETZ_LIB_libtasn1
+	bool "GNU ASN1 library (libtasn1.so)"
+	default n
+	help
+		A small ASN.1 library.
 
 endmenu
 

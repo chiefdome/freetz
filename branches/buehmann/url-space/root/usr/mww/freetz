@@ -155,6 +155,7 @@ case $PATH_INFO in
 		;;
 	esac
     	;;
+    /system)		dispatch system.cgi ;;
 
     *)			error_not_found ;;
 esac

@@ -1,6 +1,9 @@
 #! /bin/sh
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
+. /usr/lib/libmodcgi.sh
+
+cgi_begin '$(lang de:"Firmware-Update" en:"Firmware update")' firmware_update
 
 cat << EOF
 <script type=text/javascript>
@@ -61,3 +64,5 @@ $(lang de:"30 Sekunden automatisch neu gestartet." en:"")
 </form>
 
 EOF
+
+cgi_end

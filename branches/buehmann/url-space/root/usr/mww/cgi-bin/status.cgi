@@ -19,12 +19,6 @@ stat_button() {
 	echo '<div class="btn"><form class="btn" action="/freetz" method="post"><input type="hidden" name="cmd" value="'"$1"'"><input type="submit" value="'"$2"'" style="width: '$_btn_width'px"></form></div>'
 	[ $btn_count -eq 3 ] && ( btn_count=0; echo '<br style="clear:left">' )
 }
-stat_button_get() {
-	let _btn_width="($_cgi_width-230+16)/3"
-	btn_count=$((btn_count + 1))
-	echo '<div class="btn"><form class="btn" action="'"$1"'"><input type="submit" value="'"$2"'" style="width: '$_btn_width'px"></form></div>'
-	[ $btn_count -eq 3 ] && ( btn_count=0; echo '<br style="clear:left">' )
-}
 
 has_swap() {
         free | awk '/Swap:/ { if ($2 == 0) exit 1; else exit 0 }'
@@ -137,10 +131,7 @@ fi
 [ "$MOD_MOUNTED_MAIN" = yes ] && . /usr/lib/cgi-bin/mod/mounted.cgi
 
 stat_button restart_dsld '$(lang de:"DSL-Reconnect" en:"Reconnect DSL")'
-stat_button cleanup '$(lang de:"TFFS aufräumen" en:"Clean up TFFS")'
-stat_button fw_attrib '$(lang de:"Attribute bereinigen" en:"Clean up attributes")'
 stat_button downgrade '$(lang de:"Downgrade-Mod" en:"Downgrade mod")'
-stat_button_get /freetz/update '$(lang de:"Firmware-Update" en:"Update firmware")'
 stat_button reboot '$(lang de:"Reboot" en:"Reboot")'
 
 cgi_end

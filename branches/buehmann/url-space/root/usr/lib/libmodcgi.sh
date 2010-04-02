@@ -89,7 +89,7 @@ cat << EOF
 <li><a id="status" href="/freetz/status">Status</a>
 EOF
 
-if [ "$sub" = "status" -a -r /mod/etc/reg/status.reg ]; then
+if [ "$sub" = status -a -r /mod/etc/reg/status.reg ]; then
     	local pkg title cgi
 	echo "<ul>"
 	while IFS='|' read -r pkg title cgi; do
@@ -104,7 +104,7 @@ cat << EOF
 <li><a id="settings" href="/freetz/conf">$(lang de:"Einstellungen" en:"Settings")</a>
 EOF
 
-if [ "$sub" = "settings" -a -r /mod/etc/reg/file.reg ]; then
+if [ "$sub" = settings -a -r /mod/etc/reg/file.reg ]; then
     	local id title sec def
 	echo "<ul>"
 	while IFS='|' read -r id title sec def; do
@@ -118,7 +118,7 @@ cat << EOF
 <li><a id="packages" href="/freetz/packages">$(lang de:"Pakete" en:"Packages")</a>
 EOF
 
-if [ "$sub" = "packages" -a -r /mod/etc/reg/cgi.reg ]; then
+if [ "$sub" = packages -a -r /mod/etc/reg/cgi.reg ]; then
     	local pkg title
 	echo "<ul>"
 	while IFS='|' read -r pkg title; do
@@ -130,8 +130,21 @@ fi
 cat << EOF
 </li>
 <li><a id="extras" href="/freetz/extras">Extras</a></li>
-<li><a id="backup_restore" href="/freetz/backup">$(lang de:"Sichern/Wiederherstellen" en:"Backup/restore")</a></li>
-<li><a id="rudi_shell" href="/freetz/shell" target="_blank">$(lang de:"Rudi-Shell" en:"Rudi shell")</a></li>
+<li><a id="system" href="/freetz/system">System</a>
+EOF
+
+if [ "$sub" = system ]; then
+	cat <<- EOF
+	<ul>
+	<li><a id="backup_restore" href="/freetz/backup">$(lang de:"Sichern &amp; Wiederherstellen" en:"Backup &amp; restore")</a></li>
+	<li><a id="firmware_update" href="/freetz/update">$(lang de:"Firmware-Update" en:"Firmware update")</a></li>
+	<li><a id="rudi_shell" href="/freetz/shell" target="_blank">$(lang de:"Rudi-Shell" en:"Rudi shell")</a></li>
+	</ul>
+	EOF
+fi
+
+cat << EOF
+</li>
 </ul>
 EOF
 }
@@ -197,9 +210,10 @@ EOF
 local sub
 if [ -n "$id" ]; then
 	case $id in
-		settings|file_*) sub='settings' ;;
-		status*) sub='status' ;;
-		*) sub='packages' ;;
+		settings|file_*) sub=settings ;;
+		status*) sub=status ;;
+	    	system|rudi_*|firmware_*|backup_*) sub=system ;;
+		*) sub=packages ;;
 	esac
 
 	[ -e "/mod/var/cache/menu_$sub" ] || _cgi_menu "$sub" > "/mod/var/cache/menu_$sub"
