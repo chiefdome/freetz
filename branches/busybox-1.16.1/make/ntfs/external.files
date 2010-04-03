@@ -1,1 +1,0 @@
-[ "$EXTERNAL_FREETZ_PACKAGE_NTFS" == "y" ] && EXTERNAL_FILES+=" /usr/bin/ntfs-3g"

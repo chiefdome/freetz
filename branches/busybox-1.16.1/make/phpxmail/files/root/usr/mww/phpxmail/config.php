@@ -1,1 +1,0 @@
-/tmp/flash/phpxmail/config.php

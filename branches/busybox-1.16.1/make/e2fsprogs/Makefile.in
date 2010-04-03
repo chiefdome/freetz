@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_E2FSPROGS)),y)
-PACKAGES+=e2fsprogs
-endif
