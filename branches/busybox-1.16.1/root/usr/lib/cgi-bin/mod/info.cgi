@@ -32,14 +32,9 @@ sec_end
 print_entry() {
 	local type=$1 name=$2 sub=$3
 	if [ -n "$sub" ]; then
-		if [ "$name" = "$open_entry" ]; then
-			echo "<small>&gt; $sub</small><br>"
-		else
-		    	print_entry "$type" "${name}_$sub"
-		fi
+		echo "<small>&gt; $sub</small><br>"
 	else
 		echo "$name<br>"
-		open_entry=$name
 	fi
 }
 #
@@ -48,7 +43,7 @@ print_entry() {
 # Types START and END are used as markers.
 #
 read_entries() {
-	local sel=$1 open_entry=
+	local sel=$1
 	while [ "$type" = "$sel" -o "$type" = START ]; do
 		if [ "$type" = "$sel" ]; then
 			print_entry "$type" "$entry" "$subentry"
