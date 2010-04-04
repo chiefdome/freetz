@@ -1,5 +1,5 @@
---- networking/httpd.c.orig	2010-03-15 16:25:13.000000000 +0100
-+++ networking/httpd.c	2010-03-15 16:26:31.000000000 +0100
+--- networking/httpd.c.orig	2010-04-04 14:50:27.000000000 +0200
++++ networking/httpd.c	2010-04-04 14:50:28.000000000 +0200
 @@ -45,6 +45,7 @@
   * D:*               # Deny from other IP connections
   * E404:/path/e404.html # /path/e404.html is the 404 (not found) error page
@@ -8,7 +8,7 @@
   *
   * P:/url:[http://]hostname[:port]/new/path
   *                   # When /urlXXXXXX is requested, reverse proxy
-@@ -275,6 +276,9 @@
+@@ -277,6 +278,9 @@
  #if ENABLE_FEATURE_HTTPD_CONFIG_WITH_SCRIPT_INTERPR
  	Htaccess *script_i;     /* config script interpreters */
  #endif
@@ -18,7 +18,7 @@
  	char *iobuf;	        /* [IOBUF_SIZE] */
  #define hdr_buf bb_common_bufsiz1
  	char *hdr_ptr;
-@@ -324,6 +328,7 @@
+@@ -326,6 +330,7 @@
  #define g_auth            (G.g_auth           )
  #define mime_a            (G.mime_a           )
  #define script_i          (G.script_i         )
@@ -26,7 +26,7 @@
  #define iobuf             (G.iobuf            )
  #define hdr_ptr           (G.hdr_ptr          )
  #define hdr_cnt           (G.hdr_cnt          )
-@@ -493,6 +498,9 @@
+@@ -495,6 +500,9 @@
  #if ENABLE_FEATURE_HTTPD_CONFIG_WITH_SCRIPT_INTERPR
  		free_Htaccess_list(&script_i);
  #endif
@@ -36,7 +36,7 @@
  	}
  
  	filename = opt_c_configFile;
-@@ -684,6 +692,9 @@
+@@ -688,6 +696,9 @@
  #if ENABLE_FEATURE_HTTPD_CONFIG_WITH_SCRIPT_INTERPR
  		 || (ch == '*' && buf[1] == '.') /* "*.php:/path/php" */
  #endif
@@ -46,7 +46,7 @@
  		) {
  			char *p;
  			Htaccess *cur;
-@@ -698,6 +709,13 @@
+@@ -702,6 +713,13 @@
  				cur->next = mime_a;
  				mime_a = cur;
  			}
@@ -60,7 +60,7 @@
  #if ENABLE_FEATURE_HTTPD_CONFIG_WITH_SCRIPT_INTERPR
  			else {
  				/* script interpreter line: prepend to script_i list */
-@@ -2117,6 +2135,14 @@
+@@ -2134,6 +2152,14 @@
  		}
  		send_cgi_and_exit(urlcopy, prequest, length, cookie, content_type);
  	}

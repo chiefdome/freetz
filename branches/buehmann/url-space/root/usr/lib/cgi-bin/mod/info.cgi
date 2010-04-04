@@ -32,9 +32,14 @@ sec_end
 print_entry() {
 	local type=$1 name=$2 sub=$3
 	if [ -n "$sub" ]; then
-		echo "<small>&gt; $sub</small><br>"
+		if [ "$name" = "$open_entry" ]; then
+			echo "<small>&gt; $sub</small><br>"
+		else
+		    	print_entry "$type" "${name}_$sub"
+		fi
 	else
 		echo "$name<br>"
+		open_entry=$name
 	fi
 }
 #
@@ -43,7 +48,7 @@ print_entry() {
 # Types START and END are used as markers.
 #
 read_entries() {
-	local sel=$1
+	local sel=$1 open_entry=
 	while [ "$type" = "$sel" -o "$type" = START ]; do
 		if [ "$type" = "$sel" ]; then
 			print_entry "$type" "$entry" "$subentry"
@@ -92,10 +97,6 @@ preprocess_conf() {
 		}
 		/^PACKAGE/ {
 			s/^PACKAGE_//
-			s/AUTHORIZED_KEYS/AUTHORIZED-KEYS/g
-			s/AVM_FIREWALL/AVM-FIREWALL/g
-			s/INADYN_MT/INADYN-MT/g
-			s/SANE_BACKENDS/SANE-BACKENDS/g
 			s/_/ /
 			$lowercase
 			s/^/20 pkg /; p; d
@@ -103,7 +104,8 @@ preprocess_conf() {
 	" "$file" | sort
 }
 #
-# Format output
+# Format output; the order in which read_entries is called must match the sort
+# order above
 #
 format_conf() {
 	type=START

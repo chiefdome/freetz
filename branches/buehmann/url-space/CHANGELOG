@@ -123,6 +123,7 @@ Latest changes:
     * xmail 1.26
 
 - Updated tools and hooks:
+    * busybox-tools: Bump to version 1.16.1
     * external: Move external files out of tools/external into separate files for each package
 
 - Updated patches:
@@ -140,7 +141,7 @@ Latest changes:
     * curl 7.20.0
     * cyassl 1.4.0
     * davfs2 1.4.5
-    * dnsmasq 2.51
+    * dnsmasq 2.52
     * dtmfbox 0.5.0
     * e2fsprogs 1.41.10
     * eSpeak 1.40.02
@@ -174,7 +175,7 @@ Latest changes:
     * pjproject 1.0.1
     * pptp 1.7.2
     * privoxy 3.0.16
-    * quagga 0.99.15
+    * quagga 0.99.16
     * readline 6.1
     * ruby 1.8.6-p368
     * rrdstats 0.7.0
@@ -198,7 +199,7 @@ Latest changes:
     * Please see FIRMWARES for the list of currently supported boxes and firmwares.
 
 - BusyBox:
-    * updated to 1.15.3
+    * updated to 1.16.1
     * tools: updated to 1.15.3
 
 - Web interface:
