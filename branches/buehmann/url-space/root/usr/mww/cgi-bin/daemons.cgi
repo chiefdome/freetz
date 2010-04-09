@@ -1,6 +1,5 @@
 #!/bin/sh
 
-PACKAGEURL=/freetz/packages/
 SETTINGSURL=/freetz/conf
 REG=/mod/etc/reg/daemon.reg
 
@@ -21,7 +20,7 @@ stat_packagelink() {
 	local url
 	case $1 in
 		crond|swap|telnetd|webcfg) url="$SETTINGSURL" ;;
-		*) url="$PACKAGEURL$1" ;;
+		*) url=$(href cgi "$1") ;;
 	esac
 	echo "<a href='$url'>$2</a>"
 }

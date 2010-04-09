@@ -69,7 +69,7 @@ _cgi_id() {
 # href file <pkg> <id>
 # href extra <pkg> <cgi-name>
 # href status <pkg> [<cgi-name>]
-# href cgi <pkg>
+# href cgi <pkg> [<parameters>]
 #
 href() {
     	local type=$1
@@ -77,9 +77,43 @@ href() {
 	    file)	echo "/freetz/conf/${2}__${3}" ;;
 	    extra)	echo "/freetz/packages/${2}/${3}" ;;
 	    status)	echo "/freetz/status/${2}/${3:-status}" ;;
-	    cgi)	echo "/freetz/packages/$2" ;;
+	    cgi)	echo "/freetz/packages/$2${3:+"?$3"}" ;;
 	    *)		echo "/error/unknown-type?$type" ;;
 	esac
+}
+
+_cgi_mark_active() {
+    	sed -r "s# id=(['\"])$1\1# class='active'&#"
+}
+
+_cgi_print_menu() {
+	local id=$1 sub
+	case $id in
+		settings|file_*) sub=settings ;;
+		status*) sub=status ;;
+	    	system|rudi_*|firmware_*|backup_*) sub=system ;;
+		*) sub=packages ;;
+	esac
+
+	local cache="/mod/var/cache/menu_$sub"
+	#
+	# First, try to output cache. This does not depend on an existence 
+	# check to avoid race conditions (the file might have been deleted
+	# in the meantime).
+	#	
+	if ! cat "$cache" 2> /dev/null; then 
+		#
+		# Regenerate cache in a private file. Hence, incomplete
+		# states of the cache are invisible to others (though they 
+		# might be generating their own versions concurrently)
+		#
+		_cgi_menu "$sub" | tee "$cache.$$"
+		#
+		# Atomically replace global cache, making our changes visible
+		# (last writer wins)
+		#
+		mv "$cache.$$" "$cache"
+	fi | _cgi_mark_active "$id"
 }
 
 _cgi_menu() {
@@ -155,111 +189,65 @@ EOF
 
 cgi_begin() {
 local title=$(html "$1") id=${2:+$(_cgi_id "$2")}
+local CR=$'\r'
 cat << EOF
-Content-type: text/html; charset=iso-8859-1
-
+Content-Type: text/html; charset=ISO-8859-1${CR}
+Content-Language: $(lang de:"de" en:"en")${CR}
+Expires: 0${CR}
+Pragma: no-cache${CR}
+${CR}
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta http-equiv="Content-Language" content="$(lang de:"de" en:"en")">
-<meta http-equiv="Expires" content="0">
-<meta http-equiv="Pragma" content="no-cache">
-<title>Freetz&nbsp;&ndash; $title</title>
-<link rel="stylesheet" type="text/css" href="/style/base.css">
-<link rel="stylesheet" type="text/css" href="/style/colorscheme.css">
 EOF
-
-# custom style for fieldset and div.body
-if [ ! "$_cgi_width" ]; then
-	let _cgi_width=$MOD_CGI_WIDTH
-fi
-export _cgi_width
-let _cgi_total_width="$_cgi_width+40"
-let _usr_style="$_cgi_width-230"
-echo '<style type="text/css">'
-echo "fieldset { margin: 0px; margin-top: 10px; margin-bottom: 10px; padding: 10px; width: "$_usr_style"px;}"
-echo "div.body { width: "$_usr_style"px; }"
-echo "</style>"
-
-if [ -n "$id" ]; then
-cat << EOF
-<style type="text/css">
-<!--
-#$id $(cat /usr/share/style.sel)
--->
-</style>
-EOF
-fi
-
+_cgi_head "$title" "$id"
 cat << EOF
 </head>
 <body>
-<table id="edge" border="0" cellspacing="0" cellpadding="0" width="$_cgi_total_width">
-<colgroup><col width="20"><col width="*"><col width="20"></colgroup>
-<tr>
-<td id="edge-top-left"></td>
-<td id="edge-top">
-<div class="version">$(html < /etc/.freetz-version)</div>
-<div class="titlebar"><a href="/freetz" class="logo">Freetz</a>&nbsp;<a href="/freetz/about" target="_blank">&ndash;</a> <span class="title">$title</span></div>
-</td>
-<td id="edge-top-right"></td>
-</tr>
-<tr>
-<td id="edge-left"></td>
-<td id="content">
 EOF
-
-local sub
-if [ -n "$id" ]; then
-	case $id in
-		settings|file_*) sub=settings ;;
-		status*) sub=status ;;
-	    	system|rudi_*|firmware_*|backup_*) sub=system ;;
-		*) sub=packages ;;
-	esac
-
-	[ -e "/mod/var/cache/menu_$sub" ] || _cgi_menu "$sub" > "/mod/var/cache/menu_$sub"
-	cat "/mod/var/cache/menu_$sub"
-fi
+_cgi_body_begin "$title" "$id"
 }
 
 cgi_end() {
+_cgi_body_end
 cat << EOF
-</td>
-<td id="edge-right"></td>
-</tr>
-<tr>
-<td id="edge-bottom-left"></td>
-<td id="edge-bottom"></td>
-<td id="edge-bottom-right"></td>
-</tr>
-</table>
-<div id="footer">
-<span class="datetime" title="$(lang de:"Systemzeit des Routers" en:"Router's system time")">$(date +'$(lang de:"%d.%m.%Y" en:"%m/%d/%Y") %H:%M')</span>&nbsp;&ndash;
-<span class="uptime" title="Uptime">$(uptime | sed -r 's/.*(up.*), load.*/\1/')</span>&nbsp;&ndash;
-<span class="opt">$(lang de:"optimiert f&uuml;r" en:"optimised for") Mozilla Firefox</span>
-</div>
 </body>
 </html>
 EOF
 }
 
+# 
+# Simplistic versions of the functions to be overridden by skins
+#
+_cgi_head() {
+    	local title=$1 id=$2
+	echo "<title>$title</title>"
+}
+_cgi_body_begin() {
+    	local title=$1 id=$2
+	echo "<h1>$title</h1>"
+	_cgi_print_menu "$id"
+}
+_cgi_body_end() {
+    	:
+}
 sec_begin() {
-cat << EOF
-<div class="body">
-<fieldset>
-<legend>$1</legend>
-EOF
+    	echo "<div class='sec'><h2>$1</h2>"
+}
+sec_end() {
+    	echo "</div>"
 }
 
-sec_end() {
-cat << EOF
-</fieldset>
-</div>
-EOF
-}
+#
+# Load the desired skin (very rough cookie parsing at the moment)
+#
+case $HTTP_COOKIE in
+    *skin=*) skin=${HTTP_COOKIE##*skin=}; skin=${skin%%[^A-Za-z0-9_]*} ;;
+    *) skin=legacy ;;
+esac
+[ -r "/usr/share/skin/$skin/skin.sh" ] || skin=legacy
+. "/usr/share/skin/$skin/skin.sh"
 
 show_perc() {
 	if [ $# -ge 1 -a "$1" -gt 3 ]; then
