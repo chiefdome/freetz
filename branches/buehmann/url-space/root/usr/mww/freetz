@@ -32,6 +32,10 @@ dispatch() {
     exec "$SCRIPT_FILENAME" "$@"
 }
 
+prepend_query() {
+    QUERY_STRING="$1${QUERY_STRING:+&$QUERY_STRING}"
+}
+
 error_not_found() {
 # during development
     cgi_info
@@ -58,8 +62,8 @@ case $PATH_INFO in
     */)			redirect_folder ;;
     "")
     	case $REQUEST_METHOD in
-	    POST) dispatch exec.cgi ;;
-	    *) redirect_freetz /status ;;
+	    POST)	dispatch exec.cgi ;;
+	    *)		redirect_freetz /status ;;
 	esac
 	;;
     /status)		dispatch status.cgi /status ;;
@@ -67,60 +71,57 @@ case $PATH_INFO in
     	cgi=${PATH_INFO#/status/}
 	if [ "$cgi" = "daemons" ]; then
 	    case $REQUEST_METHOD in
-		POST) dispatch exec.cgi ;;
-		*) dispatch daemons.cgi /status/daemons ;;
+		POST)	dispatch exec.cgi ;;
+		*)	dispatch daemons.cgi /status/daemons ;;
 	    esac
 	else
-	    QUERY_STRING="cgi=$cgi${QUERY_STRING:+&$QUERY_STRING}"
-	    dispatch pkgstatus.cgi /status
+	    		prepend_query "cgi=$cgi"
+	    		dispatch pkgstatus.cgi /status
 	fi
 	;;
 
     /packages)		dispatch packages.cgi /packages ;;
-    /packages/?*/?*)
-    	dispatch extras.cgi /packages
-    	;;
-    /extras)
-    	dispatch extras.cgi /extras # FIXME: integrate into /packages?
-	;;
+    /packages/?*/?*)	dispatch extras.cgi /packages ;;
+# FIXME: integrate into /packages?
+    /extras)		dispatch extras.cgi /extras ;;
     /packages/?*)
 	pkg=${PATH_INFO#/packages/}
     	case $REQUEST_METHOD in
 	    POST)
 # form=def_$pkg might override this settings because it comes last; FIXME
-	    	QUERY_STRING="form=pkg_$pkg${QUERY_STRING:+&$QUERY_STRING}"
-		dispatch save.cgi
-	    	;;
+	    		prepend_query "form=pkg_$pkg"
+			dispatch save.cgi
+	    		;;
 	    *)
-		QUERY_STRING="pkg=$pkg${QUERY_STRING:+&$QUERY_STRING}"
-		dispatch pkgconf.cgi /packages
-		;;
+			prepend_query "pkg=$pkg"
+			dispatch pkgconf.cgi /packages
+			;;
 	esac
 	;;
 
     /conf)
     	case $REQUEST_METHOD in
 	    POST)
-	    	QUERY_STRING="form=pkg_mod${QUERY_STRING:+&$QUERY_STRING}"
-		dispatch save.cgi
-		;;
+	    		prepend_query "form=pkg_mod"
+			dispatch save.cgi
+			;;
 	    *)
-	    	dispatch settings.cgi /conf
-		;;
+	    		dispatch settings.cgi /conf
+			;;
 	esac
 	;;
     /conf/password)
     	case $REQUEST_METHOD in
-	    POST) dispatch passwd_save.cgi ;;
-	    *) dispatch passwd.cgi /conf/password ;;
+	    POST)	dispatch passwd_save.cgi ;;
+	    *)		dispatch passwd.cgi /conf/password ;;
 	esac
 	;;
     /conf/?*)
     	id=${PATH_INFO#/conf/}
-	QUERY_STRING="id=$id${QUERY_STRING:+&$QUERY_STRING}"
+	prepend_query "id=$id"
 	case $REQUEST_METHOD in
-	    POST) dispatch file_save.cgi ;;
-	    *) dispatch file.cgi "$PATH_INFO" ;;
+	    POST)	dispatch file_save.cgi ;;
+	    *)		dispatch file.cgi "$PATH_INFO" ;;
 	esac
 	;;
 
@@ -131,28 +132,22 @@ case $PATH_INFO in
     /shell/upload)	dispatch rudi_upload.cgi ;;
     /backup)
     	case $REQUEST_METHOD in
-	    POST) dispatch do_restore.cgi ;;
-	    *) dispatch backup_restore.cgi ;;
+	    POST)	dispatch do_restore.cgi ;;
+	    *)		dispatch backup_restore.cgi ;;
 	esac
 	;;
     /backup/download)	dispatch do_backup.cgi ;;
     /about)		dispatch about.cgi ;;
     /update)
     	case $REQUEST_METHOD in
-	    POST) dispatch do_update.cgi ;;
-	    *)
-		QUERY_STRING="cmd=firmware_update"
-		dispatch exec.cgi
-		;;
+	    POST)	dispatch do_update.cgi ;;
+	    *)		dispatch firmware_update.cgi ;;
 	esac
 	;;
     /update/external)
     	case $REQUEST_METHOD in
-	    POST) dispatch do_external.cgi ;;
-	    *)
-		QUERY_STRING="cmd=external_update"
-		dispatch exec.cgi
-		;;
+	    POST)	dispatch do_external.cgi ;;
+	    *)		dispatch external_update.cgi ;;
 	esac
     	;;
     /system)		dispatch system.cgi ;;
