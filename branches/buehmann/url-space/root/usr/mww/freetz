@@ -80,12 +80,12 @@ case $PATH_INFO in
 	fi
 	;;
 
-    /packages)		dispatch packages.cgi /packages ;;
-    /packages/?*/?*)	dispatch extras.cgi /packages ;;
+    /package)		dispatch packages.cgi /package ;;
+    /package/?*/?*)	dispatch extras.cgi /package ;;
 # FIXME: integrate into /packages?
     /extras)		dispatch extras.cgi /extras ;;
-    /packages/?*)
-	pkg=${PATH_INFO#/packages/}
+    /package/?*)
+	pkg=${PATH_INFO#/package/}
     	case $REQUEST_METHOD in
 	    POST)
 # form=def_$pkg might override this settings because it comes last; FIXME
@@ -94,7 +94,7 @@ case $PATH_INFO in
 	    		;;
 	    *)
 			prepend_query "pkg=$pkg"
-			dispatch pkgconf.cgi /packages
+			dispatch pkgconf.cgi /package
 			;;
 	esac
 	;;
@@ -116,9 +116,9 @@ case $PATH_INFO in
 	    *)		dispatch passwd.cgi /conf/password ;;
 	esac
 	;;
-    /conf/?*)
-    	id=${PATH_INFO##/conf/*/}
-	pkg=${PATH_INFO#/conf/}; pkg=${pkg%/*}
+    /file/?*)
+	id=${PATH_INFO##/file/*/}
+	pkg=${PATH_INFO#/file/}; pkg=${pkg%/*}
 	prepend_query "pkg=$pkg&id=$id"
 	case $REQUEST_METHOD in
 	    POST)	dispatch file_save.cgi ;;

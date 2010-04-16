@@ -74,10 +74,10 @@ _cgi_id() {
 href() {
     	local type=$1
 	case $type in
-	    file)	echo "/freetz/conf/${2}/${3}" ;;
-	    extra)	echo "/freetz/packages/${2}/${3}" ;;
+	    file)	echo "/freetz/file/${2}/${3}" ;;
+	    extra)	echo "/freetz/package/${2}/${3}" ;;
 	    status)	echo "/freetz/status/${2}/${3:-status}" ;;
-	    cgi)	echo "/freetz/packages/$2${3:+"?$3"}" ;;
+	    cgi)	echo "/freetz/package/$2${3:+"?$3"}" ;;
 	    *)		echo "/error/unknown-type?$type" ;;
 	esac
 }
@@ -90,7 +90,7 @@ back_button() {
     	local type=$1 where=
 	case $type in
 	    file|extra|status)	where=$(href "$@") ;;
-	    cgi)	where="/freetz/packages/$2" ;;
+	    cgi)	where="/freetz/package/$2" ;;
 	    url)	where=$2 ;;
 	    mod)	case $2 in
 			    status) where="/freetz/status" ;;
@@ -178,7 +178,7 @@ fi
 
 cat << EOF
 </li>
-<li><a id="packages" href="/freetz/packages">$(lang de:"Pakete" en:"Packages")</a>
+<li><a id="packages" href="/freetz/package">$(lang de:"Pakete" en:"Packages")</a>
 EOF
 
 if [ "$sub" = packages -a -r /mod/etc/reg/cgi.reg ]; then
