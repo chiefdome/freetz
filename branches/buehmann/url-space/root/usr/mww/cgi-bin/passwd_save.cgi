@@ -49,6 +49,6 @@ else
 	fi
 fi
 
-back_button /freetz/status
+back_button mod status
 	
 cgi_end

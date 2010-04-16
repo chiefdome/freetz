@@ -117,8 +117,9 @@ case $PATH_INFO in
 	esac
 	;;
     /conf/?*)
-    	id=${PATH_INFO#/conf/}
-	prepend_query "id=$id"
+    	id=${PATH_INFO##/conf/*/}
+	pkg=${PATH_INFO#/conf/}; pkg=${pkg%/*}
+	prepend_query "pkg=$pkg&id=$id"
 	case $REQUEST_METHOD in
 	    POST)	dispatch file_save.cgi ;;
 	    *)		dispatch file.cgi "$PATH_INFO" ;;

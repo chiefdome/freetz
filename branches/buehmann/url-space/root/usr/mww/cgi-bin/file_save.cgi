@@ -11,18 +11,20 @@ cgi_begin "$(lang de:"Speichern" en:"Saving")..."
 echo "<p>$(lang de:"Konfiguration speichern" en:"Saving settings"):</p>"
 echo -n "<pre>"
 
+file_pkg=$(cgi_param pkg | tr -d .)
 file_id=$(cgi_param id | tr -d .)
 
 [ -e /mod/etc/reg/file.reg ] || touch /mod/etc/reg/file.reg
 
 OIFS=$IFS
 IFS='|'
-set -- $(grep "^$file_id|" /mod/etc/reg/file.reg)
+set -- $(grep "^$file_pkg|$file_id|" /mod/etc/reg/file.reg)
 IFS=$OIFS
+title=$3 sec=$4 def=$5
 
-[ -r "$4" ] && . "$4"
+[ -r "$def" ] && . "$def"
 
-if [ -z "$CONFIG_FILE" -o "$sec_level" -gt "$3" ]; then
+if [ -z "$CONFIG_FILE" -o "$sec_level" -gt "$sec" ]; then
 	echo "Configuration file not available at the current security level!"
 else
 	case $CONFIG_TYPE in
@@ -40,6 +42,6 @@ else
 fi
 
 echo '</pre>'
-back_button "/freetz/conf/$file_id"
+back_button file "$file_pkg" "$file_id"
 
 cgi_end

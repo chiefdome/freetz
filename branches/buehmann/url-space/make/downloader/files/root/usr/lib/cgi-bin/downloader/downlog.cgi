@@ -10,8 +10,8 @@ DOWNLOGFILE='/var/log/downloader.log'
 cgi_begin "$TITLE" extras
 sec_begin "$DOWNLOGFILE"
 
-if [ "$QUERY_STRING" ]; then
-	eval "$QUERY_STRING"
+if [ -n "$QUERY_STRING" ]; then
+	cmd=$(cgi_param cmd)
 	case $cmd in
 		remove)
 			echo "<pre>"
@@ -42,7 +42,7 @@ cat << EOF
 EOF
 	fi
 fi
-back_button "$(href cgi downloader)"
+back_button cgi downloader
 sec_end
 
 cgi_end

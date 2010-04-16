@@ -2,7 +2,7 @@
 
 sec_level=1
 [ -r /tmp/flash/security ] && mv /tmp/flash/security /tmp/flash/mod/security
-[ -r /tmp/flash/mod/security ] && let sec_level="$(cat /tmp/flash/mod/security)"
+[ -r /tmp/flash/mod/security ] && let sec_level=$(cat /tmp/flash/mod/security)
 
 # HTML-escape pieces of texts, large ones in a streaming manner
 # (large_text | html; html "$small_value")
@@ -57,7 +57,7 @@ select() suffix=_sel checked=" selected" _check "$@"
 
 _cgi_id() {
 	case $1 in
-		*[/]*) echo "$1" | sed "s#/#__#g" ;;
+		*[/]*) echo "$1" | sed "s#/#:#g" ;;
 		*) echo "$1" ;;
 	esac
 }
@@ -74,7 +74,7 @@ _cgi_id() {
 href() {
     	local type=$1
 	case $type in
-	    file)	echo "/freetz/conf/${2}__${3}" ;;
+	    file)	echo "/freetz/conf/${2}/${3}" ;;
 	    extra)	echo "/freetz/packages/${2}/${3}" ;;
 	    status)	echo "/freetz/status/${2}/${3:-status}" ;;
 	    cgi)	echo "/freetz/packages/$2${3:+"?$3"}" ;;
@@ -82,20 +82,33 @@ href() {
 	esac
 }
 
+back_button() {
+    	local title="$(lang de:"Zur&uuml;ck" en:"Back")"
+    	case $1 in
+	    --title=*) title=${1#--title=}; shift ;;
+	esac
+    	local type=$1 where=
+	case $type in
+	    file|extra|status)	where=$(href "$@") ;;
+	    cgi)	where="/freetz/packages/$2" ;;
+	    url)	where=$2 ;;
+	    mod)	case $2 in
+			    status) where="/freetz/status" ;;
+			    extras) where="/freetz/extras" ;;
+			    daemons) where="/freetz/status/daemons" ;;
+			esac
+			;;
+	esac
+	echo -n "<form action='$where'>"
+	echo "<div class='btn'><input type='submit' value='$title'></div></form>"
+}
+
 _cgi_mark_active() {
     	sed -r "s# id=(['\"])$1\1# class='active'&#"
 }
 
-_cgi_print_menu() {
-	local id=$1 sub
-	case $id in
-		settings|file_*) sub=settings ;;
-		status*) sub=status ;;
-	    	system|rudi_*|firmware_*|backup_*) sub=system ;;
-		*) sub=packages ;;
-	esac
-
-	local cache="/mod/var/cache/menu_$sub"
+_cgi_cached() {
+    	local cache="/mod/var/cache/$1"; shift
 	#
 	# First, try to output cache. This does not depend on an existence 
 	# check to avoid race conditions (the file might have been deleted
@@ -107,13 +120,25 @@ _cgi_print_menu() {
 		# states of the cache are invisible to others (though they 
 		# might be generating their own versions concurrently)
 		#
-		_cgi_menu "$sub" | tee "$cache.$$"
+		"$@" | tee "$cache.$$"
 		#
 		# Atomically replace global cache, making our changes visible
 		# (last writer wins)
 		#
 		mv "$cache.$$" "$cache"
-	fi | _cgi_mark_active "$id"
+	fi
+}
+
+_cgi_print_menu() {
+	local id=$1 sub
+	case $id in
+		settings|file:*) sub=settings ;;
+		status*) sub=status ;;
+	    	system|rudi_*|firmware_*|backup_*) sub=system ;;
+		*) sub=packages ;;
+	esac
+
+	_cgi_cached "menu_$sub" _cgi_menu "$sub" | _cgi_mark_active "$id"
 }
 
 _cgi_menu() {
@@ -127,7 +152,7 @@ if [ "$sub" = status -a -r /mod/etc/reg/status.reg ]; then
     	local pkg title cgi
 	echo "<ul>"
 	while IFS='|' read -r pkg title cgi; do
-		echo "<li><a id='$(_cgi_id "status_$pkg/$cgi")' href='$(href status "$pkg" "$cgi")'>$(html "$title")</a></li>"
+		echo "<li><a id='$(_cgi_id "status:$pkg/$cgi")' href='$(href status "$pkg" "$cgi")'>$(html "$title")</a></li>"
 	done < /mod/etc/reg/status.reg 
 	echo "</ul>"
 fi
@@ -139,14 +164,14 @@ cat << EOF
 EOF
 
 if [ "$sub" = settings -a -r /mod/etc/reg/file.reg ]; then
-    	local id title sec def _
+    	local pkg id title sec def _
 	echo "<ul>"
 	# sort by title
-	while IFS='|' read -r id _; do
-		echo "$_|$id"
+	while IFS='|' read -r pkg id _; do
+		echo "$_|$pkg|$id"
 	done  < /mod/etc/reg/file.reg | sort |
-	while IFS='|' read -r title sec def id; do
-		echo "<li><a id='$(_cgi_id "file_$id")' href='/freetz/conf/$id'>$(html "$title")</a></li>"
+	while IFS='|' read -r title sec def pkg id; do
+	    echo "<li><a id='$(_cgi_id "file:${pkg}/${id}")' href='$(href file "$pkg" "$id")'>$(html "$title")</a></li>"
 	done
 	echo "</ul>"
 fi
@@ -160,7 +185,7 @@ if [ "$sub" = packages -a -r /mod/etc/reg/cgi.reg ]; then
     	local pkg title
 	echo "<ul>"
 	while IFS='|' read -r pkg title; do
-		echo "<li><a id='$(_cgi_id "pkg_$pkg")' href='$(href cgi "$pkg")'>$(html "$title")</a></li>"
+		echo "<li><a id='$(_cgi_id "pkg:$pkg")' href='$(href cgi "$pkg")'>$(html "$title")</a></li>"
 	done < /mod/etc/reg/cgi.reg 
 	echo "</ul>"
 fi
@@ -297,9 +322,4 @@ cgi_param() {
 			;;
 	esac
 
-}
-
-back_button() {
-    	local where=$1 title=${2:-$(lang de:"Zur&uuml;ck" en:"Back")}
-	echo "<form action='$where'><div class='btn'><input type='submit' value='$title'></div></form>"
 }
