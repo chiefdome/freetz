@@ -71,6 +71,8 @@ _cgi_id() {
 # href status <pkg> [<cgi-name>]
 # href cgi <pkg> [<parameters>]
 #
+# href mod [<name>] # link to special Freetz pages
+#
 href() {
     	local type=$1
 	case $type in
@@ -78,6 +80,16 @@ href() {
 	    extra)	echo "/freetz/package/${2}/${3}" ;;
 	    status)	echo "/freetz/status/${2}/${3:-status}" ;;
 	    cgi)	echo "/freetz/package/$2${3:+"?$3"}" ;;
+	    mod)	case $2 in
+			    ""|status)	echo "/freetz/status" ;;
+			    extras)	echo "/freetz/extras" ;;
+			    daemons)	echo "/freetz/status/daemons" ;;
+			    about)	echo "/freetz/about" ;;
+			    packages)	echo "/freetz/package" ;;
+			    system)	echo "/freetz/system" ;;
+			    conf)	echo "/freetz/conf" ;;
+			esac
+	    		;;
 	    *)		echo "/error/unknown-type?$type" ;;
 	esac
 }
@@ -92,12 +104,7 @@ back_button() {
 	    file|extra|status)	where=$(href "$@") ;;
 	    cgi)	where="/freetz/package/$2" ;;
 	    url)	where=$2 ;;
-	    mod)	case $2 in
-			    status) where="/freetz/status" ;;
-			    extras) where="/freetz/extras" ;;
-			    daemons) where="/freetz/status/daemons" ;;
-			esac
-			;;
+	    mod)	where=$(href "$@") ;;
 	esac
 	echo -n "<form action='$where'>"
 	echo "<div class='btn'><input type='submit' value='$title'></div></form>"
@@ -145,7 +152,7 @@ _cgi_menu() {
 local sub=$1
 cat << EOF
 <ul class="menu">
-<li><a id="status" href="/freetz/status">Status</a>
+<li><a id="status" href="$(href mod status)">Status</a>
 EOF
 
 if [ "$sub" = status -a -r /mod/etc/reg/status.reg ]; then
@@ -159,8 +166,8 @@ fi
 
 cat << EOF
 </li>
-<li><a id="daemons" href="/freetz/status/daemons">$(lang de:"Dienste" en:"Services")</a></li>
-<li><a id="settings" href="/freetz/conf">$(lang de:"Einstellungen" en:"Settings")</a>
+<li><a id="daemons" href="$(href mod daemons)">$(lang de:"Dienste" en:"Services")</a></li>
+<li><a id="settings" href="$(href mod conf)">$(lang de:"Einstellungen" en:"Settings")</a>
 EOF
 
 if [ "$sub" = settings -a -r /mod/etc/reg/file.reg ]; then
@@ -178,7 +185,7 @@ fi
 
 cat << EOF
 </li>
-<li><a id="packages" href="/freetz/package">$(lang de:"Pakete" en:"Packages")</a>
+<li><a id="packages" href="$(href mod packages)">$(lang de:"Pakete" en:"Packages")</a>
 EOF
 
 if [ "$sub" = packages -a -r /mod/etc/reg/cgi.reg ]; then
@@ -193,7 +200,7 @@ fi
 cat << EOF
 </li>
 <li><a id="extras" href="/freetz/extras">Extras</a></li>
-<li><a id="system" href="/freetz/system">System</a>
+<li><a id="system" href="$(href mod system)">System</a>
 EOF
 
 if [ "$sub" = system ]; then

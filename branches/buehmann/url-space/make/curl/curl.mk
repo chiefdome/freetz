@@ -1,8 +1,8 @@
-$(call PKG_INIT_BIN, 7.20.0)
+$(call PKG_INIT_BIN, 7.20.1)
 $(PKG)_LIB_VERSION:=4.2.0
-$(PKG)_SOURCE:=curl-$($(PKG)_VERSION).tar.bz2
+$(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.bz2
+$(PKG)_SOURCE_MD5:=244b16b2a38c70e47130c8494b7371b9
 $(PKG)_SITE:=http://curl.haxx.se/download
-$(PKG)_SOURCE_MD5:=3dda78c4a808d9a779dc3a2ae81b47d8
 
 ifeq ($(strip $(FREETZ_PACKAGE_CURL_STATIC)),y)
 $(PKG)_BINARY:=$($(PKG)_DIR)/src/curl
@@ -19,7 +19,11 @@ endif
 $(PKG)_TARGET_BINARY:=$($(PKG)_DEST_DIR)/usr/bin/curl
 
 $(PKG)_DEPENDS_ON := openssl
+ifeq ($(strip $(FREETZ_PACKAGE_CURL_WITH_ZLIB)),y)
+$(PKG)_DEPENDS_ON += zlib
+endif
 
+$(PKG)_REBUILD_SUBOPTS += FREETZ_PACKAGE_CURL_WITH_ZLIB
 $(PKG)_REBUILD_SUBOPTS += FREETZ_PACKAGE_CURL_STATIC
 
 $(PKG)_CONFIGURE_ENV += curl_cv_writable_argv=yes
@@ -50,7 +54,7 @@ $(PKG)_CONFIGURE_OPTIONS += --with-ssl="$(TARGET_TOOLCHAIN_STAGING_DIR)/usr"
 $(PKG)_CONFIGURE_OPTIONS += --without-ca-bundle
 $(PKG)_CONFIGURE_OPTIONS += --without-gnutls
 $(PKG)_CONFIGURE_OPTIONS += --without-libidn
-$(PKG)_CONFIGURE_OPTIONS += --without-zlib
+$(PKG)_CONFIGURE_OPTIONS += $(if $(FREETZ_PACKAGE_CURL_WITH_ZLIB),--with-zlib="$(TARGET_TOOLCHAIN_STAGING_DIR)/usr",--without-zlib)
 
 $(PKG_SOURCE_DOWNLOAD)
 $(PKG_UNPACKED)
@@ -66,7 +70,8 @@ $($(PKG)_LIB_STAGING_BINARY): $($(PKG)_LIB_BINARY)
 		install
 	$(PKG_FIX_LIBTOOL_LA) \
 		$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/pkgconfig/libcurl.pc \
-		$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/libcurl.la
+		$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/libcurl.la \
+		$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/bin/curl-config
 
 $($(PKG)_TARGET_BINARY): $($(PKG)_BINARY)
 	$(INSTALL_BINARY_STRIP)

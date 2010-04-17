@@ -142,7 +142,7 @@ Latest changes:
     * bird 1.1.2
     * callmonitor 1.17.2
     * cryptsetup 1.0.6
-    * curl 7.20.0
+    * curl 7.20.1
     * cyassl 1.4.0
     * davfs2 1.4.5
     * dnsmasq 2.52
@@ -190,7 +190,7 @@ Latest changes:
     * stunnel 4.33
     * tcpdump 4.1.1
     * tinc 1.0.12
-    * tor 0.2.2.10-alpha
+    * tor 0.2.2.11-alpha
     * transmission 1.92
     * vpnc 0.5.3
     * vsftpd 2.2.2: add SSL support

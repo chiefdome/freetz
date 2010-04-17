@@ -69,7 +69,7 @@ echo -n "<pre>"
 
 form=$(cgi_param form | tr -d .)
 
-back_url=
+back="mod status"
 package=''
 oldstatus1=''
 oldstatus2=''
@@ -82,12 +82,12 @@ case $form in
 
 		if [ -r "/mod/etc/default.$package/$package.cfg" ]; then
 			if [ "$package" = mod ]; then
-				back_url=/conf
+			    	back="mod conf"
 				oldstatus1=$(rc_status telnetd)
 				oldstatus2=$(rc_status webcfg)
 				oldstatus3=$(rc_status swap)
 			else
-				back_url="/packages/$package"
+				back="cgi $package"
 				oldstatus1=$(rc_status "$package")
 			fi
 			prefix="$(echo "$package" | tr 'a-z\-' 'A-Z_')_"
@@ -128,12 +128,12 @@ case $form in
 
 		if [ -r "/mod/etc/default.$package/$package.cfg" ]; then
 			if [ "$package" = mod ]; then 
-				back_url=/conf
+			    	back="mod conf"
 				oldstatus1=$(rc_status telnetd)
                                 oldstatus2=$(rc_status webcfg)
 				oldstatus3=$(rc_status swap)
 			else 
-				back_url="/packages/$package"
+				back="cgi $packages"
                                 oldstatus1=$(rc_status "$package")
                         fi
 			
@@ -156,6 +156,6 @@ case $form in
 esac
 
 echo '</pre>'
-back_button "/freetz${back_url}"
+back_button $back
 
 cgi_end
