@@ -106,7 +106,8 @@ case $PATH_INFO in
 			dispatch save.cgi
 			;;
 	    *)
-	    		dispatch settings.cgi /conf
+			prepend_query "pkg=mod"
+	    		dispatch pkgconf.cgi /conf
 			;;
 	esac
 	;;

@@ -69,29 +69,20 @@ _cgi_id() {
 # href file <pkg> <id>
 # href extra <pkg> <cgi-name>
 # href status <pkg> [<cgi-name>]
-# href cgi <pkg> [<parameters>]
+# href cgi <pkg> [<key-value>]...
 #
 # href mod [<name>] # link to special Freetz pages
 #
 href() {
-    	local type=$1
-	case $type in
-	    file)	echo "/freetz/file/${2}/${3}" ;;
-	    extra)	echo "/freetz/package/${2}/${3}" ;;
-	    status)	echo "/freetz/status/${2}/${3:-status}" ;;
-	    cgi)	echo "/freetz/package/$2${3:+"?$3"}" ;;
-	    mod)	case $2 in
-			    ""|status)	echo "/freetz/status" ;;
-			    extras)	echo "/freetz/extras" ;;
-			    daemons)	echo "/freetz/status/daemons" ;;
-			    about)	echo "/freetz/about" ;;
-			    packages)	echo "/freetz/package" ;;
-			    system)	echo "/freetz/system" ;;
-			    conf)	echo "/freetz/conf" ;;
-			esac
-	    		;;
-	    *)		echo "/error/unknown-type?$type" ;;
-	esac
+    	_cgi_location _href "$@"
+}
+_href() {
+    	local path=$1; shift
+	local arg query=
+	for arg; do 
+	    query="${query:+${query}&amp;}${arg}"
+	done
+	echo "${path}${query:+?$query}"
 }
 
 back_button() {
@@ -99,16 +90,43 @@ back_button() {
     	case $1 in
 	    --title=*) title=${1#--title=}; shift ;;
 	esac
-    	local type=$1 where=
-	case $type in
-	    file|extra|status)	where=$(href "$@") ;;
-	    cgi)	where="/freetz/package/$2" ;;
-	    url)	where=$2 ;;
-	    mod)	where=$(href "$@") ;;
-	esac
-	echo -n "<form action='$where'>"
+	_cgi_location _back_button "$@"
+}
+_back_button() {
+	local path=$1 arg key value; shift
+	echo -n "<form action='$path'>"
+	for arg; do
+	    key=${arg%%=*}
+	    value=${arg#*=}
+	    echo "<input type='hidden' name='$key' value='$value'>"
+	done
 	echo "<div class='btn'><input type='submit' value='$title'></div></form>"
 }
+
+_cgi_location() {
+    	local out=$1; shift
+    	local type=$1
+	case $type in
+	    file)   "$out" "/freetz/file/${2}/${3}" ;;
+	    extra)  "$out" "/freetz/package/${2}/${3}" ;;
+	    status) "$out" "/freetz/status/${2}/${3:-status}" ;;
+	    cgi)    local pkg=$2; shift 2
+		    "$out" "/freetz/package/$pkg" "$@" ;;
+	    mod)    case $2 in
+			""|status) "$out" "/freetz/status" ;;
+			extras)	   "$out" "/freetz/extras" ;;
+			daemons)   "$out" "/freetz/status/daemons" ;;
+			about)	   "$out" "/freetz/about" ;;
+			packages)  "$out" "/freetz/package" ;;
+			system)    "$out" "/freetz/system" ;;
+			conf)      "$out" "/freetz/conf" ;;
+			update)    "$out" "/freetz/update" ;;
+		    esac
+		    ;;
+	    *)	    "$out" "/error/unknown-type" "$type" ;;
+	esac
+}
+
 
 _cgi_mark_active() {
     	sed -r "s# id=(['\"])$1\1# class='active'&#"
