@@ -1,7 +1,7 @@
 -include $(TOOLCHAIN_DIR)/make/kernel/*/Makefile.in
 -include $(TOOLCHAIN_DIR)/make/target/*/Makefile.in
 
-REAL_GNU_KERNEL_NAME:=mipsel-unknown-linux-gnu
+REAL_GNU_KERNEL_NAME:=$(strip $(subst ",,$(FREETZ_TARGET_ARCH)-unknown-linux-gnu))
 
 KERNEL_TOOLCHAIN_GCC_VERSION:=$(strip $(subst ",, $(FREETZ_KERNEL_GCC_VERSION)))
 KERNEL_TOOLCHAIN_BINUTILS_VERSION:=$(strip $(subst ",, $(FREETZ_KERNEL_BINUTILS_VERSION)))

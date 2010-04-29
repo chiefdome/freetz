@@ -25,8 +25,9 @@ HOST_ARCH:=$(shell $(HOSTCC) -dumpmachine | sed -e s'/-.*//' \
 	)
 GNU_HOST_NAME:=$(HOST_ARCH)-pc-linux-gnu
 
-REAL_GNU_TARGET_NAME:=mipsel-linux-uclibc
-GNU_TARGET_NAME:=mipsel-linux
+TARGET_ARCH:=$(strip $(subst ",, $(FREETZ_TARGET_ARCH)))
+GNU_TARGET_NAME:=$(TARGET_ARCH)-linux
+REAL_GNU_TARGET_NAME:=$(GNU_TARGET_NAME)-uclibc
 
 ifeq ($(strip $(FREETZ_TARGET_NLS)),y)
 DISABLE_NLS:=
@@ -50,7 +51,6 @@ else
 FPIC:=
 endif
 
-TARGET_ARCH:=$(strip $(subst ",, $(FREETZ_TARGET_ARCH)))
 # FIXME: declared twice (make/toolchain/Makefile.in)
 TARGET_UCLIBC_VERSION:=$(strip $(subst ",, $(FREETZ_TARGET_UCLIBC_VERSION)))
 TARGET_CROSS:=$(strip $(subst ",, $(FREETZ_TARGET_CROSS)))
@@ -734,9 +734,9 @@ $($(PKG)_DIR)/.configured: $($(PKG)_DIR)/.build-prereq-checked $($(PKG)_DIR)/.un
 		$(TARGET_CONFIGURE_PRE_CMDS) \
 		$($(PKG)_CONFIGURE_PRE_CMDS) \
 		$(if $(strip $($(PKG)_BUILD_SUBDIR)),cd $(strip $($(PKG)_BUILD_SUBDIR));,) \
-		FREETZ_TARGET_LFS="$(strip $(FREETZ_TARGET_LFS))" source $(FREETZ_BASE_DIR)/$(MAKE_DIR)/config.mipsel ; \
 		$(TARGET_CONFIGURE_ENV) \
 		$($(PKG)_CONFIGURE_ENV) \
+		FREETZ_TARGET_LFS="$(strip $(FREETZ_TARGET_LFS))" CONFIG_SITE=$(FREETZ_BASE_DIR)/$(MAKE_DIR)/config.$(TARGET_ARCH) \
 		conf_cmd \
 		$(if $(findstring y,$($(PKG)_CONFIGURE_DEFOPTS)), $(TARGET_CONFIGURE_OPTIONS)) \
 		$($(PKG)_CONFIGURE_OPTIONS) \

@@ -1,0 +1,68 @@
+--- linux-2.6.19.2/Makefile.org	2010-03-15 18:25:14.000000000 +0100
++++ linux-2.6.19.2/Makefile	2010-03-15 18:27:26.000000000 +0100
+@@ -342,6 +342,8 @@ CFLAGS          := -Wall -W -Wno-unused 
+ #
+ AFLAGS          := -D__ASSEMBLY__
+ 
++CFLAGS		+= -DCONFIG_MIPS_FUSIV
++
+ # Read KERNELRELEASE from include/config/kernel.release (if it exists)
+ KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)
+ KERNELVERSION = $(VERSION).$(PATCHLEVEL).$(SUBLEVEL)$(EXTRAVERSION)
+--- linux-2.6.19.2/net/atm/clip.c.orig	2008-09-02 11:49:50.000000000 +0200
++++ linux-2.6.19.2/net/atm/clip.c	2010-04-25 00:02:15.000000000 +0200
+@@ -40,7 +40,7 @@
+ #include "resources.h"
+ #include "ipcommon.h"
+ #include <net/atmclip.h>
+-#include <netpro/apprehdr.h>
++//#include <netpro/apprehdr.h>
+ 
+ 
+ #if 0
+--- linux-2.6.19.2/arch/mips/Kconfig.orig       2010-04-25 00:00:19.000000000 +0200
++++ linux-2.6.19.2/arch/mips/Kconfig    2010-04-25 00:30:25.000000000 +0200
+@@ -179,6 +179,7 @@
+ 	select SYS_HAS_CPU_MIPS32_R1
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_BIG_ENDIAN
++	select MIPS_FUSIV
+ 
+ 
+ config MACH_DECSTATION
+@@ -829,6 +831,9 @@
+ 
+ endchoice
+ 
++config MIPS_FUSIV
++	bool
++
+ menu "*** AVM Board PCI Configuration ***"
+ 
+ config AVM_PCI_DEVICE_COUNT
+--- linux-2.6.19.2/arch/mips/pci/pci-fusiv.c.orig	2009-11-12 17:50:13.000000000 +0100
++++ linux-2.6.19.2/arch/mips/pci/pci-fusiv.c	2010-04-25 00:13:43.000000000 +0200
+@@ -38,7 +38,7 @@
+ #define PCI_MAX_SLOTS 	4
+ 
+ 
+-extern int board_memsize;
++int xtensa_memsize=0;
+ static spinlock_t fusiv_pci_lock;
+ 
+ static unsigned int first_pci_pin = 21;
+@@ -381,11 +381,11 @@
+ 	  PCI_MBAR_CONF = 0x11;				// standard 
+ #ifdef VX180A
+         /* VX180A Mask and Trans */
+-        if(board_memsize == 32)
++        if(xtensa_memsize == 32)
+             PCI_IMBAR1_MASK = 0xfe000000; // Inbound memory bar1 mask reg 32M 
+-        else if(board_memsize == 64)
++        else if(xtensa_memsize == 64)
+             PCI_IMBAR1_MASK = 0xfc000000; // Inbound memory bar1 mask reg 64M 
+-        else if(board_memsize == 128)
++        else if(xtensa_memsize == 128)
+             PCI_IMBAR1_MASK = 0xf8000000; // Inbound memory bar1 mask reg 128M 
+ 
+         PCI_IMEM1_TRANS = 0x00000000; // Inbound memory1 trans reg SDRAM Address
