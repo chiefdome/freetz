@@ -4,7 +4,7 @@
 # This is included with "source config.mipsel", so values must be exported.
 
 # Machine
-ac_cv_c_bigendian=no
+ac_cv_c_bigendian=yes
 # Types and sizes
 ac_cv_type_pid_t=yes
 ac_cv_type_struct_sockaddr_storage=yes
@@ -73,7 +73,7 @@ ac_cv_openssl_linker_option='(none)'
 
 # Linux system
 ac_cv_linux_vers=2
-ac_cv_linux_vers=2.6.13.1
+ac_cv_linux_vers=2.6.19.2
 ac_cv_CAN_USE_SYSCTL=no
 
 # Other
@@ -84,4 +84,3 @@ ac_tool_warned=yes
 # Fool configure scripts calling config.rpath script and messing up config.cache with host linker options.
 # Search for "checking for shared library run path origin" in configure script to understand what is meant.
 acl_cv_rpath=done
-
