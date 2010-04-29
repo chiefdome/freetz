@@ -1,0 +1,114 @@
+#!/bin/sh
+
+DAEMON=stunnel
+PID_FILE="/var/run/$DAEMON.pid"
+
+. /etc/init.d/modlibrc
+
+is_running() {
+	local pid
+	[ -e "$PID_FILE" ] && read pid < "$PID_FILE" &&
+	kill -EXIT "$pid" 2> /dev/null
+}
+
+pre_config() {
+	[ -d "/tmp/flash/.stunnel" ] || mkdir /tmp/flash/.stunnel
+}
+
+start() {
+	{
+		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
+			/tmp/flash/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/stunnel_conf
+		fi
+
+		if [ -r "/tmp/flash/${DAEMON}.extra" ]; then
+			cat /tmp/flash/${DAEMON}.extra
+		fi
+
+		if [ -r "/tmp/flash/stunnel_svcs" ]; then
+			cat /tmp/flash/stunnel_svcs
+		fi
+	} > /mod/etc/${DAEMON}.conf
+
+	echo -n 'Starting stunnel...'
+
+	$DAEMON > /dev/null 2>&1
+
+	exitval=$?
+	if [ "$exitval" -eq 0 ]; then
+		echo 'done.'
+	else
+		echo 'failed.'
+		exit $exitval
+	fi
+}
+
+stop() {
+	echo -n 'Stopping stunnel...'
+	read pid < "$PID_FILE" &&
+	kill -USR1 "$pid" > /dev/null 2>&1
+
+	exitval=$?
+	if [ "$exitval" -eq 0 ]; then
+		rm -f $PID_FILE > /dev/null 2>&1
+		echo 'done.'
+	else
+		echo 'failed.'
+		exit $exitval
+	fi
+}
+
+case $1 in
+	""|load)
+		pre_config
+
+		export STUNNEL_CONFIGURED="1"
+		modreg cgi 'stunnel' 'Stunnel'
+
+		modreg file stunnel svcs 'Stunnel: services' 0 "stunnel_svcs"
+		modreg file stunnel key 'Stunnel: Private Key' 0 "stunnel_key"
+		modreg file stunnel certchain 'Stunnel: Certificate Chain' 0 "stunnel_certchain"
+
+		if [ "$STUNNEL_ENABLED" != "yes" ]; then
+			echo "$DAEMON is disabled" 1>&2
+			exit 1
+		fi
+
+		start
+		;;
+	unload)
+		stop
+		modunreg file stunnel
+		modunreg cgi stunnel
+		;;
+	start)
+		start
+		;;
+	stop)
+		if ! is_running; then
+			echo "$DAEMON is not running" >&2
+			exit 1
+		fi
+		stop
+		;;
+	restart)
+		stop
+		sleep 1
+		start
+		;;
+	status)
+		if is_running; then
+			echo 'running'
+		else
+			echo 'stopped'
+		fi
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

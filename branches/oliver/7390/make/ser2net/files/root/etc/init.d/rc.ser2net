@@ -1,0 +1,81 @@
+#!/bin/sh
+
+. /etc/init.d/modlibrc
+
+DAEMON=ser2net
+DAEMON_LONG_NAME="Serial to Network Proxy"
+PID_FILE=/var/run/$DAEMON.pid
+
+modlib_loadconfig
+
+CFGFILE="/tmp/flash/ser2net.conf"
+[ -e /etc/ser2net.conf ] && CFGFILE="/etc/ser2net.conf"
+
+case $1 in
+	""|load|start|restart)
+		if [ ! -e "$CFGFILE" ]; then
+			echo -n "Creating $CFGFILE..."
+			cat <<"EOF" > $CFGFILE
+# This is the configuration file for ser2net.  It has the following format:
+#  <TCP port>:<state>:<timeout>:<device>:<options>
+
+# example entries for a USB serial adapter
+10232:raw:60:/dev/ttyUSB0:19200 NONE 1STOPBIT 8DATABITS
+23232:telnet:60:/dev/ttyUSB0:19200 NONE 1STOPBIT 8DATABITS
+EOF
+			echo "done."
+			/usr/bin/modsave flash
+		fi
+		;;
+esac
+
+start() {
+	echo -n "Starting $DAEMON..."
+	
+	$DAEMON -c $CFGFILE -P $PID_FILE
+	exitval=$?
+	if [ "$exitval" -eq 0 ]; then
+		echo 'done.'
+	else
+		echo 'failed.'
+		exit $exitval
+	fi
+}
+
+case $1 in
+	""|load)
+		modreg cgi 'ser2net' 'ser2net'
+		[ "$CFGFILE" != "/etc/ser2net.conf" ] && modreg file ser2net conf 'ser2net.conf' 0 "ser2net_conf"
+		if [ "$SER2NET_ENABLED" != "yes" ]; then
+			echo "$DAEMON is disabled" 1>&2
+			exit 1
+		fi
+
+		start
+		;;
+	unload)
+		modlib_stop
+
+		modunreg cgi ser2net
+		modunreg file ser2net
+		;;
+	start)
+		start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+
+esac
+
+exit 0
