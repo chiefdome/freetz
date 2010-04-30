@@ -167,7 +167,7 @@ MAKEDEVS_TOOL="makedevs"
 UNSQUASHFS_TOOL="unsquashfs3-lzma"
 EXTERNAL_TOOL="external"
 
-MKSQUASHFS_OPTIONS="-le -noappend -all-root -info"
+MKSQUASHFS_OPTIONS="-noappend -all-root -info"
 UNSQUASHFS_OPTIONS="-no-progress"
 
 TAR_TOOL="tar"
@@ -207,6 +207,11 @@ fi
 # Load config
 . "$DOT_CONFIG"
 
+if [ "$FREETZ_TARGET_ARCH" = "mips" ]; then
+	MKSQUASHFS_OPTIONS+="-be"
+else
+	MKSQUASHFS_OPTIONS+="-le"
+fi
 if [ "$FREETZ_REPLACE_KERNEL" == "y" ] || [ "$FREETZ_KERNEL_VERSION_2_6_19_2" ]; then
 	MKSQUASHFS_TOOL="mksquashfs3-lzma"
 	MKSQUASHFS_OPTIONS+=" -no-progress -no-exports -no-sparse"
