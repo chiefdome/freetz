@@ -1977,7 +1977,7 @@ config FREETZ_DL_KERNEL_SOURCE_MD5
 	default "6bf92b81b48a3a05efd3aae6c05fe3e2"		if	FREETZ_AVM_VERSION_04_80
 	default "a7e605a9f27bf514b232ec9976b9ff98"		if	FREETZ_AVM_VERSION_3270_04_80
 	default "bcd49b28a54293e1481b8170b07245e0"		if	FREETZ_AVM_VERSION_7270_04_80
-	default "c714d1707954bef7a15172fd47468306"		if	FREETZ_AVM_VERSION_7390_04_83
+	default "052fb6b9fe418301ad178eb2a5e2e030"		if	FREETZ_AVM_VERSION_7390_04_83
 	default "582c74f0959a687c41c1bcfa599ace9c"		if	FREETZ_AVM_VERSION_r7203
 
 config FREETZ_DL_SITE
@@ -2874,13 +2874,13 @@ menu "Compiler options"
 
 choice
 	prompt "Toolchains"
-	default FREETZ_DOWNLOAD_TOOLCHAIN if ! FREETZ_TARGET_IPV6_SUPPORT
-	default FREETZ_BUILD_TOOLCHAIN if FREETZ_TARGET_IPV6_SUPPORT
+	default FREETZ_DOWNLOAD_TOOLCHAIN if ! (FREETZ_TARGET_IPV6_SUPPORT || FREETZ_TYPE_FON_WLAN_7390)
+	default FREETZ_BUILD_TOOLCHAIN if (FREETZ_TARGET_IPV6_SUPPORT || FREETZ_TYPE_FON_WLAN_7390)
 	help
 		Download Toolchain, build toolchain
 
 	config FREETZ_DOWNLOAD_TOOLCHAIN
-		bool "Download and use precompiled toolchain" if ! FREETZ_TARGET_IPV6_SUPPORT
+		bool "Download and use precompiled toolchain" if ! (FREETZ_TARGET_IPV6_SUPPORT || FREETZ_TYPE_FON_WLAN_7390)
 
 	config FREETZ_BUILD_TOOLCHAIN
 		bool "Build toolchain (requires 4GB diskspace)"
