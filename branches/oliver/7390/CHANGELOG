@@ -85,7 +85,7 @@ Latest changes:
     * libosip2 3.3.0
     * libpolarssl 0.13.1
     * libsynce 0.10.0
-    * libtasn1 2.5
+    * libtasn1 2.6
     * libvorbis 1.2.3
     * libxml 2.7.7
     * libxslt/xsltproc 1.1.26
@@ -145,6 +145,7 @@ Latest changes:
     * bftpd 2.8
     * bip 0.8.4
     * bird 1.1.2
+    * bridge-utils 1.4
     * callmonitor 1.17.2
     * cryptsetup 1.0.6
     * curl 7.20.1
@@ -199,6 +200,7 @@ Latest changes:
     * tinc 1.0.12
     * tor 0.2.1.25
     * transmission 1.92
+    * uClibc++ 0.2.3pre (git snapshot)
     * vpnc 0.5.3
     * vsftpd 2.2.2: add SSL support
     * wget 1.12
@@ -266,7 +268,7 @@ Latest changes:
     * pciutils 3.0.0
     * portmap 6.0
     * sablevm-sdk 
-    * sane-backends 1.0.20
+    * sane-backends 1.0.21
     * socat 1.6.0.1
     * squid 3.0.STABLE24
     * tcp_wrappers 7.6
