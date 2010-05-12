@@ -1,5 +1,5 @@
---- SSLBind.cpp.orig	2009-12-16 22:38:47.000000000 +0100
-+++ SSLBind.cpp	2009-12-16 22:34:56.000000000 +0100
+--- SSLBind.cpp.orig	2010-05-01 09:01:05.000000000 +0200
++++ SSLBind.cpp	2010-05-01 09:00:30.000000000 +0200
 @@ -19,6 +19,7 @@
   *  Davide Libenzi <davidel@xmailserver.org>
   *
@@ -8,9 +8,9 @@
  
  #include "SysInclude.h"
  #include "SysDep.h"
-@@ -587,4 +588,4 @@
+@@ -565,4 +566,5 @@
  
  	return 0;
  }
--
 +#endif
+ 
