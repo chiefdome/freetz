@@ -81,6 +81,7 @@ Latest changes:
     * libdnet 1.12
     * libfreetz 0.1
     * libgd 2.0.35
+    * libnet 1.1.4
     * libogg 1.1.4
     * libosip2 3.3.0
     * libpolarssl 0.13.1
@@ -103,6 +104,7 @@ Latest changes:
     * nmap 4.68
     * noip 2.1.9
     * onlinechanged-cgi 0.1
+    * openconnect 2.24
     * owfs 2.7p32
     * pcre 8.02
     * phpxmail 1.5
@@ -147,11 +149,11 @@ Latest changes:
     * bip 0.8.4
     * bird 1.1.2
     * bridge-utils 1.4
-    * callmonitor 1.17.2
+    * callmonitor 1.17.3
     * cryptsetup 1.0.6
     * curl 7.20.1
     * cyassl 1.4.0
-    * davfs2 1.4.5
+    * davfs2 1.4.6
     * dns2tcp 0.5
     * dnsmasq 2.52
     * dtmfbox 0.5.0
