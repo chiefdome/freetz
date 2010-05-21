@@ -176,7 +176,7 @@ endif
 endif
 
 ifeq ($(strip $(FREETZ_VERBOSITY_LEVEL)),2)
-VERBOSE:=-v
+#VERBOSE:=-v # Show files on untar
 QUIET:=
 QUIETSHORT:=
 endif
@@ -248,9 +248,11 @@ TOOLCHAIN_DISTCLEAN:=$(patsubst %,%-distclean,$(TOOLCHAIN))
 TOOLCHAIN_SOURCE:=$(patsubst %,%-source,$(TOOLCHAIN))
 
 ALL_PACKAGES:=
+LOCALSOURCE_PACKAGES:=
 include $(MAKE_DIR)/*/*.mk
-PACKAGES_CHECK_DOWNLOADS:=$(patsubst %,%-check-download,$(ALL_PACKAGES))
-PACKAGES_MIRROR:=$(patsubst %,%-download-mirror,$(ALL_PACKAGES))
+NON_LOCALSOURCE_PACKAGES:=$(filter-out $(LOCALSOURCE_PACKAGES),$(ALL_PACKAGES))
+PACKAGES_CHECK_DOWNLOADS:=$(patsubst %,%-check-download,$(NON_LOCALSOURCE_PACKAGES))
+PACKAGES_MIRROR:=$(patsubst %,%-download-mirror,$(NON_LOCALSOURCE_PACKAGES))
 
 ifeq ($(strip $(FREETZ_BUILD_TOOLCHAIN)),y)
 include $(TOOLCHAIN_DIR)/make/kernel-toolchain.mk
@@ -272,7 +274,20 @@ ifeq ($(strip $(FREETZ_TYPE_LABOR)),y)
 else
 	@echo -e "\033[1mSTEP 0: DOWNLOAD\033[0m"
 	@echo "downloading firmware image"
-	@if ! $(DL_TOOL) $(DL_FW_DIR) .config $(DL_SOURCE) $(DL_SITE) $(DL_SOURCE_MD5) $(SILENT); then \
+	@if [ -n "$(DL_SOURCE_CONTAINER)" ]; then \
+		if [ ! -r $(DL_FW_DIR)/$(DL_SOURCE_CONTAINER) ]; then \
+			if ! $(DL_TOOL) $(DL_FW_DIR) .config $(DL_SOURCE_CONTAINER) $(DL_SITE) $(DL_SOURCE_CONTAINER_MD5) $(SILENT); then \
+				$(call ERROR,3,Could not download Firmwareimage.) \
+			fi; \
+		fi; \
+		case "$(DL_SOURCE_CONTAINER_SUFFIX)" in \
+			.zip) \
+				if ! unzip $(DL_FW_DIR)/$(DL_SOURCE_CONTAINER) $(DL_SOURCE) -d $(DL_FW_DIR); then \
+					$(call ERROR,3,Could not unzip Firmwareimage.) \
+				fi \
+				;; \
+		esac \
+	elif ! $(DL_TOOL) $(DL_FW_DIR) .config $(DL_SOURCE) $(DL_SITE) $(DL_SOURCE_MD5) $(SILENT); then \
 		$(call ERROR,3,Could not download Firmwareimage.) \
 	fi
 endif
@@ -290,14 +305,20 @@ ifeq ($(strip $(DL_SITE2)),)
 	@exit 3
 else
 	@if [ -n "$(DL_SOURCE2_CONTAINER)" ]; then \
-		[ -r $(DL_FW_DIR)/$(DL_SOURCE2_CONTAINER) ] || $(DL_TOOL) $(DL_FW_DIR) .config $(DL_SOURCE2_CONTAINER) $(DL_SITE2) $(DL_SOURCE2_CONTAINER_MD5) > /dev/null; \
+		if [ ! -r $(DL_FW_DIR)/$(DL_SOURCE2_CONTAINER) ]; then \
+			if ! $(DL_TOOL) $(DL_FW_DIR) .config $(DL_SOURCE2_CONTAINER) $(DL_SITE2) $(DL_SOURCE2_CONTAINER_MD5) $(SILENT); then \
+				$(call ERROR,3,Could not download Firmwareimage.) \
+			fi; \
+		fi; \
 		case "$(DL_SOURCE2_CONTAINER_SUFFIX)" in \
 			.zip) \
-				unzip $(DL_SOURCE2_CONTAINER) $(DL_SOURCE2) -d $(DL_DIR); \
+				if ! unzip $(DL_FW_DIR)/$(DL_SOURCE2_CONTAINER) $(DL_SOURCE2) -d $(DL_FW_DIR); then \
+					$(call ERROR,3,Could not unzip Firmwareimage.) \
+				fi \
 				;; \
 		esac \
-	else \
-		$(DL_TOOL) $(DL_FW_DIR) .config $(DL_SOURCE2) $(DL_SITE2) $(DL_SOURCE2_MD5) > /dev/null; \
+	elif ! $(DL_TOOL) $(DL_FW_DIR) .config $(DL_SOURCE2) $(DL_SITE2) $(DL_SOURCE2_MD5) $(SILENT); then \
+		$(call ERROR,3,Could not download Firmwareimage.) \
 	fi
 	@echo "done."
 	@echo
@@ -477,10 +498,9 @@ common-clean:
 	rm -rf $(BUILD_DIR)
 	-$(MAKE) -C $(CONFIG) clean
 
-common-dirclean:
+common-dirclean: common-clean
 	rm -rf $(BUILD_DIR) $(PACKAGES_DIR) $(SOURCE_DIR)
-	rm -f .static .dynamic .exclude-dist-tmp
-	rm -f make/config.cache .new-uclibc .old-uclibc
+	rm -f .new-uclibc .old-uclibc
 	find $(ROOT_DIR) -name '*.so*' ! -type d ! -name .svn \( -path "$(ROOT_DIR)/lib/*" -o \
 		-path "$(ROOT_DIR)/usr/lib/freetz/*" \) -delete
 	find $(MAKE_DIR) -maxdepth 2 \( -name ".*_config" -o -name ".*_changes" \) -delete

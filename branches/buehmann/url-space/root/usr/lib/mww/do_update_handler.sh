@@ -13,7 +13,23 @@ pre_exit() {
 }
 echo "<pre>"
 
-if [ "$NAME" = stop_avm ]; then
+stop=${NAME%/*}
+downgrade=false
+case $NAME in
+    */downgrade) downgrade=true ;;
+esac
+
+if $downgrade; then
+	echo "$(lang
+	    de:"Downgrade vorbereiten"
+	    en:"Prepare downgrade"
+	) ..."
+    	/usr/bin/prepare-downgrade | indent
+	echo "$(lang de:"ERLEDIGT" en:"DONE")"
+    	echo "</pre><pre>"
+fi
+
+if [ "$stop" = stop_avm ]; then
 	echo "$(lang 
 	    de:"AVM-Dienste anhalten, Teil 1"
 	    en:"Stopping AVM services, part 1"
@@ -23,7 +39,7 @@ if [ "$NAME" = stop_avm ]; then
 	echo "</pre><pre>"
 fi
 
-if [ "$NAME" = semistop_avm ]; then
+if [ "$stop" = semistop_avm ]; then
 	echo "$(lang 
 	    de:"AVM-Dienste teilweise anhalten, Teil 1"
 	    en:"Stopping AVM services partially, part 1"
@@ -41,9 +57,9 @@ if [ $result -ne 0 ]; then
 	echo "$(lang de:"FEHLGESCHLAGEN" en:"FAILED")"
 	pre_exit 1
 fi
-echo "DONE"
+echo "$(lang de:"ERLEDIGT" en:"DONE")"
 
-if [ "$NAME" != nostop_avm ]; then
+if [ "$stop" != nostop_avm ]; then
 	echo "</pre><pre>"
 	echo "$(lang
 	    de:"AVM-Dienste anhalten, Teil 2"
@@ -53,7 +69,7 @@ if [ "$NAME" != nostop_avm ]; then
 	echo "$(lang de:"ERLEDIGT" en:"DONE")"
 fi
 
-[ "$NAME" = semistop_avm ] && ( sleep 30; reboot )&
+[ "$stop" = semistop_avm ] && ( sleep 30; reboot )&
 
 cat << EOF
 </pre><pre>
@@ -109,10 +125,12 @@ fi
 indent < /var/post_install
 cat << EOF
 $(lang de:"ENDE DER DATEI" en:"END OF FILE")
+</pre>
 
+<p>
 $(lang 
-    de:"Das Nach-Installationsskript läuft beim Neutart (reboot) und führt die 
-darin definiterten Aktionen aus, z.B. das tatsächliche Flashen der Firmware.
+    de:"Das Nach-Installationsskript läuft beim Neustart (reboot) und führt die 
+darin definierten Aktionen aus, z.B. das tatsächliche Flashen der Firmware.
 Sie können immer noch entscheiden, diesen Vorgang abzubrechen, indem Sie
 das Skript und den Rest der extrahierten Firmware-Komponenten löschen."
     en:"The post-installation script will be executed upon reboot and perform
@@ -120,5 +138,5 @@ the actions specified therein, e.g. the actual firmware flashing.
 You may still choose to interrupt this process by removing the script
 along with the rest of the extracted firmware components."
 )
-</pre>
+</p>
 EOF

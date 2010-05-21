@@ -249,3 +249,10 @@ endif
 ifeq ($(strip $(FREETZ_LIB_libgnutls)),y)
 LIBS+=gnutls
 endif
+
+ifeq ($(strip $(FREETZ_LIB_libosipparser2)),y)
+LIBS+=libosip2
+endif
+ifeq ($(strip $(FREETZ_LIB_libnet)),y)
+LIBS+=libnet
+endif

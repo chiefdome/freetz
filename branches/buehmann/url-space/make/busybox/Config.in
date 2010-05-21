@@ -14,7 +14,8 @@ config FREETZ_BUSYBOX_AR
 
 config FREETZ_BUSYBOX_BRCTL
 	bool "brctl"
-	depends on FREETZ_REPLACE_BUSYBOX
+	depends on FREETZ_REPLACE_BUSYBOX && \
+		! FREETZ_PACKAGE_BRIDGE_UTILS
 	default n
 	help
 		Adds bridge utilities from busybox
@@ -28,6 +29,14 @@ config FREETZ_BUSYBOX_BRCTL_FANCY
 		setageing, setfd, sethello, setmaxage,
 		setpathcost, setportprio, setbridgeprio, stp
 		This adds about 600 bytes.
+
+config FREETZ_BUSYBOX_BRCTL_SHOW
+	bool "add brctl show options"
+	depends on FREETZ_BUSYBOX_BRCTL_FANCY
+	default n
+	help
+		Add support for extended brctl options like:
+		show, showmacs, and showstp.
 
 config FREETZ_BUSYBOX_BZIP2
 	bool "bzip2"

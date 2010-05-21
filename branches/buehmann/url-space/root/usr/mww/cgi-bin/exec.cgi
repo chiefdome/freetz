@@ -49,21 +49,6 @@ case $MOD_CGI_CMD in
 		back_button mod status
 		cgi_end
 		;;
-	downgrade)
-		cgi_begin 'Downgrade mod...'
-		echo '<p>$(lang de:"Downgrade mod von supamicha" en:"Downgrade mod by supamicha"):<br>$(lang de:"&Auml;ndert die Firmware Version bis zum n&auml;chsten Neustart auf xx.01.01" en:"Changes the firmware version to xx.01.01 until next reboot")</p>'
-		echo -n '<pre>Downgrading...'
-		if [ -e /var/tmp/version ]; then
-			echo 'already done.</pre>'
-		else
-			sed 's/{CONFIG_VERSION_MAJOR}.*/{CONFIG_VERSION_MAJOR}.01.01/1' /etc/version > /var/tmp/version
-			chmod +x /var/tmp/version
-			mount -o bind /var/tmp/version /etc/version
-			echo 'done.</pre>'
-		fi
-		back_button mod status
-		cgi_end
-		;;
 	fw_attrib)
 		cgi_begin '$(lang de:"Attribute bereinigen" en:"Clean up attributes")'
 		echo '<p>$(lang de:"Entfernt Merker f&uuml;r \"nicht unterst&uuml;tzte &Auml;nderungen\"" en:"Cleans up marker for \"unauthorized changes\"")</p>'
@@ -75,17 +60,6 @@ case $MOD_CGI_CMD in
 		echo -n "" > /var/flash/fw_attrib
 		rm -f /var/flash/fw_attrib
 		echo ' $(lang de:"fertig" en:"done").</pre>'
-		back_button mod status
-		cgi_end
-		;;
-	restart_dsld)
-		cgi_begin '$(lang de:"Starte dsld neu" en:"Restart dsld")...'
-		echo -n '<pre>Stopping dsld...<br>'
-		dsld -s
-		sleep 3
-		echo -n 'Restarting dsld...<br>'
-		dsld -n
-		echo -n 'done.</pre>'
 		back_button mod status
 		cgi_end
 		;;

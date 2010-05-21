@@ -81,10 +81,12 @@ Latest changes:
     * libdnet 1.12
     * libfreetz 0.1
     * libgd 2.0.35
+    * libnet 1.1.4
     * libogg 1.1.4
+    * libosip2 3.3.0
     * libpolarssl 0.13.1
     * libsynce 0.10.0
-    * libtasn1 2.5
+    * libtasn1 2.6
     * libvorbis 1.2.3
     * libxml 2.7.7
     * libxslt/xsltproc 1.1.26
@@ -92,6 +94,7 @@ Latest changes:
     * mdev 0.6.2: First try to replace AVM's hotplug chain
       depends on 7170, 7240 and 7270.
     * minicom-2.4
+    * mini-snmpd 1.2b
     * ncftp-3.2.4
     * netpbm-10.35.74
     * ndas-1.1-22
@@ -101,6 +104,7 @@ Latest changes:
     * nmap 4.68
     * noip 2.1.9
     * onlinechanged-cgi 0.1
+    * openconnect 2.24
     * owfs 2.7p32
     * pcre 8.02
     * phpxmail 1.5
@@ -110,6 +114,7 @@ Latest changes:
     * rsync 3.0.7
     * ruby-fcgi 0.8.7
     * ser2net 2.5
+    * siproxd 0.8.0
     * slurm 0.3.3
     * spawn-fcgi 1.6.3
     * sqlite 3.6.23.1
@@ -126,7 +131,7 @@ Latest changes:
     * vnstat 1.10
     * vnstat-cgi 0.6.9
     * vtun 3.0.2
-    * xmail 1.26
+    * xmail 1.27
 
 - Updated tools and hooks:
     * busybox-tools: Bump to version 1.16.1
@@ -139,15 +144,16 @@ Latest changes:
     * Update usbstorage patches
 
 - Updated packages and libs:
-    * bash 3.2.50
+    * bash 3.2.51
     * bftpd 2.8
     * bip 0.8.4
     * bird 1.1.2
-    * callmonitor 1.17.2
+    * bridge-utils 1.4
+    * callmonitor 1.17.3
     * cryptsetup 1.0.6
     * curl 7.20.1
     * cyassl 1.4.0
-    * davfs2 1.4.5
+    * davfs2 1.4.6
     * dns2tcp 0.5
     * dnsmasq 2.52
     * dtmfbox 0.5.0
@@ -176,7 +182,7 @@ Latest changes:
     * lynx 2.8.7
     * mcabber 0.9.10
     * microperl 5.10.1
-    * ntfs-3g 2010.3.6
+    * ntfs-3g 2010.5.16
     * openssh 5.3p1
     * openssl 0.9.8n
     * openvpn 2.1.1
@@ -190,17 +196,19 @@ Latest changes:
     * ruby 1.8.6-p368
     * rrdstats 0.7.0
     * rrdtool 1.2.30
+    * samba 3.0.37
     * strace 4.5.19
     * streamripper 1.64.6
     * stunnel 4.33
     * tcpdump 4.1.1
     * tinc 1.0.12
-    * tor 0.2.1.25
-    * transmission 1.92
+    * tor 0.2.1.26
+    * transmission 1.93
+    * uClibc++ 0.2.3pre (git snapshot)
     * vpnc 0.5.3
     * vsftpd 2.2.2: add SSL support
     * wget 1.12
-    * zlib 1.2.4
+    * zlib 1.2.5
 
 - Remove packages, libs, modules, tools:
     * removed xyssl (not maintained anymore, superseded by polarssl)
@@ -264,7 +272,7 @@ Latest changes:
     * pciutils 3.0.0
     * portmap 6.0
     * sablevm-sdk 
-    * sane-backends 1.0.20
+    * sane-backends 1.0.21
     * socat 1.6.0.1
     * squid 3.0.STABLE24
     * tcp_wrappers 7.6

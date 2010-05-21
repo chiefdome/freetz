@@ -39,9 +39,11 @@ Currently supported boxes and firmwares
 	* Fritz!Box Fon WLAN 7270 (English): 54.04.81
 	* Labor Core (Streaming Stick): 54.04.98-16540|74.04.98-16540
 	* Labor DSL: 54.04.80-16750|74.04.80-16750
-	* Labor IPv6: 54.04.80-16608|74.04.80-16608
+	* Labor IPv6: 54.04.80-17230|74.04.80-17230
 	* Labor NAS: 54.04.80-16561|74.04.80-16561
-	* Labor Phone: 54.04.80-16624|74.04.80-16624
+	* Preview: 54.04.85-17273|74.04.85-17273
+* Fritz!Box Fon WLAN 7570 (Multi-Language, Annex A/B): 75.04.82
+    * Alien Speedport W920V
 * Fritz!Box WLAN 3020/SL: 09.04.34
 * Fritz!Box WLAN 3030: 21.04.34
 * Fritz!Box WLAN 3130: 44.04.34
@@ -55,6 +57,7 @@ Currently supported boxes and firmwares
 	* Sinus W500V: AVM 7150 + tcom 27.04.27
 	* Speedport W701V: AVM 7170 + tcom 33.04.57
 	* Speedport W900V: AVM 7170 + tcom 34.04.57
+	* Speedport W920V: AVM 7570
 	* 3170: AVM 7170
 	* 7113: AVM 7170
 	* 7140: AVM 7170

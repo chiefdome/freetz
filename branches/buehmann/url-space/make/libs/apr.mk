@@ -23,10 +23,15 @@ $(PKG)_CONFIGURE_ENV += apr_cv_process_shared_works=no
 $(PKG)_CONFIGURE_ENV += apr_cv_mutex_robust_shared=no
 $(PKG)_CONFIGURE_ENV += apr_cv_tcp_nodelay_with_cork=yes
 
-# disable threads in libapr until svn-client problems are solved
-#$(PKG)_CONFIGURE_ENV += apr_cv_pthreads_lib=-lpthread
-#$(PKG)_CONFIGURE_OPTIONS += --enable-threads
-$(PKG)_CONFIGURE_OPTIONS += --disable-threads
+$(PKG)_CONFIGURE_ENV += apr_cv_pthreads_lib=-lpthread
+$(PKG)_CONFIGURE_OPTIONS += --enable-threads
+
+# TODO: remove the following lines as soon as download- and self-built-toolchains are synchronized
+ifeq ($(strip $(FREETZ_DOWNLOAD_TOOLCHAIN)),y)
+# workaround: enforce readdir usage as its implementation in uClibc is thread-safe
+$(PKG)_CONFIGURE_PRE_CMDS += sed -i -r -e 's,ac_cv_lib_c_r_readdir,apr_cv_lib_c_readdir_thread_safe,g' ./configure;
+$(PKG)_CONFIGURE_ENV += apr_cv_lib_c_readdir_thread_safe=yes
+endif
 
 $(PKG)_CONFIGURE_OPTIONS += --enable-shared
 $(PKG)_CONFIGURE_OPTIONS += --enable-static
@@ -51,10 +56,10 @@ $($(PKG)_STAGING_BINARY): $($(PKG)_BINARY)
 		$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/$(APR_MAJOR_LIBNAME).la \
 		$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/pkgconfig/apr-$(APR_MAJOR_VERSION).pc \
 		$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/bin/apr-$(APR_MAJOR_VERSION)-config
-	# additional fixes not (yet?) covered by $(PKG_FIX_LIBTOOL_LA)
-	sed -i -r $(foreach key,bindir datarootdir datadir installbuilddir,$(call PKG_FIX_LIBTOOL_LA__INT,$(key))) \
+	# additional fixes not covered by default version of $(PKG_FIX_LIBTOOL_LA)
+	$(call PKG_FIX_LIBTOOL_LA,bindir datarootdir datadir installbuilddir) \
 		$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/bin/apr-$(APR_MAJOR_VERSION)-config
-	sed -i -r $(foreach key,apr_builddir apr_builders,$(call PKG_FIX_LIBTOOL_LA__INT,$(key))) \
+	$(call PKG_FIX_LIBTOOL_LA,apr_builddir apr_builders) \
 		$(TARGET_TOOLCHAIN_STAGING_DIR)/$(APR_BUILD_DIR)/apr_rules.mk
 	# fixes taken from openwrt
 	sed -i -e 's|-[LR][$$]libdir||g' $(TARGET_TOOLCHAIN_STAGING_DIR)/usr/bin/apr-$(APR_MAJOR_VERSION)-config

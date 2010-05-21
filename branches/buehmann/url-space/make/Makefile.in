@@ -68,9 +68,14 @@ endif
 
 SOURCE_DIR:=$(SOURCE_DIR_ROOT)/target-$(TARGET_ARCH)_uClibc-$(TARGET_UCLIBC_VERSION)
 
+TARGET_AR:=$(TARGET_MAKE_PATH)/$(TARGET_CROSS)ar
+TARGET_AS:=$(TARGET_MAKE_PATH)/$(TARGET_CROSS)as
 TARGET_CC:=$(TARGET_MAKE_PATH)/$(TARGET_CROSS)gcc
 TARGET_CXX:=$(TARGET_MAKE_PATH)/$(TARGET_CROSS)g++-uc
 TARGET_LD:=$(TARGET_MAKE_PATH)/$(TARGET_CROSS)ld
+TARGET_LDCONFIG:=$(TARGET_MAKE_PATH)/$(TARGET_CROSS)ldconfig
+TARGET_NM:=$(TARGET_MAKE_PATH)/$(TARGET_CROSS)nm
+TARGET_RANLIB:=$(TARGET_MAKE_PATH)/$(TARGET_CROSS)ranlib
 TARGET_STRIP:=$(TARGET_MAKE_PATH)/$(TARGET_CROSS)strip --remove-section={.comment,.note,.pdr}
 
 # Don't use TARGET_TOOLCHAIN_PATH here because it's not set
@@ -97,17 +102,7 @@ TARGET_CONFIGURE_ENV += CXX="$(TARGET_CXX)"
 TARGET_CONFIGURE_ENV += CFLAGS="$(TARGET_CFLAGS)"
 TARGET_CONFIGURE_ENV += CXXFLAGS="$(TARGET_CFLAGS)"
 TARGET_CONFIGURE_ENV += LDFLAGS=""
-
 TARGET_CONFIGURE_ENV += PKG_CONFIG_PATH="$(TARGET_MAKE_PATH)/../lib/pkgconfig"
-
-#TARGET_CONFIGURE_ENV += AR="$(TARGET_MAKE_PATH)/$(TARGET_CROSS)ar"
-#TARGET_CONFIGURE_ENV += AS="$(TARGET_MAKE_PATH)/$(TARGET_CROSS)as"
-#TARGET_CONFIGURE_ENV += LD="$(TARGET_MAKE_PATH)/$(TARGET_CROSS)ld"
-#TARGET_CONFIGURE_ENV += NM="$(TARGET_MAKE_PATH)/$(TARGET_CROSS)nm"
-#TARGET_CONFIGURE_ENV += CC="$(TARGET_MAKE_PATH)/$(TARGET_CROSS)gcc"
-#TARGET_CONFIGURE_ENV += GCC="$(TARGET_MAKE_PATH)/$(TARGET_CROSS)gcc"
-#TARGET_CONFIGURE_ENV += CXX="$(TARGET_MAKE_PATH)/$(TARGET_CROSS)g++"
-#TARGET_CONFIGURE_ENV += RANLIB="$(TARGET_MAKE_PATH)/$(TARGET_CROSS)ranlib"
 
 CONFIG_CACHE_PATH:= $(FREETZ_BASE_DIR)/$(SOURCE_DIR)/config.cache
 # $1 optional suffix
@@ -142,6 +137,12 @@ TARGET_CONFIGURE_OPTIONS += $(DISABLE_LARGEFILE)
 DL_SITE:=$(strip $(subst ",, $(FREETZ_DL_SITE)))
 DL_SOURCE:=$(strip $(subst ",, $(FREETZ_DL_SOURCE)))
 DL_SOURCE_MD5:=$(strip $(subst ",, $(FREETZ_DL_SOURCE_MD5)))
+
+ifneq ($(strip $(FREETZ_DL_SOURCE_CONTAINER)),)
+DL_SOURCE_CONTAINER:=$(strip $(subst ",, $(FREETZ_DL_SOURCE_CONTAINER)))
+DL_SOURCE_CONTAINER_MD5:=$(strip $(subst ",, $(FREETZ_DL_SOURCE_CONTAINER_MD5)))
+DL_SOURCE_CONTAINER_SUFFIX:=$(suffix $(DL_SOURCE_CONTAINER))
+endif
 
 ifneq ($(strip $(FREETZ_DL_SOURCE2)),)
 DL_SITE2:=$(strip $(subst ",, $(FREETZ_DL_SITE2)))
@@ -197,8 +198,10 @@ PKG_EDIT_CONFIG = $(SED) -i -r $(foreach asg,$1,$(call PKG_EDIT_CONFIG__INT1,$(a
 # PKG_FIX_LIBTOOL_LA
 #   fix directories is libtool .la files and .pc files
 PKG_FIX_LIBTOOL_LA__INT = -e "s,^($1=)(['$(_DQ)]?)([^'$(_DQ)]*)(\2)$$,\1\2$(TARGET_TOOLCHAIN_STAGING_DIR)\3\4,g"
-PKG_FIX_LIBTOOL_LA = sed -i -r $(foreach key,libdir includedir prefix exec_prefix,$(call PKG_FIX_LIBTOOL_LA__INT,$(key))) \
-	-e "/^dependency_libs/s,[ \t],  ,g;s,([ '])((/usr)?/lib/[^ /]+[.]la)([ ']),\1$(TARGET_TOOLCHAIN_STAGING_DIR)\2\4,g;s, +, ,g"
+PKG_FIX_LIBTOOL_LA__INT_DEPENDENCY_LIBS = -e "/^dependency_libs/s,[ \t],  ,g;s,([ '])((/usr)?/lib/[^ /]+[.]la)([ ']),\1$(TARGET_TOOLCHAIN_STAGING_DIR)\2\4,g;s, +, ,g"
+PKG_FIX_LIBTOOL_LA = $(SED) -i -r \
+	$(foreach key,$(if $(strip $1),$(strip $1),libdir includedir prefix exec_prefix),$(call PKG_FIX_LIBTOOL_LA__INT,$(key))) \
+	$(if $(strip $1),,$(PKG_FIX_LIBTOOL_LA__INT_DEPENDENCY_LIBS))
 
 # Fix configure and/or libtool scripts to prevent RPATH from being hardcoded.
 # Based on ideas provided on http://wiki.debian.org/RpathIssue.
@@ -448,7 +451,6 @@ define PKG_FINISH_BIN__INT
 # Binary dirclean
 $(pkg)-dirclean--int:
 	$(RM) -r $($(PKG)_DIR)
-	$(RM) $(SOURCE_DIR)/.$(pkg)-$($(PKG)_VERSION)-build-prereq-checked
 	$(RM) -r $($(PKG)_TARGET_DIR)
 	$(RM) $(PACKAGES_DIR)/.$(pkg)-$($(PKG)_VERSION)
 	$($(PKG)_CLEAN_TARGET_DIR__INT)
@@ -469,26 +471,26 @@ $(pkg)-dirclean: $(pkg)-dirclean--int
 $(pkg)-precompiled--int: $(pkg)-build-prereq uclibc $(patsubst %,%-precompiled,$($(PKG)_DEPENDS_ON))
 $(pkg)-precompiled:
 	@$(call _ECHO_DONE)
-$(pkg)-build-prereq: $(SOURCE_DIR_ROOT)/.$(pkg)-$($(PKG)_VERSION)-build-prereq-checked
-$(SOURCE_DIR_ROOT)/.$(pkg)-$($(PKG)_VERSION)-build-prereq-checked:
+$(pkg)-build-prereq: $($(PKG)_DIR)/.build-prereq-checked
+$($(PKG)_DIR)/.build-prereq-checked:
 ifneq ($($(PKG)_BUILD_PREREQ),)
-	@$(PKG)_MISSING_PREREQ=""; \
+	@MISSING_PREREQ=""; \
 	for f in $($(PKG)_BUILD_PREREQ); do \
-		if ! which $$$$f >/dev/null 2>&1; then $(PKG)_MISSING_PREREQ="$$$${$(PKG)_MISSING_PREREQ} $$$$f"; fi; \
+		if ! which $$$$f >/dev/null 2>&1; then MISSING_PREREQ="$$$$MISSING_PREREQ $$$$f"; fi; \
 	done; \
-	if [ -n "$$$${$(PKG)_MISSING_PREREQ}" ]; then \
+	if [ -n "$$$$MISSING_PREREQ" ]; then \
 		echo -n -e "$(_Y)"; \
 		echo -e \
 			"ERROR: The following commands required for building of $(pkg)-package are missing on your system:" \
-			`echo $$$${$(PKG)_MISSING_PREREQ} | sed -e 's| |, |g'`; \
+			`echo $$$$MISSING_PREREQ | sed -e 's| |, |g'`; \
 		if [ -n "$(strip $($(PKG)_BUILD_PREREQ_HINT))" ]; then \
 			echo "$($(PKG)_BUILD_PREREQ_HINT)"; \
 		fi; \
 		echo -n -e "$(_N)"; \
-		exit 1 >/dev/null 2>&1; \
+		exit 1; \
 	fi;
 endif
-	@touch $$@
+	@mkdir -p $$(dir $$@); touch $$@;
 
 $(pkg)-clean-not-included--int:
 	@$(if $($(PKG)_NOT_INCLUDED),$(RM) -r $($(PKG)_NOT_INCLUDED),)
@@ -597,13 +599,20 @@ define PKG_LIB_PATCH
 	)
 endef
 
+# Removes all files under $1 except for those in $2
+define RMDIR_KEEP_FILES__INT
+	$(if $2,if [ -d "$1" ]; then TMPFILE=`mktemp`; tar -C $1 -cf $$$$TMPFILE $2; fi;) \
+	$(RM) -r $1; \
+	$(if $2,if [ -n "$$$$TMPFILE" ]; then mkdir -p $1; tar -C $1 -xf $$$$TMPFILE; rm -f $$$$TMPFILE; fi;)
+endef
+
 ## Unpack and patch binary package
 define PKG_UNPACKED_BIN__INT
 $(PKG)_SOURCE_DIR:
 	@mkdir -p $($(PKG)_SOURCE_DIR)
 $($(PKG)_DIR)/.unpacked: $(DL_DIR)/$($(PKG)_SOURCE) | $(PKG)_SOURCE_DIR
 	@$(call _ECHO,preparing... )
-	$(RM) -r $($(PKG)_DIR)
+	@$(call RMDIR_KEEP_FILES__INT,$($(PKG)_DIR),.build-prereq-checked)
 	$(call PKG_UNPACK)
 	$(call PKG_BIN_PATCH)
 	@touch $$@
@@ -629,7 +638,7 @@ $(PKG)_SOURCE_DIR:
 	@mkdir -p $($(PKG)_SOURCE_DIR)
 $($(PKG)_DIR)/.unpacked: $(DL_DIR)/$($(PKG)_SOURCE) | $(PKG)_SOURCE_DIR
 	@$(call _ECHO,preparing... )
-	$(RM) -r $($(PKG)_DIR)
+	@$(call RMDIR_KEEP_FILES__INT,$($(PKG)_DIR),.build-prereq-checked)
 	$(call PKG_UNPACK)
 	$(call PKG_LIB_PATCH)
 	@touch $$@
@@ -639,11 +648,12 @@ $(pkg)-unpacked: $($(PKG)_DIR)/.unpacked
 endef
 
 define PKG_LOCALSOURCE_PACKAGE__INT
+LOCALSOURCE_PACKAGES+=$(pkg)
 $(PKG)_SOURCE_DIR:
 	@mkdir -p $($(PKG)_SOURCE_DIR)
 $($(PKG)_DIR)/.unpacked: $(wildcard $($(PKG)_MAKE_DIR)/src/*) | $(PKG)_SOURCE_DIR
 	@$(call _ECHO,preparing... )
-	$(RM) -r $($(PKG)_DIR)
+	@$(call RMDIR_KEEP_FILES__INT,$($(PKG)_DIR),.build-prereq-checked)
 	mkdir -p $($(PKG)_DIR)
 	cp -a $$^ $($(PKG)_DIR)
 	@touch $$@
@@ -703,7 +713,7 @@ $(PKG)_FREETZ_CHANGES_CHECK:
 		mv $($(PKG)_FREETZ_CHANGES_TEMP) $($(PKG)_FREETZ_CHANGES_FILE); \
 	fi
 	@$(RM) $($(PKG)_FREETZ_CHANGES_TEMP)
-$(pkg) $(pkg)-precompiled: $(PKG)_FREETZ_CHANGES_CHECK
+$(pkg) $(pkg)-precompiled $(pkg)-build-prereq: $(PKG)_FREETZ_CHANGES_CHECK
 .PHONY: $(PKG)_FREETZ_CHANGES_CHECK
 endef
 
@@ -718,7 +728,6 @@ PKG_LOCALSOURCE_PACKAGE=$(eval $(PKG_LOCALSOURCE_PACKAGE__INT))
 
 ### Configure package
 define PKG_CONFIGURED_COMMON__INT
-#$($(PKG)_DIR)/.configured: $(patsubst %,%-precompiled,$($(PKG)_DEPENDS_ON))
 $(pkg)-configured: $($(PKG)_DIR)/.configured
 .PHONY: $(pkg)-configured
 endef
@@ -726,7 +735,7 @@ endef
 define PKG_CONFIGURED_CONFIGURE__INT
 # Must be first
 $(PKG_CONFIGURED_COMMON__INT)
-$($(PKG)_DIR)/.configured: $(SOURCE_DIR_ROOT)/.$(pkg)-$($(PKG)_VERSION)-build-prereq-checked $($(PKG)_DIR)/.unpacked
+$($(PKG)_DIR)/.configured: $($(PKG)_DIR)/.build-prereq-checked $($(PKG)_DIR)/.unpacked
 	@$(call _ECHO,configuring... )
 	($(CONFIGURE) \
 		cd $($(PKG)_DIR); \
@@ -752,7 +761,7 @@ PKG_CONFIGURED_CONFIGURE=$(eval $(PKG_CONFIGURED_CONFIGURE__INT))
 define PKG_CONFIGURED_NOP__INT
 # Must be first
 $(PKG_CONFIGURED_COMMON__INT)
-$($(PKG)_DIR)/.configured: $(SOURCE_DIR_ROOT)/.$(pkg)-$($(PKG)_VERSION)-build-prereq-checked $($(PKG)_DIR)/.unpacked
+$($(PKG)_DIR)/.configured: $($(PKG)_DIR)/.build-prereq-checked $($(PKG)_DIR)/.unpacked
 	@touch $$@
 endef
 PKG_CONFIGURED_NOP=$(eval $(PKG_CONFIGURED_NOP__INT))
