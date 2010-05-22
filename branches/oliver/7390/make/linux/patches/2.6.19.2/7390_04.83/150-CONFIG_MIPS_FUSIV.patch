@@ -47,22 +47,7 @@
  
  
 -extern int board_memsize;
-+int xtensa_memsize=0;
++int board_memsize=128;
  static spinlock_t fusiv_pci_lock;
  
  static unsigned int first_pci_pin = 21;
-@@ -381,11 +381,11 @@
- 	  PCI_MBAR_CONF = 0x11;				// standard 
- #ifdef VX180A
-         /* VX180A Mask and Trans */
--        if(board_memsize == 32)
-+        if(xtensa_memsize == 32)
-             PCI_IMBAR1_MASK = 0xfe000000; // Inbound memory bar1 mask reg 32M 
--        else if(board_memsize == 64)
-+        else if(xtensa_memsize == 64)
-             PCI_IMBAR1_MASK = 0xfc000000; // Inbound memory bar1 mask reg 64M 
--        else if(board_memsize == 128)
-+        else if(xtensa_memsize == 128)
-             PCI_IMBAR1_MASK = 0xf8000000; // Inbound memory bar1 mask reg 128M 
- 
-         PCI_IMEM1_TRANS = 0x00000000; // Inbound memory1 trans reg SDRAM Address
