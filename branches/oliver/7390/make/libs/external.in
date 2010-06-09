@@ -52,7 +52,7 @@ config EXTERNAL_FREETZ_LIB_libconfig
 	default n
 	help
 		externals these file(s):
-		 /usr/lib/freetz/libconfig.so.8.1.2
+		 /usr/lib/freetz/libconfig.so.9.0.4
 
 config EXTERNAL_FREETZ_LIB_libcrypto
 	depends on EXTERNAL_ENABLED && FREETZ_LIB_libcrypto
@@ -108,7 +108,7 @@ config EXTERNAL_FREETZ_LIB_libelf
 	default n
 	help
 		externals these file(s):
-		 /usr/lib/freetz/libelf.so.0.8.10
+		 /usr/lib/freetz/libelf.so.0.8.13
 
 config EXTERNAL_FREETZ_LIB_libevent
 	depends on EXTERNAL_ENABLED && FREETZ_LIB_libevent
@@ -252,7 +252,7 @@ config EXTERNAL_FREETZ_LIB_libgpg_error
 	default n
 	help
 		externals these file(s):
-		 /usr/lib/freetz/libgpg_error.so.0.5.0
+		 /usr/lib/freetz/libgpg_error.so.0.6.0
 
 config EXTERNAL_FREETZ_LIB_libgthread_2
 	depends on EXTERNAL_ENABLED && FREETZ_LIB_libgthread_2

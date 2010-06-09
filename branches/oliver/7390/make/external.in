@@ -4,6 +4,7 @@ source make/bash/external.in
 source make/bip/external.in
 source make/bittwist/external.in
 source make/bluez-utils/external.in
+source make/comgt/external.in
 source make/ctorrent/external.in
 source make/curl/external.in
 source make/cryptsetup/external.in
@@ -15,6 +16,7 @@ source make/deco/external.in
 source make/digitemp/external.in
 source make/dtach/external.in
 source make/dtmfbox/external.in
+source make/git/external.in
 source make/gnutls/external.in
 source make/gocr/external.in
 source make/htop/external.in
@@ -40,6 +42,7 @@ source make/netcat/external.in
 source make/netpbm/external.in
 source make/ngircd/external.in
 source make/ntfs/external.in
+source make/oidentd/external.in
 source make/owfs/external.in
 source make/php/external.in
 source make/polipo/external.in
