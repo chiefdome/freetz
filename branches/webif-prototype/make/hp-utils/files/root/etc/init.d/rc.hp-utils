@@ -1,0 +1,55 @@
+#!/bin/sh
+
+DAEMON=httpd-hp-utils
+CONF_NAME=hp-utils
+PID_FILE=/var/run/$DAEMON.pid
+
+. /etc/init.d/modlibrc
+
+config() {
+	(
+		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
+			/tmp/flash/${DAEMON}_conf
+		else
+			/mod/etc/default.hp-utils/${DAEMON}_conf
+		fi
+
+		[ -r "/tmp/flash/${DAEMON}.extra" ] && cat /tmp/flash/${DAEMON}.extra
+	) > /mod/etc/$DAEMON.conf
+}
+
+start() {
+	modlib_startdaemon webcfg-hp-utils -P "$PID_FILE"
+}
+
+case $1 in
+	""|load)
+		modreg cgi 'hp-utils' 'hp-utils'
+
+		config
+
+		modlib_start $HP_UTILS_ENABLED
+		;;
+	unload)
+		modunreg cgi 'hp-utils'
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

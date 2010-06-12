@@ -1,0 +1,52 @@
+--- pppd/Makefile.linux	2009-11-16 23:26:07.000000000 +0100
++++ pppd/Makefile.linux	2009-11-22 20:13:35.000000000 +0100
+@@ -48,7 +48,7 @@ MPPE=y
+ # Uncomment the next line to include support for PPP packet filtering.
+ # This requires that the libpcap library and headers be installed
+ # and that the kernel driver support PPP packet filtering.
+-FILTER=y
++#FILTER=y
+ 
+ # Uncomment the next line to enable multilink PPP (enabled by default)
+ # Linux distributions: Please leave multilink ENABLED in your builds
+@@ -58,14 +58,16 @@ HAVE_MULTILINK=y
+ # Uncomment the next line to enable the TDB database (enabled by default.)
+ # If you enable multilink, then TDB is automatically enabled also.
+ # Linux distributions: Please leave TDB ENABLED in your builds.
+-USE_TDB=y
++#USE_TDB=y
+ 
+-HAS_SHADOW=y
++#HAS_SHADOW=y
+ #USE_PAM=y
+-#HAVE_INET6=y
++#ifdef FREETZ_TARGET_IPV6_SUPPORT
++HAVE_INET6=y
++#endif
+ 
+ # Enable plugins
+-PLUGIN=y
++#PLUGIN=y
+ 
+ # Enable Microsoft proprietary Callback Control Protocol
+ #CBCP=y
+@@ -77,7 +79,7 @@ MAXOCTETS=y
+ 
+ INCLUDE_DIRS= -I../include
+ 
+-COMPILE_FLAGS= -DHAVE_PATHS_H -DIPX_CHANGE -DHAVE_MMAP
++COMPILE_FLAGS= -DHAVE_PATHS_H -DHAVE_MMAP
+ 
+ CFLAGS= $(COPTS) $(COMPILE_FLAGS) $(INCLUDE_DIRS) '-DDESTDIR="@DESTDIR@"'
+ 
+@@ -117,10 +119,8 @@ CFLAGS   += -DHAS_SHADOW
+ #LIBS     += -lshadow $(LIBS)
+ endif
+ 
+-ifneq ($(wildcard /usr/include/crypt.h),)
+ CFLAGS  += -DHAVE_CRYPT_H=1
+ LIBS	+= -lcrypt
+-endif
+ 
+ ifdef NEEDDES
+ ifndef USE_CRYPT

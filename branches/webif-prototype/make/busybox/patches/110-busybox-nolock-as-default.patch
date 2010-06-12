@@ -1,0 +1,11 @@
+--- util-linux/mount.c.orig	2010-03-28 19:43:36.000000000 +0200
++++ util-linux/mount.c	2010-04-02 23:03:26.000000000 +0200
+@@ -1080,7 +1080,7 @@
+ 	intr = 0;
+ 	posix = 0;
+ 	nocto = 0;
+-	nolock = 0;
++	nolock = 1;
+ 	noac = 0;
+ 	nordirplus = 0;
+ 	retry = 10000;		/* 10000 minutes ~ 1 week */

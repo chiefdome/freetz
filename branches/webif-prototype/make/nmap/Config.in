@@ -1,0 +1,35 @@
+config FREETZ_PACKAGE_NMAP
+	bool "Nmap 4.68 (binary only)"
+	select FREETZ_LIB_libuClibc__
+	select FREETZ_LIB_libpcap
+	select FREETZ_LIB_libdnet
+	select FREETZ_LIB_libm
+	select FREETZ_LIB_libdl
+	default n
+	help
+		Nmap ("Network Mapper") is a free and open source (license) utility for network
+		exploration or security auditing. Many systems and network administrators also
+		find it useful for tasks such as network inventory, managing service upgrade
+		schedules, and monitoring host or service uptime. Nmap uses raw IP packets in
+		novel ways to determine what hosts are available on the network, what services
+		(application name and version) those hosts are offering, what operating systems
+		(and OS versions) they are running, what type of packet filters/firewalls are in
+		use, and dozens of other characteristics. It was designed to rapidly scan large
+		networks, but works fine against single hosts. Nmap runs on all major computer
+		operating systems, and both console and graphical versions are available.
+
+config FREETZ_PACKAGE_NMAP_WITH_SHARED_LUA
+	bool "Use system (shared) liblua"
+	depends on FREETZ_PACKAGE_NMAP
+	select FREETZ_LIB_liblua
+	default y
+	help
+		Causes system (dynamic) liblua to be used instead of bundled one.
+
+config FREETZ_PACKAGE_NMAP_WITH_SHARED_PCRE
+	bool "Use system (shared) libpcre"
+	depends on FREETZ_PACKAGE_NMAP
+	select FREETZ_LIB_libpcre
+	default y
+	help
+		Causes system (dynamic) libpcre to be used instead of bundled one.
