@@ -1,0 +1,7 @@
+#!/bin/sh
+# create invalid passwords to deny access
+echo "/conf:$MOD_HTTPD_USER:$(echo $MOD_HTTPD_PASSWD | md5sum)"
+echo "/html:$MOD_HTTPD_USER:$(echo $MOD_HTTPD_PASSWD | md5sum)"
+echo "/skin:$MOD_HTTPD_USER:$(echo $MOD_HTTPD_PASSWD | md5sum)"
+echo "/trac:$MOD_HTTPD_USER:$(echo $MOD_HTTPD_PASSWD | md5sum)"
+

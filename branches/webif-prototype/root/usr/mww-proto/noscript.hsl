@@ -1,0 +1,5 @@
+#!/usr/bin/haserl
+<div id="error">
+<div class="title"><%m ER000%></div><br/><br/>
+<p><%m ERNS0%></p>
+</div>

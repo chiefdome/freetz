@@ -1,0 +1,5 @@
+#!/usr/bin/haserl
+<tr><td><a onclick="javascript:select('/config/logs'); return false;" href="/config/logs">
+<%m SY007%></a></td><td class="action">
+<a onclick="javascript:select('/html/logs'); return false;" href="/html/logs">
+<%m SY008%></a></td></tr>

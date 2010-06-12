@@ -1,0 +1,518 @@
+--- ./org/haserl.c	2010-05-30 03:25:40.000000000 +0200
++++ ./src/haserl.c	2010-05-30 03:25:23.000000000 +0200
+@@ -87,6 +87,10 @@
+ #define SUBSHELL_CMD "/bin/sh"
+ #endif
+ 
++#ifndef DEF_HTML_TEXT_DB
++#define DEF_HTML_TEXT_DB "/var/htmltext.fa"
++#endif
++
+ haserl_t global;
+ 
+ 
+@@ -134,6 +138,7 @@
+   {"upload-limit", required_argument, 0, 'u'},
+   {"upload-dir", required_argument, 0, 'U'},
+   {"upload-handler", required_argument, 0, 'H'},
++  {"html-text-db", required_argument, 0, 't'},
+   {"accept-all", no_argument, 0, 'a'},
+   {"accept-none", no_argument, 0, 'n'},
+   {"shell", required_argument, 0, 's'},
+@@ -141,7 +146,7 @@
+   {0, 0, 0, 0}
+ };
+ 
+-const char *gs_short_options = "+vhdu:U:H:ans:S";
++const char *gs_short_options = "+vhdu:U:H:t:ans:S";
+ 
+ /*
+  * Convert 2 char hex string into char it represents
+@@ -585,6 +590,9 @@
+ 	      global.uploadkb = MAX_UPLOAD_KB;
+ 	    }
+ 	  break;
++   case 't':
++     global.htmltextdb = optarg;
++     break;
+ 	case 'a':
+ 	  global.acceptall = TRUE;
+ 	  break;
+@@ -638,8 +646,9 @@
+   global.uploaddir = TEMPDIR;	/* where to upload to                           */
+   global.uploadhandler = NULL;	/* the upload handler                           */
+   global.debug = FALSE;		/* Not in debug mode.                           */
+-  global.acceptall = FALSE;	/* don't allow POST data for GET method         */
+-  global.uploadlist = NULL;	/* we don't have any uploaded files             */
++  global.acceptall = FALSE;	/* don't allow POST data for GET method          */
++  global.uploadlist = NULL;	/* we don't have any uploaded files              */
++  global.htmltextdb = DEF_HTML_TEXT_DB; /* the default database for html texts */
+   global.var_prefix = "FORM_";
+   global.get_prefix = "GET_";
+   global.post_prefix = "POST_";
+@@ -759,7 +768,7 @@
+ 
+   scriptchain = load_script (filename, NULL);
+ /* drop permissions */
+-  BecomeUser (scriptchain->uid, scriptchain->gid);
++//  BecomeUser (scriptchain->uid, scriptchain->gid);
+ 
+   /* populate the function pointers based on the shell selected */
+   if (strcmp (global.shell, "lua") && strcmp (global.shell, "luac"))
+--- ./org/h_error.c	2010-05-30 03:25:40.000000000 +0200
++++ ./src/h_error.c	2010-05-24 14:55:05.000000000 +0200
+@@ -43,6 +43,7 @@
+   "Missing %c&gt;",
+   "Unknown operation",
+   "Unable to start subshell",
++  "Invalid Format",
+   "Unspecified Error",
+ };
+ 
+--- ./org/h_script.c	2010-05-30 03:25:40.000000000 +0200
++++ ./src/h_script.c	2010-05-28 15:22:27.000000000 +0200
+@@ -35,14 +35,15 @@
+ #include "h_error.h"
+ #include "h_script.h"
+ #include "h_bash.h"
++#include "h_text.h"
+ #include "haserl.h"
+ 
+ #ifdef BASHEXTENSIONS
+-/* HTML, RUN, INCLUDE, EVAL, COMMENT, IF, ELIF, ELSE, ENDIF, CASE, WHEN,
++/* HTML, RUN, INCLUDE, EVAL, MESSAGE, COMMENT, IF, ELIF, ELSE, ENDIF, CASE, WHEN,
+    OTHERWISE, ENDCASE, WHILE, ENDWHILE, UNTIL, ENDUNTIL, FOR, ENDFOR,
+    UNLESS, ELUN, UNELSE, ENDUNLESS, NOOP }; */
+ #else
+-/* HTML, RUN, INCLUDE, EVAL, COMMENT, NOOP */
++/* HTML, RUN, INCLUDE, EVAL, MESSAGE, COMMENT, NOOP */
+ #endif
+ 
+ const char *g_tag[] = {
+@@ -50,6 +51,7 @@
+   "",
+   "in",
+   "=",
++  "m",
+   "#",
+ #ifdef BASHEXTENSIONS
+   "if",
+@@ -79,6 +81,39 @@
+ char close_tag[3] = "%>";
+ 
+ 
++/* retrieve a html-message, which may be just plain text or
++ * a complete haserl script ...
++ * filename is the message key
++ */
++script_t *
++get_html_message (char *filename, script_t * scriptlist)
++{
++  script_t *scriptbuf;
++
++  scriptbuf = (script_t *) xmalloc (sizeof (script_t));
++  scriptbuf->name = (char *) xmalloc (strlen (filename) + 1);
++  scriptbuf->buf = text_message4key(filename);
++
++  memset (scriptbuf->name, 0, strlen (filename) + 1);
++  memcpy (scriptbuf->name, filename, strlen (filename));
++
++  scriptbuf->size = strlen(scriptbuf->buf);
++  scriptbuf->uid = 0;
++  scriptbuf->gid = 0;
++  scriptbuf->curpos = 0;
++  scriptbuf->next = NULL;
++
++  /* if we already have scripts, add this one to the end */
++  if (scriptlist != NULL)
++    {
++      while (scriptlist->next)
++	      scriptlist = scriptlist->next;
++      scriptlist->next = scriptbuf;
++    }
++  return (scriptbuf);
++}
++
++
+ /* Open a script and return a populated script_t structure
+  */
+ script_t *
+@@ -366,8 +401,19 @@
+ 	      newscript = load_script (me->buf, me->script);
+ 	      build_token_list (newscript, me);
+ 	    }
++	  else if (memcmp (cp, g_tag[MESSAGE], 1) == 0)
++       {
++          me->tag = MESSAGE;
++          me->buf = find_whitespace (me->buf);
++          me->buf = skip_whitespace (me->buf);
++          cp = find_whitespace (me->buf);
++          *cp = '\0';
++          me->len = strlen (me->buf) + 1;
++          newscript = get_html_message (me->buf, me->script);
++          /* allow html-message to contain haserl tokens */
++          build_token_list (newscript, me);
++	    }
+ 	  else if (memcmp (cp, g_tag[EVAL], 1) == 0)
+-
+ 	    {
+ 	      me->tag = EVAL;
+ 	      me->buf = find_whitespace (me->buf);
+--- ./org/h_text.c	2010-05-30 03:25:40.000000000 +0200
++++ ./src/h_text.c	2010-05-24 17:59:59.000000000 +0200
+@@ -0,0 +1,184 @@
++/*--------------------------------------------------------------------------
++ * functions related to keybased message translation 
++ * Copyright (c) 2010 Reinhard Mantey (rmantey@users.sourceforge.net)
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License, version 2,
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
++ *
++ *
++ ------------------------------------------------------------------------- */
++
++#if HAVE_CONFIG_H
++#include <config.h>
++#endif
++
++#include <stdio.h>
++#include <unistd.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <sys/fcntl.h>
++#include <string.h>
++#include <stdlib.h>
++#include <ctype.h>
++
++#include "common.h"
++#include "h_error.h"
++#include "h_script.h"
++#include "h_text.h"
++#include "haserl.h"
++
++
++int 
++textncmp (const char * p0, const char * p1, int len) {
++   int i=0;
++
++   for (i=0; i < len; i++) {
++       if (*(p0 + i) < *(p1 + i)) return -1;
++       else if (*(p0 + i) > *(p1 + i)) return 1;
++   }
++   return 0;
++}
++
++/* find message-key by binary search and return offset and size if 
++ * key was found. Returns -1 if key was not found
++ */
++int
++find_entry (char * msgkey, int * size) {
++   int   maxEntry = ((html_text_db_id_t *)(global.htmltextbuf + sizeof(long)))->count - 1;
++   int   curEntry = maxEntry >> 1;
++   int   stepSize = curEntry;
++   char  dir=0;
++   const char * first = global.htmltextbuf + sizeof(html_text_db_id_t) + sizeof(long);
++   const char * last = global.htmltextbuf + sizeof(html_text_db_id_t) + sizeof(long) +
++                       ((html_text_db_id_t *)(global.htmltextbuf + sizeof(long)))->count *
++                       sizeof(html_text_entry_t); 
++   const char * p;
++   const char * pK;
++
++   if (curEntry + stepSize < 
++         ((html_text_db_id_t *)(global.htmltextbuf + sizeof(long)))->count) 
++      stepSize++;
++
++   for (p = first + curEntry * sizeof(html_text_entry_t);
++        ; 
++        p = first + curEntry * sizeof(html_text_entry_t)) {
++       pK = ((html_text_entry_t *)p)->key;
++       if (stepSize) {
++          if (p >= last) {
++             curEntry -= stepSize;
++             stepSize >>= 1;
++             continue;
++          }
++          if (p <= first) {
++             curEntry += stepSize;
++             stepSize >>= 1;
++             continue;
++          }
++          if ((dir = textncmp (msgkey, pK, MAX_MSGKEY_SIZE)) < 0) {
++             if (!stepSize) curEntry--;
++             else curEntry -= stepSize; 
++             stepSize >>= 1;
++          } else if (dir > 0) {
++             if (!stepSize) curEntry++;
++             else curEntry += stepSize; 
++             stepSize >>= 1;
++          } else {
++             if (size != NULL) {
++                if (curEntry == maxEntry) 
++                   *size = *((long *)global.htmltextbuf) - ((html_text_entry_t *)pK)->off; 
++                else
++                   *size = (((html_text_entry_t *)pK) + 1)->off - 
++                            ((html_text_entry_t *)pK)->off;
++             }
++             return ((html_text_entry_t *)pK)->off; // match
++          }
++       } else {
++          char ndir = textncmp (msgkey, pK, MAX_MSGKEY_SIZE);
++
++          if (ndir == 0) {
++             if (size != NULL) {
++                if (curEntry == maxEntry) 
++                   *size = *((long *)global.htmltextbuf) - ((html_text_entry_t *)pK)->off; 
++                else
++                   *size = (((html_text_entry_t *)pK) + 1)->off - 
++                            ((html_text_entry_t *)pK)->off;
++             }
++             return ((html_text_entry_t *)pK)->off; // match
++          }
++          if (p >= last || p <= first || ndir != dir) 
++             return -1; // no match
++          curEntry += dir;
++       }
++   }
++   return -1;
++}
++
++void 
++read_html_text_db_header (void) 
++{
++   html_text_db_id_t dbid;
++   struct stat filestat;
++   int fddb = open (global.htmltextdb, O_NONBLOCK + O_RDONLY);
++   int bufSize = 0;
++   int bytesRead = 0;
++
++   if (fddb == -1) 
++      {
++         die_with_message (NULL, NULL, g_err_msg[E_FILE_OPEN_FAIL], global.htmltextdb);
++      }
++   read(fddb, &dbid, sizeof(dbid));
++   if (*(dbid.id) != 'F' || *(dbid.id + 1) != 'A')
++      {
++         die_with_message (NULL, NULL, g_err_msg[E_INV_FORMAT], global.htmltextdb);
++      }
++   fstat (fddb, &filestat);
++   bufSize = sizeof(long) + sizeof(dbid) + dbid.count * sizeof(html_text_entry_t) + sizeof(html_text_entry_t);
++   global.htmltextbuf = (char *) xmalloc (bufSize);
++   memset (global.htmltextbuf, 0, bufSize);
++   lseek (fddb, 0, SEEK_SET);
++   bytesRead = read (fddb, global.htmltextbuf + sizeof(long), bufSize - sizeof(long));
++   if (bytesRead < (bufSize - sizeof(long))) 
++      {
++         die_with_message (NULL, NULL, g_err_msg[E_WHATEVER], global.htmltextdb);
++      }
++   *((long *)global.htmltextbuf) = filestat.st_size;
++   close (fddb);
++}
++
++char *
++text_message4key (char * msgkey) 
++{
++   int offset = 0;
++   int size = strlen(msgkey) + 1;
++   char * rv = 0;
++   if (global.htmltextbuf == NULL) read_html_text_db_header();
++
++   if ((offset = find_entry (msgkey, &size)) < 0) {
++      rv = xmalloc (size);
++      memset (rv, 0, size);
++      memcpy (rv, msgkey, size);
++   } else {
++      int fddb = open (global.htmltextdb, O_NONBLOCK + O_RDONLY);
++
++      if (fddb == -1) 
++         {
++            die_with_message (NULL, NULL, g_err_msg[E_FILE_OPEN_FAIL], global.htmltextdb);
++         }
++      rv = xmalloc (size);
++      memset (rv, 0, size);
++      lseek (fddb, offset, SEEK_SET);
++      read (fddb, rv, size);
++      close (fddb);
++   }
++   return rv;
++}
+--- ./org/haserl.h	2010-05-30 03:25:40.000000000 +0200
++++ ./src/haserl.h	2010-05-24 14:34:39.000000000 +0200
+@@ -9,6 +9,8 @@
+   char *shell;                  /* The shell we use                          */
+   char *uploaddir;              /* where we upload to                        */
+   char *uploadhandler;		/* a handler for uploads		     */
++  char *htmltextdb;        /* a database for html text replacements */
++  char *htmltextbuf;       /* buffer to read and hold database header */
+   char *var_prefix;		/* what name we give to FORM variables	     */
+   char *get_prefix;		/* what name we give to POST variables	     */
+   char *post_prefix;		/* what name we give to POST variables       */
+--- ./org/h_error.h	2010-05-30 03:25:40.000000000 +0200
++++ ./src/h_error.h	2010-05-24 14:55:00.000000000 +0200
+@@ -7,7 +7,7 @@
+ 
+ enum error_types { E_NO_ERROR, E_MALLOC_FAIL, E_FILE_OPEN_FAIL,
+ 		   E_END_BEFORE_BEGIN, E_NO_END_MARKER ,
+-		   E_NO_OP, E_SUBSHELL_FAIL, E_WHATEVER };
++		   E_NO_OP, E_SUBSHELL_FAIL, E_INV_FORMAT, E_WHATEVER };
+ 
+ extern char *g_err_msg[];
+ 
+--- ./org/h_script.h	2010-05-30 03:25:40.000000000 +0200
++++ ./src/h_script.h	2010-05-24 13:43:50.000000000 +0200
+@@ -18,9 +18,9 @@
+ 
+ /* tag types */
+ #ifdef BASHEXTENSIONS
+-enum tag_t { HTML, RUN, INCLUDE, EVAL, COMMENT, IF, ELIF, ELSE, ENDIF, CASE, WHEN, OTHERWISE, ENDCASE, WHILE, ENDWHILE, UNTIL, ENDUNTIL, FOR, ENDFOR, UNLESS, ELUN, UNELSE, ENDUNLESS, NOOP };
++enum tag_t { HTML, RUN, INCLUDE, EVAL, MESSAGE, COMMENT, IF, ELIF, ELSE, ENDIF, CASE, WHEN, OTHERWISE, ENDCASE, WHILE, ENDWHILE, UNTIL, ENDUNTIL, FOR, ENDFOR, UNLESS, ELUN, UNELSE, ENDUNLESS, NOOP };
+ #else
+-enum tag_t { HTML, RUN, INCLUDE, EVAL, COMMENT, NOOP };
++enum tag_t { HTML, RUN, INCLUDE, EVAL, MESSAGE, COMMENT, NOOP };
+ #endif
+ 
+ 
+--- ./org/h_text.h	2010-05-30 03:25:40.000000000 +0200
++++ ./src/h_text.h	2010-05-29 16:08:20.000000000 +0200
+@@ -0,0 +1,29 @@
++#ifndef H_TEXT_H
++#define H_TEXT_H	1
++
++#define MAX_ENTRY_SIZE (10 * 1024)
++#define MAX_MSGKEY_SIZE 5
++#pragma pack(1)
++
++#ifdef EXTERN
++#undef EXTERN
++#endif
++#ifdef PLACE_GLOBALS_HERE
++#define EXTERN
++#else
++#define EXTERN extern
++#endif
++
++typedef struct {
++   char  id[2];
++   short count;
++} html_text_db_id_t;
++
++typedef struct {
++   char key[MAX_MSGKEY_SIZE];
++   int  off:24;
++} html_text_entry_t;
++
++char * text_message4key (char * msgkey);
++
++#endif
+--- ./org/config.h.in	2010-05-30 03:25:40.000000000 +0200
++++ ./src/config.h.in	2010-05-24 15:50:31.000000000 +0200
+@@ -78,9 +78,6 @@
+ /* Define to the one symbol short name of this package. */
+ #undef PACKAGE_TARNAME
+ 
+-/* Define to the home page for this package. */
+-#undef PACKAGE_URL
+-
+ /* Define to the version of this package. */
+ #undef PACKAGE_VERSION
+ 
+--- ./org/Makefile.in	2010-05-30 03:25:40.000000000 +0200
++++ ./src/Makefile.in	2010-05-24 15:50:32.000000000 +0200
+@@ -1,4 +1,4 @@
+-# Makefile.in generated by automake 1.10.2 from Makefile.am.
++# Makefile.in generated by automake 1.10.1 from Makefile.am.
+ # @configure_input@
+ 
+ # Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
+@@ -50,7 +50,7 @@
+ 	sliding_buffer.h h_error.c h_error.h h_script.c h_script.h \
+ 	rfc2388.c rfc2388.h h_bash.c h_bash.h haserl_lualib.inc \
+ 	h_lua_common.c h_lua_common.h h_lua.c h_lua.h h_luac.c \
+-	h_luac.h haserl.c haserl.h
++	h_luac.h h_text.c h_text.h haserl.c haserl.h
+ @INCLUDE_BASHSHELL_TRUE@am__objects_1 = h_bash.$(OBJEXT)
+ @INCLUDE_LUASHELL_TRUE@@USE_LUA_TRUE@am__objects_2 = h_lua.$(OBJEXT)
+ @INCLUDE_LUACSHELL_TRUE@@USE_LUA_TRUE@am__objects_3 =  \
+@@ -59,7 +59,8 @@
+ @USE_LUA_TRUE@	$(am__objects_3)
+ am_haserl_OBJECTS = common.$(OBJEXT) sliding_buffer.$(OBJEXT) \
+ 	h_error.$(OBJEXT) h_script.$(OBJEXT) rfc2388.$(OBJEXT) \
+-	$(am__objects_1) $(am__objects_4) haserl.$(OBJEXT)
++	$(am__objects_1) $(am__objects_4) h_text.$(OBJEXT) \
++	haserl.$(OBJEXT)
+ haserl_OBJECTS = $(am_haserl_OBJECTS)
+ haserl_LDADD = $(LDADD)
+ DEFAULT_INCLUDES = -I.@am__isrc@
+@@ -112,7 +113,6 @@
+ PACKAGE_NAME = @PACKAGE_NAME@
+ PACKAGE_STRING = @PACKAGE_STRING@
+ PACKAGE_TARNAME = @PACKAGE_TARNAME@
+-PACKAGE_URL = @PACKAGE_URL@
+ PACKAGE_VERSION = @PACKAGE_VERSION@
+ PATH_SEPARATOR = @PATH_SEPARATOR@
+ SET_MAKE = @SET_MAKE@
+@@ -158,7 +158,6 @@
+ srcdir = @srcdir@
+ sysconfdir = @sysconfdir@
+ target_alias = @target_alias@
+-top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ EXTRA_DIST = haserl_lualib.lua haserl_lualib.inc lua2c.c
+@@ -167,7 +166,7 @@
+ @INCLUDE_BASHSHELL_TRUE@BASHSOURCE = h_bash.c h_bash.h
+ haserl_SOURCES = common.c common.h sliding_buffer.c sliding_buffer.h \
+ 		 h_error.c h_error.h h_script.c h_script.h rfc2388.c rfc2388.h \
+-		 $(BASHSOURCE) $(LUASOURCE) haserl.c haserl.h
++		 $(BASHSOURCE) $(LUASOURCE) h_text.c h_text.h haserl.c haserl.h
+ 
+ all: config.h
+ 	$(MAKE) $(AM_MAKEFLAGS) all-am
+@@ -178,8 +177,8 @@
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+-	      ( cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh ) \
+-	        && { if test -f $@; then exit 0; else break; fi; }; \
++	      cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh \
++		&& exit 0; \
+ 	      exit 1;; \
+ 	  esac; \
+ 	done; \
+@@ -260,6 +259,7 @@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/h_lua_common.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/h_luac.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/h_script.Po@am__quote@
++@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/h_text.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/haserl.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2388.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sliding_buffer.Po@am__quote@
+@@ -283,7 +283,7 @@
+ 	unique=`for i in $$list; do \
+ 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+ 	  done | \
+-	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
++	  $(AWK) '{ files[$$0] = 1; nonemtpy = 1; } \
+ 	      END { if (nonempty) { for (i in files) print i; }; }'`; \
+ 	mkid -fID $$unique
+ tags: TAGS
+--- ./org/Makefile.am	2010-05-30 03:25:40.000000000 +0200
++++ ./src/Makefile.am	2010-05-24 15:47:58.000000000 +0200
+@@ -46,7 +46,7 @@
+ 
+ haserl_SOURCES = common.c common.h sliding_buffer.c sliding_buffer.h \
+ 		 h_error.c h_error.h h_script.c h_script.h rfc2388.c rfc2388.h \
+-		 $(BASHSOURCE) $(LUASOURCE) haserl.c haserl.h
++		 $(BASHSOURCE) $(LUASOURCE) h_text.c h_text.h haserl.c haserl.h
+ 
+ install-strip:
+         $(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \

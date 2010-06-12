@@ -1,0 +1,41 @@
+#!/bin/sh
+cat << EOF
+<form name="application" target="main" method="get" action="$SCRIPT_NAME$FA_NEXT_PAGE">
+<div id="content"><table width="100%"><tr valign="top"><td class="topic">
+EOF
+getText FA001
+cat << EOF
+</td><td>
+EOF
+echo '<div class="version">'
+getText FW001
+echo -n "&nbsp;$FA_VERSION&nbsp;"
+cat /etc/.freetz-version
+echo -n '</div></td></tr><tr><td id="pagecontent" colspan="2">'
+./servePage
+cat << EOF
+</td></tr>
+<tr><td colspan="2">
+<div id="footer" class="footer">
+EOF
+getText CR001
+cat << EOF
+</div></td></tr></table></form>
+<div id="logo" class="logo"><a onclick="javascript:select('$FA_NEXT_PAGE'); return false;" href="/refresh">
+<img src="/images/Freetz.png" border="0" alt="logo"/></a></div>
+<div id="license">
+<div class="title">Lizenz</div>
+<div id="gpl">
+<a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html" target="_blank">
+<img border="0" src="/images/gplv2-127x127.png" width="127" height="127" alt="GPL"/>
+</a>
+</div>
+</div>
+EOF
+if [ "x$FA_NEXT_PAGE" != "x/html/status" ]; then
+cat << EOF
+<div id="back" class="back"><a onclick="javascript:select('/html/status'); return false;" href="/html/status">
+EOF
+getText FA000
+echo '</a></div>'
+fi

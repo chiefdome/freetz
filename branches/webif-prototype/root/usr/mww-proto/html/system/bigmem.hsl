@@ -1,0 +1,74 @@
+<div id="memory" class="chapter">
+<div class="title"><%m MEM00%></div>
+<br/><table>
+<%
+meminfo() {
+	sed -n "/^$1:/ s/[^0-9]//gp" /proc/meminfo
+}
+total=$(meminfo MemTotal)
+free=$(meminfo MemFree)
+cached=$(meminfo Cached)
+let usedmem="total-cached-free"   
+let factor="total/400"
+let susedmem="usedmem/factor"
+let sfree="free/factor"
+let scached="cached/factor"
+echo info > /proc/tffs
+cfgused=$(grep '^fill=' /proc/tffs)
+cfgused=${cfgused#fill=}
+mctotal=0
+for i in $(grep tffs /proc/mtd | awk '{ print $2; }'); do
+   let mctotal="mctotal + 0x$i / 1024"
+done
+let mcused="mctotal*cfgused/100"
+let mcfree="mctotal-mcused"
+let smcfree="mcfree*400/mctotal"
+let smcused="mcused*400/mctotal"
+%>
+<tr><td>
+<table border="0" cellspacing="0" cellpadding="0"><tr><th><big>
+<%m MEM01%>
+</big></th><th>&nbsp;</th><th align="right">
+( <% echo $total%>)
+</th></tr>
+<tr><td><img src="/images/space.gif" height="1" width="200" hspace="0" vspace="0" alt=""/></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="memfree">
+<%m MEM02%>
+</td><td><img src="/images/space.gif" width="1" align="left" height="<% echo $sfree %>" alt=""/></td><td align="right">
+<% echo $free %>
+</td></tr>
+<tr><td class="memused">
+<%m MEM03%>
+</td><td><img src="/images/space.gif" width="1" align="left" height="<% echo $susedmem %>" alt=""/></td><td align="right">
+<% echo $usedmem %>
+</td></tr>
+<tr><td class="memcached">
+<%m MEM04%>
+</td><td><img src="/images/space.gif" width="1" align="left" height="<% echo $scached %>" alt=""/></td><td align="right">
+<% echo $cached %>
+</td></tr>
+</table>
+</td><td>
+<img src="/images/space.gif" height="1" width="70" alt=""/>
+</td><td>
+<%# config memory %>
+<table border="0" cellspacing="0" cellpadding="0"><tr><th><big>
+<%m MEM05%>
+</big></th><th>&nbsp;</th><th align="right">
+( <% echo $mctotal%>)
+</th></tr>
+<tr><td><img src="/images/space.gif" height="1" width="200" hspace="0" vspace="0" alt=""/></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="memfree">
+<%m MEM02%>
+</td><td><img src="/images/space.gif" width="1" align="left" height="<% echo $smcfree %>" alt=""/></td><td align="right">
+<% echo $mcfree %>
+</td></tr>
+<tr><td class="memused">
+<%m MEM03%>
+</td><td><img src="/images/space.gif" width="1" align="left" height="<% echo $smcused %>" alt=""/></td><td align="right">
+<% echo $mcused %>
+</td></tr>
+</table>
+
+</td></tr>
+</table></div>

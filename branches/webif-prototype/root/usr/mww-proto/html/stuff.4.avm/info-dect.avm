@@ -1,0 +1,11 @@
+<tr valign="top">
+<td><a onclick="javascript:select('/html/dect'); return false;" href="/html/dect">
+<%m TEL03%></a></td><td class="led">
+<% if 
+[ "x<? query dect:settings/enabled ?>" = "x1" ]; then
+echo '<img src="/images/led_green.gif" alt="activated"/></td><td>'
+getText OFF01
+else
+echo '<img src="/images/led_red.gif" alt="stopped"/></td><td>'
+getText OFF00
+fi %></td></tr>

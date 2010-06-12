@@ -1,0 +1,51 @@
+#!/usr/bin/haserl
+<%
+addTab() {
+local filename="$1";
+logger freetz "addTab() - filename [$filename]"
+echo -n '<td class="'
+if [ "x$FORM_LOGPAGE" = "x$filename" ]; then
+echo -n 'tabactive'
+else
+echo -n 'tabinactive'
+fi
+echo -n '"><a onclick="javascript:selectLog('
+echo -n "'$filename'); return false;\" href=\"/html/logs$filename\">" 
+echo $(basename $filename)
+echo '</a></td>'
+}
+%>
+<script type="text/javascript"><!--
+function selectLog(logPage) {
+document.application.LOGPAGE.value=logPage;
+select('/html/logs');
+}
+--></script>
+<div id="logs" class="chapter">
+<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td>
+<div class="title"><%m SY007%><input type="hidden" name="LOGPAGE" value="/logread"/></div></td></tr>
+<tr><td><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>
+<% if [ "x$FORM_LOGPAGE" = "x" ]; then
+logger freetz "got no logpage to start with"
+export FORM_LOGPAGE='/logread'
+else
+logger freetz "gonna start with logpage [$FORM_LOGPAGE]"
+fi
+addTab '/logread'
+for i in /var/log/*.log; do
+   addTab $i
+done %>   
+<td class="tabempty">&nbsp;</td>
+</tr></table></td></tr><tr><td>
+<div class="logs"><pre>
+<% case $FORM_LOGPAGE in
+/logread) logread
+;;
+/var/log/*) if [ -s "$FORM_LOGPAGE" ]; then
+tail -n 500 $FORM_LOGPAGE
+fi
+;;
+esac %>
+</pre></div>
+</td></tr></table>
+</div>

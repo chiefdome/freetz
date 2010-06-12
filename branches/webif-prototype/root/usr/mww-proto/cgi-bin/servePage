@@ -1,0 +1,28 @@
+#!/bin/sh
+echo '<input type="hidden" name="page" value="/index.html"/>'
+echo '<input type="hidden" name="SKOTTOWE" value="'"$SESSIONID"'"/>'
+echo '<input type="hidden" name="FA_SID" value="'"$mySID"'"/>'
+echo '<input type="hidden" name="FA_USRREQ" value="'"$FA_USRREQ"'"/>'
+
+if [ -e ..${FA_NEXT_PAGE}.html ]; then
+   cat ..${FA_NEXT_PAGE}.html
+elif [ -x ..${FA_NEXT_PAGE}.cgi ]; then
+   ..${FA_NEXT_PAGE}.cgi
+elif [ -x ..${FA_NEXT_PAGE}.hsl ]; then
+   ..${FA_NEXT_PAGE}.hsl < /dev/null
+elif [ -x ..${FA_NEXT_PAGE}.sh ]; then
+   ..${FA_NEXT_PAGE}.sh
+elif [ -s ..${FA_NEXT_PAGE}.avm ] || [ -d ..${FA_NEXT_PAGE} ] || [ -d ..${FA_NEXT_PAGE}.${FA_THEME} ]; then
+   "/var/tmp/$PAGE_NAME.html" < /dev/null 
+   rm -f "/var/tmp/$PAGE_NAME.html"
+fi  
+#echo '<div id="environment" class="source">'
+#printenv() {
+#echo '<table class="styledTable"><tr class="header"><td><h3>Name</h3></td><td><h3>Wert</h3></td></tr>'   
+#while read name value; do
+#echo '<tr class="row"><td>'$name'</td><td>'$value'</td></tr>'
+#done   
+#echo '</table>'
+#}
+#env | sort | sed 's/=/ /' | printenv 
+#echo '</div>'

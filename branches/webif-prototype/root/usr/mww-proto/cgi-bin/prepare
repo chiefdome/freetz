@@ -1,0 +1,33 @@
+#!/bin/sh
+if [ -d $FA_BASE$FA_NEXT_PAGE.$FA_THEME ] ||
+   [ -d $FA_BASE$FA_NEXT_PAGE ]; then
+   logger freetz "have to process directory ..."
+   local base="$FA_BASE$FA_NEXT_PAGE"
+   if [ -d $FA_BASE$FA_NEXT_PAGE.$FA_THEME ]; then
+      base="$FA_BASE$FA_NEXT_PAGE.$FA_THEME"
+   fi
+   logger freetz "directory is [$base]"
+   echo '#!/usr/bin/haserl' > "/var/tmp/$PAGE_NAME.html"
+   for f in $base/*; do
+      logger freetz "potential file to process is [$f]"                   
+      case $f in
+      *.avm)
+         ./webcm "getpage=$f" | grep -v '#!' >> "/var/tmp/$PAGE_NAME.html"
+         ;;
+      *.html)
+         cat "$f" >> "/var/tmp/$PAGE_NAME.html"
+         ;;
+      *.hsl)
+         cat "$f" | grep -v '#!' >> "/var/tmp/$PAGE_NAME.html"
+         ;;
+      *.sh)
+         $f >> "/var/tmp/$PAGE_NAME.html"
+         ;;
+      esac
+   done   
+   chmod +x "/var/tmp/$PAGE_NAME.html"
+elif [ -s "$FA_BASE$FA_NEXT_PAGE.avm" ]; then
+   logger freetz "page [$FA_BASE$FA_NEXT_PAGE] is avm-page"
+   ./webcm "getpage=$FA_BASE$FA_NEXT_PAGE.avm" | grep -v '#!' > "/var/tmp/$PAGE_NAME.html"
+   chmod +x "/var/tmp/$PAGE_NAME.html"
+fi

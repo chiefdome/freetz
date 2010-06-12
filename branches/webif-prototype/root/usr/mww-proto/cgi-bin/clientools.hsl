@@ -1,0 +1,112 @@
+#!/usr/bin/haserl
+<% validateUser() {
+if [ "x$FORM_user" != "x" ] && [ "x$FORM_pass" != "x" ]; then
+   logger freetz "ok, we got user and password"
+   local entry=$(grep -n $FORM_user '/var/mod/etc/fapasswd')
+   local key=$(echo "$FORM_user:$FORM_pass" | md5sum)
+   local sidfile='/var/tmp/fasid'
+   for i in $key; do
+      key=$i;
+      break;
+   done
+   entry=$(echo $entry | sed 's/:/ /g')
+   local n=0;
+   for i in $entry; do
+      if [ $n = 0 ]; then
+         local uid=$i
+      elif [ $n = 2 ]; then      
+         local layout=$i
+      elif [ $n = 3 ]; then
+         local gid=$i
+      elif [ $n = 4 ]; then
+         local check=$i
+      fi
+      let "n += 1";
+   done;
+   export FA_THEME=$layout
+   if [ "x$check" = "x$key" ]; then
+      logger freetz "well, login is ok"
+      local chksum=$(echo "$REMOTE_ADDR:$FORM_user:$uid:$gid:$HTTP_USER_AGENT" | md5sum)
+      for i in $chksum; do
+         chksum=$i;
+         break;
+      done
+      echo "FAABRIRA='$REMOTE_ADDR'" > $sidfile
+      echo "FAABRIN='$uid'" >> $sidfile
+      echo "FAABRIG='$gid'" >> $sidfile
+      echo "FAABRIUA='$HTTP_USER_AGENT'" >> $sidfile
+      echo "JAMESCOOK='$SESSIONID'" >> $sidfile
+      export FA_NEXT_PAGE=$FORM_FA_USRREQ
+      export FA_SID=$chksum
+      export sec_level=$gid
+      export mySID=$chksum
+   else 
+      logger freetz "nope, login was not ok"
+      export FA_NEXT_PAGE=$errorpage
+      rm -f $sidfile   
+   fi            
+else 
+   logger freetz "no user or password"
+   if [ "x$errorpage" != "x" ]; then
+      export FA_NEXT_PAGE=$errorpage
+   else
+      export FA_NEXT_PAGE='/html/login'
+   fi
+fi
+} %>
+<% validateSID() {
+logger freetz "start validation of sid"
+if [ "x$FORM_FA_SID" = "x" ] || [ ! -s /var/tmp/fasid ]; then
+   logger freetz "my sid is empty or session vars invalid"
+   if [ "x$FORM_errorpage" != "x" ]; then
+      export FA_NEXT_PAGE=$FORM_errorpage
+   else
+      export FA_NEXT_PAGE='/html/login'
+   fi
+else
+   logger freetz "ok, we have a sid and session vars ..."
+   . /var/tmp/fasid
+   local entry=$(head -n $FAABRIN '/var/mod/etc/fapasswd' | tail -n 1)
+   entry=$(echo $entry | sed 's/:/ /g')
+   local n=0;
+   for i in $entry; do
+      if [ $n = 0 ]; then
+         local user=$i
+      elif [ $n = 1 ]; then
+         local layout=$i
+      elif [ $n = 2 ]; then
+         local gid=$i
+      elif [ $n = 3 ]; then
+         local check=$i
+      fi
+      let "n += 1";
+   done;
+   export FA_THEME=$layout
+   local chksum=$(echo "$FAABRIRA:$user:$FAABRIN:$gid:$FAABRIUA" | md5sum)
+   for i in $chksum; do
+      chksum=$i;
+      break;
+   done
+   local sidfile='/var/tmp/fasid'
+   if [ "x$HTTP_USER_AGENT" != "x$FAABRIUA" ] ||
+      [ "x$REMOTE_ADDR" != "x$FAABRIRA" ] ||
+      [ "x$FORM_SKOTTOWE" != "x$JAMESCOOK" ] ||
+      [ "x$FORM_FA_SID" != "x$chksum" ]; then
+      logger freetz "session check failed!"
+      export FA_SID=''
+      export FA_NEXT_PAGE='/html/login'
+      rm -f $sidfile
+   else
+      logger freetz "validation of sid passed. Login is ok"
+      local sidfile='/var/tmp/fasid'
+      echo "FAABRIRA='$REMOTE_ADDR'" > $sidfile
+      echo "FAABRIN='$FAABRIN'" >> $sidfile
+      echo "FAABRIG='$gid'" >> $sidfile
+      echo "FAABRIUA='$HTTP_USER_AGENT'" >> $sidfile
+      echo "JAMESCOOK='$SESSIONID'" >> $sidfile
+      export sec_level=$gid
+      export mySID=$chksum
+      export FA_NEXT_PAGE=$FORM_page
+   fi
+fi
+} %>
