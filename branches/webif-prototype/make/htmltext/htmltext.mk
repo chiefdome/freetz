@@ -1,12 +1,27 @@
 $(call PKG_INIT_BIN, 0.0.01)
 $(PKG)_SOURCE:=htmltext-$($(PKG)_VERSION).tar.gz
 $(PKG)_SITE:=@SF/not_yet
-$(PKG)_DIR:=$(SOURCE_DIR)/htmltext-$($(PKG)_VERSION)
+#$(PKG)_DIR:=$(SOURCE_DIR)/htmltext-$($(PKG)_VERSION)
 $(PKG)_BINARY:=$($(PKG)_DIR)/getText
 $(PKG)_TARGET_BINARY:=$($(PKG)_DEST_DIR)/usr/bin/getText
 
-$(PKG_SOURCE_DOWNLOAD)
-$(PKG_UNPACKED)
+# Fetch from local directory for now
+#$(PKG_SOURCE_DOWNLOAD)
+#$(PKG_UNPACKED)
+$(pkg)-download:
+$(pkg)-source: $($(PKG)_DIR)/.unpacked
+$(pkg)-unpacked: $($(PKG)_DIR)/.unpacked
+.PHONY: $(pkg)-download $(pkg)-source $(pkg)-unpacked
+
+$(PKG)_SOURCE_DIR:
+	@mkdir -p $(HTMLTEXT_SOURCE_DIR)
+
+$($(PKG)_DIR)/.unpacked: $($(PKG)_MAKE_DIR)/source | $(PKG)_SOURCE_DIR
+	rm -rf $(HTMLTEXT_DIR)
+	cp -r $(HTMLTEXT_MAKE_DIR)/source/htmltext-$(HTMLTEXT_VERSION) \
+	    $(HTMLTEXT_DIR)
+	@touch $@
+
 $(PKG_CONFIGURED_NOP)
 
 $($(PKG)_BINARY): $($(PKG)_DIR)/.configured
