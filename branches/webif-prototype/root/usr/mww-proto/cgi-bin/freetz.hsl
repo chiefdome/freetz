@@ -54,7 +54,7 @@ document.application.submit();
 }
 --></script>
 </head><body><script type="text/javascript"><!--
-if (self.location == top.location){location.href="/index.html";} 
+// if (self.location == top.location){location.href="/index.html";} 
 --></script>
 <% ./prepare %>
 <% ../theme/$FA_THEME/template %>
