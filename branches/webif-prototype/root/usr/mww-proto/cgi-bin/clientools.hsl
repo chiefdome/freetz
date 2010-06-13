@@ -1,5 +1,7 @@
 #!/usr/bin/haserl
 <%
+source logging.lib
+
 FA_PASSWD_FILE=/var/mod/etc/fapasswd
 FA_SID_FILE=/var/tmp/fasid
 FA_LOGIN_PAGE=/html/login
@@ -10,7 +12,7 @@ shell_escape() {
 %>
 <% validateUser() {
 if [ -n "$FORM_user" -a -n "$FORM_pass" ]; then
-   logger freetz "ok, we got user and password"
+   log_info "ok, we got user and password"
    local sidfile=$FA_SID_FILE
    local key=$(echo "$FORM_user:$FORM_pass" | md5sum)
    key=${key%% *}
@@ -20,7 +22,7 @@ if [ -n "$FORM_user" -a -n "$FORM_pass" ]; then
    local uid=$1 layout=$3 gid=$4 check=$5
    export FA_THEME=$layout
    if [ "$check" = "$key" ]; then
-      logger freetz "well, login is ok"
+      log_info "well, login is ok"
       local chksum=$(echo "$REMOTE_ADDR:$FORM_user:$uid:$gid:$HTTP_USER_AGENT" | md5sum)
       chksum=${chksum%% *}
       cat > "$sidfile" << EOF
@@ -35,22 +37,22 @@ EOF
       export sec_level=$gid
       export mySID=$chksum
    else 
-      logger freetz "nope, login was not ok"
+      log_info "nope, login was not ok"
       export FA_NEXT_PAGE=$FORM_errorpage
       rm -f "$sidfile"
    fi            
 else 
-   logger freetz "no user or password"
+   log_info "no user or password"
    export FA_NEXT_PAGE=${FORM_errorpage:-$FA_LOGIN_PAGE}
 fi
 } %>
 <% validateSID() {
-logger freetz "start validation of sid"
+log_info "start validation of sid"
 if [ -z "$FORM_FA_SID" -o ! -s "$FA_SID_FILE" ]; then
-   logger freetz "my sid is empty or session vars invalid"
+   log_info "my sid is empty or session vars invalid"
    export FA_NEXT_PAGE=${FORM_errorpage:-$FA_LOGIN_PAGE}
 else
-   logger freetz "ok, we have a sid and session vars ..."
+   log_info "ok, we have a sid and session vars ..."
    . "$FA_SID_FILE"
    local entry=$(head -n $FAABRIN "$FA_PASSWD_FILE" | tail -n 1)
    local IFS=":"
@@ -64,12 +66,12 @@ else
       [ "$REMOTE_ADDR" != "$FAABRIRA" ] ||
       [ "$FORM_SKOTTOWE" != "$JAMESCOOK" ] ||
       [ "$FORM_FA_SID" != "$chksum" ]; then
-      logger freetz "session check failed!"
+      log_info "session check failed!"
       export FA_SID=''
       export FA_NEXT_PAGE=$FA_LOGIN_PAGE
       rm -f "$sidfile"
    else
-      logger freetz "validation of sid passed. Login is ok"
+      log_info "validation of sid passed. Login is ok"
       # FIXME: Why is the existing sidfile rewritten?
       local sidfile=$FA_SID_FILE
       cat > "$sidfile" << EOF

@@ -5,6 +5,7 @@ Content-Type: text/html
 http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
+<% source logging.lib %>
 <%in ./clientools.hsl %>
 <%
 export FA_NEXT_PAGE=$PATH_INFO 
@@ -15,9 +16,9 @@ export FA_VERSION=$(./webcm getpage=../html/stuff.4.avm/version.avm)
 export FA_THEME='S'
 
 if [ -z "$FORM_FA_SID" ]; then
-   logger freetz "fasid is empty"
+   log_info "fasid is empty"
    if [ -z "$FORM_submit" ]; then
-      logger freetz "submit is empty too"
+      log_info "submit is empty too"
       if [ -n "$PATH_INFO" ]; then
 	 local script_path=$(dirname $PATH_INFO)
 	 if [ "$script_path" = / ]; then
@@ -29,14 +30,14 @@ if [ -z "$FORM_FA_SID" ]; then
 	 FA_NEXT_PAGE='/html/login'
       fi
    else   
-      logger freetz "submit is not empty"
+      log_info "submit is not empty"
       validateUser
    fi
 else 
-   logger freetz "we have a sid from user [$FORM_FA_SID]"
+   log_info "we have a sid from user [$FORM_FA_SID]"
    validateSID
 fi 
-logger freetz "pi: [$PATH_INFO] - page: [$FA_NEXT_PAGE]"   
+log_info "pi: [$PATH_INFO] - page: [$FA_NEXT_PAGE]"   
 export PAGE_NAME=$(basename $(echo $FA_NEXT_PAGE))   
 %>
 

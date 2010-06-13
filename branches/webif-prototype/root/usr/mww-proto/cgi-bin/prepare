@@ -1,18 +1,20 @@
 #!/bin/sh
+source logging.lib
+
 tmp="/var/tmp/$PAGE_NAME.html"
 page="${FA_BASE}${FA_NEXT_PAGE}"
 
 if [ -d "${page}.$FA_THEME" -o -d "${page}" ]; then
-   logger freetz "have to process directory ..."
+   log_info "have to process directory ..."
    base="${page}"
    if [ -d "${page}.$FA_THEME" ]; then
       base="${page}.$FA_THEME"
    fi
-   logger freetz "directory is [$base]"
+   log_info "directory is [$base]"
    # FIXME: parallel requests will corrupt the temp file
    echo '#!/usr/bin/haserl' > "$tmp"
    for f in $base/*; do
-      logger freetz "processing file [$f]"                   
+      log_info "processing file [$f]"                   
       case $f in
       *.avm)
          ./webcm "getpage=$f" | grep -v '^#!' >> "$tmp"
@@ -30,7 +32,7 @@ if [ -d "${page}.$FA_THEME" -o -d "${page}" ]; then
    done   
    chmod +x "$tmp"
 elif [ -s "${page}.avm" ]; then
-   logger freetz "page [${page}] is avm-page"
+   log_info "page [${page}] is avm-page"
    ./webcm "getpage=${page}.avm" | grep -v '^#!' > "$tmp"
    chmod +x "$tmp"
 fi
