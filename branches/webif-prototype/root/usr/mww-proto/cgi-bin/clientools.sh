@@ -4,9 +4,16 @@ FA_PASSWD_FILE=/var/mod/etc/fapasswd
 FA_SID_FILE=/var/tmp/fasid
 FA_LOGIN_PAGE=/html/login
 
+# Prints $1 such that it may safely be read by the shell
 shell_escape() {
    echo "'${1//'/'\\''}'"
 } 
+
+# Returns the MD5 hash of $1 + LF
+md5_hash() {
+   local md5=$(echo "$1" | md5sum)
+   echo "${md5%% *}"
+}
 
 validateUser() {
 if [ -n "$FORM_user" -a -n "$FORM_pass" ]; then
@@ -21,8 +28,7 @@ if [ -n "$FORM_user" -a -n "$FORM_pass" ]; then
    export FA_THEME=$layout
    if [ "$check" = "$key" ]; then
       log_info "well, login is ok"
-      local chksum=$(echo "$REMOTE_ADDR:$FORM_user:$uid:$gid:$HTTP_USER_AGENT" | md5sum)
-      chksum=${chksum%% *}
+      local chksum=$(md5_hash "$REMOTE_ADDR:$FORM_user:$uid:$gid:$HTTP_USER_AGENT")
       export FA_NEXT_PAGE=$FORM_usrreq
       export FA_SID=$chksum
       export FA_TOKEN=$SESSIONID
@@ -58,14 +64,24 @@ else
    set -- $entry
    local user=$1 layout=$2 gid=$3 check=$4
    export FA_THEME=$layout
-   local chksum=$(echo "$FA_REMOTE_ADDR:$user:$FA_UID:$gid:$FA_USER_AGENT" | md5sum)
-   chksum=${chksum%% *}
+   local chksum=$(md5_hash "$FA_REMOTE_ADDR:$user:$FA_UID:$gid:$FA_USER_AGENT")
    local sidfile=$FA_SID_FILE
-   if [ "$HTTP_USER_AGENT" != "$FA_USER_AGENT" ] ||
-      [ "$REMOTE_ADDR" != "$FA_REMOTE_ADDR" ] ||
-      [ "$FORM_token" != "$FA_TOKEN" ] ||
-      [ "$FORM_sid" != "$chksum" ]; then
-      log_info "session check failed!"
+   local valid=true reason=
+   if [ "$HTTP_USER_AGENT" != "$FA_USER_AGENT" ]; then
+       valid=false
+       reason="user agent changed: [$FA_USER_AGENT] -> [$HTTP_USER_AGENT]"
+   elif [ "$REMOTE_ADDR" != "$FA_REMOTE_ADDR" ]; then
+       valid=false
+       reason="remote address changed: [$FA_REMOTE_ADDR] -> [$REMOTE_ADDR]"
+   elif [ "$FORM_token" != "$FA_TOKEN" ]; then
+       valid=false
+       reason="wrong token: expected [$FA_TOKEN], received [$FORM_token]"
+   elif [ "$FORM_sid" != "$chksum" ]; then
+       valid=false
+       reason="wrong session id: expected [$chksum], received [$FORM_sid]"
+   fi
+   if ! $valid; then
+      log_info "session check failed! $reason"
       export FA_SID=''
       export FA_NEXT_PAGE=$FA_LOGIN_PAGE
       rm -f "$sidfile"
