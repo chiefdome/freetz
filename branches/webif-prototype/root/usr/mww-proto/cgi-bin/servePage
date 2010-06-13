@@ -1,9 +1,9 @@
 #!/bin/sh
 cat << EOF
 <input type="hidden" name="page" value="/index.html"/>
-<input type="hidden" name="SKOTTOWE" value="${SESSIONID}"/>
-<input type="hidden" name="FA_SID" value="${mySID}"/>
-<input type="hidden" name="FA_USRREQ" value="${FA_USRREQ}"/>
+<input type="hidden" name="token" value="${SESSIONID}"/>
+<input type="hidden" name="sid" value="${FA_SID}"/>
+<input type="hidden" name="usrreq" value="${FA_USRREQ}"/>
 EOF
 
 page="${FA_BASE}${FA_NEXT_PAGE}"

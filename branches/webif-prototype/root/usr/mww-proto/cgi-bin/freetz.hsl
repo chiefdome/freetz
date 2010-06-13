@@ -11,12 +11,12 @@ http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 export FA_NEXT_PAGE=$PATH_INFO 
 export FA_USRREQ=$PATH_INFO
 export FA_BASE=$(dirname $PWD)
-export FA_SID=0
+export FA_SID=''
 export FA_VERSION=$(./webcm getpage=../html/stuff.4.avm/version.avm)
 export FA_THEME='S'
 
-if [ -z "$FORM_FA_SID" ]; then
-   log_info "fasid is empty"
+if [ -z "$FORM_sid" ]; then
+   log_info "sid is empty"
    if [ -z "$FORM_submit" ]; then
       log_info "submit is empty too"
       if [ -n "$PATH_INFO" ]; then
@@ -34,7 +34,7 @@ if [ -z "$FORM_FA_SID" ]; then
       validateUser
    fi
 else 
-   log_info "we have a sid from user [$FORM_FA_SID]"
+   log_info "we have a sid from user [$FORM_sid]"
    validateSID
 fi 
 log_info "pi: [$PATH_INFO] - page: [$FA_NEXT_PAGE]"   

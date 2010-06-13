@@ -25,17 +25,17 @@ if [ -n "$FORM_user" -a -n "$FORM_pass" ]; then
       log_info "well, login is ok"
       local chksum=$(echo "$REMOTE_ADDR:$FORM_user:$uid:$gid:$HTTP_USER_AGENT" | md5sum)
       chksum=${chksum%% *}
-      cat > "$sidfile" << EOF
-FAABRIRA=$(shell_escape "$REMOTE_ADDR")
-FAABRIN=$(shell_escape "$uid")
-FAABRIG=$(shell_escape "$gid")
-FAABRIUA=$(shell_escape "$HTTP_USER_AGENT")
-JAMESCOOK=$(shell_escape "$SESSIONID")
-EOF
-      export FA_NEXT_PAGE=$FORM_FA_USRREQ
+      export FA_NEXT_PAGE=$FORM_usrreq
       export FA_SID=$chksum
+      export FA_TOKEN=$SESSIONID
       export sec_level=$gid
-      export mySID=$chksum
+      cat > "$sidfile" << EOF
+FA_REMOTE_ADDR=$(shell_escape "$REMOTE_ADDR")
+FA_UID=$(shell_escape "$uid")
+FA_GID=$(shell_escape "$gid")
+FA_USER_AGENT=$(shell_escape "$HTTP_USER_AGENT")
+FA_TOKEN=$(shell_escape "$FA_TOKEN")
+EOF
    else 
       log_info "nope, login was not ok"
       export FA_NEXT_PAGE=$FORM_errorpage
@@ -48,42 +48,43 @@ fi
 } %>
 <% validateSID() {
 log_info "start validation of sid"
-if [ -z "$FORM_FA_SID" -o ! -s "$FA_SID_FILE" ]; then
+if [ -z "$FORM_sid" -o ! -s "$FA_SID_FILE" ]; then
    log_info "my sid is empty or session vars invalid"
    export FA_NEXT_PAGE=${FORM_errorpage:-$FA_LOGIN_PAGE}
 else
    log_info "ok, we have a sid and session vars ..."
    . "$FA_SID_FILE"
-   local entry=$(head -n $FAABRIN "$FA_PASSWD_FILE" | tail -n 1)
+   local entry=$(head -n $FA_UID "$FA_PASSWD_FILE" | tail -n 1)
    local IFS=":"
    set -- $entry
    local user=$1 layout=$2 gid=$3 check=$4
    export FA_THEME=$layout
-   local chksum=$(echo "$FAABRIRA:$user:$FAABRIN:$gid:$FAABRIUA" | md5sum)
+   local chksum=$(echo "$FA_REMOTE_ADDR:$user:$FA_UID:$gid:$FA_USER_AGENT" | md5sum)
    chksum=${chksum%% *}
    local sidfile=$FA_SID_FILE
-   if [ "$HTTP_USER_AGENT" != "$FAABRIUA" ] ||
-      [ "$REMOTE_ADDR" != "$FAABRIRA" ] ||
-      [ "$FORM_SKOTTOWE" != "$JAMESCOOK" ] ||
-      [ "$FORM_FA_SID" != "$chksum" ]; then
+   if [ "$HTTP_USER_AGENT" != "$FA_USER_AGENT" ] ||
+      [ "$REMOTE_ADDR" != "$FA_REMOTE_ADDR" ] ||
+      [ "$FORM_token" != "$FA_TOKEN" ] ||
+      [ "$FORM_sid" != "$chksum" ]; then
       log_info "session check failed!"
       export FA_SID=''
       export FA_NEXT_PAGE=$FA_LOGIN_PAGE
       rm -f "$sidfile"
    else
       log_info "validation of sid passed. Login is ok"
-      # FIXME: Why is the existing sidfile rewritten?
       local sidfile=$FA_SID_FILE
-      cat > "$sidfile" << EOF
-FAABRIRA=$(shell_escape "$REMOTE_ADDR")
-FAABRIN=$(shell_escape "$FAABRIN")
-FAABRIG=$(shell_escape "$gid")
-FAABRIUA=$(shell_escape "$HTTP_USER_AGENT")
-JAMESCOOK=$(shell_escape "$SESSIONID")
-EOF
       export sec_level=$gid
-      export mySID=$chksum
+      export FA_SID=$chksum
+      export FA_TOKEN=$SESSIONID
       export FA_NEXT_PAGE=$FORM_page
+      # Rewrite sidfile with new token
+      cat > "$sidfile" << EOF
+FA_REMOTE_ADDR=$(shell_escape "$REMOTE_ADDR")
+FA_UID=$(shell_escape "$FA_UID")
+FA_GID=$(shell_escape "$gid")
+FA_USER_AGENT=$(shell_escape "$HTTP_USER_AGENT")
+FA_TOKEN=$(shell_escape "$FA_TOKEN")
+EOF
    fi
 fi
 } %>
