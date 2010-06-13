@@ -1,9 +1,9 @@
 #!/usr/bin/haserl
-Content-type text/html
+Content-Type: text/html
 
-<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN 
-http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-<html xmlns=\"http://www.w3.org/1999/xhtml\">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN 
+http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <%in ./clientools.hsl %>
 <%
@@ -13,26 +13,29 @@ export FA_BASE=$(dirname $PWD)
 export FA_SID=0
 export FA_VERSION=$(./webcm getpage=../html/stuff.4.avm/version.avm)
 export FA_THEME='S'
-if [ "x$FORM_FA_SID" = "x" ]; then
-logger freetz "fasid is empty"
-if [ "x$FORM_submit" = "x" ]; then
-   logger freetz "submit is empty too"
-   if [ "x$PATH_INFO" != "x" ]; then
-      local script_path=$(dirname $PATH_INFO)
-      if [ "x$script_path" = "x/" ]; then
-         export FA_NEXT_PAGE="$PATH_INFO"
-      else
-         export FA_NEXT_PAGE='/html/login';
+
+if [ -z "$FORM_FA_SID" ]; then
+   logger freetz "fasid is empty"
+   if [ -z "$FORM_submit" ]; then
+      logger freetz "submit is empty too"
+      if [ -n "$PATH_INFO" ]; then
+	 local script_path=$(dirname $PATH_INFO)
+	 if [ "$script_path" = / ]; then
+	    FA_NEXT_PAGE=$PATH_INFO
+	 else
+	    FA_NEXT_PAGE='/html/login'
+	 fi
+      else   
+	 FA_NEXT_PAGE='/html/login'
       fi
    else   
-      export FA_NEXT_PAGE='/html/login';
+      logger freetz "submit is not empty"
+      validateUser
    fi
-else   
-   logger freetz "submit is not empty"
-   validateUser; fi
 else 
    logger freetz "we have a sid from user [$FORM_FA_SID]"
-   validateSID; fi 
+   validateSID
+fi 
 logger freetz "pi: [$PATH_INFO] - page: [$FA_NEXT_PAGE]"   
 export PAGE_NAME=$(basename $(echo $FA_NEXT_PAGE))   
 %>

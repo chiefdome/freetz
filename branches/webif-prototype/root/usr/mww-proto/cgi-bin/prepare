@@ -1,33 +1,36 @@
 #!/bin/sh
-if [ -d $FA_BASE$FA_NEXT_PAGE.$FA_THEME ] ||
-   [ -d $FA_BASE$FA_NEXT_PAGE ]; then
+tmp="/var/tmp/$PAGE_NAME.html"
+page="${FA_BASE}${FA_NEXT_PAGE}"
+
+if [ -d "${page}.$FA_THEME" -o -d "${page}" ]; then
    logger freetz "have to process directory ..."
-   local base="$FA_BASE$FA_NEXT_PAGE"
-   if [ -d $FA_BASE$FA_NEXT_PAGE.$FA_THEME ]; then
-      base="$FA_BASE$FA_NEXT_PAGE.$FA_THEME"
+   base="${page}"
+   if [ -d "${page}.$FA_THEME" ]; then
+      base="${page}.$FA_THEME"
    fi
    logger freetz "directory is [$base]"
-   echo '#!/usr/bin/haserl' > "/var/tmp/$PAGE_NAME.html"
+   # FIXME: parallel requests will corrupt the temp file
+   echo '#!/usr/bin/haserl' > "$tmp"
    for f in $base/*; do
-      logger freetz "potential file to process is [$f]"                   
+      logger freetz "processing file [$f]"                   
       case $f in
       *.avm)
-         ./webcm "getpage=$f" | grep -v '#!' >> "/var/tmp/$PAGE_NAME.html"
+         ./webcm "getpage=$f" | grep -v '^#!' >> "$tmp"
          ;;
       *.html)
-         cat "$f" >> "/var/tmp/$PAGE_NAME.html"
+         cat "$f" >> "$tmp"
          ;;
       *.hsl)
-         cat "$f" | grep -v '#!' >> "/var/tmp/$PAGE_NAME.html"
+         cat "$f" | grep -v '^#!' >> "$tmp"
          ;;
       *.sh)
-         $f >> "/var/tmp/$PAGE_NAME.html"
+         $f >> "$tmp"
          ;;
       esac
    done   
-   chmod +x "/var/tmp/$PAGE_NAME.html"
-elif [ -s "$FA_BASE$FA_NEXT_PAGE.avm" ]; then
-   logger freetz "page [$FA_BASE$FA_NEXT_PAGE] is avm-page"
-   ./webcm "getpage=$FA_BASE$FA_NEXT_PAGE.avm" | grep -v '#!' > "/var/tmp/$PAGE_NAME.html"
-   chmod +x "/var/tmp/$PAGE_NAME.html"
+   chmod +x "$tmp"
+elif [ -s "${page}.avm" ]; then
+   logger freetz "page [${page}] is avm-page"
+   ./webcm "getpage=${page}.avm" | grep -v '^#!' > "$tmp"
+   chmod +x "$tmp"
 fi
