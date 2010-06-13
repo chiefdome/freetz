@@ -5,9 +5,10 @@ Content-Type: text/html
 http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-<% source logging.lib %>
-<%in ./clientools.hsl %>
 <%
+source logging.sh
+source clientools.sh
+
 export FA_NEXT_PAGE=$PATH_INFO 
 export FA_USRREQ=$PATH_INFO
 export FA_BASE=$(dirname $PWD)

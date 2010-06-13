@@ -1,6 +1,4 @@
-#!/usr/bin/haserl
-<%
-source logging.lib
+source logging.sh
 
 FA_PASSWD_FILE=/var/mod/etc/fapasswd
 FA_SID_FILE=/var/tmp/fasid
@@ -9,8 +7,8 @@ FA_LOGIN_PAGE=/html/login
 shell_escape() {
    echo "'${1//'/'\\''}'"
 } 
-%>
-<% validateUser() {
+
+validateUser() {
 if [ -n "$FORM_user" -a -n "$FORM_pass" ]; then
    log_info "ok, we got user and password"
    local sidfile=$FA_SID_FILE
@@ -45,8 +43,9 @@ else
    log_info "no user or password"
    export FA_NEXT_PAGE=${FORM_errorpage:-$FA_LOGIN_PAGE}
 fi
-} %>
-<% validateSID() {
+}
+
+validateSID() {
 log_info "start validation of sid"
 if [ -z "$FORM_sid" -o ! -s "$FA_SID_FILE" ]; then
    log_info "my sid is empty or session vars invalid"
@@ -87,4 +86,4 @@ FA_TOKEN=$(shell_escape "$FA_TOKEN")
 EOF
    fi
 fi
-} %>
+}

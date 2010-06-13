@@ -1,5 +1,5 @@
 #!/bin/sh
-source logging.lib
+source logging.sh
 
 tmp="/var/tmp/$PAGE_NAME.html"
 page="${FA_BASE}${FA_NEXT_PAGE}"
