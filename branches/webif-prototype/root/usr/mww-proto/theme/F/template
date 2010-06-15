@@ -34,7 +34,7 @@ cat <<EOF
       <img border="0" src="/images/space.gif" height="800" width="1" align="left" hspace="0" vspace="0"/>
       <div>
 EOF
-./mainnavi
+. ../tools/mainnavi
 cat <<EOF
          <div class="container">
             <div class="headline">Lizenz</div>
@@ -52,7 +52,7 @@ cat <<EOF
             <tr>
                <td class="headline">
 EOF
-./subnavi 
+. ../tools/subnavi 
 cat <<EOF
                </td>
             </tr>
@@ -61,7 +61,7 @@ cat <<EOF
       <form name="application" target="main" method="get" action="$SCRIPT_NAME$FA_NEXT_PAGE">
       <div id="pagecontent">
 EOF
-./servePage
+. ../tools/servePage
 cat <<EOF
       </div>
       </form>

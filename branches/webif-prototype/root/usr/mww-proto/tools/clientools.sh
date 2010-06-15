@@ -1,4 +1,4 @@
-source logging.sh
+source ../tools/logging.sh
 
 FA_PASSWD_FILE=/var/mod/etc/fapasswd
 FA_SID_FILE=/var/tmp/fasid
@@ -42,6 +42,8 @@ FA_TOKEN=$(shell_escape "$FA_TOKEN")
 EOF
    else 
       log_info "nope, login was not ok"
+      log_info "check is  [$check]"   
+      log_info "should be [$key]"
       export FA_NEXT_PAGE=$FORM_errorpage
       rm -f "$sidfile"
    fi            

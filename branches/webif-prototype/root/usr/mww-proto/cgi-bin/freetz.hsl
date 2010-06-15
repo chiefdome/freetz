@@ -6,8 +6,7 @@ http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <%
-source logging.sh
-source clientools.sh
+source ../tools/clientools.sh
 
 export FA_NEXT_PAGE=$PATH_INFO 
 export FA_USRREQ=$PATH_INFO
@@ -44,9 +43,7 @@ export PAGE_NAME=$(basename $(echo $FA_NEXT_PAGE))
 
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title>Freetz - advanced router firmware</title>
-<style type="text/css">
-<% cat ../theme/$FA_THEME/styles.css %>
-</style>
+<link rel="stylesheet" type="text/css" href="/styles/<% echo -n $FA_THEME %>/styles.css">
 <script type="text/javascript"><!--
 function dopost() {
 document.application.method='post';
@@ -61,6 +58,6 @@ document.application.submit();
 </head><body>
 <% if [ -x ../html/MimeType ]; then cat ../html/MimeType;
 else cat ../theme/MimeType; fi %>
-<% ./prepare %>
+<% ../tools/prepare %>
 <% ../theme/$FA_THEME/template %>
 </body></html>

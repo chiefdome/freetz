@@ -12,7 +12,7 @@ getText FW001
 echo -n "&nbsp;$FA_VERSION&nbsp;"
 cat /etc/.freetz-version
 echo -n '</div></td></tr><tr><td id="pagecontent" colspan="2">'
-./servePage
+. ../tools/servePage
 cat << EOF
 </td></tr>
 <tr><td colspan="2">
