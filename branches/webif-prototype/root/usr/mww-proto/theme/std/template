@@ -1,6 +1,6 @@
 #!/bin/sh
 cat << EOF
-<form name="application" target="main" method="get" action="$SCRIPT_NAME$FA_NEXT_PAGE">
+<form name="application" target="main" method="get">
 <div id="content"><table width="100%"><tr valign="top"><td class="topic">
 EOF
 getText FA001

@@ -4,7 +4,7 @@ background-image: url(/images/bg_ramp.png);
 background-repeat: repeat-x;
 background-position: 0 0;
 padding: 0px;
-overflow: hidden;         
+//overflow: hidden;         
 font-family:'Verdana', 'Arial', 'Helvetica';
 font-size: 16px; text-decoration:none; color:#FFF; }
 h1,h2,h3,h4,h5,h6 { margin:0px; font-weight: bold; }
@@ -267,10 +267,10 @@ background-repeat: repeat-x;
 background-position: 0 -250;
 position: absolute;
 padding: 10px;
-top: 600px;
+top: 590px;
 left: 0px;     
 width: 630px;
-height: 240px;       
+height: 250px;       
 }
 #memory .title {
 padding-left: 20px;   
@@ -280,6 +280,7 @@ color: #000;
 padding: 0;
 padding-left: 10px;         
 margin: 0;         
+margin-bottom: -20px;        
 }
 #logs {
 position: absolute;

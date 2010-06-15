@@ -8,9 +8,6 @@ EOF
 
 page="${FA_BASE}${FA_NEXT_PAGE}"
 
-# haserl script from 'prepare'
-tmp="/var/tmp/${PAGE_NAME}.html"
-
 if [ -e "${page}.html" ]; then
    cat "${page}.html"
 elif [ -x "${page}.cgi" ]; then
@@ -20,8 +17,8 @@ elif [ -x "${page}.hsl" ]; then
 elif [ -x "${page}.sh" ]; then
    "${page}.sh"
 elif [ -s "${page}.avm" -o -d "${page}" -o -d "${page}.${FA_THEME}" ]; then
-   "$tmp" < /dev/null 
-   rm -f "$tmp"
+   "$FA_WORK_FILE" < /dev/null 
+#   rm -f "$FA_WORK_FILE"
 fi  
 if true; then # during development
    echo '<div id="environment" class="source">'

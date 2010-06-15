@@ -18,7 +18,6 @@ md5_hash() {
 validateUser() {
 if [ -n "$FORM_user" -a -n "$FORM_pass" ]; then
    log_info "ok, we got user and password"
-   local sidfile=$FA_SID_FILE
    local key=$(echo "$FORM_user:$FORM_pass" | md5sum)
    key=${key%% *}
    local entry=$(grep -n $FORM_user "$FA_PASSWD_FILE")
@@ -33,7 +32,7 @@ if [ -n "$FORM_user" -a -n "$FORM_pass" ]; then
       export FA_SID=$chksum
       export FA_TOKEN=$SESSIONID
       export sec_level=$gid
-      cat > "$sidfile" << EOF
+      cat > "$FA_SID_FILE" << EOF
 FA_REMOTE_ADDR=$(shell_escape "$REMOTE_ADDR")
 FA_UID=$(shell_escape "$uid")
 FA_GID=$(shell_escape "$gid")
@@ -45,7 +44,7 @@ EOF
       log_info "check is  [$check]"   
       log_info "should be [$key]"
       export FA_NEXT_PAGE=$FORM_errorpage
-      rm -f "$sidfile"
+      rm -f "$FA_SID_FILE"
    fi            
 else 
    log_info "no user or password"
@@ -67,7 +66,6 @@ else
    local user=$1 layout=$2 gid=$3 check=$4
    export FA_THEME=$layout
    local chksum=$(md5_hash "$FA_REMOTE_ADDR:$user:$FA_UID:$gid:$FA_USER_AGENT")
-   local sidfile=$FA_SID_FILE
    local valid=true reason=
    if [ "$HTTP_USER_AGENT" != "$FA_USER_AGENT" ]; then
        valid=false
@@ -86,16 +84,15 @@ else
       log_info "session check failed! $reason"
       export FA_SID=''
       export FA_NEXT_PAGE=$FA_LOGIN_PAGE
-      rm -f "$sidfile"
+      rm -f "$FA_SID_FILE"
    else
       log_info "validation of sid passed. Login is ok"
-      local sidfile=$FA_SID_FILE
       export sec_level=$gid
       export FA_SID=$chksum
       export FA_TOKEN=$SESSIONID
       export FA_NEXT_PAGE=$FORM_page
       # Rewrite sidfile with new token
-      cat > "$sidfile" << EOF
+      cat > "$FA_SID_FILE" << EOF
 FA_REMOTE_ADDR=$(shell_escape "$REMOTE_ADDR")
 FA_UID=$(shell_escape "$FA_UID")
 FA_GID=$(shell_escape "$gid")
