@@ -106,7 +106,7 @@ Latest changes:
     * minicom-2.4
     * mini-snmpd 1.2b
     * ncftp-3.2.4
-    * netpbm-10.35.74
+    * netpbm-10.35.75
     * ndas-1.1-22
     * nhipt iptables cgi 0.8.3a
     * nfs-utils 1.2.0
@@ -146,7 +146,6 @@ Latest changes:
     * xmail 1.27
 
 - Updated tools and hooks:
-    * busybox-tools: Bump to version 1.16.1
     * external:
      * Move external files out of tools/external into separate files for each package
      * added automatic start/stop of services on (un)mount (now configurable via webinterface)
@@ -167,8 +166,8 @@ Latest changes:
     * curl 7.20.1
     * cyassl 1.5.0
     * davfs2 1.4.6
-    * dns2tcp 0.5
-    * dnsmasq 2.52
+    * dns2tcp 0.5.1
+    * dnsmasq 2.55
     * dtmfbox 0.5.0
     * e2fsprogs 1.41.12
     * eSpeak 1.40.02
@@ -234,7 +233,7 @@ Latest changes:
     * Please see FIRMWARES for the list of currently supported boxes and firmwares.
 
 - BusyBox:
-    * updated to 1.16.1
+    * updated to 1.16.2
     * tools: updated to 1.15.3
 
 - Web interface:
