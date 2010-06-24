@@ -361,6 +361,13 @@ config FREETZ_LIB_libgd
 		programmers. GD creates PNG, JPEG and GIF images, among other formats.
 		GD is commonly used to generate charts, graphics, thumbnails, and most
 		anything else, on the fly.
+
+config FREETZ_LIB_libnetpbm
+	bool "libnetpbm (libnetpbm.so)"
+	select FREETZ_LIB_libm
+	default n
+	help
+		netpbm is a toolkit for manipulation of graphic images.
 endmenu
 
 config FREETZ_LIB_libatm
@@ -417,11 +424,6 @@ config FREETZ_LIB_libelf
 	help
 		libelf - ELF object file access library
 
-		libelf-0.8.5 is a free ELF object file access library.
-		http://www.stud.uni-hannover.de/~michael/software/
-
-		In Freetz, e.g ltrace depends on libelf.
-
 config FREETZ_LIB_libevent
 	bool "libevent (libevent.so)"
 	default n
@@ -438,17 +440,6 @@ config FREETZ_LIB_libevent
 		network servers. An application just needs to call event_dispatch() and
 		then add or remove events dynamically without having to change the event
 		loop.
-
-config FREETZ_LIB_libexpat
-	bool "libexpat (libexpat.so)"
-	default n
-	help
-		This is Expat, a C library for parsing XML, written by James Clark.
-		Expat is a stream-oriented XML parser. This means that you register
-		handlers with the parser before starting the parse. These handlers
-		are called when the parser discovers the associated structures in the
-		document being parsed. A start tag is an example of the kind of
-		structures for which you may register handlers.
 
 config FREETZ_LIB_libftdi
 	bool "libftdi (libftdi.so)"
@@ -549,13 +540,6 @@ config FREETZ_LIB_libnet
 		Contact Sam Roberts <vieuxtech@gmail.com> if you have patches or have
 		found bugs.
 
-config FREETZ_LIB_libnetpbm
-	bool "libnetpbm (libnetpbm.so)"
-	select FREETZ_LIB_libm
-	default n
-	help
-		netpbm is a toolkit for manipulation of graphic images.
-
 config FREETZ_LIB_libopenobex
 	bool "libopenobex (libopenobex.so)"
 	select FREETZ_LIB_libbluetooth
@@ -607,6 +591,17 @@ config FREETZ_LIB_libpopt
 	default n
 	help
 		The popt library exists essentially for parsing command line options.
+
+config FREETZ_LIB_libslang
+	bool "libslang"
+	select FREETZ_LIB_libdl
+	select FREETZ_LIB_libm
+	default n
+	help
+		S-Lang is a multi-platform programmer's library designed to allow a developer
+		to create robust multi-platform software. It provides facilities required
+		by interactive applications such as display/screen management, keyboard input,
+		keymaps, and so on.
 
 config FREETZ_LIB_libsqlite3
 	bool "libsqlite (libsqlite3.so)"
@@ -963,6 +958,17 @@ config FREETZ_LIB_libuClibc__
 #		PJSIP is a SIP stack supporting many SIP extensions/features
 
 menu "XML/XSLT"
+config FREETZ_LIB_libexpat
+	bool "libexpat (libexpat.so)"
+	default n
+	help
+		This is Expat, a C library for parsing XML, written by James Clark.
+		Expat is a stream-oriented XML parser. This means that you register
+		handlers with the parser before starting the parse. These handlers
+		are called when the parser discovers the associated structures in the
+		document being parsed. A start tag is an example of the kind of
+		structures for which you may register handlers.
+
 config FREETZ_LIB_libxml2
 	bool "libxml2 (libxml2.so)"
 	select FREETZ_LIB_libiconv if FREETZ_TARGET_UCLIBC_VERSION_0_9_28

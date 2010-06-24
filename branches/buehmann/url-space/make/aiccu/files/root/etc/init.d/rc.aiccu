@@ -1,11 +1,9 @@
 #!/bin/sh
 
 DAEMON=aiccu
-
 . /etc/init.d/modlibrc
 
-
-write_config() {
+config() {
 	(
 		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
 			/tmp/flash/${DAEMON}_conf
@@ -20,66 +18,47 @@ write_config() {
 }
 
 start() {
-	echo -n 'Starting aiccu...'
-	write_config
-	modprobe ipv6
-	$DAEMON start /mod/etc/$DAEMON.conf
-	exitval=$?
-	if [ "$exitval" -eq 0 ]; then
-		echo 'done.'
-	else
-		echo 'failed.'
-		exit $exitval
+	#aiccu needs correct date, wait for it
+	local counter=$AICCU_WAITTIME
+	while [ `date +%Y` -lt 2010 -a $counter -gt 0 ]; do
+		let counter--
+		sleep 1
+	done
+	if [ `date +%Y` -lt 2010 -a "$AICCU_WAITTIME" -gt 0 ]; then
+		echo "Starting of ${DAEMON} aborted, time is not synchronized."
+		exit 1
 	fi
+	
+	modprobe ipv6
+	modlib_startdaemon $DAEMON start /mod/etc/$DAEMON.conf
+	[ "$AICCU_RUNSCRIPT" == "yes" ] && /tmp/flash/aiccu/aiccu.sh $AICCU_INTERFACE
 }
 
 stop () {
-	echo -n 'Stopping aiccu...'
 	$DAEMON stop /mod/etc/$DAEMON.conf
-	exitval=$?
-
-	rm -f /mod/etc/$DAEMON.conf
-
-	if [ "$exitval" -eq 0 ]; then
-		echo 'done.'
-	else
-		echo 'failed.'
-		exit $exitval
-	fi
 }
 
 case $1 in
 	""|load)
 		modreg cgi 'aiccu' 'aiccu'
 
-		if [ "$AICCU_ENABLED" != "yes" ]; then
-			echo "$DAEMON is disabled" 1>&2
-			exit 1
-		fi
-		
-		start
+		modlib_start $AICCU_ENABLED
 		;;
 	unload)
-		stop
 		modunreg cgi 'aiccu'
+		modlib_stop
 		;;
 	start)
-		start
+		modlib_start
 		;;
 	stop)
-		stop
+		modlib_stop
 		;;
 	restart)
-		stop
-		sleep 1
-		start
+		modlib_restart
 		;;
 	status)
-		if [ ! -z "$(pidof $DAEMON)" ]; then
-			echo 'running'
-		else
-			echo 'stopped'
-		fi
+		modlib_status
 		;;
 	*)
 		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2

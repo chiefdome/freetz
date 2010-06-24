@@ -41,6 +41,42 @@
 #include <sys/syscall.h>
 #include <unistd.h>
 
+
+int ac_cv_c_c99_format() {
+	char buf[64];
+	if (sprintf(buf, "%lld%hhd%jd%zd%td", (long long int)1, (char)2, (intmax_t)3, (size_t)4, (ptrdiff_t)5) != 5)
+		return 1;
+	else if (strcmp(buf, "12345"))
+		return 2;
+	return 0;
+}
+
+int ac_cv_fread_reads_directories() {
+	char c;
+	FILE *f = fopen(".", "r");
+	return f && fread(&c, 1, 1, f);
+}
+
+#include "stdarg.h"
+int test_vsnprintf(char *str, size_t maxsize, const char *format, ...) {
+	int ret;
+	va_list ap;
+	va_start(ap, format);
+	ret = vsnprintf(str, maxsize, format, ap);
+	va_end(ap);
+	return ret;
+}
+
+int ac_cv_snprintf_returns_bogus() {
+	char buf[6];
+	if (test_vsnprintf(buf, 3, "%s", "12345") != 5 || strcmp(buf, "12"))
+		return 1;
+	if (snprintf(buf, 3, "%s", "12345") != 5 || strcmp(buf, "12"))
+		return 1;
+	return 0;
+}
+
+
 struct cookiedata {
     __off64_t pos;
 };
@@ -316,4 +352,42 @@ int main(int argc, char** argv) {
 	    code = (strcmp (buf, "55 33") == 0);
 	    printf("gt_cv_func_printf_posix=%s\n", code ? "yes" : "no");
 	}
+
+	{
+	    int code = ac_cv_c_c99_format();
+	    printf("ac_cv_c_c99_format=%s\n", code==0 ? "yes" : "no");
+	}
+
+	{
+	    int code = ac_cv_fread_reads_directories();
+	    printf("ac_cv_fread_reads_directories=%s\n", code ? "yes" : "no");
+	}
+
+	{
+	    int code = ac_cv_snprintf_returns_bogus();
+	    printf("ac_cv_snprintf_returns_bogus=%s\n", code ? "yes" : "no");
+	}
+
+	{
+		uint64_t i0;
+		uint64_t i1;
+		uint8_t c[8];
+		double d;
+
+		d = 8.642135e130;
+		memcpy ((void *) &i0, (void *) &d, 8);
+
+		i1 = i0;
+		memcpy ((void *) c, (void *) &i1, 8);
+
+		int code = (
+			(c[0] == 0x2f) && (c[1] == 0x25)
+			&& (c[2] == 0xc0) && (c[3] == 0xc7)
+			&& (c[4] == 0x43) && (c[5] == 0x2b)
+			&& (c[6] == 0x1f) && (c[7] == 0x5b)
+		);
+
+		printf("c_cv_fp_layout_need_nothing=%s\n", code ? "yes" : "no");
+	}
+
 }

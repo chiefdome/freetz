@@ -3,6 +3,7 @@
 cd /
 export TERM=xterm
 
+DAEMON=mod
 . /etc/init.d/modlibrc
 
 start() {
@@ -22,11 +23,13 @@ start() {
 	/etc/init.d/rc.telnetd
 	/etc/init.d/rc.webcfg
 
+	[ "$MOD_SWAP_BEFORE_SERVICES" == "yes" ] && /etc/init.d/rc.swap
+
 	# Static Packages
-	EXTERNAL_SERVICES="$(cat /etc/external.pkg 2>/dev/null)"
+	[ "$MOD_EXTERNAL_FREETZ_SERVICES" == "yes" ] && EXTERNAL_SERVICES="$(cat /etc/external.pkg 2>/dev/null)"
 	for pkg in $(cat /etc/static.pkg 2>/dev/null); do
 		if [ -x "/etc/init.d/rc.$pkg" ]; then
-			if echo " $EXTERNAL_SERVICES " | grep -q " $pkg " >/dev/null 2>&1; then
+			if echo " $EXTERNAL_SERVICES $MOD_EXTERNAL_OWN_SERVICES " | grep -q " $pkg " >/dev/null 2>&1; then
 				echo "$pkg will be started by external."
 			else
 				modreg daemon $pkg
@@ -55,7 +58,7 @@ start() {
 	[ -r /tmp/flash/rc.custom ] && mv /tmp/flash/rc.custom /tmp/flash/mod/rc.custom
 	[ -r /tmp/flash/mod/rc.custom ] && . /tmp/flash/mod/rc.custom
 
-	/etc/init.d/rc.swap
+	[ "$MOD_SWAP_BEFORE_SERVICES" == "yes" ] || /etc/init.d/rc.swap
 }
 
 modreg_file() {

@@ -99,7 +99,8 @@ choice
 
 	config FREETZ_TYPE_FON_WLAN_7170
 		select FREETZ_AVM_VERSION_04_70 if FREETZ_TYPE_LABOR_DSL
-		select FREETZ_AVM_VERSION_04_80 if ! FREETZ_TYPE_LABOR_DSL
+		select FREETZ_AVM_VERSION_04_76 if FREETZ_TYPE_LANG_A_CH
+		select FREETZ_AVM_VERSION_04_80 if ! ( FREETZ_TYPE_LABOR_DSL || FREETZ_TYPE_LANG_A_CH )
 		bool "Fon WLAN 7170"
 
 	config FREETZ_TYPE_FON_WLAN_7240
@@ -173,7 +174,8 @@ config FREETZ_TYPE_FON_WLAN_7270_16MB
 config FREETZ_TYPE_LABOR
 	bool "Beta/Labor"
 	depends on \
-		FREETZ_TYPE_FON_WLAN_7170 || \
+		(FREETZ_TYPE_FON_WLAN_7170 && ! FREETZ_TYPE_ALIEN_HARDWARE) || \
+		FREETZ_TYPE_FON_WLAN_7240 || \
 		FREETZ_TYPE_FON_WLAN_7270 || \
 		FREETZ_TYPE_FON_WLAN_7270_V3
 	default n
@@ -224,7 +226,9 @@ choice
 	config FREETZ_TYPE_PREVIEW
 		bool "Preview"
 		depends on \
-			FREETZ_TYPE_FON_WLAN_7270_16MB || FREETZ_TYPE_FON_WLAN_7270_V3
+			FREETZ_TYPE_FON_WLAN_7240 || \
+			FREETZ_TYPE_FON_WLAN_7270_16MB || \
+			FREETZ_TYPE_FON_WLAN_7270_V3
 		select FREETZ_TARGET_IPV6_SUPPORT
 		help
 			Preview Firmware, for v2 and v3 only
@@ -417,7 +421,8 @@ config FREETZ_TYPE_STRING
 	default "7150"						if FREETZ_TYPE_FON_7150
 	default "7170"						if FREETZ_TYPE_FON_WLAN_7170 && ! FREETZ_TYPE_LABOR
 	default "7170_labor_dsl"				if FREETZ_TYPE_FON_WLAN_7170 && FREETZ_TYPE_LABOR_DSL
-	default "7240"						if FREETZ_TYPE_FON_WLAN_7240
+	default "7240"						if FREETZ_TYPE_FON_WLAN_7240 && ! FREETZ_TYPE_LABOR
+	default "7240_preview"					if FREETZ_TYPE_FON_WLAN_7240 && FREETZ_TYPE_PREVIEW
 	default "7270"						if FREETZ_TYPE_FON_WLAN_7270 && ! FREETZ_TYPE_LABOR
 	default "7270_labor_core"				if FREETZ_TYPE_FON_WLAN_7270 && FREETZ_TYPE_LABOR_CORE
 	default "7270_labor_dsl"				if FREETZ_TYPE_FON_WLAN_7270 && FREETZ_TYPE_LABOR_DSL
@@ -483,6 +488,7 @@ config FREETZ_REPLACE_KERNEL_AVAILABLE
 	bool
 	depends on \
 		FREETZ_SHOW_ADVANCED && \
+		! (FREETZ_TYPE_LABOR && FREETZ_TYPE_FON_WLAN_7240) && \
 		! ((FREETZ_TYPE_LABOR_DSL || FREETZ_TYPE_LABOR_CORE || FREETZ_TYPE_LABOR_IPV6 || FREETZ_TYPE_PREVIEW) && (FREETZ_TYPE_FON_WLAN_7270 || FREETZ_TYPE_FON_WLAN_7270_V3)) && \
 		! (FREETZ_TYPE_FON && FREETZ_TYPE_LANG_EN)
 	default y
@@ -908,13 +914,26 @@ comment "Web menu patches ------------------------"
 
 config FREETZ_PATCH_VCC
 	bool "Patch 2nd VCC"
-	depends on FREETZ_HAS_PHONE && \
-		FREETZ_TYPE_LANG_DE && \
-		! FREETZ_TYPE_LABOR && \
-		(FREETZ_TYPE_FON_WLAN_7141 || FREETZ_TYPE_FON_WLAN_7170)
+	depends on FREETZ_HAS_PHONE && FREETZ_TYPE_LANG_DE
 	default n
 	help
-		Patches the setting for 2nd VCC into web menu.
+		Patches the setting for 2nd VCC into web menu. It also adds two additional
+		settings (PCR & SCR) not available in the original AVM firmware.
+
+		Please also note that it is not possible to change the value of traffic_class
+		setting via the web-interface. You have to do it some other way (e.g. using
+		FBEditor or nvi ar7.cfg).
+
+		Warning: Please read up on what each VCC setting means before setting/changing it.
+		Besides not working wrong values may cause additional costs for you as your provider
+		may treat it as simultaneous dial-in attempts (Doppeleinwahl).
+
+		The correct values for an 1&1-Komplettanschluss are:
+		  VPI = 1;
+		  VCI = 35;
+		  traffic_class = atm_traffic_class_CBR;
+		  pcr = 603;
+		  scr = 0;
 
 config FREETZ_PATCH_ATA
 	bool "Patch ATA"
@@ -928,7 +947,6 @@ config FREETZ_PATCH_ENUM
 	bool "Patch enum"
 	depends on \
 		FREETZ_TYPE_LANG_DE && \
-		! FREETZ_PATCH_VCC && \
 		( \
 		FREETZ_TYPE_FON || \
 		FREETZ_TYPE_300IP_AS_FON || \
@@ -940,8 +958,6 @@ config FREETZ_PATCH_ENUM
 	default n
 	help
 		Patches the enum configuration pages into the web menu.
-		
-		Works only for OEM avm.
 
 config FREETZ_PATCH_DSL_EXPERT
 	bool "Patch extended DSL settings"
@@ -1454,10 +1470,10 @@ endmenu
 
 config FREETZ_REMOVE_CAPIOVERTCP
 	bool "Remove CAPIoverTCP (used for Fritz!Fax)"
-	depends on ! FREETZ_TYPE_WLAN_3020
+	depends on FREETZ_HAS_PHONE
 	default n
 	help
-		Remove CAPIoverTCP (capiotcp_server). Use this if you don't wat to use
+		Remove CAPIoverTCP (capiotcp_server). Use this if you don't want to use
 		Fritz!Fax or any other program that uses AVM's CAPIoverTCP. This is similar
 		to rcapid, but independant.
 		This will save about 15kB uncompressed size.
@@ -2074,15 +2090,18 @@ config FREETZ_DL_SOURCE
 											FREETZ_TYPE_LANG_DE
 	default "FRITZ.Box_Fon_WLAN_7170.AnnexA.58.04.76.image"			if	FREETZ_TYPE_FON_WLAN_7170 && \
 											FREETZ_TYPE_LANG_A_CH
-	default "FRITZ.Box_Fon_WLAN_7170.AnnexA.en.58.04.78.image"		if	FREETZ_TYPE_FON_WLAN_7170 && \
+	default "FRITZ.Box_Fon_WLAN_7170.AnnexA.en.58.04.82.image"		if	FREETZ_TYPE_FON_WLAN_7170 && \
 											FREETZ_TYPE_LANG_EN && \
 											FREETZ_TYPE_ANNEX_A
-	default "FRITZ.Box_Fon_WLAN_7170.AnnexB.en.29.04.78.image"		if	FREETZ_TYPE_FON_WLAN_7170 && \
+	default "FRITZ.Box_Fon_WLAN_7170.AnnexB.en.29.04.82.image"		if	FREETZ_TYPE_FON_WLAN_7170 && \
 											FREETZ_TYPE_LANG_EN && \
 											FREETZ_TYPE_ANNEX_B
 	default "FRITZ.Box_Fon_WLAN_7170.Labor.29.04.99-14119.image"		if	FREETZ_TYPE_FON_WLAN_7170 && \
 											FREETZ_TYPE_LABOR_DSL
-	default "FRITZ.Box_Fon_WLAN_7240.73.04.80.image"			if	FREETZ_TYPE_FON_WLAN_7240
+	default "FRITZ.Box_Fon_WLAN_7240.73.04.80.image"			if	FREETZ_TYPE_FON_WLAN_7240 && \
+											! FREETZ_TYPE_LABOR
+	default "Labor_FRITZ.Box_Fon_WLAN_7240.73.04.85-17273.image"		if	FREETZ_TYPE_FON_WLAN_7240 && \
+											FREETZ_TYPE_PREVIEW
 	default "FRITZ.Box_Fon_WLAN_7270.54.04.80.image"			if	FREETZ_TYPE_FON_WLAN_7270 && \
 											! FREETZ_TYPE_LABOR && \
 											FREETZ_TYPE_LANG_DE
@@ -2092,7 +2111,7 @@ config FREETZ_DL_SOURCE
 											FREETZ_TYPE_LABOR_CORE
 	default "FRITZ.Box_Fon_WLAN_7270_LabDSL.AnnexB.54.04.80-16750.image"	if	FREETZ_TYPE_FON_WLAN_7270 && \
 											FREETZ_TYPE_LABOR_DSL
-	default "FRITZ.Box_Fon_WLAN_7270_16_LabIPV6.54.04.80-17230.image"	if	FREETZ_TYPE_FON_WLAN_7270 && \
+	default "FRITZ.Box_Fon_WLAN_7270_16_LabIPV6.AnnexB.54.04.80-17603.image"	if	FREETZ_TYPE_FON_WLAN_7270 && \
 											FREETZ_TYPE_LABOR_IPV6
 	default "FRITZ.Box_Fon_WLAN_7270_16_LabNAS.AnnexB.54.04.80-16561.image"	if	FREETZ_TYPE_FON_WLAN_7270_16MB && \
 											FREETZ_TYPE_LABOR_NAS
@@ -2105,7 +2124,7 @@ config FREETZ_DL_SOURCE
 											FREETZ_TYPE_LABOR_CORE
 	default "FRITZ.Box_Fon_WLAN_7270_v3_LabDSL.AnnexB.74.04.80-16750.image"	if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
 											FREETZ_TYPE_LABOR_DSL
-	default "FRITZ.Box_Fon_WLAN_7270_v3_LabIPV6.74.04.80-17230.image"	if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
+	default "FRITZ.Box_Fon_WLAN_7270_v3_LabIPV6.AnnexB.74.04.80-17603.image"	if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
 											FREETZ_TYPE_LABOR_IPV6
 	default "FRITZ.Box_Fon_WLAN_7270_v3_LabNAS.AnnexB.74.04.80-16561.image"	if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
 											FREETZ_TYPE_LABOR_NAS
@@ -2157,9 +2176,9 @@ config FREETZ_DL_SOURCE_MD5
 	default "72b48986aa26a6f0a16b2a4a2bfb7bb0"	if	FREETZ_TYPE_FON_WLAN_7170 && ! FREETZ_TYPE_LABOR && \
 								FREETZ_TYPE_LANG_DE
 	default "b81376dcd3efd5f996491132b5e7c833"	if	FREETZ_TYPE_FON_WLAN_7170 && FREETZ_TYPE_LANG_A_CH
-	default "75c616d84279d57f28161f6838d95944"	if	FREETZ_TYPE_FON_WLAN_7170 && FREETZ_TYPE_LANG_EN && \
+	default "9097a25bcb39f067766888036a28844a"	if	FREETZ_TYPE_FON_WLAN_7170 && FREETZ_TYPE_LANG_EN && \
 								FREETZ_TYPE_ANNEX_A
-	default "978b2f6ae06ddb61d6626b80f6feb09d"	if	FREETZ_TYPE_FON_WLAN_7170 && FREETZ_TYPE_LANG_EN && \
+	default "642eea123e85d1f6cde4481c6d8bd9a1"	if	FREETZ_TYPE_FON_WLAN_7170 && FREETZ_TYPE_LANG_EN && \
 								FREETZ_TYPE_ANNEX_B
 	default "9e61cf4fabb67c6a2871ddada2f2306c"	if	FREETZ_TYPE_FON_WLAN_7240
 	default "4ea997dce6bbf72202ae80cb572ab1fe"	if	FREETZ_TYPE_FON_WLAN_7270 && ! FREETZ_TYPE_LABOR && \
@@ -2635,45 +2654,6 @@ config EXTERNAL_DOWNLOADER
 		Prepare files for Downloader package.
 		Downloader loads usualy files from a http or ftp server into the RAM of the box.
 
-config EXTERNAL_SERVICES
-	bool "Start/Stop external services"
-	default y
-	depends on EXTERNAL_ENABLED && ! EXTERNAL_DOWNLOADER
-	help
-		Enables start/stop processing.
-		
-config EXTERNAL_SERVICES_FREETZ
-	bool "Freetz services"
-	default y
-	depends on EXTERNAL_ENABLED && EXTERNAL_SERVICES
-	help
-		Starts/Stopps all externalised Freetz-services on (un)mounting.
-				
-config EXTERNAL_SERVICES_OWN
-	string "Own services"
-	default ""
-	depends on EXTERNAL_ENABLED && EXTERNAL_SERVICES && FREETZ_SHOW_ADVANCED
-	help
-		Put your own services here (space seperated).
-		They will be started/stopped on (un)mounting.
-		
-		This would be helpful if a service is not externalised, but
-		needs your USB-device for storing data-files, eg "rrdstats"
-
-config EXTERNAL_SERVICES_YEAR_MIN
-	bool "Wait for time synchronization"
-	default n
-	depends on EXTERNAL_ENABLED && EXTERNAL_SERVICES
-	help
-		The year must be at least 2010! 
-
-config EXTERNAL_SERVICES_YEAR_MAX
-	bool "Abort if invalid year"
-	default n
-	depends on EXTERNAL_ENABLED && EXTERNAL_SERVICES && EXTERNAL_SERVICES_YEAR_MIN && FREETZ_SHOW_ADVANCED
-	help
-		Doesn't start services if the year is greater 2015! 
-		
 config EXTERNAL_LINKS
 	bool	"Do not ignore symbolic links"
 	default n
