@@ -44,6 +44,7 @@ pre {
 	font-size: 14px;
 	border: 2px dotted #bbbbbb;
 	padding: 10px;
+	overflow: auto;
 }
 pre.plain {
 	font-size: 8pt;
@@ -216,13 +217,13 @@ table.mounted {
 }
 
 .daemons tr.running .status {
-    	color: #008000;
+	color: #008000;
 }
 .daemons tr.stopped .status {
-    	color: #800000;
+	color: #800000;
 }
 .daemons tr.none .status {
-    	color: #808080;
+	color: #808080;
 }
 
 #edge {
