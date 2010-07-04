@@ -121,35 +121,32 @@ case $PATH_INFO in
 	id=${PATH_INFO##/file/*/}
 	pkg=${PATH_INFO#/file/}; pkg=${pkg%/*}
 	prepend_query "pkg=$pkg&id=$id"
-	case $REQUEST_METHOD in
-	    POST)	dispatch file_save.cgi ;;
-	    *)		dispatch file.cgi "$PATH_INFO" ;;
-	esac
+	dispatch file.cgi "$PATH_INFO"
 	;;
 
-    /shell)		dispatch rudi_shell.cgi ;;
+    /shell)		dispatch shell/index.cgi ;;
 # /shell/exec is not only target of POST requests; that's why we cannot simply
 # POST to /shell
-    /shell/exec)	dispatch rudi_shellcmd.cgi ;;
-    /shell/upload)	dispatch rudi_upload.cgi ;;
+    /shell/exec)	dispatch shell/cmd.cgi ;;
+    /shell/upload)	dispatch shell/upload.cgi ;;
     /backup)
     	case $REQUEST_METHOD in
-	    POST)	dispatch do_restore.cgi ;;
-	    *)		dispatch backup_restore.cgi ;;
+	    POST)	dispatch backup/do_restore.cgi ;;
+	    *)		dispatch backup/index.cgi ;;
 	esac
 	;;
-    /backup/download)	dispatch do_backup.cgi ;;
+    /backup/download)	dispatch backup/do_backup.cgi ;;
     /about)		dispatch about.cgi ;;
     /update)
     	case $REQUEST_METHOD in
-	    POST)	dispatch do_update.cgi ;;
-	    *)		dispatch firmware_update.cgi ;;
+	    POST)	dispatch update/do_firmware.cgi ;;
+	    *)		dispatch update/firmware.cgi ;;
 	esac
 	;;
     /update/external)
     	case $REQUEST_METHOD in
-	    POST)	dispatch do_external.cgi ;;
-	    *)		dispatch external_update.cgi ;;
+	    POST)	dispatch update/do_external.cgi ;;
+	    *)		dispatch update/external.cgi ;;
 	esac
     	;;
     /system)		dispatch system.cgi ;;

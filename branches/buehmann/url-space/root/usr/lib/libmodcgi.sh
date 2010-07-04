@@ -226,7 +226,7 @@ if [ "$sub" = system ]; then
 	cat <<- EOF
 	<ul>
 	<li><a id="backup_restore" href="/freetz/backup">$(lang de:"Sichern &amp; Wiederherstellen" en:"Backup &amp; restore")</a></li>
-	<li><a id="firmware_update" href="/freetz/update">$(lang de:"Firmware-Update" en:"Firmware update")</a></li>
+	<li><a id="firmware_update" href="$(href mod update)">$(lang de:"Firmware-Update" en:"Firmware update")</a></li>
 	<li><a id="rudi_shell" href="/freetz/shell" target="_blank">$(lang de:"Rudi-Shell" en:"Rudi shell")</a></li>
 	<li><a id="avmwif_link" href="http://$(self_host)/" target="_blank">$(lang de:"AVM-Webinterface" en:"AVM web interface")</a></li>
 	</ul>

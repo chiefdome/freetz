@@ -10,9 +10,9 @@ stat_begin() {
 }
 
 stat_button() {
-	local pkg=$1 name=$2 rcfile=$3 cmd=$4 active=$5
+	local pkg=$1 cmd=$2 active=$3
 	if ! $active; then disabled=" disabled"; else disabled=""; fi
-	echo "<td><form class='btn' action='/freetz/status/daemons' method='post'><input type='hidden' name='pkg' value='$pkg'><input type='hidden' name='name' value='$name'><input type='hidden' name='rcfile' value='$rcfile'><input type='hidden' name='cmd' value='$cmd'><input type='submit' value='$cmd'$disabled></form></td>"
+	echo "<td><form class='btn' action='/freetz/status/daemons' method='post'><input type='hidden' name='pkg' value='$pkg'><input type='hidden' name='cmd' value='$cmd'><input type='submit' value='$cmd'$disabled></form></td>"
 }
 
 stat_packagelink() {
@@ -35,21 +35,13 @@ stat_line() {
 	$hide && return
 
 	local start=false stop=false
-	status="$("$rcfile" status 2> /dev/null)"
-	case "$status" in
-		running)
+	local status=$("$rcfile" status 2> /dev/null)
+	case $status in
+		running | 'running (inetd)')
 			class=running
 			stop=true
 			;;
-		stopped)
-			class=stopped
-			start=true
-			;;
-		'running (inetd)')
-			class=running
-			stop=true
-			;;
-		'stopped (inetd)')
+		stopped | 'stopped (inetd)')
 			class=stopped
 			start=true
 			;;
@@ -86,9 +78,9 @@ stat_line() {
 	if $disable; then
 		start=false; stop=false
 	fi
-	stat_button $pkg $name $rcfile start $start
-	stat_button $pkg $name $rcfile stop $stop
-	stat_button $pkg $name $rcfile restart $stop
+	stat_button $pkg start $start
+	stat_button $pkg stop $stop
+	stat_button $pkg restart $stop
 
 	echo '</tr>'
 }
@@ -127,7 +119,7 @@ stat_static() {
 
 	if [ -r "$REG" ]; then
 		while IFS='|' read -r pkg name rcscript disable hide parentpkg; do
-			stat_line "$pkg" "$name" "$rcscript" $disable $hide "$parentpkg"
+			stat_line "$pkg" "$name" "$rcscript" "$disable" "$hide" "$parentpkg"
 		done < "$REG"
 	fi
 	if [ ! -s "$REG" ]; then
