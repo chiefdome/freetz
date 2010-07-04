@@ -1,0 +1,51 @@
+#!/bin/sh
+
+DAEMON=wol
+DAEMON_LONG_NAME="wol webinterface"
+PID_FILE=/var/run/webcfg-${DAEMON}.pid
+. /etc/init.d/modlibrc
+
+config() {
+	(
+		if [ -x "/tmp/flash/httpd-${DAEMON}_conf" ]; then
+			/tmp/flash/httpd-${DAEMON}_conf
+		else
+			/mod/etc/default.${DAEMON}/httpd-${DAEMON}_conf
+		fi
+		[ -r "/tmp/flash/httpd-${DAEMON}.extra" ] && cat /tmp/flash/httpd-${DAEMON}.extra
+	) > /mod/etc/httpd-${DAEMON}.conf
+}
+
+start() {
+	modlib_startdaemon webcfg-wol -P "$PID_FILE"
+}
+
+case $1 in
+	""|load)
+		modreg cgi 'wol' 'Wake on LAN'
+
+		modlib_start $WOL_ENABLED 
+		;;
+	unload)
+		modunreg cgi 'wol'
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

@@ -1,0 +1,69 @@
+#!/bin/sh
+
+DAEMON=aiccu
+. /etc/init.d/modlibrc
+
+config() {
+	(
+		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
+			/tmp/flash/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/${DAEMON}_conf
+		fi
+
+		if [ -r "/tmp/flash/${DAEMON}.extra" ]; then
+			cat /tmp/flash/${DAEMON}.extra
+		fi
+	) > /mod/etc/$DAEMON.conf
+}
+
+start() {
+	#aiccu needs correct date, wait for it
+	local counter=$AICCU_WAITTIME
+	while [ `date +%Y` -lt 2010 -a $counter -gt 0 ]; do
+		let counter--
+		sleep 1
+	done
+	if [ `date +%Y` -lt 2010 -a "$AICCU_WAITTIME" -gt 0 ]; then
+		echo "Starting of ${DAEMON} aborted, time is not synchronized."
+		exit 1
+	fi
+	
+	modprobe ipv6
+	modlib_startdaemon $DAEMON start /mod/etc/$DAEMON.conf
+	[ "$AICCU_RUNSCRIPT" == "yes" ] && /tmp/flash/aiccu/aiccu.sh $AICCU_INTERFACE
+}
+
+stop () {
+	$DAEMON stop /mod/etc/$DAEMON.conf
+}
+
+case $1 in
+	""|load)
+		modreg cgi 'aiccu' 'aiccu'
+
+		modlib_start $AICCU_ENABLED
+		;;
+	unload)
+		modunreg cgi 'aiccu'
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

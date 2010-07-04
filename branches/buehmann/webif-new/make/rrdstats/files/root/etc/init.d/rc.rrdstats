@@ -1,0 +1,208 @@
+#!/bin/sh
+
+DAEMON=rrdstats
+PID_FILE=/var/run/${DAEMON}.pid
+. /etc/init.d/modlibrc
+
+HTTPD_PID_RRD=/var/run/webcfg-rrd.pid
+HTTPD_PID_ONE=/var/run/webcfg-one.pid
+
+case $1 in
+	backup|restore|status_webcfg-*)
+		modlib_loadconfig
+		;;
+esac
+
+config() {
+	for SUBDAEMON in rrd one; do
+		(
+			if [ -x "/tmp/flash/httpd-${SUBDAEMON}_conf" ]; then
+				/tmp/flash/httpd-${SUBDAEMON}_conf
+			else
+				/mod/etc/default.${DAEMON}/httpd-${SUBDAEMON}_conf
+			fi
+			[ -r "/tmp/flash/httpd-${SUBDAEMON}.extra" ] && cat /tmp/flash/httpd-${SUBDAEMON}.extra
+		) > /mod/etc/httpd-${SUBDAEMON}.conf
+	done
+	
+	mkdir -p /tmp/rrdstats/
+	rm -f /tmp/rrdstats/digitemp_alert*
+	# kein "-p" wg externer Pfade!
+	mkdir $RRDSTATS_RRDDATA 2>/dev/null
+	mkdir $RRDSTATS_RRDTEMP 2>/dev/null
+	rm /var/mod/etc/statpix 2>/dev/null
+	ln -s $(echo "$RRDSTATS_RRDTEMP" | sed 's/\/*$//g') /var/mod/etc/statpix 2>/dev/null
+	
+	# show/hide digitemp
+	modunreg status rrdstats rrddt
+	modunreg file rrdstats
+	if [ -x "$(which digitemp)" -a "$RRDSTATS_DIGITEMP1W" = yes ]; then
+		modreg status rrdstats DigiTemp rrddt
+		modreg file rrdstats dt-conf 'RRDstats: dt-conf' 0 "dt-conf"
+		modreg file rrdstats dt-alias 'RRDstats: dt-alias' 1 "dt-alias"
+		modreg file rrdstats dt-group 'RRDstats: dt-group' 1 "dt-group"
+		modreg file rrdstats dt-alert 'RRDstats: dt-alert' 1 "dt-alert"
+	fi
+}
+
+start() {
+	[ "$RRDSTATS_SAVEBACKUP" = yes -a "$RRDSTATS_END_BACKUP" = no ] && backup
+	[ "$RRDSTATS_START_RESTORE" = yes ] && restore silent
+
+	modlib_startdaemon start-stop-daemon -n rrdstats -a /etc/default.rrdstats/rrdstats $RRDSTATS_INTERVAL -b -q -S
+
+	stop_webserver
+	if [ "$RRDSTATS_WEBENABLED" = "yes" -a "$RRDSTATS_WEB_INETD" != "yes" ]; then
+		webcfg-rrd -P "$HTTPD_PID_RRD"
+	fi
+	if [ -x "$(which digitemp)" -a "$RRDSTATS_DIGITEMP_HTTP" = "yes" -a "$RRDSTATS_DIGITEMP_INETD" != "yes" ]; then
+		webcfg-one -P "$HTTPD_PID_ONE"
+	fi
+
+	#wait for the correct pid
+	local DAEMON_PID="$(pidof -s rrdstats)"
+	while [ "$(pidof rrdstats)" != "${DAEMON_PID}" ]; do
+		sleep 1
+		local DAEMON_PID="$(pidof -s rrdstats)"
+	done
+	[ -n "$DAEMON_PID" ] && echo $DAEMON_PID >${PID_FILE}
+}
+
+stop() {
+	stop_webserver
+	local PID=$(cat "$fn" 2>/dev/null)
+	kill "$PID" 2>/dev/null
+	sleep 1
+	if kill -0 "$PID" 2>/dev/null; then
+		kill -9 "$PID" 2>/dev/null
+		sleep 1
+	fi
+	[ "$RRDSTATS_SAVEBACKUP" = yes -a "$RRDSTATS_END_BACKUP" = yes ] && backup silent
+}
+
+stop_webserver() {
+	kill -9 "$(cat $HTTPD_PID_RRD 2>/dev/null)" 2>/dev/null
+	kill -9 "$(cat $HTTPD_PID_ONE 2>/dev/null)" 2>/dev/null
+	[ -x /etc/init.d/rc.inetd ] && /usr/bin/modinetd -n rrdstats >/dev/null
+}
+
+backup() {
+	_TIMESTRING=$(echo $(date -Iseconds | sed 's/\:/-/g;s/\+.*//g;s/T/_/g'))
+	_BACKUPNAME=$RRDSTATS_RRDBACKUP/$_TIMESTRING
+	if [ $(ls $RRDSTATS_RRDDATA/*.rrd 2>/dev/null | wc -w) -le 0 ]; then
+		[ "$1" != "silent" ] && echo "RRDstats "
+		echo -n 'backup skipped, no files found...'
+		[ "$1" != "silent" ] && echo
+		return
+	fi
+	mkdir $RRDSTATS_RRDBACKUP 2>/dev/null
+	mkdir $_BACKUPNAME 2>/dev/null
+	cp -pP $RRDSTATS_RRDDATA/*.rrd $_BACKUPNAME/ 2>/dev/null
+	exitval=$?
+	if [ $exitval -ne 0 ]; then
+		if [ "$1" != "silent" ]; then
+			echo "Starting RRDstats...failed, not able to backup files."
+		else
+			echo 'backup failed, abort.'
+		fi
+		exit $exitval
+	fi
+	_BACKUPLOG=$RRDSTATS_RRDBACKUP/backup.log
+	echo $_TIMESTRING >> $_BACKUPLOG
+	if [ "$RRDSTATS_DELBACKUP" = yes ]; then
+		countbackup=$(cat $_BACKUPLOG | wc -l)
+		countdelete=$(($countbackup-$RRDSTATS_MAXIMUMBACKUPS))
+		if [ $countdelete -gt 0 ]; then
+			for delname in $(head $_BACKUPLOG -n $countdelete); do
+				rm -rf $RRDSTATS_RRDBACKUP/$delname
+			done
+			tail $_BACKUPLOG -n $(($countbackup-$countdelete)) > $_BACKUPLOG.temp
+			mv $_BACKUPLOG.temp $_BACKUPLOG
+		fi
+	fi
+}
+
+restore() {
+	if kill -0 $(cat $PID_FILE 2>/dev/null) 2>/dev/null; then
+		restart_rrdstats=yes
+		modlib_stop
+	fi
+
+	[ "$1" != "silent" ] && echo -n 'RRDstats is restoring files...'
+	if [ $(ls $RRDSTATS_RRDBACKUP/* 2>/dev/null | wc -w) -le 0 ]; then
+		if [ "$1" != "silent" ]; then
+			echo 'skipped, no files found.'
+		else
+			echo 'Starting RRDstats...failed, no files to restore.'
+		fi
+		exit 1
+	fi
+
+	[ ! -d "$RRDSTATS_RRDDATA" ] && mkdir -p $RRDSTATS_RRDDATA 2>/dev/null
+	cp -pP $RRDSTATS_RRDBACKUP/$(echo $(tail -n1 $RRDSTATS_RRDBACKUP/backup.log))/*.rrd $RRDSTATS_RRDDATA/ 2>/dev/null
+	exitval=$?
+	if [ $exitval -ne 0 ]; then
+		if [ "$1" != "silent" ]; then
+			echo 'failed.'
+		else
+			echo "Starting RRDstats...failed, not able to restore files."
+		fi
+		exit $exitval
+	else
+		[ "$1" != "silent" ] && echo 'done.'
+	fi
+
+	[ "$restart_rrdstats" = yes ] && modlib_start
+}
+
+case $1 in
+	config)
+		config
+		;;
+	""|load)
+		modreg cgi rrdstats RRDstats
+		modreg status rrdstats RRDstats stats
+
+		config
+		modlib_start $RRDSTATS_ENABLED
+		;;
+	unload)
+		modunreg status rrdstats rrddt
+		modunreg status rrdstats stats
+		modunreg cgi rrdstats
+		modunreg file rrdstats
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	status_webcfg-one)
+		[ -x "$(which digitemp)" -a "$RRDSTATS_DIGITEMP_HTTP" = "yes" -a "$RRDSTATS_DIGITEMP_INETD" = "yes" ] && echo 'inetd' || modlib_status
+		;;
+	status_webcfg-rrd)
+		[ "$RRDSTATS_WEBENABLED" = "yes" -a "$RRDSTATS_WEB_INETD" = "yes" ] && echo 'inetd' || modlib_status
+		;;
+	backup)
+		echo -n 'RRDstats is creating a backup of .rrd files...'
+		backup silent
+		echo "done."
+		;;
+	restore)
+		restore
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status|config|backup|restore]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

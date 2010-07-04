@@ -1,0 +1,53 @@
+#!/bin/sh
+
+start() {
+	echo -n "Starting inotifywait..."
+	if ps | grep i[n]otifywait > /dev/null; then
+		echo "yet running - kill and restart..."
+		killall inotifywait
+		sleep 1
+	fi
+	inotifywait -c -r -m / \
+		@/dev @/proc @/var @/rom @/sto \
+		--exclude 'busybox|uClibc|libcrypt-0' \
+		>> /var/iw.log 2> /dev/null &
+	sleep 3
+	echo "done."
+}
+
+stop() {
+	echo -n "Stopping inotifywait..."
+	if ! ps | grep i[n]otifywait > /dev/null; then
+		echo "not running."
+		exit 1
+	fi
+	killall inotifywait
+	if [ "$?" -eq 0 ]; then
+		echo "done."
+	else
+		echo "failed."
+		exit 1
+	fi
+}
+
+case $1 in 
+	""|load|start|restart)
+		start
+		;;
+	stop|unload)
+		stop
+		;;
+	status)
+		if ps | grep i[n]otifywait > /dev/null; then
+			echo "running"
+		else
+			echo "stopped"
+		fi
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

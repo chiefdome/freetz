@@ -1,0 +1,52 @@
+#!/bin/sh
+
+DAEMON=umurmur
+DAEMON_BIN=umurmurd
+. /etc/init.d/modlibrc
+
+config() {
+	echo "$UMURMUR_CONFIG" > /mod/etc/$CONF_NAME.conf
+}
+
+start() {
+	modlib_startdaemon $DAEMON_BIN -c /mod/etc/$CONF_NAME.conf -p /var/run/$DAEMON.pid $([ "$UMURMUR_REALTIME" = "yes" ] && echo -r)
+}
+
+case $1 in
+	""|load)
+		modreg cgi 'umurmur' 'uMurmur'
+		for i in umurmur_key umurmur_crt; do
+			modreg file umurmur "$i" "uMurmur: $i" 0 "$i"
+		done
+
+		mkdir -p /tmp/flash/umurmur
+
+		modlib_start $UMURMUR_ENABLED
+		;;
+	unload)
+		modunreg cgi 'umurmur'
+		modunreg file umurmur
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	reload)
+		modlib_reload
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

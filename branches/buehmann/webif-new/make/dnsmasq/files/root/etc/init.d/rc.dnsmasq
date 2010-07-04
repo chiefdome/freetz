@@ -1,0 +1,122 @@
+#!/bin/sh
+
+DAEMON=dnsmasq
+PID_FILE=/var/run/$DAEMON/$DAEMON.pid
+. /etc/init.d/modlibrc
+
+DAEMON_USER=nobody
+DAEMON_GROUP=nobody
+
+# include environment required for multid restart
+[ -r /var/env.cache ] && . /var/env.cache
+
+MULTID_PID=$(pidof -s multid)
+MULTID_CMD=$(xargs -0  < /proc/${MULTID_PID}/cmdline)
+if [ -z "$MULTID_CMD" ]; then
+	#generate default xargs:
+	if [ ! -e "/sbin/igdd" ] && [ ! -e "/sbin/upnpd" ]; then
+		MULTID_CMD="multid $(multid -? 2>&1 | grep "upnp" | sed 's/^[ \t]*//' | cut -c 1-3)"
+	else
+		MULTID_CMD="multid"
+	fi
+fi
+[ -z "$MULTID_PID" ] && nomultid=y
+
+config() {
+	(
+		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
+			/tmp/flash/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/${DAEMON}_conf
+		fi
+
+		if [ -r "/tmp/flash/${DAEMON}/${DAEMON}.extra" ]; then
+			cat /tmp/flash/${DAEMON}/${DAEMON}.extra
+		fi
+	) > /mod/etc/$DAEMON.conf
+}
+
+start() {
+	[ "$nomultid" != "y" ] && multid -s
+	local OPTIONS="--pid-file=$PID_FILE $DNSMASQ_OPTIONS"
+	[ "$DNSMASQ_DNS_PORT" ] && OPTIONS="$OPTIONS -p $DNSMASQ_DNS_PORT"
+	modlib_startdaemon $DAEMON $OPTIONS
+	if [ "$nomultid" != "y" ]; then
+		$MULTID_CMD > /dev/null 2>&1
+		# protect against dnsmasq crash
+		[ -f /var/tmp/avm-resolv.conf -a ! -L /var/tmp/avm-resolv.conf ] &&
+			mv /var/tmp/avm-resolv.conf /var/tmp/resolv.conf
+		ln -s resolv.conf /var/tmp/avm-resolv.conf
+	fi
+
+	if [ ! -L "/var/flash/multid.leases" -a "$DNSMASQ_DHCP" = "yes" ]; then
+		rm -f /var/flash/multid.leases
+		touch /var/tmp/multid.leases
+		ln -s /var/tmp/multid.leases /var/flash/multid.leases
+	fi
+
+	# this could pose problems when a client comes too fast
+	local lease
+	for lease in /var/tmp/multid.leases /var/tmp/dnsmasq.leases; do
+		if [ -f $lease ]; then
+			chmod 0664 $lease
+			chown root:nobody $lease
+		fi
+	done
+}
+
+stop() {
+	if [ "$nomultid" != "y" ]; then
+		multid -s > /dev/null 2>&1
+		rm /var/tmp/avm-resolv.conf
+	fi
+	kill $(cat $PID_FILE) 2> /dev/null
+	[ "$nomultid" != "y" ] && $MULTID_CMD
+
+	if [ -L "/var/flash/multid.leases" ]; then
+		major=$(grep tffs /proc/devices)
+		rm -f /var/flash/multid.leases
+		mknod /var/flash/multid.leases c ${major%%tffs} $((0x70))
+	fi
+}
+
+case $1 in
+	""|load)
+		mkdir -p "/tmp/flash/${DAEMON}"
+		[ -r "/tmp/flash/${DAEMON}.extra" ] && mv "/tmp/flash/${DAEMON}.extra" "/tmp/flash/${DAEMON}/${DAEMON}.extra"
+
+		modreg cgi 'dnsmasq' 'Dnsmasq'
+		modreg file dnsmasq extra 'Dnsmasq: extra' 0 dnsmasq_extra
+
+		modlib_addgroup $DAEMON_GROUP
+		modlib_adduser $DAEMON_USER -s /bin/false -D -S -H -G $DAEMON_GROUP -g $DAEMON_GROUP
+		mkdir -p ${PID_FILE%/*}
+		chown $DAEMON_USER:$DAEMON_GROUP ${PID_FILE%/*}
+
+		modlib_start $DNSMASQ_ENABLED
+		;;
+	unload)
+		modunreg file dnsmasq
+		modunreg cgi dnsmasq
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		nomultid=y
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

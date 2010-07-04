@@ -1,0 +1,69 @@
+#!/bin/sh
+
+DAEMON=privoxy
+. /etc/init.d/modlibrc
+
+config() {
+
+	[ ! -d "/mod/etc/$DAEMON" ] && mkdir -p /mod/etc/$DAEMON
+	[ ! -r "/mod/etc/privoxy/default.filter" ] && ln -s /etc/privoxy/default.filter /mod/etc/privoxy/default.filter
+	[ ! -r "/mod/etc/privoxy/default.action" ] && ln -s /etc/privoxy/default.action /mod/etc/privoxy/default.action
+	[ ! -d "/mod/etc/privoxy/templates" ] && ln -s /etc/privoxy/templates /mod/etc/privoxy/templates
+	(
+		if [ -x "/tmp/flash/privoxy/${DAEMON}_conf" ]; then
+			/tmp/flash/privoxy/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/${DAEMON}_conf
+		fi
+	) > /mod/etc/$DAEMON/config
+}
+
+start() {
+	modlib_startdaemon $DAEMON --pidfile /var/run/$DAEMON.pid /mod/etc/privoxy/config
+}
+
+stop() {
+	kill -9 "$(cat /var/run/$DAEMON.pid)" > /dev/null 2>&1
+	rm -rf /mod/etc/$DAEMON/config
+}
+
+case $1 in
+	""|load)
+		mkdir -p /tmp/flash/privoxy
+		[ -r /tmp/flash/user.filter ] && mv /tmp/flash/user.filter /tmp/flash/privoxy/user.filter
+		[ -r /tmp/flash/user.action ] && mv /tmp/flash/user.action /tmp/flash/privoxy/user.action
+
+		[ -r "/tmp/flash/privoxy/user.filter" ] || cp -f /etc/privoxy/user.filter /tmp/flash/privoxy/user.filter
+		[ -r "/tmp/flash/privoxy/user.action" ] || cp -f /etc/privoxy/user.action /tmp/flash/privoxy/user.action
+
+		modreg file privoxy user_filter 'Privoxy: user.filter' 0 "filter"
+		modreg file privoxy user_action 'Privoxy: user.actions' 0 "action"
+		modreg cgi 'privoxy' 'Privoxy'
+
+		modlib_start $PRIVOXY_ENABLED
+		;;
+	unload)
+		stop
+
+		modunreg file privoxy
+		modunreg cgi privoxy
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

@@ -1,0 +1,99 @@
+#!/bin/sh
+
+DAEMON=tinyproxy
+. /etc/init.d/modlibrc
+
+config() {
+	if [ ! -r /tmp/flash/tinyproxy.conf ]; then
+		echo "Copying /etc/default.tinyproxy/default.conf to flash"
+		cp /mod/etc/default.tinyproxy/default.conf /tmp/flash/tinyproxy.conf
+	fi
+	if [ ! -r /tmp/flash/tinyproxy.filter ]; then
+		echo "Copying /etc/default.tinyproxy/default.filter to flash"
+		cp /mod/etc/default.tinyproxy/default.filter /tmp/flash/tinyproxy.filter
+	fi
+
+	{
+		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
+			/tmp/flash/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/${DAEMON}_conf
+		fi
+
+		if [ -r "/tmp/flash/${DAEMON}.extra" ]; then
+			cat /tmp/flash/${DAEMON}.extra
+		fi
+	} > /mod/etc/$DAEMON.conf
+}
+
+start() {
+
+	modlib_startdaemon $DAEMON -c /mod/etc/$DAEMON.conf
+
+	if [ "$TINYPROXY_CATCHALL" == "yes" ]; then
+		echo -n "Configuring IPTABLES to make all web traffic go through tinyproxy ... "
+		/usr/sbin/iptables -t nat -A PREROUTING -i lan -p tcp --dport 80 -j REDIRECT --to-port $TINYPROXY_PORT
+		echo "done."
+	fi
+
+	if [ "$TINYPROXY_CONFSERVER" == "yes" ]; then
+		echo -n "Starting the webserver for the proxy config file ... "
+		httpd -p $TINYPROXY_CONFSERVERPORT -h /mod/usr/mww_tinyproxy
+		echo "done."
+	fi
+}
+
+stop() {
+	killall $DAEMON > /dev/null 2>&1
+	exitval=$?
+
+	if [ "$TINYPROXY_CATCHALL" == "yes" ]; then
+		echo -n "Removing tinyproxy IPTABLES rules if any ... "
+		/usr/sbin/iptables -t nat -D PREROUTING -i lan -p tcp --dport 80 -j REDIRECT --to-port $TINYPROXY_PORT
+		echo "done."
+	fi
+
+	if [ "$TINYPROXY_CONFSERVER" == "yes" ]; then
+		echo -n "Stopping the webserver for the proxy config file ... "
+		pid=$(ps aux | egrep "httpd\ -p.*tinyproxy" | cut -d ' ' -f 2)
+		kill -9 $pid > /dev/null 2>&1
+		exitval=$?
+		if [ "$exitval" -eq 0 ]; then
+			echo 'done.'
+		else
+			echo 'failed.'
+		fi
+	fi
+
+	return $exitval
+}
+
+case $1 in
+	""|load)
+		modreg cgi 'tinyproxy' 'tinyproxy'
+
+		modreg file tinyproxy conf 'tinyproxy conf' 0 "tinyproxy_conf"
+		modreg file tinyproxy filter 'tinyproxy filter' 0 "tinyproxy_filter"
+		
+		modlib_start $TINYPROXY_ENABLED
+		;;
+	unload)
+		modunreg file tinyproxy
+		modunreg cgi tinyproxy
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+esac
+
+exit 0
