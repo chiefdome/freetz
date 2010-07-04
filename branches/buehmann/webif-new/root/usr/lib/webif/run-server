@@ -1,3 +1,6 @@
 #!/bin/sh -v
 cd "$(dirname "$0")"
-env - PATH="$PWD/bin:$PATH" TRACE="con*" httpd -fvv -p 8181 -h "$PWD/htdocs"
+sess=/var/lib/webif
+mkdir -p "$sess"
+chmod 700 "$sess"
+env - PATH="$PWD/bin:$PATH" session_dir="$sess" TRACE="con*" httpd -fvv -p 8181 -h "$PWD/htdocs"
