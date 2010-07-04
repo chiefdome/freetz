@@ -1,0 +1,11 @@
+--- src/h_error.c.org	2009-04-27 20:32:14.000000000 +0200
++++ src/h_error.c	2010-06-21 20:33:45.000000000 +0200
+@@ -72,6 +72,8 @@
+   va_list p;
+   FILE *fo = stderr;
+ 
++  unlink_uploadlist();
++
+   if (global.silent == FALSE)
+     {
+       if (getenv ("REQUEST_METHOD"))
