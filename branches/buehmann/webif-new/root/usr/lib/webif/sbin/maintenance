@@ -1,0 +1,9 @@
+#!/bin/sh
+# Maintenance script, to be called regularly to expire sessions
+trace() {
+    echo "$*" >&2
+}
+ROOT="${0%/*}/.."
+source "$ROOT/lib/lib.sh"
+use session
+cleanup_sessions

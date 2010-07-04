@@ -1,0 +1,18 @@
+#!/bin/sh
+# Prints a security token, which is also stored in the session until the next
+# request, which in turn should include the include the very same token to be
+# successful.
+#
+# Subsequent calls of this script will return the same token until
+# $SESSION/.token is deleted.
+
+if [ -z "$SESSION" ]; then
+    echo "There is no session" >&2
+    exit 2
+fi
+
+source "${ROOT:=${0%/*}/..}/lib/lib.sh"
+use token
+
+token
+exit $?

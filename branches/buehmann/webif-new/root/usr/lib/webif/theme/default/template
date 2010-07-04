@@ -1,0 +1,18 @@
+#!/bin/sh
+# TODO: html encoding of title etc.
+cat << EOF
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>${title:-(no title)} &ndash; 
+Prototype $(echo "${LOGIN:+[$LOGIN]}")</title>
+
+<link rel=stylesheet type=text/css href="/test.css">
+$(styles)
+</head>
+
+<body>
+$(content)
+</body>
+</html>
+EOF

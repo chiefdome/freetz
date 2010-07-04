@@ -1,0 +1,247 @@
+#!/bin/sh
+#
+# Front controller (to be sourced in an haserl environment)
+#
+# Please call ./maintenance at regular intervals for sessions to be expired.
+#
+# Restrictions:
+#  * POSTing a _token to /upload does not work. Please attach it to the URL.
+#
+
+# guard against calls from the command-line
+if [ -z "${REQUEST_METHOD+1}" -o -z "${HASERLVER+1}" ]; then
+    echo "May only be used from a haserl CGI" >&2
+    exit 1
+fi
+
+# absolute path to where this framework lives in the filesystem
+ROOT=${PWD%%/htdocs/*}
+
+# where 'use' is defined; controllers and pages may source this
+LIB="$ROOT/lib/lib.sh"
+
+source "$LIB"
+use logging
+use http
+use persistence
+use session
+use authen
+use author
+use replay
+
+# exit prematurely (to be used only if nothing has been output before)
+fatal_error() {
+    server_error 500 "ERROR: $*"
+}
+
+# FIXME: URL prefix of web application
+: ${WEB_ROOT:=/cgi-bin/freetz}
+: ${UPLOAD_ROOT:=/cgi-bin/upload}
+
+# Whether to create a new session when none exists (1 = true)
+: ${session_create:=1}
+
+# establish well-defined working directory
+cd "$ROOT" || fatal_error "Could not change directory to $ROOT"
+
+# start a new session
+create_session() {
+    new_session_dir || fatal_error "Session could not be created"
+    verify_session
+    trace controller "Starting new session $SESSIONID"
+    add_cookie "session=$SESSIONID; Path=/; HttpOnly"
+}
+
+# destroys the current session
+destroy_session() {
+    del_session_dir
+    # FIXME: we usually create a new session right away
+    # add_cookie "session=0; Path=/; HttpOnly; Max-Age=0"
+}
+
+# work to be done AFTER serving some requests
+maintenance() {
+    exec > /dev/null < /dev/null # do not make the client wait
+    do_maintenance
+}
+do_maintenance() {
+    trace controller "Starting maintenance"
+    cleanup_sessions
+}
+
+check_token() {
+    local TOKEN= token="$SESSION/.token"
+    restore "$token"
+
+    AUTH_TOKEN=false
+    # _token may be sent via GET or POST
+    if [ -n "$TOKEN" -a "$TOKEN" = "$FORM__token" ]; then
+	trace controller "Found valid token"
+	AUTH_TOKEN=true
+    fi
+
+    # The token is only valid for a single request (which may comprise multiple
+    # calls to the controller); delete the token if we are not an upload
+    # handler
+    if ! $upload_handler; then
+	rm -f "$token"
+    fi
+}
+
+# -----
+# Start processing this request
+
+upload_handler=false
+[ -n "$UPLOAD_FIFO" ] && upload_handler=true
+
+if ! resume_session && [ "$session_create" = 1 ]; then
+    create_session
+fi
+
+# load previous authentication
+restore_login
+
+check_token
+
+check_authorization
+
+# populate environment
+export ROOT
+export LIB
+export WEB_ROOT
+export UPLOAD_ROOT
+export SESSION # no need to export SESSIONID
+export LOGIN
+export AUTH
+export AUTH_TOKEN
+# TODO: clean environment
+
+# working directory is ROOT
+
+# FIXME: Somehow determine which page should be displayed; for now we always
+# dispatch to a test page
+# TODO: Perhaps inspired by struts: Select action, execute it, react on result
+# (by redirecting, choosing a view, etc.)
+
+# /cgi-bin/index.cgi is called by httpd when a directory without index.html is
+# accessed, "/" in particular
+if [ "$SCRIPT_NAME" = "/cgi-bin/index.cgi" ]; then
+    # FIXME: configure starting page
+    redirect 302 "$WEB_ROOT/test"
+fi
+
+# HTTP status code
+unset status
+
+page_handler() {
+    # FIXME: For other haserls called from this one, we either need to provide
+    # an empty input (stdin has already been consumed!) or use --accept-none
+
+    do_page_handler < /dev/null
+}
+do_page_handler() {
+    if [ -z "${PAGE+1}" ]; then
+	use findpage
+	PAGE=$(find_page "$PATH_INFO")
+    fi
+    export PAGE
+    trace controller "Delegating to page '$PAGE'"
+    local page="page${PAGE}"
+
+    # shift some segments from PATH_INFO to SCRIPT_NAME
+    SCRIPT_NAME="${SCRIPT_NAME}${PAGE}"
+    PATH_INFO=${PATH_INFO#"$PAGE"}
+
+    if $upload_handler; then
+	# FIXME: integrate into selection below
+	if $AUTH && [ -n "$SESSION" -a -x "$page/+upload" ]; then
+	    "$page/+upload"
+	else
+	    trace controller "Upload cancelled"
+	    # discard upload by opening fifo
+	    read -n 0 nothing < "$UPLOAD_FIFO"
+	fi
+	return
+    fi
+
+    local action="$page/+action"
+    if [ -x "$action" ]; then
+	"$action"
+	case $? in
+	    0) return ;; # action handles the result processing for itself
+	    *) ;; # for the time being, we continue by delivering the page
+	esac
+    fi
+
+    use pagegen
+
+    # FIXME: How to check if anythings there to be displayed?
+    # if [ -x "$page/main" ]; then
+	# start serving content
+	start_response ${status:-200}
+	say_cookies
+	# FIXME: conf
+	say "Content-Type: text/html; charset=utf-8"
+	say
+	unset upload_limit title extra_styles
+	[ -r "$page/+meta" ] && source "$page/+meta"
+	styles() {
+	    local s
+	    for s in $extra_styles; do
+		echo "<link rel=stylesheet type=text/css href='$s'>"
+	    done
+	}
+	content() {
+	    generate_page "${page}"
+	}
+	# FIXME: conf
+	# FIXME: variables like page, title, etc. are too easily overwritten by
+	# template
+	source theme/default/template
+#    else
+#	not_found
+#    fi
+}
+
+if $upload_handler; then
+    # We are being called as an upload handler
+    page_handler
+    exit
+fi
+
+if ! $AUTH; then
+    # TODO: save original request and show login form
+    save_request
+    status=403 # Forbidden
+fi
+if [ "$PATH_INFO" = /login -o "$PATH_INFO" = /logout ]; then
+    trap "maintenance &" EXIT
+fi
+if [ "$PATH_INFO" = /login ]; then
+    # credentials are posted as 'user' and 'password'
+    if $AUTH_TOKEN; then
+	login "${POST_user// /}" "$POST_password"
+	replay_request
+	redirect 303 "$WEB_ROOT/test/private/"
+    fi
+fi
+if $AUTH; then
+    forget_request
+fi
+
+if [ "$PATH_INFO" = /logout ]; then
+    if $AUTH_TOKEN; then
+	# logging out ends our session
+	destroy_session
+	create_session
+    fi
+
+    redirect 303 "$WEB_ROOT/test/"
+fi
+
+not_found() {
+    # FIXME: Custom error page
+    client_error 404 "Page '$PATH_INFO' does not exist"
+}
+
+page_handler

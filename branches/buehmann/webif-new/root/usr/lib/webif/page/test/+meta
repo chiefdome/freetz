@@ -1,0 +1,3 @@
+title='Test page'
+upload_limit=200
+extra_styles='/test-local.css'

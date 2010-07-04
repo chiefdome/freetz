@@ -1,0 +1,18 @@
+body {
+    font-family: sans;
+    background-color: lightgrey;
+}
+#main, #login {
+    background-color: white;
+    padding: 1em;
+}
+#main.denied {
+    background-color: orange;
+}
+.alert { 
+    color: red;
+    font-weight: bold;
+}
+pre {
+    min-height: 5em;
+}

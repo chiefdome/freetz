@@ -1,0 +1,68 @@
+#!/usr/bin/haserl --accept-none
+<% 
+source "$LIB"
+use token
+use persistence
+use page
+%>
+
+<pre><% echo "$trace"; unset trace %></pre>
+<% log="$SESSION/upload.log"; if [ -e "$log" ]; then %>
+<h3>Upload log</h3>
+<pre><% cat "$log"; rm -f "$log" %></pre>
+<% fi %>
+<div id=main<% ! $AUTH && echo -n " class='denied'" %>>
+
+<% 
+restore "$SESSION/hello"
+aaa=${FORM_aaa:-$aaa}
+bbb=${FORM_bbb:-$bbb}
+%>
+
+<h2>Hello, <%= ${LOGIN-<i>world</i>} %>!</h2>
+
+<% if [ -z "${COOKIE_session+1}" ]; then %>
+<p class="alert">Please allow cookies for this site.</p>
+<% fi %>
+
+<p>This is page <%= ${PAGE}${PATH_INFO:-(empty)} [${REQUEST_METHOD}] %>.
+<% if ! $AUTH; then %><span class="alert">Access denied</span><% fi %></p>
+
+<p>You sent the <b><% $AUTH_TOKEN && echo -n "right" || echo -n "wrong" %></b>
+token.</p>
+
+<p>Please also visit
+<% for page in /test/status /test/public/foo "/test/public/bar?aaa=2" \
+    "/test/private/baz?bbb=1" /test/private/quux; do %>
+<a href="<%= $WEB_ROOT$page %>"><%= $page %></a>,
+<% done %>
+</p>
+
+<p>I remember: aaa=<%= ${aaa:-(empty)} %>, bbb=<%= ${bbb:-(empty)} %></p>
+
+<% tok=$(token) %>
+<% form post /login 'id=login' %>
+    <h3>Login</h3>
+    <p>user: <input type=text name=user>
+    password: <input type=text name=password>
+    <input type=submit value="Login"></p>
+    <p><a href="<%= "$WEB_ROOT/logout?_token=$tok" %>">Logout</a></p>
+<% end_form %>
+
+<% for m in get post; do %>
+<% form $m %>
+    <h3><%= $m %></h3>
+    <p>aaa: <input type=text name=aaa>
+    bbb: <input type=text name=bbb>
+    <input type=submit></p>
+<% end_form %>
+<% done %>
+
+<% form upload %>
+    <h3>File upload</h3>
+    <p>afile: <input type=file name=afile>
+    <input type=submit></p>
+<% end_form %>
+</div>
+<% store aaa bbb > "$SESSION/hello" %>
+<%# vim:set ft=sh sw=4: %>

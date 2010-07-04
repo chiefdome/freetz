@@ -1,0 +1,3 @@
+#!/bin/sh -v
+cd "$(dirname "$0")"
+env - PATH="$PWD/bin:$PATH" TRACE="con*" httpd -fvv -p 8181 -h "$PWD/htdocs"

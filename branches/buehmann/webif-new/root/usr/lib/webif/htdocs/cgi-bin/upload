@@ -1,0 +1,10 @@
+#!/bin/sh
+export ROOT=${PWD%%/htdocs/*}
+source "$ROOT/lib/findpage.sh"
+
+export PAGE=$(find_page "$PATH_INFO")
+upload_limit=0
+meta="$ROOT/page${PAGE}/+meta"
+[ -r "$meta" ] && source "$meta"
+exec /usr/bin/haserl --upload-handler="$ROOT/upload-handler" \
+    --upload-limit="$upload_limit" index.cgi

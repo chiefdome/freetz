@@ -1,0 +1,2 @@
+<h2>AVM-Status</h2>
+<p>WLAN: <? query wlan:settings/ap_enabled ?></p>

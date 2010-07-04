@@ -1,0 +1,8 @@
+#!/bin/sh
+{
+    echo ---
+    { hexdump -c -n 64; cat > /dev/null; } < "$UPLOAD_FIFO"
+    echo ...
+    echo ---
+    env | sort
+} > "$SESSION"/upload.log
