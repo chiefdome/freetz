@@ -38,19 +38,19 @@ cat << EOF
 		}
 		function RudiEdit() {
 			file = document.getElementById("file2edit").value;
-			LF="%0A"
+			LF="\n"
 			tdata = "cat " + file;
-			tcmd = 'script=' +
-				'echo "%23%23 $(lang de:"Rudi-Editor" en:"Rudi Editor")"' + LF +
-				'echo "%23%23 $(lang de:"Bitte umgebende Zeilen NICHT l&ouml;schen" en:"Please DO NOT delete surrounding lines") (\'cat > ...\', \'RUDI_EOF\')"' + LF +
+			tcmd = 'script=' + encodeURIComponent(
+				'echo "## $(lang de:"Rudi-Editor" en:"Rudi Editor")"' + LF +
+				'echo "## $(lang de:"Bitte umgebende Zeilen NICHT entfernen" en:"Please DO NOT delete surrounding lines") (\'cat > ...\', \'RUDI_EOF\')"' + LF +
 				'echo "cat > '+ file + ' << \'RUDI_EOF\'"' + LF +
 				tdata + LF +
-				'echo "RUDI_EOF"';
-			tmp = '/cgi-bin/rudi_shellcmd.cgi?pid=$$&onload=parent.copyOut2Cmd()&' + tcmd;
+				'echo "RUDI_EOF"');
+			tmp = '/cgi-bin/shell/cmd.cgi?pid=$$&onload=parent.copyOut2Cmd()&' + tcmd;
 			parent.frames["shellcmd"].location.href = tmp;
 		}
 	</script>
-	<form action="/cgi-bin/rudi_shellcmd.cgi?pid=$$" target="shellcmd" method=POST enctype="multipart/form-data">
+	<form action="/cgi-bin/shell/cmd.cgi?pid=$$" target="shellcmd" method=POST enctype="multipart/form-data">
 		<textarea id="script_code" name="script" rows="10" cols="80"></textarea><p>
 		<input type=submit value="$(lang de:"Skript ausf&uuml;hren" en:"Run script")">&nbsp;&nbsp;
 		$(lang de:"Historie" en:"History") <select id="history" onChange="historySelected(this.selectedIndex)"></select>
@@ -60,7 +60,7 @@ cat << EOF
 		<input type="checkbox" name="gz" value="true">.gz )
 	</form>
 	<table>
-		<form action="/cgi-bin/rudi_upload.cgi?pid=$$" target="shellcmd" method=POST enctype="multipart/form-data">
+		<form action="/cgi-bin/shell/upload.cgi?pid=$$" target="shellcmd" method=POST enctype="multipart/form-data">
 			<tr><td>$(lang de:"Quelldatei" en:"Source file")</td><td><input type=file name="source" size=50></td></tr>
 			<tr><td>$(lang de:"Zieldatei" en:"Target file")</td><td><input name="target" value="/var/tmp/rudi_upload" size=50> <input type=submit value="$(lang de:"Hochladen" en:"Upload")"></td></tr>
 		</form>

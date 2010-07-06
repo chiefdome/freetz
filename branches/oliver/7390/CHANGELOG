@@ -117,7 +117,7 @@ Latest changes:
     * onlinechanged-cgi 0.1
     * openconnect 2.24
     * owfs 2.7p32
-    * pcre 8.02
+    * pcre 8.10
     * phpxmail 1.5
     * polipo 1.0.4.1
     * ppp-cgi 0.6.9
@@ -130,7 +130,7 @@ Latest changes:
     * slurm 0.3.3
     * spawn-fcgi 1.6.3
     * sqlite 3.6.23.1
-    * subversion 1.6.11
+    * subversion 1.6.12
     * synce-dccm 0.9.1
     * synce-serial 0.10.0
     * tcpproxy 2.0.0-beta15
@@ -183,12 +183,12 @@ Latest changes:
     * iodine 0.6.0-rc1
     * libart_lgpl 2.3.20
     * libelf 0.8.13
-    * libevent 1.4.13
+    * libevent 1.4.14b
     * libgcrypt 1.4.5
     * libgpg-error 1.8
     * libiconv 1.13.1
     * libpcap 1.1.1
-    * libpng 1.2.43
+    * libpng 1.2.44
     * libpopt 1.15
     * liblzo 2.03
     * libneon 0.29.3
@@ -214,14 +214,14 @@ Latest changes:
     * ruby 1.8.6-p368
     * rrdstats 0.7.1 (inetd support for webservers)
     * rrdtool 1.2.30
-    * samba 3.0.37
+    * samba 3.0.37 (inetd support for smbd)
     * strace 4.5.19
     * streamripper 1.64.6
     * stunnel 4.33
     * tcpdump 4.1.1
     * tinc 1.0.12
     * tor 0.2.1.26
-    * transmission 2.00
+    * transmission 2.01
     * uClibc++ 0.2.3pre (git snapshot)
     * vpnc 0.5.3
     * vsftpd 2.2.2: add SSL support

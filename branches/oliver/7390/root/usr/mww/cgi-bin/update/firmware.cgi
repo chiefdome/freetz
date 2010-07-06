@@ -13,7 +13,7 @@ function CheckInput(form) {
 	radio_semistop=form.elements[2];
 	radio_nostop=form.elements[3];
 	downgrade=form.elements[4];
-	
+
 	if (file_selector.value=="") {
 		alert("$(lang de:"Keine Firmware-Datei angegeben!" en:"No firmware file selected!")");
 		return false;
@@ -28,7 +28,7 @@ function CheckInput(form) {
 		file_selector.name="nostop_avm";
 	}
 	if (downgrade.checked) {
-	    	file_selector.name += "/downgrade";
+		file_selector.name += "/downgrade";
 	}
 
 	return true;
@@ -37,7 +37,7 @@ function CheckInput(form) {
 
 <h1>1. $(lang de:"Firmware hochladen" en:"Upload firmware")</h1>
 
-<p>$(lang 
+<p>$(lang
     de:"Im ersten Schritt ist ein Firmware-Image zum Upload auszuw&auml;hlen.
 Dieses Image wird auf die Box geladen und dort entpackt. Anschlie&szlig;end
 wird <i>/var/install</i> aufgerufen. Falls das erfolgreich ist, kann das Update
@@ -51,7 +51,7 @@ button. If remote update is selected, the box restarts automatically after 30
 seconds."
 )</p>
 
-<form action="/cgi-bin/do_update.cgi" method="POST" enctype="multipart/form-data" onsubmit="return CheckInput(document.forms[0]);">
+<form action="do_firmware.cgi" method="POST" enctype="multipart/form-data" onsubmit="return CheckInput(document.forms[0]);">
 	<p>
 	$(lang de:"Firmware-Image" en:"Firmware image")
 	<input type=file size=50 id="fw_file">
@@ -73,7 +73,7 @@ seconds."
 <br style="clear: both;">
 <br>
 
-<form class="btn" action="/cgi-bin/external_update.cgi" method="GET">
+<form class="btn" action="external.cgi" method="GET">
 	<input type="submit" value="external (optional)" style="width:150px">
 </form>
 

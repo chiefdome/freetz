@@ -8,7 +8,7 @@ swap_size=$(cgi_param swap_size | tr -d .)
 size=$(echo "$swap_size" | sed -re "s/^ *([0-9]+) $/\1/")
 error=true
 
-# redirect stderr to stdout so we see ouput in webif
+# redirect stderr to stdout so we see output in webif
 exec 2>&1
 
 cgi_begin "$(lang de:"Erstellen der Swap-Datei..." en:"Creation of swapfile...")"
@@ -31,7 +31,7 @@ else
 			sleep 5
 		done
 	} &
-	sleep 1 
+	sleep 1
 	if dd if=/dev/zero of="$swap_file" bs=1M count=$size; then
 		echo "$(lang de:"Bereite Datei f&uuml;r Swap-Benutzung vor..." en:"Preparing file for swap usage...")"
 		if mkswap "$swap_file"; then
