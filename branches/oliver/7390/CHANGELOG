@@ -73,7 +73,7 @@ Latest changes:
     * dosfstools 3.0.9
     * flex (libflex) 2.5.35
     * fortune 1.2
-    * git 1.7.1
+    * git 1.7.1.1
     * gnutls 2.8.6
     * gocr 0.48
     * gw6 5.1
@@ -84,6 +84,7 @@ Latest changes:
     * httpry 0.1.5
     * igmpproxy 0.1
     * iptraf 3.0.0
+    * ipsec-tools 0.7.2
     * iputils s20071127
     * irssi 0.8.15
     * lftp 4.0.5
@@ -166,7 +167,7 @@ Latest changes:
     * collectd 4.10.0
     * cryptsetup 1.0.6
     * curl 7.21.0
-    * cyassl 1.5.0
+    * cyassl 1.5.4
     * davfs2 1.4.6
     * dns2tcp 0.5.2
     * dnsmasq 2.55
@@ -215,7 +216,7 @@ Latest changes:
     * rrdstats 0.7.1 (inetd support for webservers)
     * rrdtool 1.2.30
     * samba 3.0.37 (inetd support for smbd)
-    * strace 4.5.19
+    * strace 4.5.20
     * streamripper 1.64.6
     * stunnel 4.33
     * tcpdump 4.1.1

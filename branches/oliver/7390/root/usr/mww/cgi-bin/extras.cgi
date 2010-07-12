@@ -43,10 +43,10 @@ if [ -z "$PATH_INFO" ]; then
 
 	cgi_end
 else
-	OIFS=$IFS
-	IFS='/'
-	set -- $(echo "$PATH_INFO" | tr -d .)
-	pkg=$2; cgi=$3
+	path_info pkg cgi _
+	if ! valid package "$pkg" || ! valid id "$cgi"; then
+		cgi_error "Invalid path"
+	fi
 	IFS='|'
 	set -- $(grep "^$pkg|.*|$cgi\$" "$extra_reg")
 	IFS=$OIFS
@@ -62,9 +62,7 @@ else
 		if [ -x "/mod/usr/lib/cgi-bin/$pkg/$cgi.cgi" ]; then
 			/mod/usr/lib/cgi-bin/$pkg/$cgi.cgi
 		else
-			cgi_begin 'Extras'
-			echo "<p><b>$(lang de:"Fehler" en:"Error"):</b> $(lang de:"Zusatz-Skript '$cgi.cgi' nicht gefunden." en:"Additional script '$cgi.cgi' not found.")</p>"
-			cgi_end
+			cgi_error "$(lang de:"Zusatz-Skript '$cgi.cgi' nicht gefunden." en:"Additional script '$cgi.cgi' not found.")"
 		fi
 	fi
 fi

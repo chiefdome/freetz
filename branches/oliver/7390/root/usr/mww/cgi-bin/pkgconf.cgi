@@ -4,7 +4,11 @@ PATH=/bin:/usr/bin:/sbin:/usr/sbin
 . /usr/lib/libmodcgi.sh
 . /usr/lib/libmodfrm.sh
 
-package=$(cgi_param pkg | tr -d .)
+path_info package _
+if ! valid package "$package"; then
+    	cgi_error "Invalid path"
+fi
+
 cgi_reg=/mod/etc/reg/cgi.reg
 [ -e "$cgi_reg" ] || touch "$cgi_reg"
 
@@ -27,12 +31,10 @@ if [ -r "/mod/etc/default.$package/$package.cfg" -o -r "/mod/etc/default.$packag
 		/mod/usr/lib/cgi-bin/$package.cgi
 		frm_end "$package"
 	else
-		echo "<p><b>$(lang de:"Fehler" en:"Error"):</b> $(lang de:"Kein Skript f&uuml;r das Paket" en:"no script for package") '$package'.</p>"
+		print_error "$(lang de:"Kein Skript f&uuml;r das Paket" en:"no script for package") '$package'."
 	fi
 
 	cgi_end
 else
-	cgi_begin "$(lang de:"Fehler" en:"Error")" "pkg:$package"
-	echo "<p><b>$(lang de:"Fehler" en:"Error"):</b> $(lang de:"Das Paket '$package' ist nicht konfigurierbar." en:"the package '$package' is not configurable.")</p>"
-	cgi_end
+	cgi_error "$(lang de:"Das Paket '$package' ist nicht konfigurierbar." en:"the package '$package' is not configurable.")" "pkg:$package"
 fi

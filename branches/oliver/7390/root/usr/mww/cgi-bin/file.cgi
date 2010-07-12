@@ -6,8 +6,11 @@ PATH=/bin:/usr/bin:/sbin:/usr/sbin
 file_reg=/mod/etc/reg/file.reg
 [ -e "$file_reg" ] || touch "$file_reg"
 
-PACKAGE=$(cgi_param pkg | tr -d .)
-FILE_ID=$(cgi_param id | tr -d .)
+path_info PACKAGE FILE_ID _
+if ! valid package "$PACKAGE" || ! valid id "$FILE_ID"; then
+	cgi_error "Invalid path"
+	exit 2
+fi
 
 OIFS=$IFS
 IFS='|'
@@ -16,14 +19,15 @@ IFS=$OIFS
 TITLE=$3 sec=$4 def=$5
 
 if [ $# -eq 0 ]; then
-	cgi_begin "$(lang de:"Fehler" en:"Error")"
-	echo "<p>$(lang
+	cgi_error "$(lang
 	    de:"Datei '$FILE_ID' des Pakets '$PACKAGE' ist unbekannt."
 	    en:"File '$FILE_ID' of package '$PACKAGE' is unknown."
 	)</p>"
-	cgi_end
 	exit
 fi
+
+# Defaults
+TEXT_ROWS=18
 
 # Load config
 [ -r "$def" ] && . "$def"
