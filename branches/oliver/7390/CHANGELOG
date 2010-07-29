@@ -89,6 +89,7 @@ Latest changes:
     * irssi 0.8.15
     * lftp 4.0.5
     * libconfig 1.4.5
+    * libdaemon 0.14
     * libdnet 1.12
     * libfreetz 0.1
     * libgd 2.0.35
@@ -106,6 +107,7 @@ Latest changes:
       depends on 7170, 7240 and 7270.
     * minicom-2.4
     * mini-snmpd 1.2b
+    * nc6
     * ncftp-3.2.4
     * netpbm-10.35.75
     * ndas-1.1-22
@@ -117,6 +119,7 @@ Latest changes:
     * oidentd 2.0.8
     * onlinechanged-cgi 0.1
     * openconnect 2.24
+    * opendd 0.7.9
     * owfs 2.7p32
     * pcre 8.10
     * phpxmail 1.5
@@ -163,7 +166,7 @@ Latest changes:
     * bip 0.8.4
     * bird 1.1.2
     * bridge-utils 1.4
-    * callmonitor 1.18.1
+    * callmonitor 1.18.2
     * collectd 4.10.0
     * cryptsetup 1.0.6
     * curl 7.21.0
@@ -201,6 +204,7 @@ Latest changes:
     * mcabber 0.9.10
     * microperl 5.10.1
     * mpfr 2.4.2
+    * mtr 0.80
     * ntfs-3g 2010.5.22
     * openssh 5.3p1
     * openssl 0.9.8o

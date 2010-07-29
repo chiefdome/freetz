@@ -35,6 +35,7 @@ source make/mini_fo/Config.in
 source make/mtr/Config.in
 source make/nano/Config.in
 source make/netcat/Config.in
+source make/nc6/Config.in
 source make/netsnmp/Config.in
 source make/nfs-utils/Config.in
 source make/ntfs/Config.in
@@ -147,6 +148,7 @@ source make/nmap/Config.in
 source make/obexftp/Config.in
 source make/oidentd/Config.in
 source make/openconnect/Config.in
+source make/opendd/Config.in
 source make/openssh/Config.in
 source make/owfs/Config.in
 source make/polipo/Config.in

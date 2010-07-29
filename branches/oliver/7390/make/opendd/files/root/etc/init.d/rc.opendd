@@ -1,0 +1,63 @@
+#!/bin/sh
+
+DAEMON=opendd
+DAEMON_LONG_NAME=OpenDD
+. /etc/init.d/modlibrc
+
+case $1 in
+	run)
+		modlib_loadconfig
+		;;
+esac
+
+PEM=/tmp/flash/opendd/opendd.pem
+
+run() {
+	echo -n "Running $DAEMON_LONG_NAME..."
+	if modlib_check_running; then
+		echo 'already running.'
+		exit 0
+	 fi
+
+	echo "$OPENDD_CONFIG" > /mod/etc/$DAEMON.conf
+	chmod 600 /mod/etc/$DAEMON.conf
+	
+	# create temporary interface with public ip address
+	ifconfig dsl:1 $(get_ip)
+	$DAEMON -c /mod/etc/$DAEMON.conf
+	ifconfig dsl:1 down
+	
+	# return-value of opendd is always 0
+	echo 'done.'
+}
+
+case $1 in
+	""|load)
+		mkdir -p /tmp/flash/opendd
+		[ ! -e $PEM ] && cat /mod/etc/default.$DAEMON/$DAEMON.pem > $PEM
+		
+		modreg cgi 'opendd' 'OpenDD'
+		modreg file opendd opendd_pem 'OpenDD: opendd.pem' 0 "opendd_pem"
+		modreg daemon --hide opendd
+		
+		if [ "$OPENDD_ENABLED" != yes ]; then
+			echo "$DAEMON is disabled." 1>&2
+			exit 1
+		fi
+		echo "$DAEMON is enabled." 1>&2
+		;;
+	unload)
+		modunreg cgi 'opendd'
+		modunreg file opendd
+		modunreg daemon opendd
+		;;
+	run)
+		run
+		;;
+	*)
+		echo "Usage: $0 [load|unload|run]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0
