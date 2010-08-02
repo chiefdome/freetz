@@ -1,39 +1,6 @@
-diff -burN configure.ac configure.ac
---- configure.ac	2006-06-14 06:55:21.000000000 +0200
-+++ configure.ac	2008-11-22 12:41:48.000000000 +0100
-@@ -15,7 +15,7 @@
- 
- dnl Checks for libraries.
- AC_CHECK_LIB(iberty, cplus_demangle,,,)
--AC_CHECK_LIB(supc++, __cxa_demangle,,,)
-+# AC_CHECK_LIB(supc++, __cxa_demangle,,,)
- 
- dnl
- dnl The following stuff may be useful, but I don't use it now.
-diff -burN ltrace.h ltrace.h
---- ltrace.h	2008-03-12 15:56:01.000000000 +0100
-+++ ltrace.h	2008-11-22 12:41:48.000000000 +0100
-@@ -144,6 +144,9 @@
- 	} c_un;
- 	int is_syscall;
- 	void *return_addr;
-+#ifdef __mips__
-+	void *arch_ptr;
-+#endif
- 	struct timeval time_spent;
- };
- 
-diff -burN sysdeps/linux-gnu/Makefile sysdeps/linux-gnu/Makefile
---- sysdeps/linux-gnu/Makefile	2006-02-20 22:44:45.000000000 +0100
-+++ sysdeps/linux-gnu/Makefile	2008-11-22 12:41:48.000000000 +0100
-@@ -1,5 +1,5 @@
- ARCH		:=	$(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ \
--			-e s/arm.*/arm/ -e s/sa110/arm/ -e s/ppc64/ppc/ -e s/s390x/s390/)
-+			-e s/arm.*/arm/ -e s/sa110/arm/ -e s/ppc64/ppc/ -e s/s390x/s390/ -e s/mips/mipsel/)
- 
- CPPFLAGS	+=	-I$(TOPDIR)/sysdeps/linux-gnu/$(ARCH)
- 
-@@ -10,8 +10,9 @@
+--- sysdeps/linux-gnu/Makefile.orig	2009-07-25 17:13:02.000000000 +0200
++++ sysdeps/linux-gnu/Makefile	2010-08-01 21:29:24.522173665 +0200
+@@ -17,8 +17,9 @@
  sysdep.h:	$(ARCH)/arch.h
  		cat $(ARCH)/arch.h > sysdep.h
  
@@ -45,7 +12,7 @@ diff -burN sysdeps/linux-gnu/Makefile sysdeps/linux-gnu/Makefile
  signalent1.h:
  		if [ -f $(ARCH)/signalent1.h ]; then \
  			cp $(ARCH)/signalent1.h signalent1.h; \
-@@ -19,8 +20,8 @@
+@@ -26,8 +27,8 @@
  			> signalent1.h; \
  		fi
  
@@ -56,9 +23,20 @@ diff -burN sysdeps/linux-gnu/Makefile sysdeps/linux-gnu/Makefile
  
  syscallent1.h:
  		if [ -f $(ARCH)/syscallent1.h ]; then \
-diff -burN sysdeps/linux-gnu/mipsel/arch.h sysdeps/linux-gnu/mipsel/arch.h
---- sysdeps/linux-gnu/mipsel/arch.h	2006-12-28 15:59:03.000000000 +0100
-+++ sysdeps/linux-gnu/mipsel/arch.h	2008-11-22 12:41:48.000000000 +0100
+--- common.h.orig	2010-08-01 21:29:24.472170173 +0200
++++ common.h	2010-08-01 21:29:24.522173665 +0200
+@@ -146,6 +146,9 @@
+ 	} c_un;
+ 	int is_syscall;
+ 	void * return_addr;
++#ifdef __mips__
++	void *arch_ptr;
++#endif
+ 	struct timeval time_spent;
+ };
+ 
+--- sysdeps/linux-gnu/mipsel/arch.h.orig	2009-07-25 17:13:02.000000000 +0200
++++ sysdeps/linux-gnu/mipsel/arch.h	2010-08-01 21:29:24.522173665 +0200
 @@ -1,4 +1,8 @@
 +#ifdef __MIPSEL__
  #define BREAKPOINT_VALUE { 0x0d, 0x00, 0x00, 0x00 }
@@ -68,63 +46,291 @@ diff -burN sysdeps/linux-gnu/mipsel/arch.h sysdeps/linux-gnu/mipsel/arch.h
  #define BREAKPOINT_LENGTH 4
  #define DECR_PC_AFTER_BREAK 0
  
-diff -burN sysdeps/linux-gnu/mipsel/mipsel.h sysdeps/linux-gnu/mipsel/mipsel.h
---- sysdeps/linux-gnu/mipsel/mipsel.h	2006-12-28 15:59:03.000000000 +0100
-+++ sysdeps/linux-gnu/mipsel/mipsel.h	2008-11-22 12:41:48.000000000 +0100
-@@ -1,11 +1,19 @@
- #ifndef MIPSEL_h
- #define  MIPSEL_h
--// linux-2.4.30/arch/mips/kernel/ptrace.c for these offsets.
-+
-+/*
-+ * These are just the register numbers,
-+ * 0 - 31 are integer registers, 32 - 63 are fp registers.
-+ */
- #define off_v0 2
--#define off_pc 64
- #define off_a0 4
- #define off_a3 7
--#define off_lr 31
- #define off_sp 29
-+#define off_lr 31
-+
-+/*
-+ * see kernel header include/asm-mips/ptrace.h for these
-+ */
-+#define off_pc 64
- 
--#endif //  MIPSEL_h
-+#endif /* MIPSEL_h */
-diff -burN sysdeps/linux-gnu/mipsel/plt.c sysdeps/linux-gnu/mipsel/plt.c
---- sysdeps/linux-gnu/mipsel/plt.c	2006-12-28 15:59:03.000000000 +0100
-+++ sysdeps/linux-gnu/mipsel/plt.c	2008-11-22 12:41:48.000000000 +0100
-@@ -1,8 +1,8 @@
+--- sysdeps/linux-gnu/mipsel/plt.c.orig	2009-07-25 17:13:02.000000000 +0200
++++ sysdeps/linux-gnu/mipsel/plt.c	2010-08-01 21:29:24.522173665 +0200
+@@ -1,4 +1,4 @@
 -#include <debug.h>
++#include "debug.h"
  #include <gelf.h>
  #include <sys/ptrace.h>
-+#include "debug.h"
- #include "ltrace.h"
--#include "ltrace_elf.h"
-+#include "elf.h"
- 
- /**
-    \addtogroup mipsel
-diff -burN sysdeps/linux-gnu/mipsel/regs.c sysdeps/linux-gnu/mipsel/regs.c
---- sysdeps/linux-gnu/mipsel/regs.c	2006-12-28 15:59:03.000000000 +0100
-+++ sysdeps/linux-gnu/mipsel/regs.c	2008-11-22 12:41:48.000000000 +0100
-@@ -4,8 +4,7 @@
- #include <stddef.h>
+ #include "common.h"
+--- sysdeps/linux-gnu/mipsel/regs.c.orig	2009-07-25 17:13:02.000000000 +0200
++++ sysdeps/linux-gnu/mipsel/regs.c	2010-08-01 21:29:24.522173665 +0200
+@@ -4,7 +4,6 @@
  #include <sys/types.h>
  #include <sys/ptrace.h>
--#include <asm/ptrace.h>
+ #include <asm/ptrace.h>
 -#include <linux/user.h>
-+/* #include <asm/ptrace.h> */
  
- #include "ltrace.h"
+ #include "common.h"
  #include "mipsel.h"
-diff -burN sysdeps/linux-gnu/mipsel/signalent.h sysdeps/linux-gnu/mipsel/signalent.h
---- sysdeps/linux-gnu/mipsel/signalent.h	2006-12-28 15:59:03.000000000 +0100
-+++ sysdeps/linux-gnu/mipsel/signalent.h	2008-11-22 12:41:48.000000000 +0100
+--- sysdeps/linux-gnu/mipsel/trace.c.orig	2009-07-25 17:13:02.000000000 +0200
++++ sysdeps/linux-gnu/mipsel/trace.c	2010-08-01 21:29:24.532173679 +0200
+@@ -119,31 +119,55 @@
+ long
+ gimme_arg(enum tof type, Process *proc, int arg_num, arg_type_info *info) {
+ 	long ret;
++	long addr;
+ 	debug(2,"type %d arg %d",type,arg_num);
+-	if (type == LT_TOF_FUNCTION || type == LT_TOF_SYSCALL){
++	if (arg_num == -1) {
++		if(type == LT_TOF_FUNCTIONR) {
++			return  ptrace(PTRACE_PEEKUSER,proc->pid,off_v0,0);
++		}
++		if (type == LT_TOF_SYSCALLR) {
++			unsigned a3=ptrace(PTRACE_PEEKUSER, proc->pid,off_a3,0);
++			unsigned v0=ptrace(PTRACE_PEEKUSER, proc->pid,off_v0,0);
++			if(!a3){
++				return v0;
++			}
++			return -1;
++		}
++	}
++	if (type == LT_TOF_FUNCTION || type == LT_TOF_SYSCALL) {
++		/* o32: float args are in f12 and f14 */
++		if ((info->type == ARGTYPE_FLOAT) && (arg_num < 2)) {
++			ret=ptrace(PTRACE_PEEKUSER,proc->pid,off_fpr0+12+arg_num*2,0);
++			debug(2,"ret = %#lx",ret);
++			return ret;
++		}
+ 		if(arg_num <4){
+ 			ret=ptrace(PTRACE_PEEKUSER,proc->pid,off_a0+arg_num,0);
+ 			debug(2,"ret = %#lx",ret);
+ 			return ret;
+ 		} else {
+-			// If we need this, I think we can look at [sp+16] for arg_num==4.
+-			CP;
+-			return 0;
++			/* not sure it's going to work for something else than syscall */
++			addr=ptrace(PTRACE_PEEKUSER,proc->pid,off_sp,0);
++			if (addr == -1) {
++				debug(2,"ret = %#lx",addr);
++				return addr;
++			}
++			ret = addr + 4*arg_num;
++			ret=ptrace(PTRACE_PEEKTEXT,proc->pid,addr,0);
++			debug(2,"ret = %#lx",ret);
++			return ret;
+ 		}
+ 	}
+-	if(arg_num>=0){
+-		fprintf(stderr,"args on return?");
+-	}
+-	if(type == LT_TOF_FUNCTIONR) {
+-		return  ptrace(PTRACE_PEEKUSER,proc->pid,off_v0,0);
+-	}
+-	if (type == LT_TOF_SYSCALLR) {
+-		unsigned a3=ptrace(PTRACE_PEEKUSER, proc->pid,off_a3,0);
+-		unsigned v0=ptrace(PTRACE_PEEKUSER, proc->pid,off_v0,0);
+-		if(!a3){
+-			return v0;
++	if (type == LT_TOF_FUNCTIONR || type == LT_TOF_SYSCALLR){
++		addr=ptrace(PTRACE_PEEKUSER,proc->pid,off_sp,0);
++		if (addr == -1) {
++			debug(2,"ret = %#lx",addr);
++			return addr;
+ 		}
+-		return -1;
++		ret = addr + 4*arg_num;
++		ret=ptrace(PTRACE_PEEKTEXT,proc->pid,addr,0);
++		debug(2,"ret = %#lx",ret);
++		return ret;
+ 	}
+ 	fprintf(stderr, "gimme_arg called with wrong arguments\n");
+ 	return 0;
+--- handle_event.c.orig	2009-07-25 17:13:02.000000000 +0200
++++ handle_event.c	2010-08-01 21:29:24.532173679 +0200
+@@ -569,17 +569,19 @@
+ 				}
+ 			}
+ #elif defined(__mips__)
+-			void *addr;
+-			void *old_addr;
++			void *addr = NULL;
+ 			struct library_symbol *sym= event->proc->callstack[i].c_un.libfunc;
++			struct library_symbol *new_sym;
+ 			assert(sym);
+-			old_addr = dict_find_entry(event->proc->breakpoints, sym2addr(event->proc, sym))->addr;
+ 			addr=sym2addr(event->proc,sym);
+-			assert(old_addr !=0 && addr !=0);
+-			if(addr != old_addr){
+-				struct library_symbol *new_sym;
+-				new_sym=malloc(sizeof(*new_sym));
+-				memcpy(new_sym,sym,sizeof(*new_sym));
++			sbp = dict_find_entry(event->proc->breakpoints, addr);
++			if (sbp) {
++				if (addr != sbp->addr) {
++					insert_breakpoint(event->proc, addr, sym);
++				}
++			} else {
++				new_sym=malloc(sizeof(*new_sym) + strlen(sym->name) + 1);
++				memcpy(new_sym,sym,sizeof(*new_sym) + strlen(sym->name) + 1);
+ 				new_sym->next=event->proc->list_of_symbols;
+ 				event->proc->list_of_symbols=new_sym;
+ 				insert_breakpoint(event->proc, addr, new_sym);
+@@ -639,7 +641,8 @@
+ 	debug(DEBUG_FUNCTION, "callstack_push_syscall(pid=%d, sysnum=%d)", proc->pid, sysnum);
+ 	/* FIXME: not good -- should use dynamic allocation. 19990703 mortene. */
+ 	if (proc->callstack_depth == MAX_CALLDEPTH - 1) {
+-		fprintf(stderr, "Error: call nesting too deep!\n");
++		fprintf(stderr, "%s: Error: call nesting too deep!\n", __func__);
++		abort();
+ 		return;
+ 	}
+ 
+@@ -657,15 +660,17 @@
+ 
+ static void
+ callstack_push_symfunc(Process *proc, struct library_symbol *sym) {
+-	struct callstack_element *elem;
++	struct callstack_element *elem, *prev;
+ 
+ 	debug(DEBUG_FUNCTION, "callstack_push_symfunc(pid=%d, symbol=%s)", proc->pid, sym->name);
+ 	/* FIXME: not good -- should use dynamic allocation. 19990703 mortene. */
+ 	if (proc->callstack_depth == MAX_CALLDEPTH - 1) {
+-		fprintf(stderr, "Error: call nesting too deep!\n");
++		fprintf(stderr, "%s: Error: call nesting too deep!\n", __func__);
++		abort();
+ 		return;
+ 	}
+ 
++	prev = &proc->callstack[proc->callstack_depth-1];
+ 	elem = &proc->callstack[proc->callstack_depth];
+ 	elem->is_syscall = 0;
+ 	elem->c_un.libfunc = sym;
+@@ -675,7 +680,9 @@
+ 		insert_breakpoint(proc, elem->return_addr, 0);
+ 	}
+ 
+-	proc->callstack_depth++;
++	/* handle functions like atexit() on mips which have no return */
++	if (elem->return_addr != prev->return_addr)
++		proc->callstack_depth++;
+ 	if (opt_T || options.summary) {
+ 		struct timezone tz;
+ 		gettimeofday(&elem->time_spent, &tz);
+--- breakpoints.c.orig	2009-07-25 17:13:02.000000000 +0200
++++ breakpoints.c	2010-08-01 21:29:24.532173679 +0200
+@@ -123,8 +123,8 @@
+ 					continue;
+ 				}
+ 				debug(2,"inserting bp %p %s",addr,sym->name);
+-				new_sym=malloc(sizeof(*new_sym));
+-				memcpy(new_sym,sym,sizeof(*new_sym));
++				new_sym=malloc(sizeof(*new_sym) + strlen(sym->name) + 1);
++				memcpy(new_sym,sym,sizeof(*new_sym) + strlen(sym->name) + 1);
+ 				new_sym->next=proc->list_of_symbols;
+ 				proc->list_of_symbols=new_sym;
+ 				insert_breakpoint(proc, addr, new_sym);
+--- sysdeps/linux-gnu/trace.c.orig	2009-07-25 17:13:02.000000000 +0200
++++ sysdeps/linux-gnu/trace.c	2010-08-01 21:29:24.532173679 +0200
+@@ -55,6 +55,14 @@
+ 		return -errno;
+ 
+ 	*result = pointed_to;
++	if (info) {
++		switch(info->type) {
++			case ARGTYPE_INT:
++				*result &= 0x00000000ffffffffUL;
++			default:
++				break;
++		};
++	}
+ 	return 0;
+ }
+ #endif
+@@ -119,7 +127,7 @@
+ 
+ 	proc = pid2proc(pid);
+ 	if (proc && proc->breakpoint_being_enabled) {
+-#if defined __sparc__  || defined __ia64___
++#if defined __sparc__  || defined __ia64___ || defined __mips__
+ 		ptrace(PTRACE_SYSCALL, pid, 0, signum);
+ #else
+ 		ptrace(PTRACE_SINGLESTEP, pid, 0, signum);
+@@ -154,7 +162,7 @@
+ 	} else {
+ 		debug(DEBUG_PROCESS, "continue_after_breakpoint: pid=%d, addr=%p", proc->pid, sbp->addr);
+ 		proc->breakpoint_being_enabled = sbp;
+-#if defined __sparc__  || defined __ia64___
++#if defined __sparc__  || defined __ia64___ || defined __mips__
+ 		/* we don't want to singlestep here */
+ 		continue_process(proc->pid);
+ #else
+--- sysdeps/linux-gnu/mksyscallent_mips.orig	2010-08-01 21:29:24.532173679 +0200
++++ sysdeps/linux-gnu/mksyscallent_mips	2010-08-01 21:29:24.532173679 +0200
+@@ -0,0 +1,43 @@
++#!/usr/bin/awk -f
++
++# hack expression to generate arch/syscallent.h from <asm/unistd.h>
++# It reads from stdin and writes to stdout
++# It should work OK on i386,m68k,arm,ia64
++# It does NOT work in mips, s390
++# It is untested in other architectures
++
++BEGIN {
++	max=0;
++	FS="[ \t\n()+]+";
++}
++
++{
++	#debug
++	#printf("/%s/%s/%s/%s/\n", $1, $2, $3, $4);
++	if ($2 ~ /__NR_Linux/ && $3 ~ /4000/) {
++		syscall=1;
++	}
++	if ($2 ~ /__NR_Linux_syscalls/) {
++		syscall=0;
++	}
++	if (syscall && ($1 ~ /^#define$/) && ($2 ~ /^__NR_/)) {
++			SYSCALL[$4]=substr($2,6);
++			if ($4 > max) {
++				max=$4;
++			}
++	}
++}
++
++END {
++	for(i=0; i<=max; i++) {
++		if (!SYSCALL[i]) {
++			SYSCALL[i] = i;
++		}
++		pad = 32 - length(SYSCALL[i]);
++		if (pad<1) {
++			pad=1;
++		}
++		printf("\t\"%s\",%*s/* %d */\n", SYSCALL[i], pad, "", i);
++	}
++}
++
+--- elf.c.orig	2009-07-25 17:13:02.000000000 +0200
++++ elf.c	2010-08-01 21:29:24.532173679 +0200
+@@ -482,14 +482,16 @@
+ 					proc->filename);
+ 		}
+ 		name=lte->dynstr+sym.st_name;
+-		if(ELF64_ST_TYPE(sym.st_info) != STT_FUNC){
+-			debug(2,"sym %s not a function",name);
+-			continue;
++		if (in_load_libraries(name, lte)) {
++			if(ELF64_ST_TYPE(sym.st_info) != STT_FUNC){
++				debug(2,"sym %s not a function",name);
++				continue;
++			}
++			add_library_symbol(addr, name, &library_symbols, 0,
++					ELF64_ST_BIND(sym.st_info) != 0);
++			if (!lib_tail)
++				lib_tail = &(library_symbols->next);
+ 		}
+-		add_library_symbol(addr, name, &library_symbols, 0,
+-				ELF64_ST_BIND(sym.st_info) != 0);
+-		if (!lib_tail)
+-			lib_tail = &(library_symbols->next);
+ 	}
+ #else
+ 	for (i = 0; i < lte->relplt_count; ++i) {
+--- sysdeps/linux-gnu/mipsel/signalent.h.orig	2009-07-25 17:13:02.000000000 +0200
++++ sysdeps/linux-gnu/mipsel/signalent.h	2010-08-01 21:29:24.532173679 +0200
 @@ -1,32 +1,32 @@
 -"SIG_0",			/* 0 */
 -    "SIGHUP",	//	    1	/* Hangup (POSIX).  */
@@ -190,10 +396,9 @@ diff -burN sysdeps/linux-gnu/mipsel/signalent.h sysdeps/linux-gnu/mipsel/signale
 +	"SIGPROF",         /* 29 */
 +	"SIGXCPU",         /* 30 */
 +	"SIGXFSZ",         /* 31 */
-diff -burN sysdeps/linux-gnu/mipsel/syscallent.h sysdeps/linux-gnu/mipsel/syscallent.h
---- sysdeps/linux-gnu/mipsel/syscallent.h	2006-12-28 15:59:03.000000000 +0100
-+++ sysdeps/linux-gnu/mipsel/syscallent.h	2008-11-22 12:41:48.000000000 +0100
-@@ -1,241 +1,286 @@
+--- sysdeps/linux-gnu/mipsel/syscallent.h.orig	2009-07-25 17:13:02.000000000 +0200
++++ sysdeps/linux-gnu/mipsel/syscallent.h	2010-08-01 21:29:24.532173679 +0200
+@@ -1,241 +1,330 @@
 -    "0",			/*Linux +   0*/
 -    "exit",			/*Linux +   1*/
 -    "fork",			/*Linux +   2*/
@@ -718,248 +923,66 @@ diff -burN sysdeps/linux-gnu/mipsel/syscallent.h sysdeps/linux-gnu/mipsel/syscal
 +	"add_key",                         /* 280 */
 +	"request_key",                     /* 281 */
 +	"keyctl",                          /* 282 */
-+	"inotify_init",                    /* 283 */
-+	"inotify_add_watch",               /* 284 */
-+	"inotify_rm_watch",                /* 285 */
-diff -burN sysdeps/linux-gnu/mipsel/trace.c sysdeps/linux-gnu/mipsel/trace.c
---- sysdeps/linux-gnu/mipsel/trace.c	2007-09-04 17:34:53.000000000 +0200
-+++ sysdeps/linux-gnu/mipsel/trace.c	2008-11-22 12:58:31.000000000 +0100
-@@ -6,10 +6,13 @@
- #include <sys/wait.h>
- #include <signal.h>
- #include <sys/ptrace.h>
--#include <asm/ptrace.h>
-+/* #include <asm/ptrace.h> */
-+#include <stdlib.h>
-+
- #include "debug.h"
- #include "ltrace.h"
- #include "mipsel.h"
-+
- #if (!defined(PTRACE_PEEKUSER) && defined(PTRACE_PEEKUSR))
- # define PTRACE_PEEKUSER PTRACE_PEEKUSR
- #endif
-@@ -18,6 +21,12 @@
- # define PTRACE_POKEUSER PTRACE_POKEUSR
- #endif
++	"set_thread_area",                 /* 283 */
++	"inotify_init",                    /* 284 */
++	"inotify_add_watch",               /* 285 */
++	"inotify_rm_watch",                /* 286 */
++	"migrate_pages",                   /* 287 */
++	"openat",                          /* 288 */
++	"mkdirat",                         /* 289 */
++	"mknodat",                         /* 290 */
++	"fchownat",                        /* 291 */
++	"futimesat",                       /* 292 */
++	"fstatat64",                       /* 293 */
++	"unlinkat",                        /* 294 */
++	"renameat",                        /* 295 */
++	"linkat",                          /* 296 */
++	"symlinkat",                       /* 297 */
++	"readlinkat",                      /* 298 */
++	"fchmodat",                        /* 299 */
++	"faccessat",                       /* 300 */
++	"pselect6",                        /* 301 */
++	"ppoll",                           /* 302 */
++	"unshare",                         /* 303 */
++	"splice",                          /* 304 */
++	"sync_file_range",                 /* 305 */
++	"tee",                             /* 306 */
++	"vmsplice",                        /* 307 */
++	"move_pages",                      /* 308 */
++	"set_robust_list",                 /* 309 */
++	"get_robust_list",                 /* 310 */
++	"kexec_load",                      /* 311 */
++	"getcpu",                          /* 312 */
++	"epoll_pwait",                     /* 313 */
++	"ioprio_set",                      /* 314 */
++	"ioprio_get",                      /* 315 */
++	"utimensat",                       /* 316 */
++	"signalfd",                        /* 317 */
++	"timerfd",                         /* 318 */
++	"eventfd",                         /* 319 */
++	"fallocate",                       /* 320 */
++	"timerfd_create",                  /* 321 */
++	"timerfd_gettime",                 /* 322 */
++	"timerfd_settime",                 /* 323 */
++	"signalfd4",                       /* 324 */
++	"eventfd2",                        /* 325 */
++	"epoll_create1",                   /* 326 */
++	"dup3",                            /* 327 */
++	"pipe2",                           /* 328 */
++	"inotify_init1",                   /* 329 */
+--- sysdeps/linux-gnu/mipsel/mipsel.h.orig	2009-07-25 17:13:02.000000000 +0200
++++ sysdeps/linux-gnu/mipsel/mipsel.h	2010-08-01 21:29:24.532173679 +0200
+@@ -1,11 +1,12 @@
+ #ifndef MIPSEL_h
+ #define  MIPSEL_h
+-// linux-2.4.30/arch/mips/kernel/ptrace.c for these offsets.
++// asm/ptrace.h for these offsets.
+ #define off_v0 2
+ #define off_pc 64
+ #define off_a0 4
+ #define off_a3 7
+ #define off_lr 31
++#define off_fpr0 32 
+ #define off_sp 29
  
-+#define FUNC_REGISTER_ARGS 4
-+#define SYSC_REGISTER_ARGS 6
-+
-+typedef struct {
-+  long saved_arg[SYSC_REGISTER_ARGS];
-+} callstack_archdep;
- 
- /**
-    \addtogroup mipsel Mipsel specific functions.
-@@ -96,59 +105,89 @@
-    \param arg_num -1 for return value, 
-    \return The argument to fetch. 
- 
--   A couple of assumptions. 
--
---  Type is LT_TOF_FUNCTIONR or LT_TOF_SYSCALLR if arg_num==-1. These
--   types are only used in calls for output_right(), which only uses -1
--   for arg_num.
---  Type is LT_TOF_FUNCTION or LT_TOF_SYSCALL for args 0...4. 
---   I'm only displaying the first 4 args (Registers a0..a3). Good
--   enough for now.
--
-   Mipsel conventions seem to be:
--- syscall parameters: r4...r9
--- syscall return: if(!a3){ return v0;} else{ errno=v0;return -1;}
--- function call: r4..r7. Not sure how to get arg number 5. 
--- function return: v0
--
--The argument registers are wiped by a call, so it is a mistake to ask
--for arguments on a return. If ltrace does this, we will need to cache
--arguments somewhere on the call.
--
--I'm not doing any floating point support here. 
-+  - syscall parameters: r4...r9
-+  - syscall return: if(!a3){ return v0;} else{ errno=v0;return -1;}
-+  - function call: r4..r7. Further arguments on the stack (integer!).
-+  - function return: v0
-+
-+  The argument registers are wiped by a call, so it is a mistake to ask
-+  for arguments on a return. So, the registers will be saved in
-+  \save_register_args on the call stack.
- 
-+  I'm not doing any floating point support here. 
- */
-+
- long gimme_arg(enum tof type, struct process *proc, int arg_num, arg_type_info *info)
- {
--    long ret;
--    debug(2,"type %d arg %d",type,arg_num);
--    if (type == LT_TOF_FUNCTION || type == LT_TOF_SYSCALL){
--        if(arg_num <4){
-+    long ret = 0;
-+    
-+    debug(2,"tof %d arg %d",type,arg_num);
-+    
-+    if (arg_num == -1) { /* return value */
-+      switch (type) {
-+       case LT_TOF_FUNCTIONR:
-+       ret = ptrace(PTRACE_PEEKUSER,proc->pid,off_v0,0);
-+       break;
-+       case LT_TOF_SYSCALLR:
-+       if(0 == ptrace(PTRACE_PEEKUSER, proc->pid,off_a3,0)) {
-+         ret = ptrace(PTRACE_PEEKUSER, proc->pid,off_v0,0);
-+       } else {
-+         ret = -1;
-+       }
-+       break;
-+       default:
-+wrong_args:
-+       fprintf(stderr, "gimme_arg called with wrong arguments\n");
-+      }
-+    } else { /* arguments */
-+      switch (type) {
-+       case LT_TOF_FUNCTION:
-+       if (arg_num < FUNC_REGISTER_ARGS) {
-             ret=ptrace(PTRACE_PEEKUSER,proc->pid,off_a0+arg_num,0);
--            debug(2,"ret = %#lx",ret);
--            return ret;
-         } else {
--            // If we need this, I think we can look at [sp+16] for arg_num==4.
--            CP;
--            return 0;
-+from_stack:
-+         if (!proc->stack_pointer)
-+           proc->stack_pointer = get_stack_pointer(proc);
-+         ret = ptrace(PTRACE_PEEKDATA, proc->pid,
-+                      proc->stack_pointer + 4*arg_num, 0);
-+       }
-+       break;
-+       case LT_TOF_FUNCTIONR:
-+       if (arg_num < FUNC_REGISTER_ARGS) {
-+from_saved:
-+         {
-+           callstack_archdep *a =
-+             proc->callstack[proc->callstack_depth].arch_ptr;
-+           if (a) {
-+             ret = a->saved_arg[arg_num];
-         }
-     } 
--    if(arg_num>=0){
--       fprintf(stderr,"args on return?");
-+       } else {
-+         goto from_stack;
-     }
--    if(type == LT_TOF_FUNCTIONR) {
--        return  ptrace(PTRACE_PEEKUSER,proc->pid,off_v0,0);
-+       break;
-+       case LT_TOF_SYSCALL:
-+       if (arg_num < SYSC_REGISTER_ARGS) {
-+         ret=ptrace(PTRACE_PEEKUSER,proc->pid,off_a0+arg_num,0);
-+       } else {
-+         goto wrong_args;
-     }
--    if (type == LT_TOF_SYSCALLR) {
--        unsigned a3=ptrace(PTRACE_PEEKUSER, proc->pid,off_a3,0);
--        unsigned v0=ptrace(PTRACE_PEEKUSER, proc->pid,off_v0,0);
--        if(!a3){
--            return v0;
-+       break;
-+       case LT_TOF_SYSCALLR:
-+       if (arg_num < SYSC_REGISTER_ARGS) {
-+         goto from_saved;
-+       } else {
-+         goto wrong_args;
-         }
--        return -1;
-+       break;
-+       default:
-+       goto wrong_args;
-     }
--    fprintf(stderr, "gimme_arg called with wrong arguments\n");
--	return 0;
-+    }
-+
-+    debug(2,"ret = %#lx",ret);
-+    return ret;
- }
- 
- /**
-@@ -156,14 +194,30 @@
-    \param proc Process to work with. 
-    
-    Called by \c output_left(), which is called on a syscall or
--   function.
-+   function when there are arguments left that will be displayed on
-+   return.
-    
--   The other architectures stub this out, but seems to be the place to
-+   Most other architectures stub this out, but seems to be the place to
-    stash off the arguments on a call so we have them on the return.
-    
-+   On mips, save register arguments that will be overwritten during
-+   the call.
-+   
- */
- void save_register_args(enum tof type, struct process *proc)
- {
-+  callstack_archdep *a = proc->callstack[proc->callstack_depth].arch_ptr;
-+  if (!a) {
-+    a = malloc(sizeof *a);
-+    proc->callstack[proc->callstack_depth].arch_ptr = a;
-+  }
-+  if (a) {
-+    int argc = LT_TOF_FUNCTION ? FUNC_REGISTER_ARGS : SYSC_REGISTER_ARGS;
-+    int i;
-+    for (i = 0; i < argc; i++) {
-+      a->saved_arg[i] = ptrace(PTRACE_PEEKUSER, proc->pid, off_a0+i, 0);
-+    }
-+  }
- }
- 
- /**@}*/
-diff -burN sysdeps/linux-gnu/mksyscallent sysdeps/linux-gnu/mksyscallent
---- sysdeps/linux-gnu/mksyscallent	2006-06-19 14:20:05.000000000 +0200
-+++ sysdeps/linux-gnu/mksyscallent	2008-11-22 12:41:48.000000000 +0100
-@@ -8,6 +8,7 @@
- 
- BEGIN {
- 	max=0;
-+	ismips=0;
- 	FS="[ \t\n()+]+";
- }
- 
-@@ -16,7 +17,7 @@
- 	#printf("/%s/%s/%s/%s/\n", $1, $2, $3, $4);
- 	if (($1 ~ /^#define$/) && ($2 ~ /^__NR_/)) {
- 	        #ia64 syscalls are > 1000 (lower for x86 compat)
--		if (($3>=0) && ($3<=2000)) {
-+		if (!ismips && ($3>=0) && ($3<=2000)) {
- 			SYSCALL[$3]=substr($2,6);
- 			if ($3 > max) {
- 				max=$3;
-@@ -26,6 +27,15 @@
- 			if ($4 > max) {
- 				max=$4;
- 			}
-+		} else if (ismips && ($3 ~ /^__NR_Linux$/) && ($4>=0) && ($4<=1000)) {
-+			if (!SYSCALL[$4]) {
-+				SYSCALL[$4]=substr($2,6);
-+				if ($4 > max) {
-+					max=$4;
-+				}
-+			}
-+		} else if (($2 ~ /^__NR_Linux$/)) {
-+			ismips=1;
- 		}
- 	}
- }
-diff -burN sysdeps/linux-gnu/trace.c sysdeps/linux-gnu/trace.c
---- sysdeps/linux-gnu/trace.c	2008-03-12 15:56:01.000000000 +0100
-+++ sysdeps/linux-gnu/trace.c	2008-11-22 12:41:48.000000000 +0100
-@@ -221,7 +221,7 @@
- 		continue_process(proc->pid);
- 	} else {
- 		proc->breakpoint_being_enabled = sbp;
--#if defined __sparc__  || defined __ia64___
-+#if defined __sparc__  || defined __ia64___ || defined __mips__
- 		/* we don't want to singlestep here */
- 		continue_process(proc->pid);
- #else
+ #endif //  MIPSEL_h

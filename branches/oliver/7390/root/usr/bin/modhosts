@@ -34,26 +34,18 @@ case $1 in
 		$0 load
 		;;
 	load)
-		hostname $(ar7hostname)
+		_hostname=$(ar7hostname)
+		hostname $_hostname
+
+		echo "nameserver 127.0.0.1" > /etc/resolv.conf
+		_domain=$(echo $_hostname |cut -d "." -f2-)
+ 		[ -n "$_domain" ] && echo "domain $_domain" >> /etc/resolv.conf
 
 		rm -f /var/tmp/hosts
 		rm -f /var/tmp/ethers
 
-		echo -e "127.0.0.1\tlocalhost" > /var/tmp/hosts
+ 		touch /var/tmp/hosts
 		touch /var/tmp/ethers
-
-		# ATA fix
-		mode=$(echo 'ar7cfg.mode' | ar7cfgctl -s)
-		if [ "$mode" = "dsldmode_bridge" -o \
-			"$mode" = "dsldmode_full_bridge" ]; then
-			if [ "$(echo 'ar7cfg.wan_bridge_with_dhcpc' | ar7cfgctl -s)" = "no" -a \
-				"$(echo 'ar7cfg.dhcpc_use_static_dns' | ar7cfgctl -s)" = "yes" ]; then
-				(
-					echo "nameserver $(echo 'servercfg.dns1' | ar7cfgctl -s)"
-					echo "nameserver $(echo 'servercfg.dns2' | ar7cfgctl -s)"
-				) > /var/tmp/avm-resolv.conf
-			fi
-		fi
 
 		[ -r /tmp/flash/exhosts ] && mv /tmp/flash/exhosts /tmp/flash/mod/hosts
 		if [ -r /tmp/flash/mod/hosts ]; then
@@ -69,28 +61,36 @@ case $1 in
 				done
 		fi
 
+ 		if ! egrep "^127.0.0.1[[:space:]]" /var/tmp/hosts -q 2>/dev/null; then
+ 			echo -e "127.0.0.1\tlocalhost" >> /var/tmp/hosts
+ 		fi
+
 		ethmode=$(echo 'ar7cfg.ethmode' | ar7cfgctl -s)
 		case $ethmode in
 			ethmode_bridge)
 				devname=lan
+				fallback=eth0
 				section=brinterfaces
 				break
 				;;
 			ethmode_router)
 				devname=eth0
+				fallback=lan
 				section=ethinterfaces
 				break
 				;;
 			*)
 				devname=eth0
+				fallback=lan
 				section=ethinterfaces
 				;;
 		esac
 		ipaddr=$(ar7ipaddr $section $devname)
-		if [ -z "$ipaddr" ]; then
-			ipaddr=169.254.1.1
-		fi
-		echo -e "$ipaddr\tfritz.box\t$(ar7hostname)" >> /var/tmp/hosts
+		[ -z "$ipaddr" ] && ipaddr=$(ar7ipaddr $section $fallback)
+		[ -z "$ipaddr" ] && ipaddr=169.254.1.1
+		if ! egrep "^$ipaddr[[:space:]]" /var/tmp/hosts -q 2>/dev/null; then
+ 			echo -e "$ipaddr\tfritz.box\t$_hostname" >> /var/tmp/hosts
+ 		fi
 		;;
 	*)
 		echo "Usage: $0 [load]" 1>&2

@@ -51,7 +51,7 @@ cat << EOF
 		}
 	</script>
 	<form action="/cgi-bin/shell/cmd.cgi?pid=$$" target="shellcmd" method=POST enctype="multipart/form-data">
-		<textarea id="script_code" name="script" rows="10" cols="80"></textarea><p>
+		<div class="textwrapper"><textarea id="script_code" name="script" rows="10" cols="80"></textarea></div><p>
 		<input type=submit value="$(lang de:"Skript ausf&uuml;hren" en:"Run script")">&nbsp;&nbsp;
 		$(lang de:"Historie" en:"History") <select id="history" onChange="historySelected(this.selectedIndex)"></select>
 		<input type=button value="$(lang de:"Hist. l&ouml;schen" en:"Delete hist.")" onClick="cleanHistory()">&nbsp;&nbsp;
@@ -62,9 +62,9 @@ cat << EOF
 	<table>
 		<form action="/cgi-bin/shell/upload.cgi?pid=$$" target="shellcmd" method=POST enctype="multipart/form-data">
 			<tr><td>$(lang de:"Quelldatei" en:"Source file")</td><td><input type=file name="source" size=50></td></tr>
-			<tr><td>$(lang de:"Zieldatei" en:"Target file")</td><td><input name="target" value="/var/tmp/rudi_upload" size=50> <input type=submit value="$(lang de:"Hochladen" en:"Upload")"></td></tr>
+			<tr><td>$(lang de:"Zieldatei" en:"Target file")</td><td><input type="text" name="target" value="/var/tmp/rudi_upload" size=50> <input type=submit value="$(lang de:"Hochladen" en:"Upload")"></td></tr>
 		</form>
-		<tr><td>$(lang de:"Rudi-Edit" en:"Rudi edit")</td><td> <input id="file2edit" value="/var/tmp/tmp.txt" size=50> <input type=button value="$(lang de:"Datei editieren" en:"Edit file")" onClick="RudiEdit()"></td></tr>
+		<tr><td>$(lang de:"Rudi-Edit" en:"Rudi edit")</td><td> <input type="text" id="file2edit" value="/var/tmp/tmp.txt" size=50> <input type=button value="$(lang de:"Datei editieren" en:"Edit file")" onClick="RudiEdit()"></td></tr>
 	</table>
 	<iframe name="shellcmd" style="width: 0; height: 0; border: 0"></iframe>
 	<pre id="shell_output">---</pre>

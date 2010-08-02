@@ -108,14 +108,14 @@ _cgi_location() {
 	local type=$1
 	case $type in
 		file)   "$out" "/cgi-bin/file.cgi/${2}/${3}" ;;
-		extra)  "$out" "/cgi-bin/extras.cgi/${2}/${3}" ;;
+		extra)  "$out" "/cgi-bin/extra.cgi/${2}/${3}" ;;
 		status) "$out" "/cgi-bin/pkgstatus.cgi/${2}/${3:-status}" ;;
 		cgi)    local pkg=$2; shift 2
-			"$out" "/cgi-bin/pkgconf.cgi/$pkg" "$@" ;;
+			"$out" "/cgi-bin/conf.cgi/$pkg" "$@" ;;
 		mod)    case $2 in
 				""|status) "$out" "/cgi-bin/status.cgi" ;;
-				extras)    "$out" "/cgi-bin/extras.cgi" ;;
-				daemons)   "$out" "/cgi-bin/daemons.cgi" ;;
+				extras)    "$out" "/cgi-bin/extra.cgi" ;;
+				daemons)   "$out" "/cgi-bin/service.cgi" ;;
 				about)     "$out" "/cgi-bin/about.cgi" ;;
 				packages)  "$out" "/cgi-bin/packages.cgi" ;;
 				system)    "$out" "/cgi-bin/system.cgi" ;;
@@ -127,9 +127,8 @@ _cgi_location() {
 	esac
 }
 
-
 _cgi_mark_active() {
-	sed -r "s# id=(['\"])$1\1# class='active'&#"
+	sed -r "s# id=(['\"])($1)\1# class='active'&#"
 }
 
 _cgi_cached() {
@@ -217,7 +216,7 @@ fi
 
 cat << EOF
 </li>
-<li><a id="extras" href="/cgi-bin/extras.cgi">Extras</a></li>
+<li><a id="extras" href="$(href mod extras)">Extras</a></li>
 <li><a id="system" href="$(href mod system)">System</a>
 EOF
 
@@ -252,6 +251,7 @@ ${CR}
    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 EOF
 _cgi_head "$title" "$id"
 cat << EOF
