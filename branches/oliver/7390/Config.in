@@ -1042,7 +1042,7 @@ config FREETZ_REMOVE_NAS
 	depends on FREETZ_HAS_NAS && FREETZ_TYPE_LANG_DE
 	default n
 	help
-		Removes the AVM NAS Webinterface (saves about 176KB in compressed image).
+		Removes the AVM NAS Webinterface and internal memory file (saves about 390 KB in compressed image).
 
 config FREETZ_REMOVE_AVM_VPN
 	bool "Remove AVM vpn"
@@ -1918,7 +1918,7 @@ config FREETZ_DL_SOURCE
 											FREETZ_TYPE_LABOR_DSL
 	default "FRITZ.Box_Fon_WLAN_7240.73.04.80.image"			if	FREETZ_TYPE_FON_WLAN_7240 && \
 											! FREETZ_TYPE_LABOR
-	default "Labor_FRITZ.Box_Fon_WLAN_7240.73.04.85-17941.image"		if	FREETZ_TYPE_FON_WLAN_7240 && \
+	default "Labor_FRITZ.Box_Fon_WLAN_7240.73.04.85-17971.image"		if	FREETZ_TYPE_FON_WLAN_7240 && \
 											FREETZ_TYPE_PREVIEW
 	default "FRITZ.Box_Fon_WLAN_7270.54.04.80.image"			if	FREETZ_TYPE_FON_WLAN_7270 && \
 											! FREETZ_TYPE_LABOR && \
@@ -1933,7 +1933,7 @@ config FREETZ_DL_SOURCE
 											FREETZ_TYPE_LABOR_IPV6
 	default "FRITZ.Box_Fon_WLAN_7270_16_LabNAS.AnnexB.54.04.80-16561.image"	if	FREETZ_TYPE_FON_WLAN_7270_16MB && \
 											FREETZ_TYPE_LABOR_NAS
-	default "Labor_FRITZ.Box_Fon_WLAN_7270_v2.54.04.85-17941.image"		if	FREETZ_TYPE_FON_WLAN_7270 && \
+	default "Labor_FRITZ.Box_Fon_WLAN_7270_v2.54.04.85-17971.image"		if	FREETZ_TYPE_FON_WLAN_7270 && \
 											FREETZ_TYPE_PREVIEW
 	default "FRITZ.Box_Fon_WLAN_7270_v3.74.04.80.image"			if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
 											! FREETZ_TYPE_LABOR && \
@@ -1946,7 +1946,7 @@ config FREETZ_DL_SOURCE
 											FREETZ_TYPE_LABOR_IPV6
 	default "FRITZ.Box_Fon_WLAN_7270_v3_LabNAS.AnnexB.74.04.80-16561.image"	if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
 											FREETZ_TYPE_LABOR_NAS
-	default "Labor_FRITZ.Box_Fon_WLAN_7270_v3.74.04.85-17941.image"		if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
+	default "Labor_FRITZ.Box_Fon_WLAN_7270_v3.74.04.85-17971.image"		if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
 											FREETZ_TYPE_PREVIEW
 	default "FRITZ.Box_Fon_WLAN_7570_vDSL.en-de-fr.75.04.82.image"		if	FREETZ_TYPE_FON_WLAN_7570
 	default "fritz.box_fon_wlan_7390_84.04.84.image"			if	FREETZ_TYPE_FON_WLAN_7390 && \
