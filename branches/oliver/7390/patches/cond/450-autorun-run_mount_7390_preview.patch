@@ -1,6 +1,6 @@
---- etc/hotplug/run_mount.orig	2010-06-11 22:47:27.325434433 +0200
-+++ etc/hotplug/run_mount	2010-06-11 22:47:27.645422308 +0200
-@@ -133,6 +133,10 @@
+--- etc/hotplug/run_mount.orig	2010-08-11 00:51:00.825623709 +0200
++++ etc/hotplug/run_mount	2010-08-11 00:51:01.205595112 +0200
+@@ -136,6 +136,10 @@
  /etc/ftpd_control reconfig
  fi
  test -x $TR069START && $TR069START "$MNTNAME"
