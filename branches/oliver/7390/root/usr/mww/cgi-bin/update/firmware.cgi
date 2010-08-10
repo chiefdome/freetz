@@ -3,7 +3,8 @@
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 . /usr/lib/libmodcgi.sh
 
-cgi_begin '$(lang de:"Firmware-Update" en:"Firmware update")' firmware_update
+cgi --id=firmware_update
+cgi_begin '$(lang de:"Firmware-Update" en:"Firmware update")'
 
 cat << EOF
 <script type="text/javascript">
@@ -15,7 +16,7 @@ function CheckInput(form) {
 	downgrade=form.elements[4];
 
 	if (file_selector.value=="") {
-		alert("$(lang de:"Keine Firmware-Datei angegeben!" en:"No firmware file selected!")");
+		alert("$(lang de:"Keine Firmware-Datei angegeben!" en:"No firmware file provided!")");
 		return false;
 	}
 	if (radio_stop.checked) {
@@ -35,7 +36,7 @@ function CheckInput(form) {
 }
 </script>
 
-<h1>1. $(lang de:"Firmware hochladen" en:"Upload firmware")</h1>
+<h1>$(lang de:"Firmware hochladen" en:"Upload firmware")</h1>
 
 <p>$(lang
     de:"Im ersten Schritt ist ein Firmware-Image zum Upload auszuw&auml;hlen.
@@ -55,7 +56,8 @@ seconds."
 	<p>
 	$(lang de:"Firmware-Image" en:"Firmware image")
 	<input type=file size=50 id="fw_file">
-	</p><p>
+	</p>
+	<p>
 	$(lang de:"AVM-Dienste ..." en:"")<br>
 	<input type="radio" name="do_prepare" value="stop_avm">
 	$(lang de:"stoppen (bei Speichermangel)" en:"Stop AVM services (low available memory)")<br>
@@ -68,13 +70,13 @@ seconds."
 	<input type="checkbox" name="downgrade" value="yes">
 	$(lang de:"Downgrade auf niedrigere Version zulassen" en:"Allow downgrade to lower version")
 	</p>
-	<div class="btn"><input type=submit value="$(lang de:"Firmware hochladen" en:"Upload firmware")" style="width:150px"></div>
+	<div class="btn"><input type=submit value="$(lang de:"Firmware hochladen" en:"Upload firmware")" style="width:200px"></div>
 </form>
 <br style="clear: both;">
 <br>
 
 <form class="btn" action="external.cgi" method="GET">
-	<input type="submit" value="external (optional)" style="width:150px">
+	<input type="submit" value="external (optional)" style="width:200px">
 </form>
 
 EOF

@@ -74,6 +74,7 @@ source make/wput/external.in
 comment "services"
 	depends on EXTERNAL_ENABLED
 source make/checkmaild/external.in
+source make/dropbear/external.in
 source make/knock/external.in
 source make/openssh/external.in
 source make/openvpn/external.in

@@ -20,6 +20,9 @@ pre.log .disabled {
 	color: #ff0000;
 	font-weight: bold;
 }
+.warning {
+    	color: #ff0000;
+}
 table.bar, table.bar td {
 	border: 0px;
 	padding: 0px;
@@ -27,6 +30,7 @@ table.bar, table.bar td {
 }
 table.bar {
 	width: 100%;
+	table-layout: fixed;
 	margin: 3px 0px;
 	border-spacing: 0px;
 }
@@ -34,71 +38,13 @@ table.bar td {
 	text-align: center;
 	font-size: 8pt;
 	padding: 2px;
+	overflow: hidden;
 }
-
-table.mounted {
-	border-spacing: 0px;
-	table-layout: auto;
-	width: 100%;
+table {
+	empty-cells: show;
+	border-spacing: 2px;
 }
-.mounted td {
-	text-align: left;
-	font-weight: normal;
-}
-.mounted .path, .mounted .fstype {
-	text-align: left;
-	font-weight: bold;
-}
-.mounted .free, .mounted .path {
-	padding-right: 10px;
-}
-.mounted .actions {
-	text-align: right;
-	white-space: nowrap;
-}
-.mounted .button {
-	padding: 0px;
-	margin: 0px;
-	width: 25px;
-	height: 25px;
-	font-size: 8pt;
-	font-weight: bold;
-	border-width: 3px;
-}
-.mounted .button[disabled] {
-	border-style: solid;
-}
-.mounted tbody tr:first-child td {
-	padding-top: 15px;
-}
-.mounted tbody:first-child tr:first-child td {
-	padding-top: 3px;
-}
-.mounted pre.error {
-	text-decoration: blink;
-}
-
-#freetz-conf {
-	border-spacing: 0pt;
-}
-#freetz-conf th, #freetz-conf td {
-	text-align: left;
-	vertical-align: top;
-	padding-right: 10px;
-}
-#freetz-conf th {
-	font-weight: bold;
-}
-#freetz-conf td {
-	font-weight: normal;
-}
-
-.daemons tr.running .status {
-	color: #008000;
-}
-.daemons tr.stopped .status {
-	color: #800000;
-}
-.daemons tr.none .status {
-	color: #808080;
+td {
+    	border-style: none;
+	padding: 0;
 }

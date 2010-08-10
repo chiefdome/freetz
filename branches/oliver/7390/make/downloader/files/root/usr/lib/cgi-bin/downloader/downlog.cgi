@@ -7,7 +7,7 @@ SELF='downlog'
 TITLE='$(lang de:"Downloader - Protokoll" en:"Downloader - log")'
 DOWNLOGFILE='/var/log/downloader.log'
 
-cgi_begin "$TITLE" extras
+cgi_begin "$TITLE"
 sec_begin "$DOWNLOGFILE"
 
 if [ -n "$QUERY_STRING" ]; then
@@ -35,7 +35,7 @@ else
 		echo -n '<pre style="width: 500px;">'
 		html < "$DOWNLOGFILE"
 		echo '</pre>'
-		echo -n "<div class="btn"><form class="btn" action="$SELF"><input type="hidden" name="cmd" value="remove"><input type="submit" value='$(lang de:"Protokolldatei löschen" en:"Delete log file")'></form></div>"
+		echo -n "<div class="btn"><form class="btn" action="$SELF"><input type="hidden" name="cmd" value="remove"><input type="submit" value='$(lang de:"Protokolldatei l&ouml;schen" en:"Delete log file")'></form></div>"
 	else
 cat << EOF
 <pre>$DOWNLOGFILE $(lang de:"existiert nicht" en:"does not exist")</pre><p>
