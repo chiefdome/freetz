@@ -1,0 +1,85 @@
+#!/bin/sh
+
+DAEMON=radvd
+. /etc/init.d/modlibrc
+
+config() {
+	(
+		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
+			/tmp/flash/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/${DAEMON}_conf
+		fi
+
+		if [ -r "/tmp/flash/${DAEMON}.extra" ]; then
+			cat /tmp/flash/${DAEMON}.extra
+		fi
+	) > /mod/etc/$DAEMON.conf
+}
+
+setup_ipv6_interface() {
+	if [ "$RADVD_SETIPV6" == "yes" ]; then
+		ip -6 addr show dev $RADVD_INTERFACE | grep $RADVD_ADDRESS > /dev/null 2>&1
+		if [ $? -eq 0 ]; then
+			echo 'Set IPv6 address: $RADVD_ADDRESS ... already set.'
+		else
+			ip -6 addr add $RADVD_ADDRESS dev $RADVD_INTERFACE
+		fi
+	fi
+	[ "$RADVD_FORWARD" == "yes" ] && echo 1 > /proc/sys/net/ipv6/conf/all/forwarding
+}
+
+shut_ipv6_interface() {
+	if [ "$RADVD_SETIPV6" == "yes" ]; then
+		ip -6 addr show dev $RADVD_INTERFACE | grep $RADVD_ADDRESS > /dev/null 2>&1
+		if [ $? -eq 0 ]; then
+			ip -6 addr del $RADVD_ADDRESS dev $RADVD_INTERFACE
+		else
+			echo -n 'IPv6 address already unset ... '
+		fi
+	fi
+	[ "$RADVD_FORWARD" == "yes" ] && echo 0 > /proc/sys/net/ipv6/conf/all/forwarding
+}
+
+start() {
+	setup_ipv6_interface
+	modlib_startdaemon $DAEMON -C /mod/etc/$DAEMON.conf
+}
+
+stop() {
+	shut_ipv6_interface
+	return 127
+}
+
+case $1 in
+	""|load)
+		modreg cgi 'radvd' 'radvd'
+
+		modlib_start $RADVD_ENABLED
+		;;
+	unload)
+		modunreg cgi 'radvd'
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	remove)
+		shut_ipv6_interface
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|remove|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

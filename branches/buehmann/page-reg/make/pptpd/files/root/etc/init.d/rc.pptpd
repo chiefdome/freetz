@@ -1,0 +1,72 @@
+#!/bin/sh
+
+DAEMON=pptpd
+. /etc/init.d/modlibrc
+
+config() {
+	set -o noglob
+	rm -f /mod/etc/ppp/ip-up
+	rm -f /mod/etc/ppp/ip-down
+	[ -x "/tmp/flash/ppp/pppd_ip-up" ] && /tmp/flash/ppp/pppd_ip-up > /mod/etc/ppp/ip-up
+	[ ! -e "/mod/etc/ppp/ip-up" ] && /etc/default.pppd/pppd_ip-up > /mod/etc/ppp/ip-up
+	[ -x "/tmp/flash/ppp/pppd_ip-down" ] && /tmp/flash/ppp/pppd_ip-down > /mod/etc/ppp/ip-down
+	[ ! -e "/mod/etc/ppp/ip-down" ] && /etc/default.pppd/pppd_ip-down > /mod/etc/ppp/ip-down
+	chmod 755 /mod/etc/ppp/ip-up
+	chmod 755 /mod/etc/ppp/ip-down
+}
+
+start() {
+	modprobe arc4
+	modprobe sha1
+	modprobe ppp_generic
+	modprobe ppp_async
+	modprobe ppp_deflate
+	modprobe ppp_mppe_mppc
+	modlib_startdaemon $DAEMON -c /etc/ppp/$DAEMON.conf
+}
+
+stop() {
+	kill $(ps | grep pp[t]pd | grep -vE "rc.pp|pppd" | sed 's/^ *//g' | cut -f1 -d" ")
+}
+
+case $1 in
+	""|load)
+		[ ! -d "/tmp/flash/ppp" ] && mkdir -p /tmp/flash/ppp
+		[ ! -d "/mod/etc/ppp" ] && mkdir -p /mod/etc/ppp
+
+		[ ! -e "/tmp/flash/ppp/options.pptpd" ] && /etc/default.${DAEMON}/pptpd_options > /tmp/flash/ppp/options.pptpd
+		[ ! -e "/tmp/flash/ppp/pptpd.conf" ] && /etc/default.${DAEMON}/pptpd_conf > /tmp/flash/ppp/pptpd.conf
+
+		[ -e "/tmp/flash/ppp/options.pptpd" ] && ln -s /tmp/flash/ppp/options.pptpd /mod/etc/ppp/options.pptpd
+		[ -e "/tmp/flash/ppp/pptpd.conf" ] && ln -s /tmp/flash/ppp/pptpd.conf /mod/etc/ppp/pptpd.conf
+
+		modreg cgi 'pptpd' 'PPTPD'
+		modreg file pptpd options 'PPTPD: options.pptpd' 0 "pptpd_options"
+		modreg file pptpd conf 'PPTPD: pptpd.conf' 0 "pptpd_conf"
+
+		modlib_start $PPTPD_ENABLED
+		;;
+	unload)
+		modunreg cgi pptpd
+		modunreg file pptpd
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

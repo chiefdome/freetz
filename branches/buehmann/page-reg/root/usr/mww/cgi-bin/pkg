@@ -1,0 +1,49 @@
+#!/bin/sh
+# Serve registered pages of varying types
+source /usr/lib/libmodcgi.sh
+
+PAGE_REG=/mod/etc/reg/page.reg
+
+not_found() {
+	local CR=$'\r'
+	echo "Status: 404 Not Found$CR"
+	echo "Content-Type: text/plain$CR"
+	echo "$CR"
+	echo "Not Found"
+	exit
+}
+
+path_info PACKAGE ID remaining_path
+if [ -z "${PACKAGE+set}" ] || ! valid package "$PACKAGE"; then
+	not_found
+fi
+if [ -n "${ID+set}" ] && ! valid id "$ID"; then
+	not_found
+fi
+
+: ${ID:=main}
+
+OIFS=$IFS; IFS="|"
+set -- $(grep "^$PACKAGE|$ID|" "$PAGE_REG")
+IFS=$OIFS
+
+TYPE=$3
+if [ $# -eq 0 ]; then
+	# special case; FIXME
+	if [ "$PACKAGE" = mod -a "$ID" = main ]; then
+		TYPE=cgi
+	else
+		not_found
+	fi
+fi
+
+export SCRIPT_NAME="$SCRIPT_NAME/$PACKAGE/$ID"
+export PATH_INFO=$remaining_path
+
+case $TYPE in
+	cgi)    source ./conf_handler.sh ;;
+	file)   source ./file_handler.sh ;;
+	extra)  source ./extra_handler.sh ;;
+	status) source ./status_handler.sh ;;
+	*)      not_found ;;
+esac

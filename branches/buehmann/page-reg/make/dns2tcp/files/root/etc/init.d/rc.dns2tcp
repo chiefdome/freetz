@@ -1,0 +1,57 @@
+#!/bin/sh
+
+DAEMON=dns2tcp
+DAEMON_LONG_NAME="TCP over DNS tunnel"
+DAEMON_BIN=dns2tcpd
+. /etc/init.d/modlibrc
+
+config() {
+	(
+		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
+			/tmp/flash/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/${DAEMON}_conf
+		fi
+
+	) > /mod/etc/$DAEMON.conf
+
+	mkdir -p /tmp/$DAEMON
+}
+
+start() {
+	modlib_startdaemon $DAEMON_BIN -f /mod/etc/$DAEMON.conf
+}
+
+case $1 in
+	""|load)
+		modlib_addgroup $DAEMON
+		modlib_adduser $DAEMON -G $DAEMON -s /bin/false -H -D -g "dns2tcp account"
+
+		modreg cgi 'dns2tcp' 'DNS2TCP'
+
+		modlib_start $DNS2TCP_ENABLED
+		;;
+	unload)
+		modunreg cgi 'dns2tcp'
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		rm -rf /tmp/$DAEMON
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|reload|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

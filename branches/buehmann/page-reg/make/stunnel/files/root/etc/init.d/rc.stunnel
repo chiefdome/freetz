@@ -1,0 +1,58 @@
+#!/bin/sh
+
+DAEMON=stunnel
+. /etc/init.d/modlibrc
+
+config() {
+	{
+		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
+			/tmp/flash/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/stunnel_conf
+		fi
+		[ -r "/tmp/flash/${DAEMON}.extra" ] && cat /tmp/flash/${DAEMON}.extra
+		[ -r "/tmp/flash/stunnel_svcs" ] && cat /tmp/flash/stunnel_svcs
+	} > /mod/etc/${DAEMON}.conf
+}
+
+start() {
+	modlib_startdaemon $DAEMON
+}
+
+case $1 in
+	""|load)
+		[ -d "/tmp/flash/.stunnel" ] || mkdir /tmp/flash/.stunnel
+
+		export STUNNEL_CONFIGURED="1"
+
+		modreg cgi 'stunnel' 'Stunnel'
+		modreg file stunnel svcs 'Stunnel: services' 0 "stunnel_svcs"
+		modreg file stunnel key 'Stunnel: Private Key' 0 "stunnel_key"
+		modreg file stunnel certchain 'Stunnel: Certificate Chain' 0 "stunnel_certchain"
+
+		modlib_start $STUNNEL_ENABLED
+		;;
+	unload)
+		modunreg file stunnel
+		modunreg cgi stunnel
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

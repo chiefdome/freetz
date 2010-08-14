@@ -1,0 +1,37 @@
+#!/bin/sh
+
+DAEMON=mcabber
+. /etc/init.d/modlibrc
+
+config() {
+	echo -n 'Creating $DAEMON configuration ... '
+	(
+		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
+			/tmp/flash/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/${DAEMON}_conf
+		fi
+
+	) > /var/mod/root/.mcabberrc
+	echo 'done.'
+}
+
+case $1 in
+	""|load)
+		modreg cgi 'mcabber' 'Mcabber-Config'
+		modreg daemon --hide mcabber
+		config
+		;;
+	unload)
+		modunreg cgi 'mcabber'
+		;;
+	config)
+		config
+		;;
+	*)
+		echo "Usage: $0 [load|unload|config]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

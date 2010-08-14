@@ -1,0 +1,22 @@
+--- Makefile.am
++++ Makefile.am
+@@ -27,7 +27,7 @@
+ 	windows/test-parser/test-parser.vcproj			\
+ 	windows/test-tree/test-tree.vcproj
+ 
+-SUBDIRS = gl lib src examples tests doc
++SUBDIRS = gl lib
+ 
+ ACLOCAL_AMFLAGS = -I m4 -I gl/m4 -I lib/glm4
+ 
+--- Makefile.in
++++ Makefile.in
+@@ -605,7 +605,7 @@
+ 	windows/libtasn1/libtasn1.vcproj \
+ 	windows/test-parser/test-parser.vcproj \
+ 	windows/test-tree/test-tree.vcproj cfg.mk maint.mk .clcopying
+-SUBDIRS = gl lib src examples tests doc
++SUBDIRS = gl lib
+ ACLOCAL_AMFLAGS = -I m4 -I gl/m4 -I lib/glm4
+ all: config.h
+ 	$(MAKE) $(AM_MAKEFLAGS) all-recursive

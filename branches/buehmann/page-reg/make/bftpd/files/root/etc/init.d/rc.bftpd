@@ -1,0 +1,59 @@
+#!/bin/sh
+
+DAEMON=bftpd
+
+. /etc/init.d/modlibrc
+
+config() {
+	(
+		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
+			/tmp/flash/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/${DAEMON}_conf
+		fi
+
+		if [ -r "/tmp/flash/${DAEMON}.extra" ]; then
+			cat /tmp/flash/${DAEMON}.extra
+		fi
+	) > /mod/etc/$DAEMON.conf
+}
+
+start() {
+	modlib_startdaemon $DAEMON -d $BFTPD_OPTIONS
+}
+
+case $1 in
+	""|load)
+		modlib_adduser ftp -G users -D -S -g "FTP account"
+		mkdir -p /var/run/bftpd
+		mkdir -p /mod/home/ftp
+		chown ftp:users /mod/home/ftp -R
+		[ -e "/var/tmp/ftp" ] || ln -sf /mod/home/ftp /var/tmp/ftp
+
+		modreg cgi 'bftpd' 'Bftpd'
+
+		modlib_start $BFTPD_ENABLED
+		;;
+	unload)
+		modunreg cgi 'bftpd'
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

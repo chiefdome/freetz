@@ -1,0 +1,79 @@
+#!/bin/sh
+
+DAEMON=lighttpd
+DAEMON_LONG_NAME="lighttpd web server"
+. /etc/init.d/modlibrc
+
+. /usr/bin/lighttpd_has
+
+
+config() {
+	(
+		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
+			/tmp/flash/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/${DAEMON}_conf
+		fi
+		[ -r "/tmp/flash/${DAEMON}.extra" ] && cat /tmp/flash/${DAEMON}.extra
+	) > /mod/etc/$DAEMON/$DAEMON.conf
+
+	modunreg status lighttpd lighttpd-log
+	if [ "$LIGHTTPD_LOGGING" = "yes" ]; then
+		if [ "$LIGHTTPD_LOGGING_ERROR_FILE" = "yes" ] || [ "$(has_mod accesslog)" = "yes" -a "$LIGHTTPD_LOGGING_ACCESS_FILE" = "yes" ]; then
+			modreg status lighttpd lighttpd-log lighttpd-log
+		fi
+	fi
+}
+
+start() {
+	modlib_startdaemon LD_PRELOAD= $DAEMON -f /mod/etc/$DAEMON/$DAEMON.conf
+}
+
+case $1 in
+	""|load)
+		mkdir -p /mod/etc/$DAEMON
+
+		modlib_addgroup wwwrun
+		modlib_adduser wwwrun -G wwwrun -s /bin/false -H -D -g "lighttpd account"
+
+		modreg cgi 'lighttpd' 'lighttpd'
+
+		if has_ssl_support >/dev/null; then
+			modreg file lighttpd crt 'lighttpd: Cert/Key' 0 "lighttpd_crt"
+			modreg file lighttpd ca 'lighttpd: CA Cert' 0 "lighttpd_ca"
+		fi
+
+		if has_mod auth >/dev/null; then
+			modreg file lighttpd user 'lighttpd: Accounts' 0 "lighttpd_user"
+			modreg file lighttpd rights 'lighttpd: Rights' 0 "lighttpd_rights"
+		fi
+
+		modreg file lighttpd add 'lighttpd: Additional' 0 "lighttpd_add"
+
+		modlib_start $LIGHTTPD_ENABLED
+		;;
+	unload)
+		modunreg status lighttpd lighttpd-log
+		modunreg file lighttpd
+		modunreg cgi lighttpd
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|reload|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

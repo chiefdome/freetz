@@ -1,0 +1,71 @@
+#!/bin/sh
+
+DAEMON=openntpd
+DAEMON_BIN=ntpd
+. /etc/init.d/modlibrc
+
+config() {
+	(
+		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
+			/tmp/flash/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/${DAEMON}_conf
+		fi
+
+		if [ -r "/tmp/flash/${DAEMON}.extra" ]; then
+			cat /tmp/flash/${DAEMON}.extra
+		fi
+	) > /mod/etc/$DAEMON.conf
+	[ -e "/var/db" ] || mkdir -p /var/db
+	[ -e "/mod/etc/ntpd.conf" ] || ln -s /tmp/flash/ntpd.conf /mod/etc/ntpd.conf
+}
+
+start() {
+	[ "$OPENNTPD_MULTID" == "no" ] && /etc/init.d/rc.multid ntp_disable  >/dev/null
+	modlib_startdaemon $DAEMON_BIN -s -f /mod/etc/ntpd.conf
+}
+
+stop() {
+	/etc/init.d/rc.multid ntp_enable >/dev/null
+	return 127
+}
+
+case $1 in
+	""|load)
+		modlib_adduser ntp -G users -D -S -g "NTP daemon"
+		mkdir -p /mod/home/ntp
+		chown root /mod/home/ntp -R
+		chmod 0700 /mod/home/ntp -R
+
+		modreg cgi 'openntpd' 'Openntpd'
+		[ "$CONFIG_FILE" != '/etc/ntpd.conf' ] && modreg file openntpd conf 'Openntpd config' 0 "openntpd_conf"
+		
+		modlib_start $OPENNTPD_ENABLED
+		;;
+	unload)
+		modunreg file openntpd
+		modunreg cgi openntpd
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	reload)
+		modlib_reload
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|reload|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

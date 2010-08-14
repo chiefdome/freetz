@@ -1,0 +1,54 @@
+#!/bin/sh
+
+DAEMON=gw6
+DAEMON_BIN=gw6c
+. /etc/init.d/modlibrc
+
+config() {
+	(
+		if [ -x "/tmp/flash/${DAEMON}_conf" ]; then
+			/tmp/flash/${DAEMON}_conf
+		else
+			/mod/etc/default.$DAEMON/${DAEMON}_conf
+		fi
+
+		if [ -r "/tmp/flash/${DAEMON}.extra" ]; then
+			cat /tmp/flash/${DAEMON}.extra
+		fi
+	) > /mod/etc/$DAEMON.conf
+}
+
+start() {
+	modprobe ipv6 2>/dev/null
+	modlib_startdaemon $DAEMON_BIN -f /mod/etc/$DAEMON.conf
+}
+
+case $1 in
+	""|load)
+		modreg cgi 'gw6' 'gw6'
+
+		modlib_start $GW6_ENABLED
+		;;
+	unload)
+		modunreg cgi 'gw6'
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

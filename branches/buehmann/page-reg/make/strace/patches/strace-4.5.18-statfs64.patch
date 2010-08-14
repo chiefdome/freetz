@@ -1,0 +1,14 @@
+--- file.c.orig	2010-03-23 02:14:03.000000000 +0100
++++ file.c	2010-07-07 13:44:14.150723186 +0200
+@@ -1684,7 +1684,11 @@
+ static void
+ printstatfs64(struct tcb *tcp, long addr)
+ {
++#ifdef HAVE_STAT64
+ 	struct statfs64 statbuf;
++#else
++	struct statfs statbuf;
++#endif
+ 
+ 	if (syserror(tcp) || !verbose(tcp)) {
+ 		tprintf("%#lx", addr);

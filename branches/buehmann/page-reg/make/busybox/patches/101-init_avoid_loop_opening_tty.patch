@@ -1,0 +1,15 @@
+--- init/init.c.orig	2010-07-25 00:12:43.000000000 +0200
++++ init/init.c	2010-07-30 21:53:00.907175774 +0200
+@@ -460,8 +460,11 @@
+ 			/* Only run stuff with pid == 0. If pid != 0,
+ 			 * it is already running
+ 			 */
+-			if (a->pid == 0)
++			if (a->pid == 0) {
++				if (a->terminal[0] && access(a->terminal, R_OK | W_OK))
++					continue;
+ 				a->pid = run(a);
++			}
+ 		}
+ 	}
+ }
