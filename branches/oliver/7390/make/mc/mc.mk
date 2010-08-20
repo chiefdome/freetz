@@ -1,17 +1,23 @@
-$(call PKG_INIT_BIN, 4.6.1)
+$(call PKG_INIT_BIN, 4.6.2)
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.gz
-$(PKG)_SITE:=http://www.ibiblio.org/pub/Linux/utils/file/managers/mc/
-$(PKG)_HELP:=$($(PKG)_MAKE_DIR)/files/root/usr/share/mc/mc.hlp
+$(PKG)_SOURCE_MD5:=ec92966f4d0c8b50c344fe901859ae2a
+$(PKG)_SITE:=http://www.midnight-commander.org/downloads
+
 $(PKG)_BINARY:=$($(PKG)_DIR)/src/$(pkg)
 $(PKG)_TARGET_BINARY:=$($(PKG)_DEST_DIR)/usr/bin/mc.bin
+$(PKG)_HELP:=$($(PKG)_MAKE_DIR)/files/root/usr/share/mc/mc.hlp
 $(PKG)_TARGET_HELP:=$($(PKG)_DEST_DIR)/usr/share/mc/mc.hlp
-$(PKG)_SOURCE_MD5:=18b20db6e40480a53bac2870c56fc3c4
+ifneq ($(strip $(FREETZ_PACKAGE_MC_ONLINE_HELP)),y)
+$(PKG)_NOT_INCLUDED:=$($(PKG)_TARGET_HELP)
+endif
 
 $(PKG)_DEPENDS_ON := ncurses-terminfo
 ifeq ($(strip $(FREETZ_TARGET_UCLIBC_VERSION_0_9_28)),y)
 $(PKG)_DEPENDS_ON += libiconv
+$(PKG)_LIBS:=-liconv
 else
 $(PKG)_CONFIGURE_OPTIONS += --without-libiconv-prefix
+$(PKG)_LIBS:=
 endif
 ifeq ($(strip $(FREETZ_PACKAGE_MC_FORCE_GLIB12)),y)
 $(PKG)_DEPENDS_ON += glib
@@ -45,36 +51,42 @@ $(PKG)_REBUILD_SUBOPTS += FREETZ_PACKAGE_MC_SUBSHELL
 $(PKG)_REBUILD_SUBOPTS += FREETZ_PACKAGE_MC_WITH_NCURSES
 $(PKG)_REBUILD_SUBOPTS += FREETZ_PACKAGE_MC_FORCE_GLIB12
 
+# Workaround mc's packaging problems. Note that this code is mc-4.6.2 specific.
+# Revise it (remove if necessary) if you're about to update mc to a newer version.
+$(PKG)_CONFIGURE_PRE_CMDS += \
+	if which automake-1.10 >/dev/null 2>&1; then \
+		: do nothing; \
+	elif which automake-1.11 >/dev/null 2>&1; then \
+		for f in config.guess config.sub depcomp install-sh missing; do \
+			ln -sf /usr/share/automake-1.11/$$$$f $(abspath $($(PKG)_DIR)/config)/; \
+		done; \
+	else \
+		$(call ERROR,1,automake 1.10.x or 1.11.x is required in order to build Midnight Commander. Please install one of these versions.) \
+	fi;
+
 $(PKG_SOURCE_DOWNLOAD)
 $(PKG_UNPACKED)
 $(PKG_CONFIGURED_CONFIGURE)
 
 $($(PKG)_BINARY): $($(PKG)_DIR)/.configured
 	$(SUBMAKE) -C $(MC_DIR) \
+		LIBICONV="$(MC_LIBS)" \
 		$(if $(FREETZ_PACKAGE_MC_FORCE_GLIB12),GLIB_CFLAGS="-I$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/include/glib-1.2" GLIB_LIBS="-lglib",)
 
 $($(PKG)_TARGET_BINARY): $($(PKG)_BINARY)
 	$(INSTALL_BINARY_STRIP)
 
 $($(PKG)_TARGET_HELP): $($(PKG)_HELP)
-	mkdir -p $(dir $@)
-	cp $^ $@
+	$(INSTALL_FILE)
 
 $(pkg):
 
-ifeq ($(strip $(FREETZ_PACKAGE_MC_ONLINE_HELP)),y)
-$(pkg)-precompiled: $($(PKG)_TARGET_BINARY) $($(PKG)_TARGET_HELP)
-else
-$(pkg)-precompiled: $($(PKG)_TARGET_BINARY) $(pkg)-clean-help
-endif
-
-$(pkg)-clean-help:
-	@$(RM) $(MC_TARGET_HELP)
+$(pkg)-precompiled: $($(PKG)_TARGET_BINARY) $(if $(FREETZ_PACKAGE_MC_ONLINE_HELP),$($(PKG)_TARGET_HELP))
 
 $(pkg)-clean:
 	-$(SUBMAKE) -C $(MC_DIR) clean
 
 $(pkg)-uninstall:
-	$(RM) $(MC_TARGET_BINARY)
+	$(RM) $(MC_TARGET_BINARY) $(MC_TARGET_HELP)
 
 $(PKG_FINISH)

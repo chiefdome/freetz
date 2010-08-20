@@ -13,7 +13,7 @@ convert_compat()
 		return
 	fi
 	
-	echo "Obsolete authorized keys file detected, converting..." 
+	echo "Obsolete authorized keys file detected, converting ..." 
 	
 	chown root $dir
 	chmod 700 $dir
@@ -24,10 +24,10 @@ convert_compat()
 
 case $1 in
 	""|load)
-		modreg file $DAEMON conf 'SSH: authorized_keys' 0 $DAEMON
+		modreg file $DAEMON conf 'authorized_keys' 0 $DAEMON
 		modreg daemon --hide authorized-keys
 
-		echo -n "Setting up SSH authorized_keys for root..."
+		echo -n "Setting up SSH authorized_keys for root ... "
 		dir="/tmp/flash/authorized_keys_root"
 		mkdir -p $dir
 

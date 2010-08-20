@@ -39,7 +39,7 @@ config() {
 }
 
 start() {
-	echo -n "Starting ${DAEMON_LONG_NAME}..."
+	echo -n "Starting ${DAEMON_LONG_NAME} ..."
 	config
 	[ -f $DAEMON_STORAGE/secret_id_key ] && savetimer=no
 	$DAEMON --runasdaemon 1 --log "notice syslog" --pidfile $PID_FILE > /dev/null 2>&1
@@ -55,10 +55,10 @@ start() {
 			done
 			if [ $count -le 99 ]; then
 				cp $TOR_DATADIRECTORY/keys/secret_id_key $DAEMON_STORAGE/secret_id_key
-				echo -n "secret id_key saved..."
+				echo -n "secret id_key saved ..."
 				modsave flash >/dev/null
 			else
-				echo -n "secret id_key not found..."
+				echo -n "secret id_key not found ..."
 			fi
 		fi
 		echo "done."
@@ -85,7 +85,7 @@ case $1 in
 		chown $DAEMON_USER:$DAEMON_GROUP ${PID_FILE%/*}
 
 		modreg cgi "$DAEMON" "$DAEMON_LONG_NAME"
-		modreg file tor secret_id_key 'Tor: Secret ID Key' 0 "secret_id_key"
+		modreg file tor secret_id_key 'Secret ID Key' 0 "secret_id_key"
 		
 		modlib_start $TOR_ENABLED
 		;;

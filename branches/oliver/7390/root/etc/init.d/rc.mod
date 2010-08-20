@@ -45,26 +45,30 @@ start() {
 	if [ -n "$plugins" ]; then
 		echo -n "Starting AVM-Plugins"
 		for plugin in $plugins; do
-			echo -n "...$(echo $plugin | sed 's/.*plugin-//;s/\/.*//')"
+			echo -n " ... $(echo $plugin | sed 's/.*plugin-//;s/\/.*//')"
 			$plugin start >/dev/null 2>&1
 			[ $? -ne 0 ] && echo -n "(failed)"
 		done
-		echo "...done."
+		echo " ... done."
 	fi
 
 	[ -r /tmp/flash/rc.custom ] && mv /tmp/flash/rc.custom /tmp/flash/mod/rc.custom
 	[ -r /tmp/flash/mod/rc.custom ] && . /tmp/flash/mod/rc.custom
 
 	[ -x /etc/init.d/rc.external ] && touch /tmp/.modstarted
+
+	/usr/lib/mod/menu-update
 }
 
 modreg_file() {
 	local file=$1 sec_level=$2
 	local basename=${file//./_}
-	modreg file mod "$basename" "Freetz: $file" "$sec_level" "$basename"
+	modreg file mod "$basename" "$file" "$sec_level" "$basename"
 }
 
 register() {
+	modreg cgi mod "Freetz"
+
 	modreg_file  .profile    0
 	modreg_file  hosts       1
 	modreg_file  modules     0

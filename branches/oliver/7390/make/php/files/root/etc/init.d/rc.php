@@ -7,7 +7,7 @@ DAEMON=php
 start() {
 	[ ! -d /tmp/flash/php ] && mkdir /tmp/flash/php && mod_save=true
 	if [ ! -f /tmp/flash/php.ini ]; then
-		echo -n 'Setting up PHP ...'
+		echo -n 'Setting up PHP ... '
 		cp /etc/default.php/php.ini /tmp/flash/php.ini && mod_save=true
 		pidof lighttpd >/dev/null && /etc/init.d/rc.lighttpd restart
 		echo 'done.'
@@ -19,7 +19,7 @@ start() {
 
 case $1 in
 	""|load)
-		modreg file php config 'PHP: php.ini' 0 "php_config"
+		modreg file php config 'php.ini' 0 "php_config"
 		;;
 	unload)
 		modlib_stop

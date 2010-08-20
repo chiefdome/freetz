@@ -26,11 +26,11 @@ start() {
 
 	lsmod | grep iptable_filter > /dev/null
 	if [ $? -eq 1 ]; then
-		echo 'Loading modules...'
+		echo 'Loading modules ...'
 		for MODUL in $MODULES; do
 			modprobe $MODUL > /dev/null 2>&1
 		done
-		echo 'Loading table list...'
+		echo 'Loading table list ...'
 		while read LINE; do
 			iptables $LINE
 		done < $SAVEFILE
@@ -39,7 +39,7 @@ start() {
 			sed -e "s/\*gui\*//g" /mod/etc/conf/iptables.cfg > /var/tmp/iptables_tmp
 			cat /var/tmp/iptables_tmp > /mod/etc/conf/iptables.cfg
 			rm /var/tmp/iptables_tmp
-			echo -n 'Modules are already loaded. Starting rule script...'
+			echo -n 'Modules are already loaded. Starting rule script ... '
 			CONFFILE="iptables.cfg"
 			CONFPATH="/mod/etc/conf"
 
@@ -226,8 +226,8 @@ stop () {
 case $1 in
 	""|load)
 		modreg cgi 'iptables' 'Iptables'
-		modreg file iptables rules 'Iptables: Rules' 0 "iptables"
-		modreg file iptables services 'Iptables: Services' 0 "services"
+		modreg file iptables rules 'Rules' 0 "iptables"
+		modreg file iptables services 'Services' 0 "services"
 
 		[ ! -r "/var/tmp/flash/iptables_services" ] && cp /mod/etc/default.iptables/iptables_services /var/tmp/flash/iptables_services
 		[ ! -r "/var/tmp/flash/iptables_rules" ] && touch /var/tmp/flash/iptables_rules

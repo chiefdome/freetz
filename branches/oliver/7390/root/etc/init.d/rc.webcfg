@@ -22,6 +22,7 @@ config() {
 }
 
 start() {
+	DAEMON_ENV="WEBIF=mww"
 	modlib_startdaemon httpd -P "$PID_FILE" -p "$MOD_HTTPD_PORT" -c /mod/etc/$DAEMON.conf -h /usr/mww/ -r "Freetz"
 }
 
@@ -48,7 +49,7 @@ case $1 in
 		config
 		;;
 	*)
-		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		echo "Usage: $0 [load|unload|start|stop|restart|status|config]" 1>&2
 		exit 1
 		;;
 esac

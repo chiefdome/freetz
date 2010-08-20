@@ -7,7 +7,6 @@ Currently supported boxes and firmwares
 * Fritz!Box Fon bzw. Eumex 300IP: 06.04.33
 	* Fritz!Box Fon (English, Annex A): 39.04.49
 	* Fritz!Box Fon (English, Annex B): 30.04.49
-	* Fritz!Box 2170: 51.04.34
 * Fritz!Box 5010 (A-CH, Annex A): 48.04.43
 * Fritz!Box Fon 5050: 12.04.31
 * Fritz!Box Fon 5140: 43.04.67
@@ -33,7 +32,7 @@ Currently supported boxes and firmwares
 	* Labor DSL: 29.04.99-14119
 	* Labor Preview: 29.04.80-16352
 * Fritz!Box Fon WLAN 7240: 73.04.80
-    * Preview: 73.04.85-18012
+    * Preview: 73.04.85-18075
     * Alien 7270
 * Fritz!Box Fon WLAN 7270: 54.04.80 7270 v3: 74.04.80
 	* Fritz!Box Fon WLAN 7270 (A-CH): 54.04.81
@@ -42,7 +41,7 @@ Currently supported boxes and firmwares
 	* Labor DSL: 54.04.80-16750|74.04.80-16750
 	* Labor IPv6: 54.04.80-17603|74.04.80-17603
 	* Labor NAS: 54.04.80-16561|74.04.80-16561
-	* Preview: 54.04.85-18012|74.04.85-18012
+	* Preview: 54.04.85-18075|74.04.85-18075
 * Fritz!Box Fon WLAN 7390: 84.04.84
 	* Labor Beta: 84.04.85-18078
 * Fritz!Box Fon WLAN 7570 (Multi-Language, Annex A/B): 75.04.82

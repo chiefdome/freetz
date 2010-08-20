@@ -13,7 +13,7 @@ running() {
 
 start() {
 	set -o noglob
-	echo -n 'Starting nfsd...'
+	echo -n 'Starting nfsd ... '
 	
 	if running; then
 		echo 'already running.'
@@ -21,7 +21,7 @@ start() {
 	fi
 	
 	if [ ! -e /etc/exports ]; then
-		echo "can't open /etc/exports...failed."
+		echo "can't open /etc/exports ... failed."
 		exit 1
 	fi
 
@@ -57,7 +57,7 @@ start() {
 }
 
 reload() {
-	echo -n 'Re-exporting nfsd directories...'
+	echo -n 'Re-exporting nfsd directories ... '
 
 	if ! running; then
 		echo 'not running.'
@@ -75,7 +75,7 @@ reload() {
 }
 
 stop() {
-	echo -n 'Stopping nfsd...'
+	echo -n 'Stopping nfsd ... '
 
 	if ! running; then
 		echo 'not running.'
@@ -112,9 +112,9 @@ case $1 in
 		modlib_adduser nobody -s /bin/false -D -S -H -G nobody -g 'nobody'
 
 		modreg cgi 'nfsd' 'NFS-Server'
-		modreg file nfsd hosts_allow 'NFSD: hosts.allow' 1 "hosts_allow"
-		modreg file nfsd hosts_deny 'NFSD: hosts.deny' 1 "hosts_deny"
-		modreg file nfsd exports 'NFSD: exports' 1 "exports"
+		modreg file nfsd hosts_allow 'hosts.allow' 1 "hosts_allow"
+		modreg file nfsd hosts_deny 'hosts.deny' 1 "hosts_deny"
+		modreg file nfsd exports 'exports' 1 "exports"
 
 		modlib_start $NFSD_ENABLED
 		;;
