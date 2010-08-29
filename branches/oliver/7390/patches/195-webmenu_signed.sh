@@ -2,7 +2,11 @@
 echo1 "applying webmenu signed patch"
 
 if isFreetzType PREVIEW; then
-	modsed "s/^g_coninf_data.FirmwareSigned = .*/g_coninf_data.FirmwareSigned = \"1\"/g" ${FILESYSTEM_MOD_DIR}/usr/www/all/home/home.lua 
+	if isFreetzType 7340; then
+		modsed "s/^g_coninf_data.FirmwareSigned = .*/g_coninf_data.FirmwareSigned = \"1\"/g" ${FILESYSTEM_MOD_DIR}/usr/www/avme/home/home.lua
+	else
+		modsed "s/^g_coninf_data.FirmwareSigned = .*/g_coninf_data.FirmwareSigned = \"1\"/g" ${FILESYSTEM_MOD_DIR}/usr/www/all/home/home.lua
+	fi
 elif isFreetzType LANG_DE; then
 	modsed "s/^.*var signed.*/\tvar signed = 1;/g" ${FILESYSTEM_MOD_DIR}/usr/www/all/html/de/home/home.js
 elif isFreetzType LANG_A_CH; then
@@ -12,7 +16,7 @@ elif isFreetzType LANG_A_CH; then
 		modsed "s/^.*var signed.*/\tvar signed = 1;/g" ${FILESYSTEM_MOD_DIR}/usr/www/all/html/de/home/home.js
 	fi
 elif isFreetzType LANG_EN; then
-	if isFreetzType 7140 7170 7270 7570; then
+	if isFreetzType 7140 7170 7270 7340 7570; then
 		modsed "s/^.*var signed.*/\tvar signed = 1;/g" ${FILESYSTEM_MOD_DIR}/usr/www/avme/html/de/home/home.js
 	else
 		modsed "s/^.*var signed.*/\tvar signed = 1;/g" ${FILESYSTEM_MOD_DIR}/usr/www/avme/en/html/en/home/home.js
