@@ -39,13 +39,13 @@ fi
 if [ -r "/usr/lib/cgi-bin/mod/box_info.cgi" ]; then
 cat << EOF
 <input type="hidden" name="show_box_info" value="no">
-<input id="i1" type="checkbox" name="show_box_info" value="yes"$show_box_info_chk><label for="i1">$(lang de:"BOX-Info" en:"BOX info")</label>
+<input id="i1" type="checkbox" name="show_box_info" value="yes"$show_box_info_chk><label for="i1">$(lang de:"Box-Info" en:"Box info")</label>
 EOF
 fi
 if [ -r "/usr/lib/cgi-bin/mod/info.cgi" ]; then
 cat << EOF
 <input type="hidden" name="show_freetz_info" value="no">
-<input id="i2" type="checkbox" name="show_freetz_info" value="yes"$show_freetz_info_chk><label for="i2">$(lang de:"FREETZ-Info" en:"FREETZ info")</label>
+<input id="i2" type="checkbox" name="show_freetz_info" value="yes"$show_freetz_info_chk><label for="i2">$(lang de:"Freetz-Info" en:"Freetz info")</label>
 EOF
 fi
 if [ -r "/usr/lib/cgi-bin/mod/box_info.cgi" -o -r "/usr/lib/cgi-bin/mod/info.cgi" ]; then
@@ -53,7 +53,7 @@ if [ -r "/usr/lib/cgi-bin/mod/box_info.cgi" -o -r "/usr/lib/cgi-bin/mod/info.cgi
 fi
 cat << EOF
 <p><a href="/cgi-bin/skin.cgi" target="_blank">$(lang de:"Aussehen einstellen (Skins)" en:"Change look (skins)")</a></p>
-<p>$(lang de:"Breite der Freetz-Weboberfl&auml;che" en:"Width of the Freetz webinterface"): <input type="text" name="cgi_width" size="4" maxlength="4" value="$(html "$MOD_CGI_WIDTH")"></p>
+<p>$(lang de:"Breite des Hauptinhalts" en:"Width of the main content area"): <input type="text" name="cgi_width" size="4" maxlength="4" value="$(html "$MOD_CGI_WIDTH")"></p>
 EOF
 
 sec_end

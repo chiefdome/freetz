@@ -21,6 +21,8 @@ _cgi_option() {
 			;;
 		id)
 			export _CGI_ID=$(_cgi_id "$value") ;;
+		width)
+			cgi_width_at_least "$value" ;;
 		help)
 			export _CGI_HELP=$(_cgi_help_url "$value") ;;
 		*)
@@ -67,19 +69,20 @@ cgi_begin() {
 	if [ -n "$_CGI_ID" ]; then
 		id=$_CGI_ID
 	fi
-	local CR=$'\r'
+	local CRet=$'\r'
 	cat << EOF
-Content-Type: text/html; charset=ISO-8859-1${CR}
-Content-Language: $(lang de:"de" en:"en")${CR}
-Expires: 0${CR}
-Pragma: no-cache${CR}
-${CR}
+Content-Type: text/html; charset=ISO-8859-1${CRet}
+Content-Language: $(lang de:"de" en:"en")${CRet}
+Expires: 0${CRet}
+Pragma: no-cache${CRet}
+${CRet}
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 EOF
+	cgi_width_setup
 	skin_head "$title" "$id"
 	cat << EOF
 </head>

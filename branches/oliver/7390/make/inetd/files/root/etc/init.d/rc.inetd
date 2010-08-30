@@ -3,9 +3,8 @@
 DAEMON=inetd
 . /etc/init.d/modlibrc
 
-INETD_LOGFILE=/var/log/mod_inetd.log
-
 start() {
+	[ "$INETD_IPV6_SUPPORT" == "yes" ] && modprobe ipv6 2>/dev/null
 	modlib_startdaemon $DAEMON $INETD_OPTIONS
 }
 
@@ -13,8 +12,6 @@ case $1 in
 	""|load)
 		modreg cgi 'inetd' 'Inetd'
 		modreg file inetd conf 'Inetd config' 0 "inetd_conf"
-
-		/usr/bin/modinetd 2>&1 >> $INETD_LOGFILE
 
 		modlib_start $INETD_ENABLED
 		;;
@@ -40,9 +37,12 @@ case $1 in
 		;;
 	config)
 		shift
-		echo >> $INETD_LOGFILE
-		/usr/bin/modinetd $* 2>&1 | tee -a $INETD_LOGFILE
-		modlib_reload
+		. /etc/init.d/modlibinetd
+		update_main $*
+		if ! modlib_reload >/dev/null; then
+			echo "Reloading inetd failed."
+			exit 1
+		fi
 		;;
 	*)
 		echo "Usage: $0 [load|unload|start|stop|reload|restart|status|config [package]]" 1>&2

@@ -26,13 +26,13 @@ start() {
 		echo 'already running.'
 		exit 1
 	fi
-	
+
 	modprobe option
 	modprobe ppp_generic
 	modprobe ppp_async
 	modprobe ppp-deflate
 	modprobe slhc
-	
+
 	start-stop-daemon -n ppp_observer -a /etc/default.ppp/ppp_observer -b -q -S
 	[ -n "$PPP_DIAGTTY" ] && start-stop-daemon -n ppp_logger -a /etc/default.ppp/ppp_logger -b -q -S
 	echo 'done.'
@@ -47,7 +47,7 @@ stop() {
 	killall -9 ppp_observer 2>/dev/null
 	killall -9 ppp_logger 2>/dev/null
 	kill $(cat /var/run/ppp_logger.pid 2>/dev/null) 2>/dev/null
-	rm -rf /tmp/ppp_logger.tmp 2>/dev/null	
+	rm -rf /tmp/ppp_logger.tmp 2>/dev/null
 	disconnect
 	if [ $? -ne 0 ]; then
 		echo 'failed.'

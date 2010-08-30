@@ -1,6 +1,7 @@
 #!/bin/sh
 
 DAEMON=privoxy
+DAEMON_CONFIG=/mod/etc/$DAEMON/config
 . /etc/init.d/modlibrc
 
 config() {
@@ -8,14 +9,7 @@ config() {
 	[ ! -r "/mod/etc/privoxy/default.filter" ] && ln -s /etc/privoxy/default.filter /mod/etc/privoxy/default.filter
 	[ ! -r "/mod/etc/privoxy/default.action" ] && ln -s /etc/privoxy/default.action /mod/etc/privoxy/default.action
 	[ ! -d "/mod/etc/privoxy/templates" ] && ln -s /etc/privoxy/templates /mod/etc/privoxy/templates
-	(
-		if [ -x "/tmp/flash/privoxy/${DAEMON}_conf" ]; then
-			/tmp/flash/privoxy/${DAEMON}_conf
-		else
-			/mod/etc/default.$DAEMON/${DAEMON}_conf
-		fi
-		[ -r "/tmp/flash/${DAEMON}.extra" ] && cat /tmp/flash/${DAEMON}.extra
-	) > /mod/etc/$DAEMON/config
+	modlib_config
 }
 
 start() {

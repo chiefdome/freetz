@@ -1,10 +1,3 @@
-update_inetd() {
-	if [ -x /etc/init.d/rc.inetd ]; then
-		/etc/init.d/rc.inetd config "$1"
-	else
-		echo 'Not able to run rc.inetd, failed.'
-	fi
-}
 
 start_stop() {
 	local startORstop=$1
@@ -15,8 +8,8 @@ start_stop() {
 	case "$startORstop" in
 		start)
 			local newstatus=$(rc_status ${4-$2})
-			[ "$oldstatus" == inetd -o "$newstatus" == inetd ] && update_inetd "$package"
-			[ "$oldstatus" != stopped -a "$newstatus" != inetd ] && "$rc" start
+			[ "$oldstatus" == inetd -a "$newstatus" != inetd ] && /etc/init.d/rc.inetd config "$package"
+			[ "$oldstatus" != stopped ] && "$rc" start
 			;;
 		stop)
 			[ "$oldstatus" != stopped ] && "$rc" stop
@@ -29,12 +22,10 @@ apply_changes() {
 	local package=$2
 	if [ "$package" = mod ]; then
 		start_stop $startORstop telnetd "$OLDSTATUS_telnetd"
-		#2DO: temporary fix to save "Freetz"-Settings
-		#start_stop $startORstop webcfg "$OLDSTATUS_webcfg"
 		start_stop $startORstop swap "$OLDSTATUS_swap"
-		#2DO: temporary fix to save "Freetz"-Settings
 		if [ "$startORstop" == "start" -a "$OLDSTATUS_webcfg" != "stopped" ]; then
-			echo "Please restart your FB to activate new settings of the webif ..."
+			echo "$(lang de:"Starte das Freetz-Webinterface in 9 Sekunden neu" en:"Restarting the Freetz webinterface in 9 seconds")!"
+			/etc/init.d/rc.webcfg force-restart 9 >/dev/null 2>&1 &
 		fi
 		/usr/lib/mod/reg-status reload
 	else
