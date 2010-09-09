@@ -352,6 +352,13 @@ config FREETZ_BUSYBOX_TAC
 	help
 		Reverse cat.
 
+config FREETZ_BUSYBOX_TAR_OLDGNU_COMPATIBILITY
+	bool "tar support for old header format"
+	depends on FREETZ_REPLACE_BUSYBOX
+	default n
+	help
+		This option is required to unpack archives created in the old GNU format.
+
 config FREETZ_BUSYBOX_UDHCPC
 	bool "udhcpc"
 	depends on FREETZ_REPLACE_BUSYBOX
@@ -473,7 +480,15 @@ menu "IPv6 Options"
 
 config FREETZ_BUSYBOX_FEATURE_PREFER_IPV4_ADDRESS
 	bool "Prefer IPv4 addresses"
-	default n
+	default y
+	help
+		If this option is off, the first returned address will be used.
+		This may cause problems when your DNS server is IPv6-capable and
+		is returning IPv6 host addresses too. If IPv6 address
+		precedes IPv4 one in DNS reply, busybox network applets
+		(e.g. wget) will use IPv6 address. On an IPv6-incapable host
+		or network applets will fail to connect to the host
+		using IPv6 address.
 
 config FREETZ_BUSYBOX_PING6
 	bool "ping6 command"

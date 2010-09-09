@@ -5,9 +5,9 @@
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 . /mod/etc/conf/rrdstats.cfg
 
-DATESTRING=$(date +'%Y-%m-%d %X')
+DATESTRING=$(date -R)
 [ -n "$_cgi_width" ] && let WIDTH=_cgi_width-145 || let WIDTH=500
-let HEIGHT=$(($WIDTH*$RRDSTATS_DIMENSIONY/$RRDSTATS_DIMENSIONX))
+let HEIGHT=$WIDTH*$RRDSTATS_DIMENSIONY/$RRDSTATS_DIMENSIONX
 PERIODE="24h"
 RED=#EA644A
 YELLOW=#ECD748
@@ -473,7 +473,7 @@ gen_main() {
 	LAPSE=$3
 	GROUP=$4
 	[ $# -ge 4 ] && GROUP_URL="&group=$4"
-	sec_begin "$FNAME stats for last $LAPSE"
+	sec_begin "$FNAME"
 	generate_graph "$SNAME" "$RRDSTATS_PERIODMAIN" "$SNAME" "" $GROUP
 	echo "<center><a href=\"$SCRIPT_NAME?graph=$SNAME$GROUP_URL\" class=\"image\">"
 	echo "<img src=\"/statpix/$SNAME$GROUP.png$NOCACHE\" alt=\"$FNAME stats for last $LAPSE\" border=\"0\" />"
@@ -482,13 +482,16 @@ gen_main() {
 }
 
 graph=$(cgi_param graph | tr -d .)
-set_lazy "$RRDSTATS_NOTLAZYM"
 case $graph in
 	cpu|mem|swap|upt|tt0|tt1|tt2|tt3|diskio1|diskio2|diskio3|diskio4|if1|if2|if3|if4|one)
-		heading=$(echo $graph | sed "s/^upt$/Uptime/g;s/^cpu$/Processor/g;s/^mem$/Memory/g;s/^swap$/Swapspace/g;s/^tt0$/Thomson THG - basic/g;s/^tt1$/Thomson THG - System Uptime/;s/^tt2/Thomson THG - DS Frequency/;s/^tt3$/Thomson THG - Upstream Channel/;s/^diskio1$/$RRDSTATS_DISK_NAME1/g;s/^diskio2$/$RRDSTATS_DISK_NAME2/g;s/^diskio3$/$RRDSTATS_DISK_NAME3/g;s/^diskio4$/$RRDSTATS_DISK_NAME4/g;s/^if1$/$RRDSTATS_NICE_NAME1/g;s/^if2$/$RRDSTATS_NICE_NAME2/g;s/^if3$/$RRDSTATS_NICE_NAME3/g;s/^if4$/$RRDSTATS_NICE_NAME4/g;s/^one$/DigiTemp/g")
+		set_lazy "$RRDSTATS_NOTLAZYS"
 		GROUP_PERIOD=$(cgi_param group | tr -d .)
-		[ -n "$GROUP_PERIOD" ] && heading="$heading [$GROUP_PERIOD]"
-		echo "<center><h1>RRDtool Statistics - $heading</h1></center>"
+		if [ -z "$GROUP_PERIOD" ]; then
+			heading=$(echo $graph | sed "s/^upt$/Uptime/g;s/^cpu$/Processor/g;s/^mem$/Memory/g;s/^swap$/Swapspace/g;s/^tt0$/Thomson THG - basic/g;s/^tt1$/Thomson THG - System Uptime/;s/^tt2/Thomson THG - DS Frequency/;s/^tt3$/Thomson THG - Upstream Channel/;s/^diskio1$/$RRDSTATS_DISK_NAME1/g;s/^diskio2$/$RRDSTATS_DISK_NAME2/g;s/^diskio3$/$RRDSTATS_DISK_NAME3/g;s/^diskio4$/$RRDSTATS_DISK_NAME4/g;s/^if1$/$RRDSTATS_NICE_NAME1/g;s/^if2$/$RRDSTATS_NICE_NAME2/g;s/^if3$/$RRDSTATS_NICE_NAME3/g;s/^if4$/$RRDSTATS_NICE_NAME4/g;s/^one$/DigiTemp/g")
+		else
+			heading="$GROUP_PERIOD"
+		fi
+		echo "<center><font size=+1><br><b>$heading stats</b></font></center>"
 
 		if [ $(echo "$graph" | sed 's/^tt./yes/') = yes -a "$RRDSTATS_THOMSONADV" = yes ]; then
 			echo "<br><center> \
@@ -501,21 +504,23 @@ case $graph in
 
 		for period in $RRDSTATS_PERIODSSUB; do
 			set_period $period
-			sec_begin "$heading stats for last $periodnn"
+			sec_begin "last $periodnn"
 			generate_graph "$graph" "$periodG" "$graph-$period" "" $GROUP_PERIOD
 			echo "<center><a href=\"$SCRIPT_NAME\" class=\"image\">"
 			echo "<img src=\"/statpix/$graph-$period$GROUP_PERIOD.png$NOCACHE\" alt=\"$heading stats for last $periodnn\" border=\"0\" />"
 			echo "</a></center>"
 			sec_end
 		done
-		echo "<br><center><input type=\"button\" value=\"Back\" onclick=\"javascript:history.go(-1)\" /></center>"
+		[ -n "$HTTP_REFERER" ] && backdest="history.go(-1)" || backdest="window.location.href='$SCRIPT_NAME'"
+		echo "<br><center><input type=\"button\" value=\"Back\" onclick=\"javascript:$backdest\" /></center>"
 		;;
 	*)
+		set_lazy "$RRDSTATS_NOTLAZYM"
 		set_period "$RRDSTATS_PERIODMAIN"
-		echo "<center><h1>RRDtool Statistics - Overview</h1></center>"
+		echo "<center><font size=+1><br><b>Stats for last $periodnn</b></font></center>"
 		case $RRD_DISPLAY_TYPE in
 			rrddt)
-				ALL_GROUPS=$(grep -vE "^#|^$|^ " /var/tmp/flash/rrdstats/digitemp.group | tr -s " " | cut -d " " -f2 | uniq)
+				ALL_GROUPS=$(grep -vE "^#|^$|^ " /var/tmp/flash/rrdstats/digitemp.group 2>/dev/null | tr -s " " | cut -d " " -f2 | uniq)
 				[ -z "$ALL_GROUPS" ] && gen_main "one" "$curgroup" "$periodnn"
 				for curgroup in $ALL_GROUPS; do
 					gen_main "one" "$curgroup" "$periodnn" "$curgroup"

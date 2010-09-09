@@ -31,6 +31,7 @@ check "$RRDSTATS_THOMSONTHG" yes:thomsonthg
 check "$RRDSTATS_THOMSONADV" yes:thomsonadv
 check "$RRDSTATS_DIGITEMP1W" yes:digitemp1w
 check "$RRDSTATS_DIGITEMP_C" yes:digitemp_c "*":digitemp_f
+check "$RRDSTATS_DIGITEMP_RETRY85" yes:digitemp_retry85
 check "$RRDSTATS_DIGITEMP85" yes:digitemp85
 check "$RRDSTATS_DIGITEMP_A" yes:digitemp_a
 check "$RRDSTATS_DIGITEMP_HTTP"  yes:digitemp_http
@@ -98,7 +99,7 @@ cat << EOF
 <p>$(lang de:"Persistentes Verzeichnis" en:"Persistent folder"):&nbsp;<input type="text" name="rrddata" size="45" maxlength="255" value="$(html "$RRDSTATS_RRDDATA")"></p>
 <p>$(lang de:"Aufzeichnungsintervall in Sekunden" en:"Log interval in seconds"):&nbsp;<input type="text" name="interval" size="3" maxlength="9" value="$(html "$RRDSTATS_INTERVAL")"></p>
 <p>
-$(lang de:"Dimensionsverh&auml;ltnis der Graphen" en:"Graph dimensions ratio"): 
+$(lang de:"Dimensionsverh&auml;ltnis der Graphen" en:"Graph dimensions ratio"):
 <input type="text" name="dimensionx" size="3" maxlength="9" value="$(html "$RRDSTATS_DIMENSIONX")">
 :
 <input type="text" name="dimensiony" size="3" maxlength="9" value="$(html "$RRDSTATS_DIMENSIONY")">
@@ -355,20 +356,19 @@ max:<input type="text" name="digitemp_u" size="3" maxlength="4" value="$(html "$
 </p>
 
 <p>
+$(lang de:"Anzahl Wiederholungen, falls ein Sensor keinen Wert zur&uuml;ckliefert" en:"Count of retries, if a sensorc does not return a value"):
+<input type="text" name="digitemp_retries" size="2" maxlength="3" value="$(html "$RRDSTATS_DIGITEMP_RETRIES")">
+</p>
+
+<p>
+<input type="hidden" name="digitemp_retry85" value="no">
+<input id="d5" type="checkbox" name="digitemp_retry85" value="yes"$digitemp_retry85_chk>
+<label for="d5">$(lang de:"Wiederhole auch bei 85,000000&deg;C (Fehler und Werte)" en:"Retry also with 185.000000&deg;F (errors and values)")</label>
+</p>
+
+<p>
 <input type="button" value="DigiTemp initialisieren" onclick="if (confirm('$(lang de:"Fortfahren?" en:"Proceed?")')==true) window.open('$(href extra rrdstats dt-init)','Initialisieren_von_DigiTemp','menubar=no,width=$INIT_WINDOW_WIDTH,height=600,toolbar=no,resizable=yes,scrollbars=yes');" /> &nbsp;&nbsp;
 <br><font size="-2">$(lang de:"Vor dem ersten Aktivieren oder nach Ver&auml;nderungen der Ger&auml;te ausf&uuml;hren" en:"Run this before the first start of if you change your devices")</font>
-
-EOF
-if [ "$RRDSTATS_DIGITEMP1W" = "yes" ]; then
-cat << EOF
-<br><br>$(lang de:"Bearbeite Datei:" en:"Edit file:")
-&nbsp;<a href="$(href file rrdstats dt-conf)">conf</a>
-&nbsp;-&nbsp;<a href="$(href file rrdstats dt-alias)">alias</a>
-&nbsp;-&nbsp;<a href="$(href file rrdstats dt-group)">group</a>
-&nbsp;-&nbsp;<a href="$(href file rrdstats dt-alert)">alert</a>
-EOF
-fi
-cat << EOF
 </p>
 
 
