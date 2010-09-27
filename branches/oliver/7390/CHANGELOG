@@ -5,7 +5,7 @@ Latest changes:
 === devel ===
 
 - Build system:
-  * fakeroot: bump version to 1.12.2
+  * fakeroot: bump version to 1.14.4
   * xdelta: Disable build because we don't make use of it
   * kernel-toolchain: Add two patches for gcc-3.4.6
    + Fix failure with newer host gccs
@@ -13,7 +13,7 @@ Latest changes:
    + Bump bintuils to 2.18
   * target-toolchain:
    + Add gcc-4.4.4, gcc-4.3.5 and gcc-4.2.4, delete outdated versions
-   + Add binutils-2.19.1 and binutils-2.20.51.0.9
+   + Add binutils-2.19.1 and binutils-2.20.51.0.11
    + Add uClibc-0.9.30.3 and uClibc-0.9.31 (experimental, not selectable over menuconfig)
    + Add gdb-6.8, delete outdated versions
    + Update download toolchains to gcc-4.2.4
@@ -57,7 +57,7 @@ Latest changes:
     * remove ntfs-support
     * remove umts-support
     * add 3rd alarm-clock (for 7150  7112 7141 7170  3070_V3  3270 7240 7270 7270_V3)
-    * freetzmount (by herman)
+    * freetzmount (by hermann72pb)
     * reg SIP from outside (by MaxMuster)
     * remove AVM's NAS webinterface and internal memory file
 
@@ -71,11 +71,11 @@ Latest changes:
     * compcache 0.5.4 (kernel module)
     * cpmaccfg-cgi 1.0: Webinterface for cpmaccfg
     * digitemp 3.6.0
-    * dosfstools 3.0.9
+    * dosfstools 3.0.10
     * flex (libflex) 2.5.35
     * fortune 1.2
-    * git 1.7.2.2
-    * gnutls 2.8.6
+    * git 1.7.2.3
+    * gnutls 2.10.1
     * gocr 0.48
     * gw6 5.1
     * hol 0.1
@@ -84,7 +84,7 @@ Latest changes:
     * htop-0.8.3
     * httpry 0.1.5
     * igmpproxy 0.1
-    * iptraf 3.0.0
+    * iptraf 3.0.1
     * ipsec-tools 0.7.2
     * iputils s20071127
     * irssi 0.8.15
@@ -92,14 +92,14 @@ Latest changes:
     * libconfig 1.4.5
     * libdaemon 0.14
     * libdnet 1.12
-    * libfreetz 0.1
+    * libfreetz 0.2
     * libgd 2.0.35
     * libnet 1.1.4
     * libogg 1.1.4
     * libosip2 3.3.0
     * libpolarssl 0.14.0
     * libsynce 0.10.0
-    * libtasn1 2.6
+    * libtasn1 2.7
     * libvorbis 1.2.3
     * libxml 2.7.7
     * libxslt/xsltproc 1.1.26
@@ -164,14 +164,14 @@ Latest changes:
     * avm-firewall 2.0.4_rc5
     * bash 3.2.51
     * bftpd 2.8
-    * bip 0.8.5
+    * bip 0.8.6
     * bird 1.2.4
     * bridge-utils 1.4
-    * callmonitor 1.18.6
+    * callmonitor 1.18.7
     * collectd 4.10.0
     * cryptsetup 1.0.6
     * curl 7.21.1
-    * cyassl 1.6.0
+    * cyassl 1.6.5
     * davfs2 1.4.6
     * dns2tcp 0.5.2
     * dnsmasq 2.55
@@ -182,6 +182,7 @@ Latest changes:
     * fuse 2.7.5
     * glib 2.22.5
     * gmp 5.0.1
+    * gnu-make 3.82
     * haserl 0.9.26
     * inetd 0.2 (multiple daemons/package)
     * inotify-tools 3.14
@@ -189,8 +190,9 @@ Latest changes:
     * libart_lgpl 2.3.20
     * libelf 0.8.13
     * libevent 1.4.14b
-    * libgcrypt 1.4.5
-    * libgpg-error 1.8
+    * libftdi 0.18
+    * libgcrypt 1.4.6
+    * libgpg-error 1.9
     * libiconv 1.13.1
     * libpcap 1.1.1
     * libpng 1.2.44
@@ -229,6 +231,7 @@ Latest changes:
     * stunnel 4.33
     * tcpdump 4.1.1
     * tinc 1.0.12
+    * tinyproxy 1.8.2
     * tor 0.2.1.26
     * transmission 2.04
     * uClibc++ 0.2.3pre (git snapshot)
@@ -237,8 +240,9 @@ Latest changes:
     * wget 1.12
     * zlib 1.2.5
 
-- Remove packages, libs, modules, tools:
+- Remove packages, patches, libs, modules, tools:
     * removed xyssl (not maintained anymore, superseded by polarssl)
+    * removed automount patch (superseded by freetzmount)
 
 - Firmware updates:
     * Please see FIRMWARES for the list of currently supported boxes and firmwares.

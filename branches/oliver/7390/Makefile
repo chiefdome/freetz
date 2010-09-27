@@ -51,13 +51,14 @@ BUILD_DIR_VERSION:=$(shell svnversion | grep -v exported 2> /dev/null)
 BUILD_LAST_VERSION:=$(shell cat .lastbuild-version 2> /dev/null)
 
 TOOLCHAIN_BUILD_DIR:=$(TOOLCHAIN_DIR)/$(BUILD_DIR)
+TOOLS_BUILD_DIR:=$(TOOLS_DIR)/$(BUILD_DIR)
 
 SED:=sed
 MAKE1=make
 MAKE=make -j$(FREETZ_JLEVEL)
 
 DL_TOOL:=$(TOOLS_DIR)/freetz_download
-FAKEROOT_TOOL:=$(TOOLS_DIR)/fakeroot/bin/fakeroot
+FAKEROOT_TOOL:=$(TOOLS_DIR)/$(BUILD_DIR)/bin/fakeroot
 PATCH_TOOL:=$(TOOLS_DIR)/freetz_patch
 CHECK_PREREQ_TOOL:=$(TOOLS_DIR)/check_prerequisites
 CHECK_BUILD_DIR_VERSION:=
@@ -192,28 +193,18 @@ TOOLS_SOURCE:=$(patsubst %,%-source,$(TOOLS))
 include $(TOOLS_DIR)/make/*.mk
 
 $(DL_DIR): $(DL_FW_DIR)
-	@mkdir -p $(DL_DIR)
-
-$(DL_FW_DIR):
-	@mkdir -p $(DL_FW_DIR)
-
 $(MIRROR_DIR): $(DL_DIR)
-	@mkdir -p $(MIRROR_DIR)
 
-$(BUILD_DIR):
-	@mkdir -p $(BUILD_DIR)
-
-$(PACKAGES_DIR_ROOT):
-	@mkdir -p $(PACKAGES_DIR_ROOT)
-
-$(SOURCE_DIR_ROOT):
-	@mkdir -p $(SOURCE_DIR_ROOT)
-
-$(TOOLCHAIN_BUILD_DIR):
-	@mkdir -p $(TOOLCHAIN_BUILD_DIR)
-
+$(DL_DIR) \
+$(DL_FW_DIR) \
+$(MIRROR_DIR) \
+$(BUILD_DIR) \
+$(PACKAGES_DIR_ROOT) \
+$(SOURCE_DIR_ROOT) \
+$(TOOLCHAIN_BUILD_DIR) \
+$(TOOLS_BUILD_DIR) \
 $(FW_IMAGES_DIR):
-	@mkdir -p $(FW_IMAGES_DIR)
+	@mkdir -p $@
 
 ifeq ($(strip $(FREETZ_HAVE_DOT_CONFIG)),y)
 
@@ -504,11 +495,11 @@ common-dirclean: common-clean
 
 common-distclean: common-dirclean
 	$(RM) .config .config.old .config.cmd .tmpconfig.h
-	-$(RM) -r $(ADDON_DIR)/*
 	$(RM) -r $(DL_DIR)
 	$(RM) -r $(FW_IMAGES_DIR)
 	$(RM) -r $(SOURCE_DIR_ROOT)
 	$(RM) -r $(TOOLCHAIN_BUILD_DIR)
+	$(RM) -r $(TOOLS_BUILD_DIR)
 
 dist: distclean
 	version="$$(cat .version)"; \

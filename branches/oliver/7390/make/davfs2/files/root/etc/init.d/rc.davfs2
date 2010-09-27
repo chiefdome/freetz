@@ -39,12 +39,13 @@ config() {
 		modlib_config davfs2_secrets_${i} $CONF_DIR/secrets_${i}
 	done
 
-	modprobe coda
+	modprobe fuse 2>/dev/null
 }
 
 start() {
 	echo -n "Starting $DAEMON_LONG_NAME ... "
 	config
+	[ -r /etc/options.cfg ] && . /etc/options.cfg
 
 	local retval=0
 	for i in 0 1 2 3; do
@@ -55,7 +56,9 @@ start() {
 		local host="$(eval "echo \$DAVFS2_HOST${i}")"
 		local cfile="$CONF_DIR/davfs2_${i}.conf"
 		echo "secrets $CONF_DIR/secrets_${i}" > $cfile
-		[ "$cert" == "yes" ] && echo "servercert /var/tmp/flash/davfs2/servercrt${i}.pem" >> $cfile
+		if [ "$cert" == "yes" -a "$FREETZ_PACKAGE_DAVFS2_WITH_SSL" == "y" ]; then
+			echo "servercert /var/tmp/flash/davfs2/servercrt${i}.pem" >> $cfile
+		fi
 		[ "$uselocks" == "yes" ] && echo "use_locks 0" >> $cfile
 		echo "ask_auth 0" >> $cfile
 		chmod 600 $CONF_DIR/secrets_${i}
@@ -95,6 +98,10 @@ stop() {
 	rm -rf /var/run/mount.davfs/
 }
 
+reload() {
+	killall -HUP $DAEMON 2>/dev/null
+}
+
 case $1 in
 	""|load)
 		mkdir -p $CONF_DIR
@@ -103,6 +110,8 @@ case $1 in
 		modlib_adduser $DAEMON -s /bin/false -D -S -H -G $DAEMON -g $DAEMON_LONG_NAME
 
 		modreg cgi $DAEMON $DAEMON_LONG_NAME
+		modreg daemon $DAEMON
+
 		for i in 0 1 2 3; do
 			modreg file $DAEMON servercrt$i "Server Zertifikat $i" 0 "davfs2_servercrt$i"
 		done
@@ -110,8 +119,9 @@ case $1 in
 		modlib_start $DAVFS2_ENABLED
 		;;
 	unload)
-		modunreg cgi davfs2
 		modunreg file davfs2
+		modunreg daemon $DAEMON
+		modunreg cgi davfs2
 		modlib_stop
 		;;
 	start)
@@ -123,11 +133,14 @@ case $1 in
 	restart)
 		modlib_restart
 		;;
+	reload)
+		modlib_reload
+		;;
 	status)
 		modlib_status
 		;;
 	*)
-		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		echo "Usage: $0 [load|unload|start|stop|restart|reload|status]" 1>&2
 		exit 1
 		;;
 esac

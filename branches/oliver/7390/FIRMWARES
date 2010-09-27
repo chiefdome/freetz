@@ -9,6 +9,9 @@ Currently supported boxes and firmwares
 	* Fritz!Box Fon (English, Annex B): 30.04.49
 * Fritz!Box 5010 (A-CH, Annex A): 48.04.43
 * Fritz!Box Fon 5050: 12.04.31
+* Fritz!Box Fon 5124:
+	* Fritz!Box Fon 5124 (English, Annex A): 57.04.76
+	* Fritz!Box Fon 5124 (English, Annex B): 56.04.76
 * Fritz!Box Fon 5140: 43.04.67
 * Fritz!Box Fon WLAN: 08.04.34
 	* Fritz!Box Fon WLAN (English, Annex A): 39.04.49
@@ -29,19 +32,19 @@ Currently supported boxes and firmwares
 	* Fritz!Box Fon WLAN 7170 (English, Annex A): 58.04.82
 	* Fritz!Box Fon WLAN 7170 (English, Annex B): 29.04.82
 	* Fritz!Box Fon WLAN 7170 (A-CH, Annex A): 58.04.76
-	* Labor DSL: 29.04.99-14119
-	* Labor Preview: 29.04.80-16352
-* Fritz!Box Fon WLAN 7240: 73.04.80
-    * Preview: 73.04.85-18255
-    * Alien 7270
-* Fritz!Box Fon WLAN 7270: 54.04.80 7270 v3: 74.04.80
+* Fritz!Box Fon WLAN 7240: 73.04.86
+    * Alien 7270 v2
+* Fritz!Box Fon WLAN 7270 v1: 54.04.86
+* Fritz!Box Fon WLAN 7270 v2: 54.04.86
 	* Fritz!Box Fon WLAN 7270 (A-CH): 54.04.81
 	* Fritz!Box Fon WLAN 7270 (English): 54.04.81
-	* Labor Core (Streaming Stick): 54.04.98-16540|74.04.98-16540
-	* Labor DSL: 54.04.80-16750|74.04.80-16750
-	* Labor IPv6: 54.04.80-17603|74.04.80-17603
-	* Labor NAS: 54.04.80-16561|74.04.80-16561
-	* Preview: 54.04.85-18255|74.04.85-18255
+	* Labor Core (Streaming Stick): 54.04.98-16540
+	* Labor DSL: 54.04.80-16750
+	* Labor IPv6: 54.04.80-17603
+* Fritz!Box Fon WLAN 7270 v3: 74.04.86
+	* Labor Core (Streaming Stick): 74.04.98-16540
+	* Labor DSL: 74.04.80-16750
+	* Labor IPv6: 74.04.80-17603
 * Fritz!Box Fon WLAN 7340: 99.04.83
 	* Labor Preview: 99.04.85-18148
 * Fritz!Box Fon WLAN 7390: 84.04.84
@@ -66,5 +69,5 @@ Currently supported boxes and firmwares
 	* 7113: AVM 7170
 	* 7140: AVM 7170
 	* 7141: AVM 7170
-	* 7240: AVM 7270
+	* 7240: AVM 7270 v2
 

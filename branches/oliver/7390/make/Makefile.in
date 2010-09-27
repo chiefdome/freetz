@@ -266,6 +266,8 @@ PKG_PREVENT_RPATH_HARDCODING__INT = \
 		$(PKG_FIX_HARDCODE_LIBDIR_FLAG_SPEC__INT2) \
 	$1;
 PKG_PREVENT_RPATH_HARDCODING = $(foreach f,$1,$(call PKG_PREVENT_RPATH_HARDCODING__INT,$(f)))
+# 1st level PKG_PREVENT_RPATH_HARDCODING
+PKG_PREVENT_RPATH_HARDCODING1 = $(subst $$$$,$$,$(call PKG_PREVENT_RPATH_HARDCODING,$1))
 
 # Change all variables var to $(PKG)_var
 #  $1 is a space separated list of variables
@@ -351,6 +353,10 @@ endef
 define INSTALL_LIBRARY_STRIP_RULE
 $(if $(strip $(3)),$(strip $(3)),$($(PKG)_DEST_DIR))$(strip $(2))/$(notdir $(strip $(1))): $(strip $(1))
 	$(value INSTALL_LIBRARY_STRIP)
+endef
+
+define REMOVE_DOC_NLS_DIRS
+$(if $(strip $(1)),$(RM) -r $(addprefix $(strip $(1)),$(foreach p,/ /usr /share /usr/share,$(foreach d,info man doc locale,$(subst //,/,$(p)/$(d))))))
 endef
 
 # We want build output like:

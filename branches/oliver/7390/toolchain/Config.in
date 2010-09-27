@@ -5,7 +5,6 @@ config FREETZ_KERNEL_VERSION_2_6_13_1
 			FREETZ_TYPE_WLAN_3270_V3 || \
 			FREETZ_TYPE_FON_WLAN_7240 || \
 			FREETZ_TYPE_FON_WLAN_7270 || \
-			FREETZ_TYPE_FON_WLAN_7270_V3 || \
 			FREETZ_TYPE_FON_WLAN_7570  || \
 			FREETZ_TYPE_FON_WLAN_7390 \
 			)
@@ -34,7 +33,6 @@ config FREETZ_UCLIBC_0_9_29_BASED_BOX
 		FREETZ_TYPE_FON_WLAN_7170 || \
 		FREETZ_TYPE_FON_WLAN_7240 || \
 		FREETZ_TYPE_FON_WLAN_7270 || \
-		FREETZ_TYPE_FON_WLAN_7270_V3 || \
 		FREETZ_TYPE_FON_WLAN_7570 || \
 		FREETZ_TYPE_FON_WLAN_7390
 	default n
@@ -125,9 +123,9 @@ config FREETZ_TARGET_BINUTILS_VERSION
 	default "2.18"		if FREETZ_TARGET_COMPILER_GCC_4_2_4_UCLIBC_0_9_29
 	default "2.19.1"	if FREETZ_TARGET_COMPILER_GCC_4_3_5_UCLIBC_0_9_29
 	default "2.19.1"	if FREETZ_TARGET_COMPILER_GCC_4_3_5_UCLIBC_0_9_30
-	default "2.20.51.0.9"	if FREETZ_TARGET_COMPILER_GCC_4_4_4_UCLIBC_0_9_29
-	default "2.20.51.0.9"	if FREETZ_TARGET_COMPILER_GCC_4_4_4_UCLIBC_0_9_30
-	default "2.20.51.0.9"	if FREETZ_TARGET_COMPILER_GCC_4_4_4_UCLIBC_0_9_31
+	default "2.20.51.0.11"	if FREETZ_TARGET_COMPILER_GCC_4_4_4_UCLIBC_0_9_29
+	default "2.20.51.0.11"	if FREETZ_TARGET_COMPILER_GCC_4_4_4_UCLIBC_0_9_30
+	default "2.20.51.0.11"	if FREETZ_TARGET_COMPILER_GCC_4_4_4_UCLIBC_0_9_31
 
 choice
 
@@ -150,6 +148,18 @@ config FREETZ_TARGET_UCLIBC_REF
 	default "mod"		if FREETZ_TARGET_UCLIBC_CONFIG_MOD || FREETZ_DOWNLOAD_TOOLCHAIN
 	default "orig-4mb"	if FREETZ_TARGET_UCLIBC_CONFIG_4MB
 	default "orig-8mb"	if FREETZ_TARGET_UCLIBC_CONFIG_8MB
+
+config FREETZ_TARGET_UCLIBC_REDUCED_LOCALE_SET
+	bool "Use reduced set of locales" if FREETZ_BUILD_TOOLCHAIN && FREETZ_UCLIBC_0_9_29_BASED_BOX
+	default n
+	help
+		This option causes only the following locales to be included into uClibc:
+		 - en_US
+		 - en_US.UTF-8
+		 - de_DE
+		 - de_DE.UTF-8
+
+		This saves about 235KB in the image and at run-time.
 
 config FREETZ_STATIC_TOOLCHAIN
 	bool "Build static toolchains" if FREETZ_BUILD_TOOLCHAIN
@@ -220,6 +230,8 @@ config FREETZ_KERNEL_BINUTILS_VERSION
 	default "2.18"
 
 config FREETZ_TARGET_TOOLCHAIN
+	select FREETZ_LIB_libgmp
+	select FREETZ_LIB_libmpfr
 	bool "Build binutils and gcc for target" if FREETZ_BUILD_TOOLCHAIN
 	default n
 	help

@@ -17,6 +17,7 @@ source make/dtmfbox/external.in
 source make/e2fsprogs/external.in
 source make/espeak/external.in
 source make/git/external.in
+source make/gnu-make/external.in
 source make/gnutls/external.in
 source make/gocr/external.in
 source make/htop/external.in
@@ -74,6 +75,7 @@ source make/wput/external.in
 comment "services"
 	depends on EXTERNAL_ENABLED
 source make/checkmaild/external.in
+source make/davfs2/external.in
 source make/dropbear/external.in
 source make/gw6/external.in
 source make/knock/external.in
