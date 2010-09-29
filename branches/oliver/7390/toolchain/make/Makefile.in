@@ -1,9 +1,11 @@
 -include $(TOOLCHAIN_DIR)/make/kernel/*/Makefile.in
 -include $(TOOLCHAIN_DIR)/make/target/*/Makefile.in
 
-TARGET_ARCH:=$(strip $(subst ",,$(FREETZ_TARGET_ARCH)))
+TARGET_ARCH:=$(strip $(subst ",, $(FREETZ_TARGET_ARCH)))
 
 REAL_GNU_KERNEL_NAME:=$(TARGET_ARCH)-unknown-linux-gnu
+GNU_TARGET_NAME:=$(TARGET_ARCH)-linux
+REAL_GNU_TARGET_NAME:=$(GNU_TARGET_NAME)-uclibc
 
 KERNEL_TOOLCHAIN_GCC_VERSION:=$(strip $(subst ",, $(FREETZ_KERNEL_GCC_VERSION)))
 KERNEL_TOOLCHAIN_BINUTILS_VERSION:=$(strip $(subst ",, $(FREETZ_KERNEL_BINUTILS_VERSION)))
