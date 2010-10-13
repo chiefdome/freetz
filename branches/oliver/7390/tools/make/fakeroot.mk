@@ -32,10 +32,7 @@ $(FAKEROOT_DIR)/.configured: $(FAKEROOT_DIR)/.unpacked
 	);
 	touch $(FAKEROOT_DIR)/.configured
 
-$(FAKEROOT_DIR)/faked: $(FAKEROOT_DIR)/.configured
-	$(MAKE) -C $(FAKEROOT_DIR)
-
-$(FAKEROOT_TARGET_SCRIPT): $(FAKEROOT_DIR)/faked
+$(FAKEROOT_TARGET_SCRIPT): $(FAKEROOT_DIR)/.configured
 	$(MAKE) DESTDIR=$(FAKEROOT_DESTDIR) -C $(FAKEROOT_DIR) install
 	$(SED) -i -e 's,^FAKEROOT_PREFIX=.*,FAKEROOT_PREFIX=$(FAKEROOT_DESTDIR)/,g' $(FAKEROOT_TARGET_SCRIPT)
 	$(SED) -i -e 's,^FAKEROOT_BINDIR=.*,FAKEROOT_BINDIR=$(FAKEROOT_DESTDIR)/bin,g' $(FAKEROOT_TARGET_SCRIPT)
@@ -49,5 +46,5 @@ fakeroot-clean:
 fakeroot-dirclean:
 	$(RM) -r $(FAKEROOT_DIR)
 
-fakeroot-distclean:
+fakeroot-distclean: fakeroot-dirclean
 	$(RM) -r $(FAKEROOT_TARGET_SCRIPT) $(FAKEROOT_DESTDIR)/bin/faked $(FAKEROOT_DESTDIR)/lib/libfakeroot*

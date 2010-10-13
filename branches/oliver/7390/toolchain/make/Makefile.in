@@ -44,8 +44,7 @@ KERNEL_MAKE_PATH:=$(KERNEL_TOOLCHAIN_STAGING_DIR)/bin
 TARGET_MAKE_PATH:=$(TARGET_TOOLCHAIN_STAGING_DIR)/bin
 
 ifeq ($(strip $(FREETZ_BUILD_TOOLCHAIN)),y)
-TOOLCHAIN+=kernel-toolchain
-TOOLCHAIN+=target-toolchain
+TOOLCHAIN:=kernel-toolchain target-toolchain
 else
 TOOLCHAIN:=download-toolchain
 endif
@@ -74,3 +73,5 @@ target-toolchain-distclean: target-toolchain-dirclean
 	$(RM) -r $(SOURCE_DIR_ROOT)/toolchain/target
 	$(RM) $(TOOLCHAIN_DIR)/target
 	$(RM) $(TARGET_TOOLCHAIN_SYMLINK_DOT_FILE)
+
+include $(TOOLCHAIN_DIR)/make/toolchain-common.in

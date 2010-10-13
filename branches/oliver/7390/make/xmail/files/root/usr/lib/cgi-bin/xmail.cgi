@@ -8,7 +8,7 @@ XMAIL_SSLSUPPORT= XMAIL_SSLVISIBLE=
 # Check for SSL support
 /usr/lib/MailRoot/bin/CtrlClnt 2>&1 | grep -qe ' -S ' && XMAIL_SSLSUPPORT=1
 # Check for installed and running PHPXmail
-[ -e /etc/init.d/rc.phpxmail ] && [ "$(/etc/init.d/rc.phpxmail status)" == 'running' ] && XMAIL_PHPXMAIL=1
+[ -e /etc/init.d/rc.phpxmail ] && XMAIL_PHPXMAIL=1
 
 check "$XMAIL_ENABLED" yes:auto "*":man
 check "$XMAIL_UNPRIV" yes:unpriv
@@ -26,7 +26,7 @@ check "$XMAIL_SYSTEMLOG" yes:systemlog
 . /usr/lib/libmodredir.sh
 sec_begin '$(lang de:"PHPXmail" en:"PHPXmail")'
 cat << EOF
-<p>$(lang de:"Auf dieser Fritz!Box ist das PHPXMail Webfrontend installiert, klicken sie" en:"On this Fritz!Box is the PHPXMail webfrontend installed, so you can klick") <b><a style='font-size:14px;' target='_blank' href=/phpxmail/index.html>$(lang de:"hier" en:"here")</a></b>$(lang de:", um es zu starten." en:" to start it.")<p>
+<p>$(lang de:"Auf dieser Fritz!Box ist das PHPXMail Webfrontend installiert, klicken sie" en:"On this Fritz!Box is the PHPXMail webfrontend installed, so you can klick") <b><a style='font-size:14px;' target='_blank' href=/phpxmail/index.php>$(lang de:"hier" en:"here")</a></b>$(lang de:", um es zu starten." en:" to start it.")<p>
 EOF
 sec_end
 )
