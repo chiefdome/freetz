@@ -16,11 +16,11 @@ config FREETZ_KERNEL_VERSION_2_6_19_2
 	bool
 	default y if ! ( \
 			FREETZ_KERNEL_VERSION_2_6_13_1 || \
-			FREETZ_TYPE_FON_WLAN_7320 \
+			FREETZ_KERNEL_VERSION_2_6_28 \
 			)
 	default n
 
-config FREETZ_KERNEL_VERSION_2_6_28_10
+config FREETZ_KERNEL_VERSION_2_6_28
 	bool
 	default y if FREETZ_TYPE_FON_WLAN_7320
 	default n
@@ -29,7 +29,7 @@ config FREETZ_KERNEL_VERSION
 	string
 	default "2.6.13.1" if FREETZ_KERNEL_VERSION_2_6_13_1
 	default "2.6.19.2" if FREETZ_KERNEL_VERSION_2_6_19_2
-	default "2.6.28.10" if FREETZ_KERNEL_VERSION_2_6_28_10
+	default "2.6.28" if FREETZ_KERNEL_VERSION_2_6_28_10
 
 config FREETZ_UCLIBC_0_9_28_BASED_BOX
 	bool

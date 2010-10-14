@@ -1,0 +1,47 @@
+--- linux-2.6.28/drivers/net/ppp_generic.c.orig	2010-04-07 11:56:53.000000000 +0200
++++ linux-2.6.28/drivers/net/ppp_generic.c	2010-10-14 21:25:54.287595965 +0200
+@@ -49,10 +49,6 @@
+ #include <asm/atomic.h>
+ 
+ 
+-#if defined(CONFIG_MACH_FUSIV) && defined(CONFIG_ATM)
+-#include <atm/atmencap.h>
+-struct ppp_channel *getPPPChannel(struct net_device *net_dev);
+-#endif
+ 
+ #define PPP_VERSION	"2.4.2"
+ 
+@@ -1566,9 +1562,6 @@
+ 	struct sk_buff *ns;
+ 	int proto, len, npi;
+ 
+-#if defined(CONFIG_MACH_FUSIV) && defined(CONFIG_ATM)
+-	unsigned char encap;
+-#endif
+ 	/*
+ 	 * Decompress the frame, if compressed.
+ 	 * Note that some decompressors need to see uncompressed frames
+@@ -1641,12 +1634,6 @@
+ 	++ppp->dev->stats.rx_packets;
+ 	ppp->dev->stats.rx_bytes += skb->len - 2;
+ 
+-#if defined(CONFIG_MACH_FUSIV) && defined(CONFIG_ATM)
+-	encap = skb->encap;
+-
+-	if ((encap == ENCAPIDROUTEDLLCPPPOA) || (encap == ENCAPIDROUTEDVCPPPOA))
+-		proto = PPP_IP;
+-#endif
+ 
+ 	npi = proto_to_npindex(proto);
+ 	if (npi < 0) {
+@@ -1695,10 +1682,6 @@
+ 			kfree_skb(skb);
+ 		} else {
+ 
+-#if defined(CONFIG_MACH_FUSIV) && defined(CONFIG_ATM)
+-		if((encap != ENCAPIDROUTEDLLCPPPOA) &&
+-			(encap != ENCAPIDROUTEDVCPPPOA))
+-#endif
+ 			/* chop off protocol */
+ 			skb_pull_rcsum(skb, 2);
+ 			skb->dev = ppp->dev;
