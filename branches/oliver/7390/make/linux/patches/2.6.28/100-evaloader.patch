@@ -1,5 +1,5 @@
---- linux-2.6.28/Makefile.orig	2010-03-09 13:51:36.000000000 +0100
-+++ linux-2.6.28/Makefile	2010-10-14 15:38:43.670544902 +0200
+--- linux-2.6.28/Makefile.orig	2010-10-16 15:48:49.931946789 +0200
++++ linux-2.6.28/Makefile	2010-10-16 15:48:55.371946791 +0200
 @@ -532,6 +532,25 @@
  # Defaults vmlinux but it is usually overridden in the arch makefile
  all: vmlinux
@@ -26,7 +26,7 @@
  ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
  KBUILD_CFLAGS	+= -Os
  else
-@@ -1188,7 +1207,7 @@
+@@ -1190,7 +1209,7 @@
  
  # Directories & files removed with 'make clean'
  CLEAN_DIRS  += $(MODVERDIR)
@@ -35,9 +35,9 @@
                  .tmp_kallsyms* .tmp_version .tmp_vmlinux* .tmp_System.map
  
  # Directories & files removed with 'make mrproper'
---- linux-2.6.28/arch/mips/Makefile.orig	2010-03-09 13:51:36.000000000 +0100
-+++ linux-2.6.28/arch/mips/Makefile	2010-10-14 15:38:43.670544902 +0200
-@@ -731,9 +731,6 @@
+--- linux-2.6.28/arch/mips/Makefile.orig	2010-10-16 15:48:55.211946790 +0200
++++ linux-2.6.28/arch/mips/Makefile	2010-10-16 15:48:55.371946791 +0200
+@@ -734,9 +734,6 @@
  
  all:	$(all-y)
  
