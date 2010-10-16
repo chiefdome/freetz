@@ -29,7 +29,7 @@ config FREETZ_KERNEL_VERSION
 	string
 	default "2.6.13.1" if FREETZ_KERNEL_VERSION_2_6_13_1
 	default "2.6.19.2" if FREETZ_KERNEL_VERSION_2_6_19_2
-	default "2.6.28" if FREETZ_KERNEL_VERSION_2_6_28_10
+	default "2.6.28" if FREETZ_KERNEL_VERSION_2_6_28
 
 config FREETZ_UCLIBC_0_9_28_BASED_BOX
 	bool
@@ -241,19 +241,27 @@ config FREETZ_TARGET_LFS
 choice
 
 	prompt "Kernel compiler" if FREETZ_BUILD_TOOLCHAIN
+	default FREETZ_KERNEL_COMPILER_GCC_4_4_5 if FREETZ_KERNEL_VERSION_2_6_28
 	default FREETZ_KERNEL_COMPILER_GCC_3_4_6
 
 	config FREETZ_KERNEL_COMPILER_GCC_3_4_6
 		bool "gcc-3.4.6"
+		depends on ! FREETZ_KERNEL_VERSION_2_6_28
+
+	config FREETZ_KERNEL_COMPILER_GCC_4_4_5
+		bool "gcc-4.4.5"
+		depends on FREETZ_KERNEL_VERSION_2_6_28
 
 endchoice
 
 config FREETZ_KERNEL_GCC_VERSION
 	string
+	default "4.4.5" if FREETZ_KERNEL_COMPILER_GCC_4_4_5
 	default "3.4.6"
 
 config FREETZ_KERNEL_BINUTILS_VERSION
 	string
+	default "2.20.51.0.11" if FREETZ_KERNEL_COMPILER_GCC_4_4_5
 	default "2.18"
 
 config FREETZ_TARGET_TOOLCHAIN
