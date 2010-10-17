@@ -200,8 +200,9 @@ config FREETZ_TYPE_FON_WLAN_7270
 config FREETZ_TYPE_LABOR
 	bool "Beta/Labor"
 	depends on \
-		FREETZ_TYPE_FON_WLAN_7270 && \
-		! FREETZ_TYPE_FON_WLAN_7270_V1
+		FREETZ_TYPE_FON_WLAN_7270_V2 || \
+		FREETZ_TYPE_FON_WLAN_7270_V3 || \
+		FREETZ_TYPE_FON_WLAN_7390
 	default n
 	help
 		Enable this to compile the mod based on an AVM "beta/labor" firmware.
@@ -211,14 +212,24 @@ choice
 		depends on FREETZ_TYPE_LABOR
 		default FREETZ_TYPE_LABOR_PHONE
 
+	config FREETZ_TYPE_LABOR_DSL
+		bool "DSL"
+		depends on \
+			FREETZ_TYPE_FON_WLAN_7390
+		select FREETZ_TARGET_IPV6_SUPPORT
+		help
+			FRITZ!Lab DSL: This release optimizes the DSL (Digital Subscriber
+			Line) software and adds related graphs.
+
 	config FREETZ_TYPE_LABOR_PHONE
 		bool "Phone"
 		depends on \
 			FREETZ_TYPE_FON_WLAN_7270_V2 || \
-			FREETZ_TYPE_FON_WLAN_7270_V3
+			FREETZ_TYPE_FON_WLAN_7270_V3 || \
+			FREETZ_TYPE_FON_WLAN_7390
 		select FREETZ_TARGET_IPV6_SUPPORT
 		help
-			Phone Firmware
+			Labor Phone
 endchoice
 
 config FREETZ_TYPE_ALIEN_HARDWARE
@@ -416,6 +427,8 @@ config FREETZ_TYPE_STRING
 	default "7340"						if FREETZ_TYPE_FON_WLAN_7340 && ! FREETZ_TYPE_LABOR
 	default "7340_preview"					if FREETZ_TYPE_FON_WLAN_7340 && FREETZ_TYPE_PREVIEW
 	default "7390"						if FREETZ_TYPE_FON_WLAN_7390 && ! FREETZ_TYPE_LABOR
+	default "7390_labor_dsl"				if FREETZ_TYPE_FON_WLAN_7390 && FREETZ_TYPE_LABOR_DSL
+	default "7390_labor_phone"				if FREETZ_TYPE_FON_WLAN_7390 && FREETZ_TYPE_LABOR_PHONE
 	default "7570"						if FREETZ_TYPE_FON_WLAN_7570
 	default "W501V"						if FREETZ_TYPE_SPEEDPORT_W501V
 	default "custom"					if FREETZ_TYPE_CUSTOM
@@ -840,6 +853,7 @@ config FREETZ_PATCH_ENUM
 config FREETZ_PATCH_DSL_EXPERT
 	bool "Patch extended DSL settings"
 	depends on \
+		! FREETZ_TYPE_LABOR_DSL && \
 		! FREETZ_REMOVE_DSLD && \
 		FREETZ_TYPE_LANG_DE && \
 		( \
@@ -2047,6 +2061,10 @@ config FREETZ_DL_SOURCE
 											FREETZ_TYPE_PREVIEW
 	default "FRITZ.Box_Fon_WLAN_7390.84.04.86.image"			if	FREETZ_TYPE_FON_WLAN_7390 && \
 											! FREETZ_TYPE_LABOR
+	default "FRITZ.Box_Fon_WLAN_7390_LabDSL.AnnexB.84.04.86-18419.image"			if	FREETZ_TYPE_FON_WLAN_7390 && \
+											FREETZ_TYPE_LABOR_DSL
+	default "Labor_FRITZ.Box_Fon_WLAN_7390.84.04.86-18377.image"		if	FREETZ_TYPE_FON_WLAN_7390 && \
+											FREETZ_TYPE_LABOR_PHONE
 	default "fritz.box_sl_wlan.09.04.34.image"				if	FREETZ_TYPE_WLAN_3020
 	default "fritz.box_wlan_3030.21.04.34.image"				if	FREETZ_TYPE_WLAN_3030
 	default "fritz.box_wlan_3130.44.04.34.image"				if	FREETZ_TYPE_WLAN_3130
