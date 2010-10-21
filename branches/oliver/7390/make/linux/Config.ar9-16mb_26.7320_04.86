@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Linux kernel version: 2.6.28.8
-# Thu Oct 14 17:51:11 2010
+# Thu Oct 21 18:59:32 2010
 #
 CONFIG_MIPS=y
 
@@ -1566,7 +1566,9 @@ CONFIG_RTC_DRV_AVM_REF_CLOCK=m
 #
 # File systems
 #
-# CONFIG_EXT2_FS is not set
+CONFIG_EXT2_FS=m
+# CONFIG_EXT2_FS_XATTR is not set
+# CONFIG_EXT2_FS_XIP is not set
 CONFIG_EXT3_FS=m
 CONFIG_EXT3_FS_XATTR=y
 # CONFIG_EXT3_FS_POSIX_ACL is not set
