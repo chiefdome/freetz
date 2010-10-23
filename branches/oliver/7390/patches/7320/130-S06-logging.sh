@@ -11,6 +11,6 @@ fi
 # Initiate inotify-tools file access logging
 if ka_isActiveVariable InotifyBootAnalysis; then
 	ka_decreaseValue InotifyBootAnalysis
-	/etc/init.d/rc.inotify_tools start 
+	/etc/init.d/rc.inotify_tools start
 fi
 EOF
