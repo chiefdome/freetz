@@ -30,6 +30,38 @@ config EXTERNAL_FREETZ_LIB_libatm
 		externals these file(s):
 		 /usr/lib/freetz/libatm.so.1.0.0
 
+config EXTERNAL_FREETZ_LIB_libavcodec
+	depends on EXTERNAL_ENABLED && FREETZ_LIB_libavcodec
+	bool "libavcodec"
+	default n
+	help
+		externals these file(s):
+		 /usr/lib/freetz/libavcodec.so.52.20.1
+
+config EXTERNAL_FREETZ_LIB_libavdevice
+	depends on EXTERNAL_ENABLED && FREETZ_LIB_libavdevice
+	bool "libavdevice"
+	default n
+	help
+		externals these file(s):
+		 /usr/lib/freetz/libavdevice.so.52.1.0
+
+config EXTERNAL_FREETZ_LIB_libavformat
+	depends on EXTERNAL_ENABLED && FREETZ_LIB_libavformat
+	bool "libavformat"
+	default n
+	help
+		externals these file(s):
+		 /usr/lib/freetz/libavformat.so.52.31.0
+
+config EXTERNAL_FREETZ_LIB_libavutil
+	depends on EXTERNAL_ENABLED && FREETZ_LIB_libavutil
+	bool "libavutil"
+	default n
+	help
+		externals these file(s):
+		 /usr/lib/freetz/libavutil.so.49.15.0
+
 config EXTERNAL_FREETZ_LIB_libbluetooth
 	depends on EXTERNAL_ENABLED && FREETZ_LIB_libbluetooth
 	bool "libbluetooth"
@@ -126,6 +158,14 @@ config EXTERNAL_FREETZ_LIB_libevent
 		externals these file(s):
 		 /usr/lib/freetz/libevent-1.4.so.2.2.0
 
+config EXTERNAL_FREETZ_LIB_libexif
+	depends on EXTERNAL_ENABLED && FREETZ_LIB_libexif
+	bool "libexif"
+	default n
+	help
+		externals these file(s):
+		 /usr/lib/freetz/libexif.so.12.3.1
+
 config EXTERNAL_FREETZ_LIB_libexpat
 	depends on EXTERNAL_ENABLED && FREETZ_LIB_libexpat
 	bool "libexpat"
@@ -141,6 +181,14 @@ config EXTERNAL_FREETZ_LIB_libexslt
 	help
 		externals these file(s):
 		 /usr/lib/freetz/libexslt.so.0.8.15
+
+config EXTERNAL_FREETZ_LIB_libFLAC
+	depends on EXTERNAL_ENABLED && FREETZ_LIB_libFLAC
+	bool "libFLAC"
+	default n
+	help
+		externals these file(s):
+		 /usr/lib/freetz/libFLAC.so.8.2.0
 
 config EXTERNAL_FREETZ_LIB_libform
 	depends on EXTERNAL_ENABLED && FREETZ_LIB_libform
@@ -318,6 +366,14 @@ config EXTERNAL_FREETZ_LIB_libjpeg
 		externals these file(s):
 		 /usr/lib/freetz/libjpeg.so.62.0.0
 
+config EXTERNAL_FREETZ_LIB_libjs
+	depends on EXTERNAL_ENABLED && FREETZ_LIB_libjs
+	bool "libjs"
+	default n
+	help
+		externals these file(s):
+		 /usr/lib/freetz/libjs.so.1.0.6
+
 config EXTERNAL_FREETZ_LIB_libltdl
 	depends on EXTERNAL_ENABLED && FREETZ_LIB_libltdl
 	bool "libltdl (libtool)"
@@ -380,7 +436,7 @@ config EXTERNAL_FREETZ_LIB_libneon
 	default n
 	help
 		externals these file(s):
-		 /usr/lib/freetz/libneon.so.27.2.3
+		 /usr/lib/freetz/libneon.so.27.2.5
 
 config EXTERNAL_FREETZ_LIB_libnet
 	depends on EXTERNAL_ENABLED && FREETZ_LIB_libnet
@@ -404,7 +460,7 @@ config EXTERNAL_FREETZ_LIB_libogg
 	default n
 	help
 		externals these file(s):
-		 /usr/lib/freetz/libogg.so.0.6.0
+		 /usr/lib/freetz/libogg.so.0.7.0
 
 config EXTERNAL_FREETZ_LIB_libopenobex
 	depends on EXTERNAL_ENABLED && FREETZ_LIB_libopenobex
@@ -486,6 +542,14 @@ config EXTERNAL_FREETZ_LIB_libpopt
 		externals these file(s):
 		 /usr/lib/freetz/libpopt.so.0.0.0
 
+config EXTERNAL_FREETZ_LIB_libpostproc
+	depends on EXTERNAL_ENABLED && FREETZ_LIB_libpostproc
+	bool "libpostproc"
+	default n
+	help
+		externals these file(s):
+		 /usr/lib/freetz/libpostproc.so.51.2.0
+
 config EXTERNAL_FREETZ_LIB_libresolv
 	depends on EXTERNAL_ENABLED && FREETZ_LIB_libresolv
 	bool "libresolv"
@@ -565,7 +629,7 @@ config EXTERNAL_FREETZ_LIB_libvorbis
 	default n
 	help
 		externals these file(s):
-		 /usr/lib/freetz/libvorbis.so.0.4.3
+		 /usr/lib/freetz/libvorbis.so.0.4.4
 
 config EXTERNAL_FREETZ_LIB_libvorbisenc
 	depends on EXTERNAL_ENABLED && FREETZ_LIB_libvorbisenc
@@ -573,7 +637,7 @@ config EXTERNAL_FREETZ_LIB_libvorbisenc
 	default n
 	help
 		externals these file(s):
-		 /usr/lib/freetz/libvorbisenc.so.2.0.6
+		 /usr/lib/freetz/libvorbisenc.so.2.0.7
 
 config EXTERNAL_FREETZ_LIB_libvorbisfile
 	depends on EXTERNAL_ENABLED && FREETZ_LIB_libvorbisfile

@@ -3,35 +3,12 @@
 DAEMON=samba
 DAEMON_LONG_NAME="Samba-smbd"
 DAEMON_BIN=smbd
+DAEMON_CONFIG=/mod/etc/samba/smb.conf
 . /etc/init.d/modlibrc
 
-CONF_FILE=/mod/etc/samba/smb.conf
-CLEAR_FILE=/var/tmp/smbpasswd.cleartext
-PASS_FILE=/mod/etc/samba/smbpasswd
-USERS_MAP=/mod/etc/samba/users.map
-export SAMBA_SYSTEMUSER="ftpuser"
-
-config() {
-	mkdir -p /mod/etc/samba
-	/mod/etc/default.samba/samba_conf > $CONF_FILE
-
-	echo > $USERS_MAP; echo > $PASS_FILE
-
-	[ ! -z "$SAMBA_USER" ] &&
-		echo "$SAMBA_SYSTEMUSER = \"$SAMBA_USER\"" > $USERS_MAP
-
-	if [ ! -z "$SAMBA_PASSWORD" ]; then
-		uid=$(id -u $SAMBA_SYSTEMUSER)
-		echo "$SAMBA_SYSTEMUSER:$uid:$SAMBA_PASSWORD:[U          ]:LCT-00000001:" > $CLEAR_FILE
-	fi
-	if [ -r $CLEAR_FILE ]; then
-		smbpasswd 2>/dev/null
-		rm $CLEAR_FILE
-	fi
-}
 
 start() {
-	modlib_startdaemon $DAEMON_BIN -D -s $CONF_FILE
+	modlib_startdaemon $DAEMON_BIN -D -s $DAEMON_CONFIG
 }
 
 case $1 in
@@ -63,7 +40,7 @@ case $1 in
 		modlib_status
 		;;
 	config)
-		config
+		/etc/init.d/rc.samba config
 		;;
 	*)
 		echo "Usage: $0 [load|unload|start|stop|restart|reload|status|config]" 1>&2

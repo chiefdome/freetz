@@ -757,11 +757,18 @@ config FREETZ_HAS_USB_CLIENT
 config FREETZ_HAS_USB_HOST
 	bool "USB host"		if FREETZ_TYPE_CUSTOM
 	default n		if \
-		(FREETZ_HAS_USB_CLIENT && ! FREETZ_TYPE_WLAN_3170) || \
+		FREETZ_TYPE_2170 || \
+		FREETZ_TYPE_300IP_AS_FON || \
+		FREETZ_TYPE_FON || \
 		FREETZ_TYPE_FON_5010 || \
+		FREETZ_TYPE_FON_5050 || \
 		FREETZ_TYPE_FON_5140 || \
+		FREETZ_TYPE_FON_WLAN || \
+		FREETZ_TYPE_FON_WLAN_7050 || \
 		FREETZ_TYPE_FON_WLAN_7112 || \
 		FREETZ_TYPE_FON_WLAN_7113 || \
+		FREETZ_TYPE_WLAN_3020 || \
+		FREETZ_TYPE_WLAN_3030 || \
 		FREETZ_TYPE_SINUS_W500V_7150 || \
 		FREETZ_TYPE_SPEEDPORT_W501V || \
 		FREETZ_TYPE_SPEEDPORT_W701V_7170
@@ -1439,7 +1446,7 @@ config FREETZ_REMOVE_DSLD
 		  Einstellungen
 		    System
 		      Netzwerkeinstellungen
-		        Statusinformationen �ber UPnP �bertragen (empfohlen)
+		        Statusinformationen ueber UPnP uebertragen (empfohlen)
 		Thirdly, the usermand patch will also be selected if you activate this option,
 		because kernel module userman.ko always depends on kdsldmod.ko which is
 		stripped by this patch.
@@ -1537,6 +1544,24 @@ config FREETZ_REMOVE_NTFS
 		This patch will remove ntfs-3g dependent files from the firmware.
 		Be careful, mounting volumes with this filesystem will not work.
 		It saves about 118K compressed space in kernel.image.
+
+config FREETZ_REMOVE_PRINTSERV
+	bool "Remove printserv"
+	depends on FREETZ_HAS_USB_HOST
+	default n
+	help
+		Remove /sbin/printserv daemon. Select this patch if you don't want to
+		connect a printer to your box or if you plan to use usb/ip package.
+		Saves about 8 KB of compressed space.
+
+config FREETZ_REMOVE_PRINTSERV_MODULE
+	bool "Remove usblp kernel module"
+	depends on FREETZ_REMOVE_PRINTSERV && \
+		! FREETZ_MODULE_usblp
+	default n
+	help
+		Remove usblp kernel module. Without this module it's not possible to run
+		a printer on your box. Saves about 12 KB of compressed space.
 
 config FREETZ_REMOVE_RUNCLOCK
 	bool "Remove run_clock"
@@ -1664,7 +1689,7 @@ config FREETZ_REMOVE_UPNP
 		  Einstellungen
 		    System
 		      Netzwerkeinstellungen
-		        Statusinformationen �ber UPnP �bertragen (empfohlen)
+		        Statusinformationen ueber UPnP uebertragen (empfohlen)
 
 config FREETZ_REMOVE_UPNP_LIBS
 	bool
@@ -1727,19 +1752,16 @@ config FREETZ_REMOVE_VOIP_ISDN
 config FREETZ_REMOVE_WEBDAV
 	bool "Remove webdav"
 	depends on \
-		! FREETZ_PACKAGE_DAVFS2 && \
-		( \
 		FREETZ_TYPE_FON_WLAN_7240 || \
 		FREETZ_TYPE_FON_WLAN_7270_V2 || \
 		FREETZ_TYPE_FON_WLAN_7270_V3 || \
 		FREETZ_TYPE_FON_WLAN_7390 || \
 		FREETZ_TYPE_FON_WLAN_7570 || \
 		FREETZ_TYPE_WLAN_3270 || \
-		FREETZ_TYPE_WLAN_3270_V3\
-		)
+		FREETZ_TYPE_WLAN_3270_V3
 	default n
 	help
-		Remove webdav (Online-Speicher) feature. Saves about 500 KB of
+		Remove webdav (Online-Speicher) feature. Saves about 510 KB of
 		uncompressed data size.
 
 config FREETZ_REMOVE_WLAN

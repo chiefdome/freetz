@@ -76,22 +76,13 @@ configure () {
 config() {
 	configure >/mod/etc/$DAEMON.conf
 	if [ 5 -gt $(cat /mod/etc/$DAEMON.conf | wc -l) ]; then
-		echo -n 'failed: not configured.' >&2
+		echo -n 'not configured, failed.'
 		exit 1
 	fi
 }
 
 start() {
-	echo -n "Starting ${DAEMON} ... "
-	config
-	$DAEMON --input_file /mod/etc/$DAEMON.conf >/dev/null 2>&1
-	local retval=$?
-	if [ $retval -eq 0 ]; then
-		echo 'done.'
-	else
-		echo 'failed.'
-		exit $retval
-	fi
+	modlib_startdaemon $DAEMON --input_file /mod/etc/$DAEMON.conf 2>/dev/null
 }
 
 case $1 in

@@ -16,6 +16,7 @@ source make/dtach/external.in
 source make/dtmfbox/external.in
 source make/e2fsprogs/external.in
 source make/espeak/external.in
+source make/ffmpeg/external.in
 source make/git/external.in
 source make/gnu-make/external.in
 source make/gnutls/external.in
@@ -35,6 +36,7 @@ source make/lua/external.in
 source make/lynx/external.in
 source make/madplay/external.in
 source make/mc/external.in
+source make/mediatomb/external.in
 source make/microperl/external.in
 source make/minicom/external.in
 source make/mtr/external.in
@@ -67,6 +69,7 @@ source make/tmux/external.in
 source make/transmission/external.in
 source make/tree/external.in
 source make/trickle/external.in
+source make/udpxy/external.in
 source make/umurmur/external.in
 source make/unrar/external.in
 source make/util-linux-ng/external.in
@@ -82,6 +85,7 @@ source make/davfs2/external.in
 source make/dropbear/external.in
 source make/gw6/external.in
 source make/knock/external.in
+source make/minidlna/external.in
 source make/openssh/external.in
 source make/openvpn/external.in
 source make/privoxy/external.in
