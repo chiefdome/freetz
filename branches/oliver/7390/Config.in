@@ -502,8 +502,10 @@ config FREETZ_REPLACE_KERNEL
 	select FREETZ_MODULE_fuse if ( \
 					FREETZ_AVM_VERSION_3270_04_80 || \
 					FREETZ_AVM_VERSION_7270_04_80 || \
+					FREETZ_AVM_VERSION_7320_04_86 || \
 					FREETZ_AVM_VERSION_7570_04_82 \
 					)
+	select FREETZ_MODULE_jffs2 if FREETZ_AVM_VERSION_7320_04_86
 	default n
 	help
 		Replace AVM kernel with self-built kernel.
