@@ -8,6 +8,7 @@
 +#extra-y	+= cpmacconfig
  
  cpmacconfig-objs	:= cpmacconfig.o
+ 
 --- linux-2.6.19.2/drivers/net/avm_cpmac/cpmac_product_conf.h.orig	2010-06-03 18:45:45.000000000 +0200
 +++ linux-2.6.19.2/drivers/net/avm_cpmac/cpmac_product_conf.h	2010-04-07 16:56:08.000000000 +0200
 @@ -22,19 +22,23 @@
