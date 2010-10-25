@@ -742,8 +742,11 @@ if [ "$DO_MOD" -gt 0 ]; then
 	echo0 "installing modules"
 	# 7270 modules dir is 2.6.19.2 not 2.6.19.2-ur8
 	# 7320 modules dir is 2.6.28.10
-	[ "$FREETZ_TYPE_FON_WLAN_7270" ] && MODULES_DIR="$MODULES_DIR-${FREETZ_KERNEL_LAYOUT}"
-	[ "$FREETZ_TYPE_FON_WLAN_7320" ] && MODULES_DIR="${MODULES_DIR}.10"
+	if [ "$FREETZ_KERNEL_LAYOUT" == "ur8" ]; then
+		MODULES_DIR="$MODULES_DIR-${FREETZ_KERNEL_LAYOUT}"
+	elif [ "$FREETZ_KERNEL_LAYOUT" == "ar9" ]; then
+		MODULES_DIR="${MODULES_DIR}.10"
+	fi
 	for i in \
 	$( \
 		cd "${KERNEL_REP_DIR}/modules-${FREETZ_KERNEL_LAYOUT}-${FREETZ_KERNEL_REF}-${FREETZ_AVM_VERSION_STRING}" && \
