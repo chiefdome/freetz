@@ -137,18 +137,14 @@ choice
 
 	config FREETZ_TYPE_FON_WLAN_7320
 		select FREETZ_AVM_VERSION_7320_04_86
-		select FREETZ_BUILD_TOOLCHAIN
 		bool "Fon WLAN 7320 (Experimental)"
 
 #	config FREETZ_TYPE_FON_WLAN_7340
 #		select FREETZ_AVM_VERSION_7390_04_84
-#		select FREETZ_BUILD_TOOLCHAIN
 #		bool "Fon WLAN 7340"
 
 	config FREETZ_TYPE_FON_WLAN_7390
 		select FREETZ_AVM_VERSION_7390_04_86
-		#TODO: download toolchain
-		select FREETZ_BUILD_TOOLCHAIN
 		bool "Fon WLAN 7390"
 
 	config FREETZ_TYPE_WLAN_3020
@@ -216,7 +212,6 @@ choice
 		bool "DSL"
 		depends on \
 			FREETZ_TYPE_FON_WLAN_7390
-		select FREETZ_TARGET_IPV6_SUPPORT
 		help
 			FRITZ!Lab DSL: This release optimizes the DSL (Digital Subscriber
 			Line) software and adds related graphs.
@@ -227,7 +222,6 @@ choice
 			FREETZ_TYPE_FON_WLAN_7270_V2 || \
 			FREETZ_TYPE_FON_WLAN_7270_V3 || \
 			FREETZ_TYPE_FON_WLAN_7390
-		select FREETZ_TARGET_IPV6_SUPPORT
 		help
 			Labor Phone
 endchoice
@@ -2773,12 +2767,12 @@ menu "Compiler options"
 
 choice
 	prompt "Toolchains"
-	default FREETZ_DOWNLOAD_TOOLCHAIN
+#	default FREETZ_DOWNLOAD_TOOLCHAIN
 	help
 		Download Toolchain, build toolchain
 
-	config FREETZ_DOWNLOAD_TOOLCHAIN
-		bool "Download and use precompiled toolchain" if ! (FREETZ_TARGET_UCLIBC_VERSION_0_9_28 && FREETZ_TARGET_IPV6_SUPPORT)
+#	config FREETZ_DOWNLOAD_TOOLCHAIN
+#		bool "Download and use precompiled toolchain" if ! (FREETZ_TARGET_UCLIBC_VERSION_0_9_28 && FREETZ_TARGET_IPV6_SUPPORT)
 
 	config FREETZ_BUILD_TOOLCHAIN
 		bool "Build toolchain (requires 4GB diskspace)"
@@ -2863,4 +2857,3 @@ source toolchain/Config.in
 endmenu
 
 endmenu
- 
