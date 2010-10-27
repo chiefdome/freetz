@@ -13,11 +13,11 @@ Latest changes:
    + Bump bintuils to 2.18
    + Add binutils-2.20.51.0.11 and gcc-4.4.5 for kernel 2.6.28
   * target-toolchain:
-   + Add gcc-4.4.5, gcc-4.3.5 and gcc-4.2.4, delete outdated versions
-   + Add binutils-2.19.1 and binutils-2.20.51.0.11
-   + Add uClibc-0.9.30.3 and uClibc-0.9.31 (experimental, not selectable over menuconfig)
+   + Add gcc-4.4.5 and gcc-4.2.4, delete outdated versions
+   + Add binutils-2.20.51.0.11
+   + Add uClibc-0.9.30.3 and uClibc-0.9.31 (experimental)
    + Add gdb-6.8, delete outdated versions
-   + Update download toolchains to gcc-4.2.4
+   + Update download toolchains to gcc-4.2.4 (kernel) and gcc-4.4.5 (target)
    + Update sys/queue.h in uClibc-0.9.28 toolchains
    + Add option to build non-pic code with gcc-4.4.5
   * Bump squashfs3 version to 3.4
@@ -80,7 +80,7 @@ Latest changes:
     * ffmpeg 0.5.3
     * flex (libflex) 2.5.35
     * fortune 1.2
-    * git 1.7.3.1
+    * git 1.7.3.2
     * gnutls 2.10.1
     * gocr 0.48
     * gw6 5.1
@@ -100,7 +100,7 @@ Latest changes:
     * libdnet 1.12
     * libexif 0.6.19
     * libFLAC 1.2.1
-    * libfreetz 0.2
+    * libfreetz 0.3
     * libgd 2.0.35
     * libjs 1.6.20070208
     * libnet 1.1.4
@@ -146,6 +146,7 @@ Latest changes:
     * slurm 0.3.3
     * spawn-fcgi 1.6.3
     * sqlite 3.7.3
+    * sshfs-fuse 2.2
     * subversion 1.6.13
     * synce-dccm 0.9.1
     * synce-serial 0.10.0
@@ -177,7 +178,7 @@ Latest changes:
     * bash 3.2.51
     * bftpd 2.8
     * bip 0.8.6
-    * bird 1.2.4
+    * bird 1.2.5
     * bridge-utils 1.4
     * callmonitor 1.18.7
     * collectd 4.10.0
@@ -191,7 +192,7 @@ Latest changes:
     * e2fsprogs 1.41.12
     * eSpeak 1.40.02
     * freetype 2.3.12
-    * fuse 2.7.5
+    * fuse 2.7.6
     * glib 2.22.5
     * gmp 5.0.1
     * gnu-make 3.82

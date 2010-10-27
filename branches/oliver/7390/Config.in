@@ -518,7 +518,6 @@ config FREETZ_TARGET_IPV6_SUPPORT
 		(FREETZ_SHOW_ADVANCED && FREETZ_REPLACE_KERNEL_AVAILABLE)
 	select FREETZ_REPLACE_KERNEL if ! (FREETZ_HAS_AVM_IPV6)
 	select FREETZ_MODULE_ipv6 if FREETZ_REPLACE_KERNEL
-	select FREETZ_BUILD_TOOLCHAIN
 	default n
 	help
 		Copies the ipv6 kernel module to the firmware and enables ipv6 support
@@ -2071,14 +2070,14 @@ config FREETZ_DL_SOURCE
 	default "FRITZ.Box_Fon_WLAN_7270_v2.54.04.86.image"			if	FREETZ_TYPE_FON_WLAN_7270_V2 && \
 											! FREETZ_TYPE_LABOR && \
 											FREETZ_TYPE_LANG_DE
-	default "Labor_FRITZ.Box_Fon_WLAN_7270_v2.54.04.86-18377.image"		if	FREETZ_TYPE_FON_WLAN_7270_V2 && \
+	default "Labor_FRITZ.Box_Fon_WLAN_7270_v2.54.04.86-18516.image"		if	FREETZ_TYPE_FON_WLAN_7270_V2 && \
 											FREETZ_TYPE_LABOR_PHONE
 	default "FRITZ.Box_Fon_WLAN_7270_16.AnnexB.en-de-es-it-fr.54.04.81.image"	if	FREETZ_TYPE_FON_WLAN_7270_V2 && \
 											! FREETZ_TYPE_LANG_DE
 	default "FRITZ.Box_Fon_WLAN_7270_v3.74.04.86.image"			if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
 											! FREETZ_TYPE_LABOR && \
 											FREETZ_TYPE_LANG_DE
-	default "Labor_FRITZ.Box_Fon_WLAN_7270_v3.74.04.86-18377.image"		if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
+	default "Labor_FRITZ.Box_Fon_WLAN_7270_v3.74.04.86-18516.image"		if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
 											FREETZ_TYPE_LABOR_PHONE
 	default "FRITZ.Box_Fon_WLAN_7570_vDSL.en-de-fr.75.04.82.image"		if	FREETZ_TYPE_FON_WLAN_7570
 	default "FRITZ.Box_Fon_WLAN_7320.100.04.86.image"			if	FREETZ_TYPE_FON_WLAN_7320
@@ -2774,13 +2773,12 @@ menu "Compiler options"
 
 choice
 	prompt "Toolchains"
-	default FREETZ_DOWNLOAD_TOOLCHAIN if ! FREETZ_TARGET_IPV6_SUPPORT
-	default FREETZ_BUILD_TOOLCHAIN if FREETZ_TARGET_IPV6_SUPPORT
+	default FREETZ_DOWNLOAD_TOOLCHAIN
 	help
 		Download Toolchain, build toolchain
 
 	config FREETZ_DOWNLOAD_TOOLCHAIN
-		bool "Download and use precompiled toolchain" if ! FREETZ_TARGET_IPV6_SUPPORT
+		bool "Download and use precompiled toolchain" if ! (FREETZ_TARGET_UCLIBC_VERSION_0_9_28 && FREETZ_TARGET_IPV6_SUPPORT)
 
 	config FREETZ_BUILD_TOOLCHAIN
 		bool "Build toolchain (requires 4GB diskspace)"
