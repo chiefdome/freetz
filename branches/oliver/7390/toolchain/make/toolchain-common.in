@@ -75,7 +75,7 @@ TOOLCHAIN_EXCLUDE_FILES := *uClibc++* *g++-uc libtool* aclocal
 # $1 - toolchain base dir
 # $2 - tarball name suffix (TARGET_ARCH? / toolchain version)
 define TOOLCHAIN_CREATE_TARBALL
-	droot="$(call updir,$(call updir,$(1)))"; \
+	droot="$(call updir,$(1))"; \
 	dname="$(notdir $(call updir,$(1)))"; \
 	tname="$${dname}$(if $(strip $(2)),-$(strip $(2)))"; \
 	$(RM) $(DL_DIR)/$${tname}.tar.lzma; \
