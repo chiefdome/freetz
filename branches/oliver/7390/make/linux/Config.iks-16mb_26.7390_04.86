@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Linux kernel version: 2.6.19.2
-# Thu Oct 28 20:12:36 2010
+# Sat Oct 30 13:07:00 2010
 #
 CONFIG_MIPS=y
 
@@ -97,6 +97,7 @@ CONFIG_FUSIV_KERNEL_ATM=m
 CONFIG_FUSIV_KERNEL_ACL=m
 # CONFIG_FUSIV_KERNEL_ACL_EMAC3 is not set
 CONFIG_FUSIV_KERNEL_ACL_SPA=y
+# CONFIG_FUSIV_KERNEL_PPPOE_RELAY is not set
 # CONFIG_FUSIV_KERNEL_WLAN is not set
 CONFIG_FUSIV_KERNEL_PERI_AP=m
 # CONFIG_FUSIV_KERNEL_WLAN_ATH_11G is not set
