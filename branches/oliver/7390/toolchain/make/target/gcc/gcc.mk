@@ -44,12 +44,8 @@ GCC_WITH_HOST_GMP=--with-gmp=$(GMP_HOST_DIR)
 GCC_WITH_HOST_MPFR=--with-mpfr=$(MPFR_HOST_DIR)
 endif
 
-GCC_CROSS_LANGUAGES:=c
-GCC_TARGET_LANGUAGES:=c
-ifeq ($(strip $(FREETZ_TARGET_GXX)),y)
-GCC_CROSS_LANGUAGES:=$(GCC_CROSS_LANGUAGES),c++
-GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),c++
-endif
+GCC_CROSS_LANGUAGES:=c,c++
+GCC_TARGET_LANGUAGES:=c,c++
 
 GCC_EXTRA_MAKE_OPTIONS :=
 ifeq ($(strip $(FREETZ_STATIC_TOOLCHAIN)),y)
@@ -211,6 +207,9 @@ $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 	$(call GCC_INSTALL_COMMON,$(TARGET_TOOLCHAIN_STAGING_DIR)/usr,$(GCC_VERSION),$(REAL_GNU_TARGET_NAME),$(HOST_STRIP))
 	$(call GCC_SET_HEADERS_TIMESTAMP,$(TARGET_TOOLCHAIN_STAGING_DIR))
 	$(call REMOVE_DOC_NLS_DIRS,$(TARGET_TOOLCHAIN_STAGING_DIR))
+	# Link some files to make mklibs happy
+	ln -sf ../usr/lib/gcc/$(REAL_GNU_TARGET_NAME)/$(TARGET_TOOLCHAIN_GCC_VERSION)/libgcc_pic.a $(TARGET_TOOLCHAIN_STAGING_DIR)/lib/libgcc_s_pic.a; \
+	ln -sf ../usr/lib/gcc/$(REAL_GNU_TARGET_NAME)/$(TARGET_TOOLCHAIN_GCC_VERSION)/libgcc.map $(TARGET_TOOLCHAIN_STAGING_DIR)/lib/libgcc_s_pic.map
 	# strip libraries
 	-(cd $(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib && $(TARGET_STRIP) libstdc++.so.*.*.* libgcc_s.so.1 >/dev/null 2>&1)
 	# set up the symlinks to enable lying about target name

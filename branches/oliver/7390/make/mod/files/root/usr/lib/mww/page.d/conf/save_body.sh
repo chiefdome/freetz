@@ -1,3 +1,5 @@
+. /usr/lib/cgi-bin/mod/modlibcgi
+
 start_stop() {
 	local startORstop=$1
 	local package=$2
@@ -26,6 +28,15 @@ apply_changes() {
 	if [ "$package" = mod ]; then
 		start_stop $startORstop telnetd "$OLDSTATUS_telnetd"
 		start_stop $startORstop swap "$OLDSTATUS_swap"
+		# external
+		if [ -x /etc/init.d/rc.external ]; then
+			if [ "$startORstop" == "stop" ]; then
+				NEW_EXTERNAL_DIRECTORY="$(echo "$settings" | sed -ne "/MOD_EXTERNAL_DIRECTORY/s/MOD_EXTERNAL_DIRECTORY='\(.*\)'/\1/p")"
+				[ "$MOD_EXTERNAL_DIRECTORY" != "$NEW_EXTERNAL_DIRECTORY" ] && RELOAD_external="true"
+			fi
+			[ "$RELOAD_external" == "true" ] && start_stop $startORstop external "$OLDSTATUS_external"
+		fi
+		#webcfg
 		if [ "$startORstop" == "start" -a "$OLDSTATUS_webcfg" != "stopped" ]; then
 			echo "$(lang de:"Starte das Freetz-Webinterface in 9 Sekunden neu" en:"Restarting the Freetz webinterface in 9 seconds")!"
 			/etc/init.d/rc.webcfg force-restart 9 >/dev/null 2>&1 &
@@ -61,7 +72,7 @@ echo -n "<pre class='log'>"
 exec 2>&1
 
 back="mod status"
-unset OLDSTATUS_telnetd OLDSTATUS_webcfg OLDSTATUS_swap
+unset OLDSTATUS_telnetd OLDSTATUS_swap OLDSTATUS_external RELOAD_external OLDSTATUS_webcfg
 
 if $default; then
 	hook=def
@@ -86,8 +97,9 @@ if [ -r "/mod/etc/default.$package/$package.cfg" ]; then
 	if [ "$package" = mod ]; then
 		back="mod conf"
 		OLDSTATUS_telnetd=$(rc_status telnetd)
-		OLDSTATUS_webcfg=$(rc_status webcfg)
 		OLDSTATUS_swap=$(rc_status swap)
+		OLDSTATUS_external=$(rc_status external)
+		OLDSTATUS_webcfg=$(rc_status webcfg)
 	else
 		back="cgi $package"
 		OLDSTATUS_PACKAGE=$(rc_status "$package")
@@ -104,7 +116,7 @@ if [ -r "/mod/etc/default.$package/$package.cfg" ]; then
 	fi
 fi
 
-pkg_pre_$hook | html
+pkg_pre_$hook | html | highlight
 
 if [ -r "/mod/etc/default.$package/$package.cfg" ]; then
 	apply_changes stop "$package"
@@ -128,8 +140,9 @@ if [ -r "/mod/etc/default.$package/$package.cfg" ]; then
 		echo
 		modsave flash
 	} | html
-fi
+fi | while read line; do echo $line | highlight; done
 
-pkg_post_$hook | html
+
+pkg_post_$hook | html | highlight
 
 echo '</pre>'

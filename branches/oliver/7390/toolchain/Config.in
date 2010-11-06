@@ -132,9 +132,9 @@ config FREETZ_TARGET_UCLIBC_VERSION
 config FREETZ_TARGET_BINUTILS_VERSION
 	string
 	default "2.18"		if FREETZ_TARGET_COMPILER_GCC_4_2_4_UCLIBC_0_9_28
-	default "2.20.51.0.11"	if FREETZ_TARGET_COMPILER_GCC_4_4_5_UCLIBC_0_9_29
-	default "2.20.51.0.11"	if FREETZ_TARGET_COMPILER_GCC_4_4_5_UCLIBC_0_9_30
-	default "2.20.51.0.11"	if FREETZ_TARGET_COMPILER_GCC_4_4_5_UCLIBC_0_9_31
+	default "2.20.51.0.12"	if FREETZ_TARGET_COMPILER_GCC_4_4_5_UCLIBC_0_9_29
+	default "2.20.51.0.12"	if FREETZ_TARGET_COMPILER_GCC_4_4_5_UCLIBC_0_9_30
+	default "2.20.51.0.12"	if FREETZ_TARGET_COMPILER_GCC_4_4_5_UCLIBC_0_9_31
 
 choice
 
@@ -175,14 +175,6 @@ config FREETZ_STATIC_TOOLCHAIN
 	default n
 	help
 		Build statically linked kernel and target toolchains.
-
-config FREETZ_TARGET_GXX
-	bool "Build g++ for target toolchain" if FREETZ_BUILD_TOOLCHAIN
-	default y
-	help
-		g++ is the traditional nickname of GNU C++, a freely redistributable
-		C++ compiler. It is part of gcc, the GNU compiler suite, and is
-		currently part of that distribution.
 
 config FREETZ_TARGET_CCACHE
 	bool "Build ccache for target toolchains"

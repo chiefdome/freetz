@@ -14,7 +14,7 @@ Latest changes:
    + Add binutils-2.20.51.0.11 and gcc-4.4.5 for kernel 2.6.28
   * target-toolchain:
    + Add gcc-4.4.5 and gcc-4.2.4, delete outdated versions
-   + Add binutils-2.20.51.0.11
+   + Add binutils-2.20.51.0.12
    + Add uClibc-0.9.30.3 and uClibc-0.9.31 (experimental)
    + Add gdb-6.8, delete outdated versions
    + Update download toolchains to gcc-4.2.4 (kernel) and gcc-4.4.5 (target)
@@ -196,7 +196,7 @@ Latest changes:
     * glib 2.22.5
     * gmp 5.0.1
     * gnu-make 3.82
-    * haserl 0.9.26
+    * haserl 0.9.27
     * inetd 0.2 (multiple daemons/package)
     * inotify-tools 3.14
     * iodine 0.6.0-rc1
@@ -214,7 +214,7 @@ Latest changes:
     * liblzo 2.03
     * libneon 0.29.5
     * linux-atm 2.5.0
-    * lsof 4.83
+    * lsof 4.84
     * ltrace 0.5.3
     * lua 5.1.4
     * lynx 2.8.7

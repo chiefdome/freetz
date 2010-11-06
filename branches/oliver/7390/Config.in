@@ -195,8 +195,7 @@ config FREETZ_TYPE_FON_WLAN_7270
 config FREETZ_TYPE_LABOR
 	bool "Beta/Labor"
 	depends on \
-		FREETZ_TYPE_FON_WLAN_7270_V2 || \
-		FREETZ_TYPE_FON_WLAN_7270_V3 || \
+		FREETZ_TYPE_FON_WLAN_7270 || \
 		FREETZ_TYPE_FON_WLAN_7390
 	default n
 	help
@@ -205,7 +204,7 @@ config FREETZ_TYPE_LABOR
 choice
 	prompt "Labor version"
 		depends on FREETZ_TYPE_LABOR
-		default FREETZ_TYPE_LABOR_PHONE
+		default FREETZ_TYPE_LABOR_PREVIEW
 
 	config FREETZ_TYPE_LABOR_DSL
 		bool "DSL"
@@ -215,12 +214,11 @@ choice
 			FRITZ!Lab DSL: This release optimizes the DSL (Digital Subscriber
 			Line) software and adds related graphs.
 
-	config FREETZ_TYPE_LABOR_PHONE
-		bool "Phone"
+	config FREETZ_TYPE_LABOR_PREVIEW
+		bool "Preview"
 		depends on \
-			FREETZ_TYPE_FON_WLAN_7270_V2 || \
-			FREETZ_TYPE_FON_WLAN_7270_V3 || \
-			FREETZ_TYPE_FON_WLAN_7390
+			FREETZ_TYPE_FON_WLAN_7270
+		select FREETZ_TARGET_IPV6_SUPPORT
 		help
 			Labor Phone
 endchoice
@@ -413,10 +411,11 @@ config FREETZ_TYPE_STRING
 	default "7170"						if FREETZ_TYPE_FON_WLAN_7170 && ! FREETZ_TYPE_LABOR
 	default "7240"						if FREETZ_TYPE_FON_WLAN_7240 && ! FREETZ_TYPE_LABOR
 	default "7270_v1"					if FREETZ_TYPE_FON_WLAN_7270_V1 && ! FREETZ_TYPE_LABOR
+	default "7270_v1_preview"				if FREETZ_TYPE_FON_WLAN_7270_V1 && FREETZ_TYPE_LABOR_PREVIEW
 	default "7270_v2"					if FREETZ_TYPE_FON_WLAN_7270_V2 && ! FREETZ_TYPE_LABOR
-	default "7270_v2_labor_phone"				if FREETZ_TYPE_FON_WLAN_7270_V2 && FREETZ_TYPE_LABOR_PHONE
+	default "7270_v2_preview"				if FREETZ_TYPE_FON_WLAN_7270_V2 && FREETZ_TYPE_LABOR_PREVIEW
 	default "7270_v3"					if FREETZ_TYPE_FON_WLAN_7270_V3 && ! FREETZ_TYPE_LABOR
-	default "7270_v3_labor_phone"				if FREETZ_TYPE_FON_WLAN_7270_V3 && FREETZ_TYPE_LABOR_PHONE
+	default "7270_v3_preview"				if FREETZ_TYPE_FON_WLAN_7270_V3 && FREETZ_TYPE_LABOR_PREVIEW
 	default "7320"						if FREETZ_TYPE_FON_WLAN_7320
 	default "7340"						if FREETZ_TYPE_FON_WLAN_7340 && ! FREETZ_TYPE_LABOR
 	default "7340_preview"					if FREETZ_TYPE_FON_WLAN_7340 && FREETZ_TYPE_PREVIEW
@@ -603,7 +602,7 @@ config FREETZ_KERNEL_MTD_SIZE
 		FREETZ_TYPE_FON_WLAN_7113 || \
 		FREETZ_TYPE_FON_WLAN_7140 || \
 		FREETZ_TYPE_FON_WLAN_7141 || \
-		FREETZ_TYPE_FON_WLAN_7170 || \
+		(FREETZ_TYPE_FON_WLAN_7170 && ! FREETZ_TYPE_3170_7170) || \
 		FREETZ_TYPE_FON_WLAN_7270_V1
 	default 246			if \
 		FREETZ_TYPE_FON_WLAN_7240 || \
@@ -1034,7 +1033,8 @@ config FREETZ_REMOVE_ANNEX_B_FIRMWARE
 		uncompressed data size.
 
 menu "Remove piglet file"
-	depends on FREETZ_SHOW_ADVANCED && FREETZ_TYPE_FON_WLAN_7170
+	depends on FREETZ_SHOW_ADVANCED && \
+		(FREETZ_TYPE_FON_WLAN_7170 && ! FREETZ_TYPE_3170_7170)
 
 	config FREETZ_REMOVE_PIGLET_V1
 	bool "Remove 7170 v1 piglet file"
@@ -2062,18 +2062,20 @@ config FREETZ_DL_SOURCE
 	default "FRITZ.Box_Fon_WLAN_7270_v1.54.04.86.image"			if	FREETZ_TYPE_FON_WLAN_7270_V1 && \
 											! FREETZ_TYPE_LABOR && \
 											FREETZ_TYPE_LANG_DE
+	default "Labor_FRITZ.Box_Fon_WLAN_7270_v1.54.04.86-18564.image"		if	FREETZ_TYPE_FON_WLAN_7270_V1 && \
+											FREETZ_TYPE_LABOR_PREVIEW
 	default "FRITZ.Box_Fon_WLAN_7270_v2.54.04.86.image"			if	FREETZ_TYPE_FON_WLAN_7270_V2 && \
 											! FREETZ_TYPE_LABOR && \
 											FREETZ_TYPE_LANG_DE
-	default "Labor_FRITZ.Box_Fon_WLAN_7270_v2.54.04.86-18516.image"		if	FREETZ_TYPE_FON_WLAN_7270_V2 && \
-											FREETZ_TYPE_LABOR_PHONE
+	default "Labor_FRITZ.Box_Fon_WLAN_7270_v2.54.04.86-18563.image"		if	FREETZ_TYPE_FON_WLAN_7270_V2 && \
+											FREETZ_TYPE_LABOR_PREVIEW
 	default "FRITZ.Box_Fon_WLAN_7270_16.AnnexB.en-de-es-it-fr.54.04.81.image"	if	FREETZ_TYPE_FON_WLAN_7270_V2 && \
 											! FREETZ_TYPE_LANG_DE
 	default "FRITZ.Box_Fon_WLAN_7270_v3.74.04.86.image"			if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
 											! FREETZ_TYPE_LABOR && \
 											FREETZ_TYPE_LANG_DE
-	default "Labor_FRITZ.Box_Fon_WLAN_7270_v3.74.04.86-18516.image"		if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
-											FREETZ_TYPE_LABOR_PHONE
+	default "Labor_FRITZ.Box_Fon_WLAN_7270_v3.74.04.86-18563.image"		if	FREETZ_TYPE_FON_WLAN_7270_V3 && \
+											FREETZ_TYPE_LABOR_PREVIEW
 	default "FRITZ.Box_Fon_WLAN_7570_vDSL.en-de-fr.75.04.82.image"		if	FREETZ_TYPE_FON_WLAN_7570
 	default "FRITZ.Box_Fon_WLAN_7320.100.04.86.image"			if	FREETZ_TYPE_FON_WLAN_7320
 	default "FRITZ.Box_Fon_WLAN_7340.AnnexB.en-de-es-it-fr.99.04.83.image"	if	FREETZ_TYPE_FON_WLAN_7340 && \
@@ -2507,6 +2509,7 @@ config FREETZ_REMOVE_FREETZ_INFO
 config FREETZ_REMOVE_DOT_CONFIG
 	bool "Remove .config from image"
 	depends on FREETZ_SHOW_ADVANCED
+	select FREETZ_CREATE_SEPARATE_OPTIONS_CFG
 	default n
 	help
 		Usually, a stripped version of the FREETZ configuration file .config
@@ -2516,6 +2519,19 @@ config FREETZ_REMOVE_DOT_CONFIG
 		but if you want to save a few bytes in your image and
 		you are sure that removing this file is the last chance to have
 		a working image, you can do it on your own risk!
+
+config FREETZ_CREATE_SEPARATE_OPTIONS_CFG
+	bool "Create options.cfg as a separate file"
+	depends on FREETZ_SHOW_ADVANCED
+	depends on ! FREETZ_REMOVE_DOT_CONFIG
+	default y
+	help
+		When unchecked causes options.cfg to be created as a symbolic link to .config
+
+		When checked causes options.cfg to be created as a separate file containing
+		a much smaller subset of options included in .config. This increases image
+		size by about 160 bytes but reduces memory footprint at run-time.
+
 endmenu
 
 config FREETZ_AVMPLUGINS_ENABLED
@@ -2624,45 +2640,6 @@ config EXTERNAL_CREATEPAK
 	depends on EXTERNAL_ENABLED && ! EXTERNAL_DOWNLOADER
 	help
 		Creates a file for upload with the webinterface
-
-choice
-	prompt "external directory"
-	default EXTERNAL_DIR1 if ! EXTERNAL_DOWNLOADER
-	default EXTERNAL_DIR3 if EXTERNAL_DOWNLOADER
-	depends on EXTERNAL_ENABLED
-	help
-		The directory on the Freetz Box with the externald files
-
-	config EXTERNAL_DIR1
-		depends on ! EXTERNAL_DOWNLOADER
-		bool "/var/media/ftp/uStor01/external/"
-
-	config EXTERNAL_DIR2
-		depends on ! EXTERNAL_DOWNLOADER
-		bool "/var/media/ftp/uStor02/external/"
-
-	config EXTERNAL_DIR3
-		depends on EXTERNAL_DOWNLOADER
-		bool "/mod/"
-
-	config EXTERNAL_CUSTOM_DIR
-		bool "custom directory"
-endchoice
-
-config EXTERNAL_CUSTOM_DIRNAME
-	string "custom directory" if EXTERNAL_CUSTOM_DIR
-	default "/var/media/ftp/uStor01/external/"
-	depends on EXTERNAL_ENABLED && EXTERNAL_CUSTOM_DIR
-	help
-		Custom directory on the Freetz Box with the externald files
-
-config EXTERNAL_DIRECTORY
-	string
-	default "/var/media/ftp/uStor01/external/" if EXTERNAL_DIR1
-	default "/var/media/ftp/uStor02/external/" if EXTERNAL_DIR2
-	default "/mod/" if EXTERNAL_DIR3
-	default EXTERNAL_CUSTOM_DIRNAME if EXTERNAL_CUSTOM_DIR
-	depends on EXTERNAL_ENABLED
 
 config EXTERNAL_OWN_FILES
 	string "own files"
