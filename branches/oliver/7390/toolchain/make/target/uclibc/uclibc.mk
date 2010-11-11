@@ -10,6 +10,12 @@ ifeq ($(strip $(UCLIBC_VERSION)),0.9.29)
 UCLIBC_SOURCE_SITE:=http://www.uclibc.org/downloads/old-releases
 endif
 
+UCLIBC_MD5_0.9.28 = 1ada58d919a82561061e4741fb6abd29
+UCLIBC_MD5_0.9.29 = 61dc55f43b17a38a074f347e74095b20
+UCLIBC_MD5_0.9.30.3 = 73a4bf4a0fa508b01a7a3143574e3d21
+UCLIBC_MD5_0.9.31   = 52fb8a494758630c8d3ddd7f1e0daafd
+UCLIBC_MD5=$(UCLIBC_MD5_$(UCLIBC_VERSION))
+
 UCLIBC_KERNEL_SOURCE_DIR:=$(KERNEL_SOURCE_DIR)
 UCLIBC_KERNEL_HEADERS_DIR:=$(KERNEL_HEADERS_DIR)
 
@@ -34,7 +40,7 @@ $(DL_DIR)/$(UCLIBC_LOCALE_DATA_FILENAME): | $(DL_DIR)
 
 uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE)
 $(DL_DIR)/$(UCLIBC_SOURCE): | $(DL_DIR)
-	$(DL_TOOL) $(DL_DIR) .config $(UCLIBC_SOURCE) $(UCLIBC_SOURCE_SITE)
+	$(DL_TOOL) $(DL_DIR) .config $(UCLIBC_SOURCE) $(UCLIBC_SOURCE_SITE) $(UCLIBC_MD5)
 
 uclibc-unpacked: $(UCLIBC_DIR)/.unpacked
 $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE) $(DL_DIR)/$(UCLIBC_LOCALE_DATA_FILENAME) | $(TARGET_TOOLCHAIN_DIR)
@@ -153,11 +159,12 @@ $(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 	$(call UCLIBC_INSTALL_KERNEL_HEADERS,$(UCLIBC_KERNEL_HEADERS_DIR),$(TARGET_TOOLCHAIN_STAGING_DIR))
 	# Copy some files to make mklibs happy
 ifneq ($(strip $(UCLIBC_VERSION)),0.9.28)
-	for f in libc_pic.a libpthread_pic.a; do \
+	for f in libc_pic.a libdl_pic.a libpthread_pic.a; do \
 		$(RM) $(TARGET_TOOLCHAIN_STAGING_DIR)/lib/$$f; \
 	done; \
 	cp $(UCLIBC_DIR)/libc/libc_so.a $(TARGET_TOOLCHAIN_STAGING_DIR)/lib/libc_pic.a; \
-	cp $(UCLIBC_DIR)/libpthread/*/libpthread_so.a $(TARGET_TOOLCHAIN_STAGING_DIR)/lib/libpthread_pic.a
+	cp $(UCLIBC_DIR)/libpthread/*/libpthread_so.a $(TARGET_TOOLCHAIN_STAGING_DIR)/lib/libpthread_pic.a ; \
+	cp $(UCLIBC_DIR)/ldso/libdl/libdl_so.a $(TARGET_TOOLCHAIN_STAGING_DIR)/lib/libdl_pic.a
 endif
 	# Build the host utils.
 	$(MAKE1) -C $(UCLIBC_DIR)/utils \
