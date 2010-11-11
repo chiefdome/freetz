@@ -65,6 +65,7 @@ ifeq ($(strip $(FREETZ_TARGET_LFS)),y)
 else
 	$(SED) -i -e 's,.*UCLIBC_HAS_LFS.*,# UCLIBC_HAS_LFS is not set,g' $(UCLIBC_DIR)/.config
 endif
+ifneq ($(strip $(UCLIBC_VERSION)),0.9.28)
 ifeq ($(strip $(FREETZ_TARGET_ARCH_LE)),y)
 	$(SED) -i -e 's,.*ARCH_BIG_ENDIAN.*,ARCH_LITTLE_ENDIAN=y,g' $(UCLIBC_DIR)/.config
 	$(SED) -i -e 's,.*ARCH_WANTS_BIG_ENDIAN.*,# ARCH_WANTS_BIG_ENDIAN is not set,g' $(UCLIBC_DIR)/.config
@@ -73,6 +74,7 @@ else
 	$(SED) -i -e 's,.*ARCH_LITTLE_ENDIAN.*,ARCH_BIG_ENDIAN=y,g' $(UCLIBC_DIR)/.config
 	$(SED) -i -e 's,.*ARCH_WANTS_BIG_ENDIAN.*,ARCH_WANTS_BIG_ENDIAN=y,g' $(UCLIBC_DIR)/.config
 	$(SED) -i -e 's,.*ARCH_WANTS_LITTLE_ENDIAN.*,# ARCH_WANTS_LITTLE_ENDIAN is not set,g' $(UCLIBC_DIR)/.config
+endif
 endif
 	$(SED) -i -e '/.*UCLIBC_HAS_FOPEN_LARGEFILE_MODE.*/d' $(UCLIBC_DIR)/.config
 	echo "# UCLIBC_HAS_FOPEN_LARGEFILE_MODE is not set" >> $(UCLIBC_DIR)/.config
