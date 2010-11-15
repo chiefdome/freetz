@@ -14,7 +14,7 @@ Latest changes:
    + Add binutils-2.20.51.0.12 and gcc-4.4.5 for kernel 2.6.28
   * target-toolchain:
    + Add gcc-4.4.5 and gcc-4.2.4, delete outdated versions
-   + Add binutils-2.20.51.0.12
+   + Add binutils-2.21.51.0.1
    + Add uClibc-0.9.30.3 and uClibc-0.9.31 (experimental)
    + Add gdb-6.8, delete outdated versions
    + Update download toolchains to gcc-4.2.4 (kernel) and gcc-4.4.5 (target)
@@ -125,7 +125,7 @@ Latest changes:
     * ndas-1.1-22
     * nhipt iptables cgi 0.8.3a
     * nfs-utils 1.2.0
-    * ngircd 16
+    * ngircd 17
     * nmap 4.68
     * noip 2.1.9
     * oidentd 2.0.8
@@ -155,7 +155,7 @@ Latest changes:
     * transmission-cgi 0.0.4
     * trickle 1.07
     * udpxy 1.0-Chipmunk-16
-    * umurmur 0.2.4
+    * umurmur 0.2.5
     * unrar 3.9.10
     * util-linux-ng 2.17.2
     * vnstat 1.10
@@ -228,7 +228,7 @@ Latest changes:
     * ntfs-3g 2010.10.2
     * openssh 5.5p1
     * openssl 0.9.8o
-    * openvpn 2.1.3
+    * openvpn 2.1.4
     * pciutils 3.1.7
     * php 5.3.3
     * pingtunnel 0.70
@@ -248,7 +248,7 @@ Latest changes:
     * tinc 1.0.12
     * tinyproxy 1.8.2
     * tor 0.2.1.26
-    * transmission 2.11
+    * transmission 2.12
     * uClibc++ 0.2.3pre (git snapshot)
     * vpnc 0.5.3
     * vsftpd 2.3.2: add SSL support
