@@ -52,11 +52,9 @@ GCC_COMMON_CONFIGURE_OPTIONS := \
 	$(DISABLE_LARGEFILE) \
 	$(QUIET)
 
-ifneq ($(strip $(FREETZ_TARGET_UCLIBC_VERSION_0_9_28)),y)
 ifeq ($(TARGET_TOOLCHAIN_GCC_MAJOR_VERSION),4.4)
 # enable non-PIC for mips* targets
 GCC_COMMON_CONFIGURE_OPTIONS += --with-mips-plt
-endif
 endif
 
 ifndef TARGET_TOOLCHAIN_NO_MPFR
@@ -145,8 +143,7 @@ $(GCC_BUILD_DIR1)/.compiled: $(GCC_BUILD_DIR1)/.configured
 		$(if $(GCC_BUILD_TARGET_LIBGCC),all-target-libgcc)
 	touch $@
 
-gcc_initial=$(GCC_BUILD_DIR1)/.installed
-$(gcc_initial) $(TARGET_TOOLCHAIN_STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc: $(GCC_BUILD_DIR1)/.compiled
+$(GCC_BUILD_DIR1)/.installed: $(GCC_BUILD_DIR1)/.compiled
 	PATH=$(TARGET_PATH) \
 		$(MAKE) -C $(GCC_BUILD_DIR1) \
 		install-gcc \
@@ -154,9 +151,9 @@ $(gcc_initial) $(TARGET_TOOLCHAIN_STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-g
 	$(call GCC_INSTALL_COMMON,$(TARGET_TOOLCHAIN_STAGING_DIR)/usr,$(GCC_VERSION),$(REAL_GNU_TARGET_NAME),$(HOST_STRIP))
 	$(call GCC_SET_HEADERS_TIMESTAMP,$(TARGET_TOOLCHAIN_STAGING_DIR))
 	$(call REMOVE_DOC_NLS_DIRS,$(TARGET_TOOLCHAIN_STAGING_DIR))
-	touch $(gcc_initial)
+	touch $@
 
-gcc_initial: uclibc-configured binutils $(TARGET_TOOLCHAIN_STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc
+gcc_initial: uclibc-configured binutils $(GCC_BUILD_DIR1)/.installed
 
 gcc_initial-uninstall: gcc-uninstall
 
@@ -215,8 +212,7 @@ $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 	$(call CREATE_TARGET_NAME_SYMLINKS,$(TARGET_TOOLCHAIN_STAGING_DIR)/usr,$(GCC_BINARIES_BIN),$(REAL_GNU_TARGET_NAME),$(GNU_TARGET_NAME))
 	touch $@
 
-cross_compiler:=$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc
-cross_compiler gcc: uclibc-configured binutils gcc_initial uclibc \
+gcc: uclibc-configured binutils gcc_initial uclibc \
 	$(GCC_BUILD_DIR2)/.installed $(TARGET_SPECIFIC_ROOT_DIR)/lib/libgcc_s.so.1
 
 gcc-uninstall:

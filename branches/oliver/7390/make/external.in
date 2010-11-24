@@ -4,6 +4,7 @@ source make/bash/external.in
 source make/bip/external.in
 source make/bittwist/external.in
 source make/bluez-utils/external.in
+source make/cifsmount/external.in
 source make/comgt/external.in
 source make/ctorrent/external.in
 source make/curl/external.in
@@ -82,6 +83,7 @@ source make/wol/external.in
 source make/wput/external.in
 comment "services"
 	depends on EXTERNAL_ENABLED
+source make/autofs/external.in
 source make/checkmaild/external.in
 source make/davfs2/external.in
 source make/dropbear/external.in

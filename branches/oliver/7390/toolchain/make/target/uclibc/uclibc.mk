@@ -128,7 +128,7 @@ uclibc-menuconfig: $(UCLIBC_DIR)/.config
 	cp -f $^ $(TOOLCHAIN_DIR)/make/target/uclibc/Config.$(TARGET_TOOLCHAIN_UCLIBC_REF).$(UCLIBC_VERSION) && \
 	touch $^
 
-$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(gcc_initial)
+$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(GCC_BUILD_DIR1)/.installed
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		$(UCLIBC_COMMON_BUILD_FLAGS) \
 		PREFIX= \
@@ -149,6 +149,7 @@ endif
 	touch -c $@
 
 ifeq ($(strip $(FREETZ_BUILD_TOOLCHAIN)),y)
+UCLIBC_PREREQ=$(GCC_BUILD_DIR1)/.installed
 $(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		$(UCLIBC_COMMON_BUILD_FLAGS) \
@@ -190,8 +191,8 @@ $(TARGET_SPECIFIC_ROOT_DIR)/lib/libc.so.0: $(TARGET_TOOLCHAIN_STAGING_DIR)/usr/l
 		install_runtime
 	touch -c $@
 else
-cross_compiler:=$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc
-$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/libc.a: $(cross_compiler)
+UCLIBC_PREREQ=$(TARGET_CROSS_COMPILER)
+$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/libc.a: $(TARGET_CROSS_COMPILER)
 	touch -c $@
 
 $(TARGET_SPECIFIC_ROOT_DIR)/lib/libc.so.0: $(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/libc.a
@@ -206,7 +207,7 @@ endif
 
 uclibc-configured: kernel-configured $(UCLIBC_DIR)/.configured
 
-uclibc: $(cross_compiler) $(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/libc.a $(TARGET_SPECIFIC_ROOT_DIR)/lib/libc.so.0
+uclibc: $(UCLIBC_PREREQ) $(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/libc.a $(TARGET_SPECIFIC_ROOT_DIR)/lib/libc.so.0
 
 uclibc-configured-source: uclibc-source
 
@@ -242,7 +243,7 @@ $(TARGET_UTILS_DIR)/usr/lib/libc.a: $(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/libc
 	$(call REMOVE_DOC_NLS_DIRS,$(TARGET_UTILS_DIR))
 	touch -c $@
 
-uclibc_target: cross_compiler uclibc $(TARGET_UTILS_DIR)/usr/lib/libc.a
+uclibc_target: gcc uclibc $(TARGET_UTILS_DIR)/usr/lib/libc.a
 
 uclibc_target-clean: uclibc_target-dirclean
 	$(RM) $(TARGET_UTILS_DIR)/lib/libc.a
