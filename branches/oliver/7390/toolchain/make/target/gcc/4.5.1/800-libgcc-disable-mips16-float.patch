@@ -1,9 +1,9 @@
 --- gcc/config.gcc
 +++ gcc/config.gcc
-@@ -1592,7 +1592,6 @@
+@@ -1759,7 +1759,6 @@
  	;;
  mips*-*-linux*)				# Linux MIPS, either endian.
-         tm_file="dbxelf.h elfos.h svr4.h linux.h ${tm_file} mips/linux.h"
+         tm_file="dbxelf.h elfos.h svr4.h linux.h glibc-stdint.h ${tm_file} mips/linux.h"
 -	tmake_file="${tmake_file} mips/t-libgcc-mips16"
  	case ${target} in
          mipsisa32r2*)

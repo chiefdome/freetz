@@ -1,6 +1,6 @@
 --- gcc/config/t-linux
 +++ gcc/config/t-linux
-@@ -1,7 +1,10 @@
+@@ -20,7 +20,10 @@
  # Compile crtbeginS.o and crtendS.o with pic.
  CRTSTUFF_T_CFLAGS_S = $(CRTSTUFF_T_CFLAGS) -fPIC
  # Compile libgcc2.a with pic.
