@@ -1,3 +1,0 @@
-config FREETZ_PACKAGE_HTMLTEXT
-	bool "htmltext"
-	default y

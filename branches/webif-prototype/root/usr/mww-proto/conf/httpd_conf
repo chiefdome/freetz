@@ -1,7 +1,0 @@
-#!/bin/sh
-# create invalid passwords to deny access
-echo "/conf:$MOD_HTTPD_USER:$(echo $MOD_HTTPD_PASSWD | md5sum)"
-echo "/html:$MOD_HTTPD_USER:$(echo $MOD_HTTPD_PASSWD | md5sum)"
-echo "/theme:$MOD_HTTPD_USER:$(echo $MOD_HTTPD_PASSWD | md5sum)"
-echo "/tools:$MOD_HTTPD_USER:$(echo $MOD_HTTPD_PASSWD | md5sum)"
-

@@ -1,5 +1,0 @@
-CONFIG_FILE='/tmp/flash/ntpd.conf'
-CONFIG_SAVE='modsave flash'
-CONFIG_TYPE='text'
-
-CAPTION='Openntpd config'

@@ -1,8 +1,0 @@
-@import url(../base.css);
-
-#content {
-    background: #eee;
-}
-div.titlebar, div.titlebar a {
-    color: black;
-}
