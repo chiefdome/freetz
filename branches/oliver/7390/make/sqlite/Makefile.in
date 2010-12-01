@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_SQLITE)),y)
-PACKAGES+=sqlite
-endif

@@ -1,1 +1,0 @@
-/usr/lib/cgi-bin/rrdstats/index-stats.cgi
