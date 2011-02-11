@@ -1,3 +1,0 @@
-#!/bin/sh
-
-echo "/:$MOD_HTTPD_USER:$MOD_HTTPD_PASSWD"

@@ -1,3 +1,0 @@
-config FREETZ_PACKAGE_HASERL
-	bool
-	default y
