@@ -1,0 +1,22 @@
+--- client/client.c.orig	2010-08-03 17:44:33.000000000 +0200
++++ client/client.c	2010-08-15 20:47:56.000000000 +0200
+@@ -367,7 +367,7 @@
+ 
+   bzero(&sa, sizeof(sa));
+   sa.sun_family = AF_UNIX;
+-  strcpy(sa.sun_path, server_path);
++  strncpy(sa.sun_path, server_path, sizeof(sa.sun_path));
+   if (connect(server_fd, (struct sockaddr *) &sa, SUN_LEN(&sa)) < 0)
+     die("Unable to connect to server control socket (%s): %m", server_path);
+   if (fcntl(server_fd, F_SETFL, O_NONBLOCK) < 0)
+--- sysdep/unix/io.c.orig	2010-08-03 17:44:51.000000000 +0200
++++ sysdep/unix/io.c	2010-08-15 20:47:56.000000000 +0200
+@@ -1187,7 +1187,7 @@
+ 
+   /* Path length checked in test_old_bird() */
+   sa.sun_family = AF_UNIX;
+-  strcpy(sa.sun_path, name);
++  strncpy(sa.sun_path, name, sizeof(sa.sun_path));
+   if (bind(fd, (struct sockaddr *) &sa, SUN_LEN(&sa)) < 0)
+     ERR("bind");
+   if (listen(fd, 8))

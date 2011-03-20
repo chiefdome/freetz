@@ -1,0 +1,47 @@
+#!/bin/sh
+
+DAEMON=checkmaild
+. /etc/init.d/modlibrc
+
+#OPTIONS=-path /mod/etc/checkmaild.conf
+
+config() {
+	modlib_config
+	mkdir -p /var/tmp/checkmaild
+}
+
+start() {
+	modlib_startdaemon $DAEMON -daemon -path /mod/etc/ $OPTIONS
+}
+
+case $1 in
+	""|load)
+		modreg cgi $DAEMON 'Checkmail'
+		modreg daemon $DAEMON
+
+		modlib_start $CHECKMAILD_ENABLED
+		;;
+	unload)
+		modunreg daemon $DAEMON
+		modunreg cgi $DAEMON
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|status]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

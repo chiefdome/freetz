@@ -1,0 +1,161 @@
+. /usr/lib/cgi-bin/mod/modlibcgi
+
+start_stop() {
+	local startORstop=$1
+	local package=$2
+	local oldstatus=$3
+	local rc="/mod/etc/init.d/rc.${4-$2}"
+	[ ! -x "$rc" ] && return
+	case "$startORstop" in
+		start)
+			local newstatus=$(rc_status ${4-$2})
+			[ "$oldstatus" == inetd -a "$newstatus" != inetd ] && /etc/init.d/rc.inetd config "$package"
+
+			# NB: This changes daemon's status when switching to inetd mode
+			# and daemon was stopped before. Please review when dynamic
+			# inetd is implemented.
+			[ "$oldstatus" != stopped -o "$newstatus" == inetd ] && "$rc" start
+			;;
+		stop)
+			[ "$oldstatus" != stopped ] && "$rc" stop
+			;;
+	esac
+}
+
+apply_changes() {
+	local startORstop=$1
+	local package=$2
+	case "$package" in
+		avm)
+			start_stop $startORstop telnetd "$OLDSTATUS_telnetd"
+			start_stop $startORstop multid "$OLDSTATUS_multid"
+			;;
+		mod)
+			start_stop $startORstop swap "$OLDSTATUS_swap"
+			# external
+			if [ -x /etc/init.d/rc.external ]; then
+				if [ "$startORstop" == "stop" ]; then
+					NEW_EXTERNAL_DIRECTORY="$(echo "$settings" | sed -ne "/MOD_EXTERNAL_DIRECTORY/s/MOD_EXTERNAL_DIRECTORY='\(.*\)'/\1/p")"
+					[ "$MOD_EXTERNAL_DIRECTORY" != "$NEW_EXTERNAL_DIRECTORY" ] && RELOAD_external="true"
+				fi
+				[ "$RELOAD_external" == "true" ] && start_stop $startORstop external "$OLDSTATUS_external"
+			fi
+			#webcfg
+			if [ "$startORstop" == "start" -a "$OLDSTATUS_webcfg" != "stopped" ]; then
+				echo "$(lang de:"Starte das Freetz-Webinterface in 9 Sekunden neu" en:"Restarting the Freetz webinterface in 9 seconds")!"
+				/etc/init.d/rc.webcfg force-restart 9 >/dev/null 2>&1 &
+			fi
+			/usr/lib/mod/reg-status reload
+			;;
+		*)
+			start_stop $startORstop "$package" "$OLDSTATUS_PACKAGE"
+			;;
+	esac
+}
+
+rc_status() {
+	local rc="/mod/etc/init.d/rc.$1"
+	if [ -x "$rc" ]; then
+		"$rc" status
+	fi
+}
+
+default=false
+case $QUERY_STRING in
+	*default*) default=true ;;
+esac
+
+package=$PACKAGE
+
+if $default; then
+	echo "<p>$(lang de:"Konfiguration zur&uuml;cksetzen" en:"Restore default settings") ($PACKAGE_TITLE):</p>"
+else
+	echo "<p>$(lang de:"Konfiguration speichern" en:"Saving settings") ($PACKAGE_TITLE):</p>"
+fi
+echo -n "<pre class='log'>"
+
+# redirect stderr to stdout so we see output in webif
+exec 2>&1
+
+back="mod status"
+unset OLDSTATUS_telnetd OLDSTATUS_multid OLDSTATUS_swap OLDSTATUS_external RELOAD_external OLDSTATUS_webcfg
+
+if $default; then
+	hook=def
+else
+	hook=save
+fi
+
+# default functions for $package.save
+pkg_pre_save() { :; }
+pkg_apply_save() { :; }
+pkg_post_save() { :; }
+pkg_pre_def() { :; }
+pkg_apply_def() { :; }
+pkg_post_def() { :; }
+
+# load package's implementation of these functions
+if [ -r "/mod/etc/default.$package/$package.save" ]; then
+	source "/mod/etc/default.$package/$package.save"
+fi
+
+if [ -r "/mod/etc/default.$package/$package.cfg" ]; then
+	case "$package" in
+		avm)
+			back="cgi $package"
+			OLDSTATUS_telnetd=$(rc_status "telnetd")
+			OLDSTATUS_multid=$(rc_status "multid")
+			;;
+		mod)
+			back="mod conf"
+			OLDSTATUS_swap=$(rc_status swap)
+			OLDSTATUS_external=$(rc_status external)
+			OLDSTATUS_webcfg=$(rc_status webcfg)
+			;;
+		*)
+			back="cgi $package"
+			OLDSTATUS_PACKAGE=$(rc_status "$package")
+			;;
+	esac
+	if ! $default; then
+		prefix="$(echo "$package" | tr 'a-z\-' 'A-Z_')_"
+
+		unset vars
+		for var in $(modconf vars "$package"); do
+			vars="${vars:+$vars:}${var#$prefix}"
+		done
+
+		settings=$(modcgi "$vars" "$package")
+	fi
+fi
+
+pkg_pre_$hook | html | highlight
+
+if [ -r "/mod/etc/default.$package/$package.cfg" ]; then
+	apply_changes stop "$package"
+	echo
+	if ! $default; then
+		echo -n 'Saving settings ... '
+		echo "$settings" | modconf set "$package" -
+		echo 'done.'
+		echo -n "Saving $package.cfg ... "
+		modconf save "$package"
+		echo 'done.'
+	else
+		echo -n 'Restoring defaults ... '
+		modconf default "$package"
+		echo 'done.'
+	fi
+	echo
+	{
+		apply_changes start "$package"
+		pkg_apply_$hook
+		echo
+		modsave flash
+	} | html
+fi | while read line; do echo $line | highlight; done
+
+
+pkg_post_$hook | html | highlight
+
+echo '</pre>'

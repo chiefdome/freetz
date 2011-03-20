@@ -1,0 +1,22 @@
+--- configure.orig	2008-10-31 16:53:45.000000000 +0100
++++ configure	2010-08-09 11:46:21.000000000 +0200
+@@ -21311,6 +21311,7 @@
+ 
+ fi
+ 
++if false; then
+ echo "$as_me:$LINENO: checking for inline" >&5
+ echo $ECHO_N "checking for inline... $ECHO_C" >&6
+ if test "${ac_cv_c_inline+set}" = set; then
+@@ -21381,6 +21382,11 @@
+ _ACEOF
+     ;;
+ esac
++else
++cat >>confdefs.h <<\_ACEOF
++#define inline
++_ACEOF
++fi
+ 
+ 
+ 

@@ -1,0 +1,361 @@
+#!/bin/sh
+export DAEMON="dtmfbox"
+export WEBSERVER_PORT="6767"
+export DTMFBOX_WWW="http://fritz.v3v.de/dtmfbox/dtmfbox-dl/0.5.0"
+export DTMFBOX_WWW_DL_FILE="dtmfbox-0.5.0-dl.tar.gz"
+
+# dtmfbox already installed?
+if [ -d /var/dtmfbox ];	then
+	DTMFBOX_INSTALLED="1"
+	[ -z "$DTMFBOX_PATH" ] && \
+		export DTMFBOX_PATH="`realpath /var/dtmfbox 2>/dev/null`"
+else
+	if [ "$DTMFBOX_PATH" = "" ]; then
+		DTMFBOX_INSTALLED="0";
+	else
+		DTMFBOX_INSTALLED="1";
+	fi
+fi
+[ "$DTMFBOX_INSTALLED" = "1" ] && ( export PATH=$PATH:/var/dtmfbox; export LD_LIBRARY_PATH=/var/dtmfbox; )
+
+# Check, if dtmfbox is already installed
+#
+check_installed() {
+	if [ "$DTMFBOX_INSTALLED" = "0" ]; then
+		echo "$DAEMON not installed!"
+		exit 1;
+	fi
+}
+
+# Check for required busybox commands
+#
+check_busybox() {
+	BB_CMDS="du ftpput gzip gunzip head httpd mkfifo nc tail tar uudecode uuencode"
+	BB_CMD_MISSING="0"
+
+	echo -n "Testing busybox ... "
+
+	for cmd in $BB_CMDS; do
+		if [ ! $(which $cmd) ]; then
+			echo -n "$cmd is missing! "
+			BB_CMD_MISSING="1";
+			break;
+		fi
+	done
+
+	if [ ! "$BB_CMD_MISSING" = "0" ]; then
+		echo "failed."
+		echo "Error: Please use busybox with needed applets enabled."
+		exit 1;
+	else
+		echo "done."
+	fi
+}
+
+# Restore defaults
+#
+restore_defaults() {
+
+	FORCE="$1"
+
+	# restore from default, when some directories/files are missing
+	REQ_DIRS="tmp play record script"
+	REQ_FILES="dtmfbox.cfg menu.cfg script.cfg"
+
+	for REQ_DIR in $REQ_DIRS; do
+		if [ ! -d "$DTMFBOX_PATH/$REQ_DIR" ] || [ "$FORCE" = "FORCE" ]; then
+			mkdir -p "/var/dtmfbox/$REQ_DIR"
+
+			# restore default scripts
+			if [ "$REQ_DIR" = "script" ]; then
+				# (compressed)
+				if [ -f /var/dtmfbox/default/dtmfbox_script.tar.gz ]; then
+					cat /var/dtmfbox/default/dtmfbox_script.tar.gz | gunzip -c - | tar xvf - -C /var/dtmfbox
+				fi
+
+				# (uncompressed)
+				if [ -d /var/dtmfbox/default/script ]; then
+					cp -Rf /var/dtmfbox/default/script/* /var/dtmfbox/script
+				fi
+
+			fi
+		fi
+	done
+
+	for REQ_FILE in $REQ_FILES; do
+		if [ ! -f "$DTMFBOX_PATH/$REQ_FILE" ] || [ "$FORCE" = "FORCE" ]; then
+			# (compressed)
+			if [ -f /var/dtmfbox/default/dtmfbox_cfg.tar.gz ]; then
+				cat /var/dtmfbox/default/dtmfbox_cfg.tar.gz | gunzip -c - | tar xvf - -C /var/dtmfbox $REQ_FILE
+			fi
+
+			# (uncompressed)
+			if [ -d /var/dtmfbox/default/cfg ]; then
+				cp -Rf /var/dtmfbox/default/cfg/* /var/dtmfbox
+			fi
+		fi
+	done
+}
+
+# Install dtmfbox
+#
+install() {
+
+	INSTALL_MODE="$1"
+	INSTALL_PATH="$2"
+
+	if [ "$INSTALL_MODE" = "bypath" ]; then
+		if [ "$DTMFBOX_PATH" = "" ]; then
+			echo "Error: no DTMFBOX_PATH specified. export \$DTMFBOX_PATH=/path/to/dtmfbox"
+			exit 1;
+		fi
+
+		if [ "$DTMFBOX_PATH" = "/var/dtmfbox-bin" ]; then
+			INSTALL_MODE="ram"
+		else
+			INSTALL_MODE="usb"
+		fi
+		INSTALL_PATH="$DTMFBOX_PATH"
+	fi
+
+	check_busybox
+
+	if [ "$INSTALL_MODE" = "usb" ]; then
+		echo "Installing $DAEMON using Freetz (USB -> $DTMFBOX_PATH) ...";
+	else
+		echo "Installing $DAEMON using Freetz (RAM -> /var/dtmfbox-bin) ...";
+		export DTMFBOX_PATH=/var/dtmfbox-bin
+	fi
+
+	# link/copy required binaries
+	mkdir -p "$DTMFBOX_PATH"
+	ln -sf "/usr/sbin/dtmfbox" "$DTMFBOX_PATH/dtmfbox" 2>/dev/null
+	ln -sf "/usr/lib/libmenu.plugin.so" "$DTMFBOX_PATH/libmenu.plugin.so" 2>/dev/null
+	ln -sf "/etc/init.d/rc.dtmfbox" "$DTMFBOX_PATH/rc.dtmfbox" 2>/dev/null
+	ln -sf "/etc/default.dtmfbox" "$DTMFBOX_PATH/default" 2>/dev/null
+
+	# relink /var/dtmfbox (usb/ram)
+	rm -f /var/dtmfbox 2>/dev/null
+	ln -sf "$DTMFBOX_PATH" /var/dtmfbox
+
+	echo "Restoring defaults ..."
+	restore_defaults
+}
+
+start() {
+
+	START_MODE="$1"
+
+	echo -n "Start $DAEMON ... "
+	cd /var/dtmfbox
+	rm -f /var/dtmfbox/tmp/* 2>/dev/null
+
+	# Refresh voipd register (if started)
+	if [ ! -z "$(pidof "voipd")" ]; then
+		voipd -R 2>/dev/null
+	fi
+
+	if [ "$START_MODE" = "foreground" ];
+	then
+		# Run foreground
+		echo ""
+		$DAEMON -cfg /var/dtmfbox/dtmfbox.cfg
+	fi
+
+	if [ "$START_MODE" = "log" ];
+	then
+		# Run daemon (logging) ...
+		$DAEMON -daemon -cfg /var/dtmfbox/dtmfbox.cfg -log /var/dtmfbox/tmp/dtmfbox.log
+	fi
+
+	if [ "$START_MODE" = "" ];
+	then
+		# Run daemon ...
+		$DAEMON -daemon -cfg /var/dtmfbox/dtmfbox.cfg
+	fi
+
+	if [ ! -z "$(pidof "$DAEMON")" ];
+	then
+		echo 'done!'
+	else
+		echo 'failed!'
+	fi
+}
+
+stop() {
+	echo -n "Stop $DAEMON ... "
+
+	# Stop daemon
+	if [ ! -z "$(pidof "$DAEMON")" ]; then
+		cd /var/dtmfbox
+		$DAEMON -stop daemon >/dev/null &
+
+		# max. wait 10 sec until stop
+		(
+		let wait=9;
+		while [ ! -z "$(pidof "$DAEMON")" ] && [ $wait -ge 1 ];
+		do
+			echo -n "$wait,"
+			let wait=wait-1
+			sleep 1
+		done
+		) 2>/dev/null
+
+		# kill -15 dtmfbox
+		if [ ! -z "$(pidof "$DAEMON")" ];
+		then
+			killall -15 $DAEMON > /dev/null 2>&1
+			sleep 2
+		fi
+
+		# kill -9 dtmfbox
+		if [ ! -z "$(pidof "$DAEMON")" ];
+		then
+			killall -9 $DAEMON > /dev/null 2>&1
+		fi
+
+	fi
+
+	if [ -z "$(pidof "$DAEMON")" ];
+	then
+		echo 'done!'
+	else
+		echo 'failed!'
+		exit 0;
+	fi
+
+	# Refresh voipd register (if started)
+	if [ ! -z "$(pidof "voipd")" ]; then
+		voipd -R 2>/dev/null
+	fi
+}
+
+case "$1" in
+	""|load)
+		ln -sf /usr/lib/cgi-bin/dtmfbox.cgi /mod/usr/lib/dtmfbox.cgi
+		touch /mod/etc/conf/dtmfbox.cfg
+		modreg cgi "dtmfbox&sort=0&page=status" "dtmfbox-Status"
+		modreg cgi "dtmfbox&sort=1&page=dtmfbox_cfg" "dtmfbox-Basis"
+		modreg cgi "dtmfbox&sort=2&page=script_cfg" "dtmfbox-Skript"
+		modreg cgi "dtmfbox&sort=3&page=menu_cfg" "dtmfbox-Menü"
+		modreg cgi "dtmfbox&sort=4&page=scripts" "dtmfbox-SkriptEdit"
+		modreg cgi "dtmfbox&sort=5&page=am_messages" "dtmfbox-Nachrichten"
+		if [ -f "/usr/mww/sWebPhone.jar" ]; then modreg cgi "dtmfbox&sort=6&page=webphone" "dtmfbox-Webphone"; fi
+		if [ -f "/usr/mww/cgi-bin/dtmfbox_help.cgi" ]; then modreg cgi "dtmfbox&sort=7&page=help" "dtmfbox-Hilfe"; fi
+		modreg daemon dtmfbox
+		modreg cgi "dtmfbox&sort=8&page=reset" "dtmfbox-Path/Reset"
+
+		if [ -z "$DTMFBOX_PATH" ]; then DTMFBOX_PATH="/var/dtmfbox-bin"; fi
+
+		check_busybox
+		;;
+	unload)
+		modunreg cgi "dtmfbox&sort=0&page=status"
+		modunreg cgi "dtmfbox&sort=1&page=dtmfbox_cfg"
+		modunreg cgi "dtmfbox&sort=2&page=script_cfg"
+		modunreg cgi "dtmfbox&sort=3&page=menu_cfg"
+		modunreg cgi "dtmfbox&sort=4&page=scripts"
+		modunreg cgi "dtmfbox&sort=5&page=am_messages"
+		if [ -f "/usr/mww/sWebPhone.jar" ]; then modunreg cgi "dtmfbox&sort=6&page=webphone"; fi
+		if [ -f "/usr/mww/cgi-bin/dtmfbox_help.cgi" ]; then modunreg cgi "dtmfbox&sort=7&page=help"; fi
+		modunreg daemon dtmfbox
+		modunreg cgi "dtmfbox&sort=8&page=reset"
+		stop
+		;;
+	check_busybox)
+		check_busybox "FORCE"
+		;;
+	defaults)
+		check_installed
+		check_busybox
+		restore_defaults "FORCE"
+		;;
+	install)
+		if [ "$2" != "usb" ] && [ "$2" != "ram" ] && [ "$2" != "bypath" ] && [ "$2" != "apache" ];
+		then
+			echo "Please specify if you want to install on USB, into RAM (mipsel) or for Apache (i386):"
+			echo "./rc.dtmfbox install ram"
+			echo "./rc.dtmfbox install usb /var/media/path/to/dtmfbox"
+			echo "./rc.dtmfbox install apache /var/www/dtmfbox"
+		 	exit 1;
+		fi
+		install "$2" "$3"
+		;;
+	uninstall)
+		check_installed
+		check_busybox
+		echo "Uninstall dtmfbox ..."
+
+		echo "" |
+		(
+			cd /var/dtmfbox/httpd/cgi-bin/
+			. ./dtmfbox_cfg.cgi
+			show_page "dtmfbox_scriptedit.cgi" "UNINSTALL"
+		) > /dev/null 2>/dev/null
+
+		rm /var/dtmfbox
+
+		echo "Finished! You can reboot now!"
+		;;
+	start_httpd)
+		check_installed
+		check_busybox
+		start_httpd
+		;;
+	stop_httpd)
+		check_installed
+		stop_httpd
+		;;
+	restart_httpd)
+		check_installed
+		stop_httpd
+		check_busybox
+		start_httpd
+		;;
+	start)
+		check_installed
+		check_busybox
+		start
+		;;
+	stop)
+		check_installed
+		stop
+		;;
+	log)
+		check_installed
+		check_busybox
+		start "log"
+		;;
+	foreground)
+		check_installed
+		check_busybox
+		start "foreground"
+		;;
+	restart)
+		check_installed
+		check_busybox
+		stop
+		start
+		;;
+	status)
+		if [ -z "$(pidof "$DAEMON")" ]; then
+			echo "stopped"
+		else
+			echo "running"
+		fi
+		;;
+	*)
+		echo "usage: "
+		echo "./rc.dtmfbox defaults                          - Restore default cfg/scripts"
+		echo "./rc.dtmfbox uninstall                         - Uninstall dtmfbox"
+		echo ""
+		echo "./rc.dtmfbox start                             - Start dtmfbox as daemon"
+		echo "./rc.dtmfbox foreground                        - Start dtmfbox in foreground"
+		echo "./rc.dtmfbox log                               - Start dtmfbox logged"
+		echo "./rc.dtmfbox stop                              - Stop dtmfbox"
+		echo "./rc.dtmfbox restart                           - Restart dtmfbox"
+		echo "./rc.dtmfbox status                            - Daemon status"
+		exit 1
+		;;
+esac
+exit 0
