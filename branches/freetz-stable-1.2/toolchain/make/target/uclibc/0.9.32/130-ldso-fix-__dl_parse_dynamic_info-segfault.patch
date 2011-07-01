@@ -1,0 +1,21 @@
+--- ldso/ldso/ldso.c.orig	2011-06-08 21:35:20.000000000 +0200
++++ ldso/ldso/ldso.c	2011-06-14 23:26:08.025271666 +0200
+@@ -925,9 +925,15 @@
+ #ifdef __LDSO_LDD_SUPPORT__
+ 	/* End of the line for ldd.... */
+ 	if (trace_loaded_objects) {
+-		_dl_dprintf(1, "\t%s => %s (%x)\n",
+-			    rpnt->dyn->libname + _dl_strlen(_dl_ldsopath) + 1,
+-			    rpnt->dyn->libname, DL_LOADADDR_BASE(rpnt->dyn->loadaddr));
++		/* glibc ld.so/ldd would just do
++		 * _dl_dprintf(1, "\t%s (%x)\n", rpnt->dyn->libname,
++		 *	       DL_LOADADDR_BASE(rpnt->dyn->loadaddr));
++		 * but uClibc has always used the => format. */
++		char *ptmp = _dl_strrchr(rpnt->dyn->libname, '/');
++		if (ptmp != rpnt->dyn->libname)
++			++ptmp;
++		_dl_dprintf(1, "\t%s => %s (%x)\n", ptmp, rpnt->dyn->libname,
++			    DL_LOADADDR_BASE(rpnt->dyn->loadaddr));
+ 		_dl_exit(0);
+ 	}
+ #endif

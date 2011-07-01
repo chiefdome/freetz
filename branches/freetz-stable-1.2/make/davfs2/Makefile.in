@@ -1,0 +1,4 @@
+ifeq ($(strip $(FREETZ_PACKAGE_DAVFS2)),y)
+PACKAGES+=davfs2
+endif
+

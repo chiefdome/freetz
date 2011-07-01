@@ -1,0 +1,24 @@
+--- autoconf/Makefile.in
++++ autoconf/Makefile.in
+@@ -50,10 +50,10 @@
+ 	@exit 1
+ static: makefiles slang.pc
+ 	cd src; $(MAKE) static
+-	cd slsh; $(MAKE) all
++#	cd slsh; $(MAKE) all
+ elf: makefiles slang.pc
+ 	cd src; $(MAKE) elf
+-	cd slsh; $(MAKE) all
++#	cd slsh; $(MAKE) all
+ 	cd modules; $(MAKE) all
+ 	@echo Use make install to install it.
+ runtests:
+@@ -77,7 +77,7 @@
+ install-elf:
+ 	cd src; $(MAKE) install-elf
+ 	@echo Now installing slsh
+-	cd slsh; $(MAKE) install
++#	cd slsh; $(MAKE) install
+ 	@echo Now installing the modules
+ 	cd modules; $(MAKE) install
+ 	@echo ""
