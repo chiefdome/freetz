@@ -1,0 +1,2 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_RRDTOOL" == "y" ] && EXTERNAL_FILES+=" /usr/bin/rrdtool"
+[ "$EXTERNAL_FREETZ_PACKAGE_RRDTOOL" == "y" -a "$EXTERNAL_SUBDIRS" == "y" ] && EXTERNAL_FILES+=" /usr/share/rrdtool"
