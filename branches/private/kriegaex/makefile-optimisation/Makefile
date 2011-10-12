@@ -467,9 +467,8 @@ config-clean-deps:
 
 common-clean:
 	./fwmod_custom clean
-	$(RM) .static .dynamic .exclude-dist-tmp
+	$(RM) .static .dynamic .exclude-dist-tmp $(CONFIG_IN_CACHE)
 	$(RM) -r $(BUILD_DIR)
-	-$(MAKE) -C $(CONFIG) clean
 
 common-dirclean: common-clean $(if $(FREETZ_HAVE_DOT_CONFIG),kernel-dirclean)
 	$(RM) -r $(BUILD_DIR) $(PACKAGES_DIR_ROOT) $(SOURCE_DIR_ROOT)
