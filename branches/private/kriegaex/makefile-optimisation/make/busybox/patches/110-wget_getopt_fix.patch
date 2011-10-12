@@ -1,0 +1,11 @@
+--- networking/wget.c	2011-09-24 14:43:20+02:00
++++ networking/wget.c	2011-09-24 14:43:20+02:00
+@@ -872,7 +872,7 @@
+ 		/* Ignored: */
+ 		// "tries\0"            Required_argument "t"
+ 		/* Ignored (we always use PASV): */
+-		"passive-ftp\0"      No_argument       "\xff"
++		"passive-ftp\0"      No_argument       "\xfd"
+ 		"header\0"           Required_argument "\xfe"
+ 		"post-data\0"        Required_argument "\xfd"
+ 		/* Ignored (we don't do ssl) */

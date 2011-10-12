@@ -1,0 +1,11 @@
+--- configure.orig	2011-08-06 13:17:35.000000000 +0200
++++ configure	2011-08-06 13:26:23.000000000 +0200
+@@ -6389,7 +6389,7 @@
+ #define HAVE_LIBCRYPTO 1
+ _ACEOF
+ 
+-  LIBS="-lcrypto $LIBS"
++  LIBS="-lcrypto -ldl $LIBS"
+ 
+ fi
+ 

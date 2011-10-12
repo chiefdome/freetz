@@ -1,0 +1,15 @@
+Portable OpenNTPD Freetz package
+   __  _   __  __ ___ __
+  |__ |_) |__ |__  |   /
+  |   |\  |__ |__  |  /_
+
+Copyright (c) 2011 TIK
+
+This is a package for Freetz: http://www.freetz.org/
+
+Port of BSD OpenNTPD
+old sources are available here:
+http://www.openntpd.org/
+
+Have a lot more fun,
+TIK
