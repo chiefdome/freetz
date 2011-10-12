@@ -11,7 +11,7 @@
 # You shouldn't need to mess with anything beyond this point...
 #--------------------------------------------------------------
 TOPDIR=.
-CONFIG_CONFIG_IN=Config.in
+CONFIG_IN=Config.in
 CONFIG=tools/config
 
 SHELL:=/bin/bash
@@ -206,6 +206,14 @@ include $(MAKE_DIR)/Makefile.in
 include $(sort $(wildcard $(MAKE_DIR)/libs/*/Makefile.in))
 include $(sort $(wildcard $(MAKE_DIR)/*/Makefile.in))
 
+ALL_PACKAGES:=
+LOCALSOURCE_PACKAGES:=
+include $(sort $(wildcard $(MAKE_DIR)/libs/*/*.mk))
+include $(sort $(wildcard $(MAKE_DIR)/*/*.mk))
+NON_LOCALSOURCE_PACKAGES:=$(filter-out $(LOCALSOURCE_PACKAGES),$(ALL_PACKAGES))
+PACKAGES_CHECK_DOWNLOADS:=$(patsubst %,%-check-download,$(NON_LOCALSOURCE_PACKAGES))
+PACKAGES_MIRROR:=$(patsubst %,%-download-mirror,$(NON_LOCALSOURCE_PACKAGES))
+
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
 TARGETS_DIRCLEAN:=$(patsubst %,%-dirclean,$(TARGETS))
 TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS))
@@ -227,14 +235,6 @@ TOOLCHAIN_CLEAN:=$(patsubst %,%-clean,$(TOOLCHAIN))
 TOOLCHAIN_DIRCLEAN:=$(patsubst %,%-dirclean,$(TOOLCHAIN))
 TOOLCHAIN_DISTCLEAN:=$(patsubst %,%-distclean,$(TOOLCHAIN))
 TOOLCHAIN_SOURCE:=$(patsubst %,%-source,$(TOOLCHAIN))
-
-ALL_PACKAGES:=
-LOCALSOURCE_PACKAGES:=
-include $(sort $(wildcard $(MAKE_DIR)/libs/*/*.mk))
-include $(sort $(wildcard $(MAKE_DIR)/*/*.mk))
-NON_LOCALSOURCE_PACKAGES:=$(filter-out $(LOCALSOURCE_PACKAGES),$(ALL_PACKAGES))
-PACKAGES_CHECK_DOWNLOADS:=$(patsubst %,%-check-download,$(NON_LOCALSOURCE_PACKAGES))
-PACKAGES_MIRROR:=$(patsubst %,%-download-mirror,$(NON_LOCALSOURCE_PACKAGES))
 
 ifeq ($(strip $(FREETZ_BUILD_TOOLCHAIN)),y)
 include $(TOOLCHAIN_DIR)/make/kernel-toolchain.mk
@@ -420,17 +420,17 @@ recover:
 		done; \
 	fi
 
-menuconfig: $(CONFIG_CONFIG_IN) $(CONFIG)/mconf
-	@$(CONFIG)/mconf $(CONFIG_CONFIG_IN)
+menuconfig: $(CONFIG_IN) $(CONFIG)/mconf
+	@$(CONFIG)/mconf $(CONFIG_IN)
 
-menuconfig-single: $(CONFIG_CONFIG_IN) $(CONFIG)/mconf
-	@MENUCONFIG_MODE="single_menu" $(CONFIG)/mconf $(CONFIG_CONFIG_IN)
+menuconfig-single: $(CONFIG_IN) $(CONFIG)/mconf
+	@MENUCONFIG_MODE="single_menu" $(CONFIG)/mconf $(CONFIG_IN)
 
-config: $(CONFIG_CONFIG_IN) $(CONFIG)/conf
-	@$(CONFIG)/conf $(CONFIG_CONFIG_IN)
+config: $(CONFIG_IN) $(CONFIG)/conf
+	@$(CONFIG)/conf $(CONFIG_IN)
 
-oldconfig oldnoconfig defconfig allnoconfig allyesconfig randconfig listnewconfig: $(CONFIG_CONFIG_IN) $(CONFIG)/conf
-	@$(CONFIG)/conf --$@ $(CONFIG_CONFIG_IN)
+oldconfig oldnoconfig defconfig allnoconfig allyesconfig randconfig listnewconfig: $(CONFIG_IN) $(CONFIG)/conf
+	@$(CONFIG)/conf --$@ $(CONFIG_IN)
 
 config-clean-deps:
 	@{ \
