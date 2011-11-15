@@ -1,0 +1,11 @@
+config FREETZ_PACKAGE_IPERF
+	bool "iperf 2.0.5 (binary only)"
+	select FREETZ_LIB_STDCXXLIB
+	default n
+	help
+		Iperf was developed as a modern alternative for measuring TCP 
+		and UDP bandwidth performance. Iperf is a tool to measure
+		maximum TCP bandwidth, allowing the tuning of various parameters
+		and UDP characteristics. Iperf reports bandwidth, delay jitter, 
+		datagram loss.
+		WWW: http://iperf.sourceforge.net/
