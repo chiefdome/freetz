@@ -1,0 +1,12 @@
+config FREETZ_PACKAGE_MONITORD
+	bool "monitord 0.4.1 (binary only)"
+	default n
+	help
+		This software allows one to monitor other standalone services and
+		automatically restart them if they are accidentally and unwittingly
+		terminated, or crash either because of instability or a DoS attack.
+		It simplifies a task capable of being performed by cron(8) by not
+		requiring custom scripts to be written for each service being
+		monitored. The configuration file is simple and easily setup.
+		walt@erudition.net
+		ftp://ftp.erudition.net/pub/monitord/

@@ -1,0 +1,10 @@
+--- config.h.orig	2010-01-23 20:25:42.000000000 +0100
++++ config.h	2010-01-23 20:26:17.000000000 +0100
+@@ -1,4 +1,4 @@
+-#define _PATH_TO_CONFIG	"/usr/local/etc/monitord.conf"
+-#define	_BUFSIZE	600
+-#define	_MAXLINE	150
++#define _PATH_TO_CONFIG	"/var/tmp/monitord.conf"
++#define	_BUFSIZE	400
++#define	_MAXLINE	100
+ #define _INTERVAL	10
