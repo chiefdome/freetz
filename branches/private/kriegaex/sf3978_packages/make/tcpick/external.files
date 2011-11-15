@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_TCPICK" == "y" ] && EXTERNAL_FILES+=" /usr/bin/tcpick"

@@ -1,0 +1,17 @@
+config FREETZ_PACKAGE_TCPICK
+	bool "tcpick 0.2.1 (binary only)"
+	select FREETZ_LIB_libpcap
+	default n
+	help
+		tcpick is a textmode sniffer libpcap-based that can track, reassemble
+		and reorder tcp streams. tcpick is able to save the captured flows in
+		different files or displays them in the terminal, and so it is useful
+		to sniff files that are transmitted via ftp or http. It can display all
+		the stream on the terminal, when the connection is closed in different
+		display modes like hexdump, hexdump + ascii, only printable charachters,
+		raw mode and so on. Actually it can handle several interfaces, including
+		ethernet cards and ppp. It is useful to	keep track of what users of a
+		network are doing, and is usable with textmode tools like grep, sed, awk.
+		WWW: http://tcpick.sourceforge.net/
+		Manpage: http://tcpick.sourceforge.net/?t=1&p=OPTIONS
+		Examples of tcpick usage: http://tcpick.sourceforge.net/?t=1&p=EXAMPLES
