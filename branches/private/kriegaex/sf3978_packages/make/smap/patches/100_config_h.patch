@@ -1,0 +1,15 @@
+--- config.h.orig	2011-05-14 22:24:07.000000000 +0200
++++ config.h	2011-05-14 23:50:02.000000000 +0200
+@@ -21,9 +21,9 @@
+ #include <string.h>
+ #include <sys/select.h>
+ #include <math.h>
+-#ifdef HAVE_IFADDRS
+-#include <ifaddrs.h>    /* local IP */
+-#endif
++#undef HAVE_IFADDRS
++/*#include <ifaddrs.h>
++#endif*/
+ #ifdef __linux__
+ #include <linux/sockios.h>
+ #else

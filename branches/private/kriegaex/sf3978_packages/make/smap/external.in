@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_SMAP
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_SMAP
+	bool "smap"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/smap
