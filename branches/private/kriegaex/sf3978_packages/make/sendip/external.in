@@ -1,0 +1,16 @@
+config EXTERNAL_FREETZ_PACKAGE_SENDIP
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_SENDIP
+	bool "sendip"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/sendip
+		 /usr/bin/bgp.so
+		 /usr/bin/icmp.so
+		 /usr/bin/ipv4.so
+		 /usr/bin/ipv6.so
+		 /usr/bin/ntp.so
+		 /usr/bin/rip.so
+		 /usr/bin/ripng.so
+		 /usr/bin/tcp.so
+		 /usr/bin/udp.so

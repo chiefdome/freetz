@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_SENDIP)),y)
+PACKAGES+=sendip
+endif

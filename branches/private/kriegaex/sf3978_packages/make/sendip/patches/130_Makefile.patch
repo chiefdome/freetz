@@ -1,0 +1,39 @@
+--- Makefile.orig	2011-05-21 10:30:47.000000000 +0200
++++ Makefile	2011-05-21 10:34:02.000000000 +0200
+@@ -27,7 +27,7 @@
+ PROTOS= $(BASEPROTOS) $(IPPROTOS) $(UDPPROTOS) $(TCPPROTOS)
+ GLOBALOBJS= csum.o compact.o
+ 
+-all:	$(GLOBALOBJS) sendip $(PROTOS) sendip.1 sendip.spec
++all:	$(GLOBALOBJS) sendip $(PROTOS)
+ 
+ #there has to be a nice way to do this
+ sendip:	sendip.o	gnugetopt.o gnugetopt1.o compact.o
+@@ -39,14 +39,6 @@
+ $(CC) -o $@ $(LDFLAGS) $(CFLAGS) $+ ; \
+ fi"
+ 
+-sendip.1:	./help2man $(PROGS) $(PROTOS) VERSION
+-			./help2man -n "Send arbitrary IP packets" -N >sendip.1
+-
+-sendip.spec:	sendip.spec.in VERSION
+-			echo -n '%define ver ' >sendip.spec
+-			cat VERSION >>sendip.spec
+-			cat sendip.spec.in >>sendip.spec
+-
+ %.so: %.c $(GLOBALOBJS)
+ 			$(CC) -o $@ $(CFLAGS) $(LIBCFLAGS) $+
+ 
+@@ -57,12 +49,10 @@
+ 
+ veryclean:
+ 			make clean
+-			rm -f sendip.spec sendip.1
+ 
+ install:		all
+ 			[ -d $(LIBDIR) ] || mkdir -p $(LIBDIR)
+ 			[ -d $(BINDIR) ] || mkdir -p $(BINDIR)
+ 			[ -d $(MANDIR) ] || mkdir -p $(MANDIR)
+ 			$(INSTALL) -m 755 $(PROGS) $(BINDIR)
+-			$(INSTALL) -m 644 sendip.1 $(MANDIR)
+ 			$(INSTALL) -m 755 $(PROTOS) $(LIBDIR)

@@ -1,0 +1,11 @@
+config FREETZ_PACKAGE_SENDIP
+	bool "sendip 2.5 (binary and modules only)"
+	default n
+	help
+		SendIP is a commandline tool to allow sending arbitrary IP packets.
+		SendIP has a large number of command line options to specify the
+		content of every header of a NTP, BGP, RIP, RIPng, TCP, UDP, ICMP or
+		raw IPv4 and IPv6 packet. It also allows any data to be added to the
+		packet.
+		WWW: http://www.earth.li/projectpurple/progs/sendip.html
+		Manpage: http://manpages.ubuntu.com/manpages/gutsy/man1/sendip.1.html
