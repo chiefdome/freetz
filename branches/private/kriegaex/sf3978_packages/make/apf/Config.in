@@ -1,0 +1,16 @@
+config FREETZ_PACKAGE_APF
+	bool "apf 0.8.4 (binaries only)"
+	default n
+	help
+		  Active port forwarder is a software tool for secure port forwarding. It
+		  uses SSL to increase security of communication between a server and a
+		  client. Originally, it was developed to forward data point to point.
+		  However, the need for bypassing firewalls in order to connect to internally
+		  located computers influenced the further development of the project.
+		  AF is dedicated for people, who don't have an external ip number and
+		  want to make some services available across the net. Moreover, zlib is
+		  used to compress the transferred data. Using one, permanent data/control
+		  channel with flow control / packet buffering provides good performance
+		  and reasonably small latency. Running afserver does not require root
+		  priviledges, nor does it use threads or other processes. 
+		  WWW: http://gray-world.net/pr_af.shtml
