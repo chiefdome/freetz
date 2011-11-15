@@ -1,0 +1,32 @@
+--- src/Makefile.orig	1970-01-01 01:00:00.000000000 +0100
++++ src/Makefile	2011-04-22 08:17:53.000000000 +0200
+@@ -0,0 +1,29 @@
++MAKE = make
++VERSION = @VERSION@
++SRCDIR = .
++CC =
++CFLAGS =
++LDFLAGS = 
++LIBS = -lssl -lm 
++DLIB = ../dlib/libdlib.a
++
++prefix = /usr/local
++bindir = ${exec_prefix}/bin
++sbindir = ${exec_prefix}/sbin
++mandir = ${datarootdir}/man
++sysconfdir = ${prefix}/etc
++datarootdir = ${prefix}/share
++
++FILES = email.o addr_parse.o addy_book.o conf.o error.o execgpg.o file_io.o \
++        message.o mimeutils.o processmail.o progress_bar.o \
++	remotesmtp.o sig_file.o smtpcommands.o utils.o
++
++all: $(FILES)
++	$(CC) $(CFLAGS) -o email $(FILES) $(OTHER_FILES) $(DLIB) $(LDFLAGS) $(LIBS)
++
++clean:
++	rm -f *.o *.d email
++
++clean-all:
++	rm -rf Makefile *.o *.d email
++

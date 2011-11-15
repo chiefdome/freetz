@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_EMAIL
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_EMAIL
+	bool "email"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/email

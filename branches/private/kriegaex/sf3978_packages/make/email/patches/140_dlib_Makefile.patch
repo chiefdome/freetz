@@ -1,0 +1,43 @@
+--- dlib/Makefile.orig	1970-01-01 01:00:00.000000000 +0100
++++ dlib/Makefile	2011-04-22 07:56:52.000000000 +0200
+@@ -0,0 +1,40 @@
++# Dlib makefile
++MAKE = make
++VERSION = @ver@
++SRCDIR = src/
++DESTDIR = 
++CC =
++CFLAGS =
++LDFLAGS = 
++LIBS = -lcrypto -lcrypto -lssl -lnsl -lm 
++
++prefix = /usr/local
++exec_prefix = ${prefix}
++bindir = ${exec_prefix}/bin
++sbindir = ${exec_prefix}/sbin
++mandir = ${datarootdir}/man
++docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
++sysconfdir = ${prefix}/etc
++datarootdir = ${prefix}/share
++
++bin_suffix = 
++
++FILES = src/dnet.o src/dhash.o src/dlist.o src/dstrbuf.o src/dutil.o src/dvector.o
++
++.PHONY: all clean-all clean distclean install uninstall
++
++all: $(FILES)
++	ar rc libdlib.a $(FILES)
++
++test:
++	$(CC) $(CFLAGS) -o test test.c libdlib.a -lm
++
++dlisttest:
++	$(CC) $(CFLAGS) -o dlisttest dlisttest.c libdlib.a -lm
++
++dhashtest:
++	$(CC) $(CFLAGS) -o dhashtest dhashtest.c libdlib.a -lm
++
++clean:
++	rm -f src/*.o *.so *.a test
++

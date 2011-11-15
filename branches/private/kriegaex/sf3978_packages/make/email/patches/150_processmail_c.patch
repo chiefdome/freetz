@@ -1,0 +1,34 @@
+--- src/processmail.c.orig	2011-04-28 20:49:39.000000000 +0200
++++ src/processmail.c	2011-04-28 21:13:39.000000000 +0200
+@@ -28,6 +28,8 @@
+ #include <string.h>
+ #include <unistd.h>
+ 
++#include <syslog.h>
++
+ #include <sys/stat.h>
+ 
+ #include "email.h"
+@@ -148,11 +150,14 @@
+ 	bar = prbarInit(msg->len);
+ 	if (Mopts.verbose) {
+ 		printf("Connecting to server %s on port %d\n", smtp_serv, smtp_port);
++		syslog(LOG_INFO, "email[%d] : Connecting to server %s on port %d\n", getpid(), smtp_serv, smtp_port);
+ 	}
+ 	sd = dnetConnect(smtp_serv, smtp_port);
+ 	if (sd == NULL) {
+ 		fatal("Could not connect to server: %s on port: %d", 
+ 			smtp_serv, smtp_port);
++		syslog(LOG_ERR, "email[%d] : Could not connect to server: %s on port: %d",
++		       getpid(), smtp_serv, smtp_port);
+ 		return ERROR;
+ 	}
+ 
+@@ -167,6 +172,7 @@
+ #ifndef HAVE_LIBSSL
+ 	if (use_tls) {
+ 		warning("No SSL support compiled in. Disabling TLS.\n");
++		syslog(LOG_ERR, "email[%d] : No SSL support compiled in. Disabling TLS.\n", getpid());
+ 		use_tls = NULL;
+ 	}
+ #endif

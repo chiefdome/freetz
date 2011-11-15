@@ -1,0 +1,19 @@
+--- src/smtpcommands.c.orig	2011-04-28 20:35:42.000000000 +0200
++++ src/smtpcommands.c	2011-04-28 22:45:28.000000000 +0200
+@@ -10,6 +10,8 @@
+ #include <assert.h>
+ #include <termios.h>
+ 
++#include <syslog.h>
++
+ #include <sys/select.h>
+ #include <sys/ioctl.h>
+ 
+@@ -839,6 +841,7 @@
+ {
+ 	int retval=0;
+ 	printProgress("Sending QUIT...");
++	syslog(LOG_INFO, "email[%d] : Sending QUIT...", getpid());
+ 	retval = quit(sd);
+ 	dsbDestroy(errorstr);
+ 	return retval;

@@ -1,0 +1,53 @@
+--- Makefile.orig	1970-01-01 01:00:00.000000000 +0100
++++ Makefile	2011-04-22 07:53:40.000000000 +0200
+@@ -0,0 +1,50 @@
++MAKE = make
++VERSION = 3.1.3
++SRCDIR = src/
++DESTDIR = 
++CC =
++CFLAGS =
++LDFLAGS = 
++LIBS = -lssl -lm 
++DLIB = dlib/
++
++prefix = /usr/local
++exec_prefix = ${prefix}
++bindir = ${exec_prefix}/bin
++sbindir = ${exec_prefix}/sbin
++mandir = ${datarootdir}/man
++docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
++sysconfdir = ${prefix}/etc
++datarootdir = ${prefix}/share
++
++bin_suffix = 
++
++.PHONY: all clean-all clean distclean install uninstall
++
++all:
++	cd $(DLIB) && $(MAKE)
++	cd $(SRCDIR) && $(MAKE)
++
++install:
++	./install.sh --bindir "$(DESTDIR)$(bindir)" --sysconfdir "$(DESTDIR)$(sysconfdir)" \
++		--mandir "$(DESTDIR)$(mandir)" --binext "$(bin_suffix)" --version "$(VERSION)" \
++        --docdir "$(DESTDIR)$(docdir)"
++
++distclean:
++	cd $(SRCDIR) && $(MAKE) clean-all
++	rm -rf Makefile config.status VERSION email.help email.1
++
++clean:
++	cd $(SRCDIR) && $(MAKE) clean
++	cd $(DLIB) && $(MAKE) clean
++
++clean-all:
++	cd $(SRCDIR) && $(MAKE) clean-all
++	rm -rf autom4* Makefile config.status VERSION email.help email.1 configure \
++    config.log configure.in
++
++uninstall:
++	./uninstall.sh --bindir "$(DEST_DIR)$(bindir)" --sysconfdir "$(DEST_DIR)$(sysconfdir)" \
++	    --mandir "$(DEST_DIR)$(mandir)" --docdir "$(DEST_DIR)$(docdir)" --version "$(VERSION)"
++
++

@@ -1,0 +1,21 @@
+--- src/progress_bar.c.orig	2011-04-28 20:34:10.000000000 +0200
++++ src/progress_bar.c	2011-04-28 21:15:44.000000000 +0200
+@@ -31,6 +31,8 @@
+ #include <unistd.h>
+ #include <termios.h>
+ 
++#include <syslog.h>
++
+ #include <sys/stat.h>
+ #include <sys/types.h>
+ #include <sys/ioctl.h>
+@@ -176,6 +178,9 @@
+ 		bar->truncated_file_size, bar->size_type);
+ 	if (bar->percent == 100) {
+ 		printf("\n");
++	syslog(LOG_INFO, "email[%d] : Sending \"%s\"  |%s| %3d%% of %2d %s", getpid(),
++		bar->subject, bar->buf, bar->percent, 
++		bar->truncated_file_size, bar->size_type);
+ 	}
+ 	fflush(stdout);
+ }
