@@ -1,0 +1,19 @@
+--- network.c.orig	2011-05-21 14:14:15.000000000 +0200
++++ network.c	2011-05-21 14:15:45.000000000 +0200
+@@ -29,7 +29,7 @@
+ #include "dhid.h"
+ 
+ int udp_sock;
+-
++extern int rport;
+ 
+ /*
+  * msg_size_by_opcode() - Returns the size of a structure of opcode type
+@@ -250,6 +250,7 @@
+ 
+ 	p->hdr.version=DHIS_VERSION;
+ 	p->hdr.serial=get_serial();
++	p->hdr.rport=rport;
+ 
+         /* set destination */
+         sa.sin_family=AF_INET;

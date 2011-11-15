@@ -1,0 +1,59 @@
+;
+; DHIS Release 5
+;
+; A sample dhid.conf file with multiple servers and multiple clients
+;
+; Every client/server record must start with the { character and end with }
+;
+
+; The following entry updates record 1000 using password authentication
+; on server server1.domain.com installed on port 58800 and keeps the connection
+; with a refresh rate of 2 minutes
+;
+;
+{
+	HostID		1000
+	HostPass	secret1
+	ISAddr		server1.domain.com
+	Refresh		120
+}
+
+; The following entry updates record 1001 using QRC authentication
+; on server 193.1.1.1 or server 193.1.1.2 installed on port 58800 
+; and keeps the connection with a refresh rate of 1 hour
+; 
+; Both servers should be running in redundant mode and should have
+; the exact same knowledge of the client. Upon start the client sends
+; ECHO_REQ packets to both servers and uses whichever replies (first)
+;
+{
+	HostID		1001
+        AuthP           48169083212014599459617612742008414959275858692195
+        AuthP           08313031094427763164613335521316290005513593151551
+        AuthQ           14765832632048637813514721869917149873166656392189
+        AuthQ           34735854308571561542188783119733552142301913765627
+	ISAddr		193.1.1.1
+	ISAddr		193.1.1.2
+	Refresh		3600
+}
+
+; The following entry updates record 1000 using password on server
+; 193.2.2.2 installed on port 58801 and keeps the connection with
+; the server's default refresh rate
+; HostID 1000 in server 193.1.1.1 is different from HostID 
+; 1000 in server 193.2.2.2
+;
+; In addition /etc/dhid-online.sh is executed when authentication is 
+; successful and /etc/dhid-offline.sh is executed when the record 
+; returns to offline mode.
+; Argument 1 of both OnCmd and OffCmd is the hostid (1000 below). 
+; Argument 2 is the local IPv4 dynamic address
+; Arguments 3 and above are whatever is specified after the command
+{
+	HostID		1000
+	HostPass	secret2
+	ISAddr		193.2.2.2:58801
+	OnCmd		/etc/dhid-online.sh <arguments 3,4, ... here>
+	OffCmd		/etc/dhid-offline.sh <arguments 3,4, ... here>
+}
+

@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_DHID" == "y" ] && EXTERNAL_FILES+=" /usr/bin/dhid /usr/bin/genkeys"

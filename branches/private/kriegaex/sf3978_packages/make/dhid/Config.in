@@ -1,0 +1,34 @@
+config FREETZ_PACKAGE_DHID
+	bool "dhid 5.5 (binaries only)"
+	select FREETZ_LIB_libgmp
+	default n
+	help
+		DHIS is a client-server based system architecture primarily meant for updating
+		DNS for hosts that have dynamic IP addresses. With DHIS you can have your
+		computer always recognised and available on the Internet with the same unique
+		name, even if its IP address changes frequently.
+		dhid is the DHIS client daemon. After setting up with the DHIS provider, each
+		machine may run a dhid daemon (in background) in order to update its dynamic IP
+		address within the server. Until release 4.0 DHIS was a system intended to
+		provide dynamic DNS updates (on the server) only. In other words, the client
+		daemon dhid would update its DNS entry within the server.
+		Once running, dhid sends echo request packets to the server and expects a reply.
+		Once received, dhid tries to authenticate at the server either in password or qrc
+		mode. From then on, and providing authentication was successful, the client waits
+		and replies to queries originated at the server. If the server doesn't receive
+		acknowledgments of these packets the host is marked offline. Likewise, if the
+		client doesn't receive queries for a period of time the offline stage is restored.
+		Therefore, the only thing a DHIS host needs is to run the dhid client. The server
+		is able to determine when the host is online and the server tables are updated
+		automatically.
+		From R5 the DHIS client dhid no longer implements mail relaying functions or
+		interactive mode. This release of the client however supports the following
+		additional features:
+
+		    Multi-server support
+		    Multi-client update support 
+		    Configurable refresh rates
+		    Possibility of running external commands when online/offline transitions occur.
+
+		For an example of the possible options please see dhid.conf.sample
+		WWW: http://www.dhis.org/WebEngine.ipo?context=dhis.website.home
