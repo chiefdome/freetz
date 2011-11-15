@@ -1,0 +1,64 @@
+--- makefile.out.orig	2010-01-07 00:13:16.000000000 +0100
++++ makefile.out	2010-01-06 22:57:22.000000000 +0100
+@@ -0,0 +1,29 @@
++CC	= 
++SRC	= src/
++CFLAGS  = 
++LIBS	= -lm -ldl -lssl -lcrypto
++INCLUDE = -I./src/ -I.
++OBJS	= src/psybnc.o src/match.o src/p_client.o src/p_crypt.o src/p_dcc.o src/p_hash.o src/p_idea.o src/p_inifunc.o src/p_link.o src/p_log.o src/p_memory.o src/p_network.o src/p_parse.o src/p_peer.o src/p_server.o src/p_socket.o src/p_string.o src/p_sysmsg.o src/p_userfile.o src/p_uchannel.o src/p_script.o src/p_topology.o src/p_intnet.o src/p_blowfish.o src/p_translate.o src/p_coredns.o src/snprintf.o 
++DEFINE	= -DHAVE_CONFIG -DNOSYSTIME -DPSYBASE=/var/tmp/flash/psybnc
++TARGET	= psybnc
++
++all:	$(OBJS)
++	$(CC) -o $(TARGET) $(CFLAGS) $(OBJS) $(LIBS)
++	#@echo "*** GENERATING SSL-KEYS FROM CERTIFICATE **"
++	#@echo "* You will be prompted for Cert-Contents  *"
++	#@echo "*  This Infos will be used only for SSL   *"
++	#@echo "* Alter the informations to your values   *"
++	#@echo "* for the sake of correct Cert-Checking   *"
++	#@echo "*******************************************"
++	#@echo "Generating certificate request .. "
++	#@/usr/bin/openssl req -new -config src/ssl.cnf -out key/psybnc.req.pem \
++      	#-keyout key/psybnc.key.pem -nodes
++	#@echo "Generating self-signed certificate .. "
++	#@/usr/bin/openssl req -x509 -days 365 -in key/psybnc.req.pem \
++       #	-key key/psybnc.key.pem -out key/psybnc.cert.pem
++	#@echo "Generating fingerprint .."
++	#@/usr/bin/openssl x509 -subject -dates -fingerprint -noout \
++	#	-in key/psybnc.cert.pem
++	@echo psyBNC2.3.2-9-Linux ready. Please read the README before you run psybnc.
++
++include ./targets.mak
+--- makefile.out.orig	2010-01-07 00:13:16.000000000 +0100
++++ makefile.out	2010-01-06 22:57:22.000000000 +0100
+@@ -0,0 +1,29 @@
++CC	= 
++SRC	= src/
++CFLAGS  = 
++LIBS	= -lm -ldl -lssl -lcrypto
++INCLUDE = -I./src/ -I.
++OBJS	= src/psybnc.o src/match.o src/p_client.o src/p_crypt.o src/p_dcc.o src/p_hash.o src/p_idea.o src/p_inifunc.o src/p_link.o src/p_log.o src/p_memory.o src/p_network.o src/p_parse.o src/p_peer.o src/p_server.o src/p_socket.o src/p_string.o src/p_sysmsg.o src/p_userfile.o src/p_uchannel.o src/p_script.o src/p_topology.o src/p_intnet.o src/p_blowfish.o src/p_translate.o src/p_coredns.o src/snprintf.o 
++DEFINE	= -DHAVE_CONFIG -DNOSYSTIME -DPSYBASE=/var/tmp/flash/psybnc
++TARGET	= psybnc
++
++all:	$(OBJS)
++	$(CC) -o $(TARGET) $(CFLAGS) $(OBJS) $(LIBS)
++	#@echo "*** GENERATING SSL-KEYS FROM CERTIFICATE **"
++	#@echo "* You will be prompted for Cert-Contents  *"
++	#@echo "*  This Infos will be used only for SSL   *"
++	#@echo "* Alter the informations to your values   *"
++	#@echo "* for the sake of correct Cert-Checking   *"
++	#@echo "*******************************************"
++	#@echo "Generating certificate request .. "
++	#@/usr/bin/openssl req -new -config src/ssl.cnf -out key/psybnc.req.pem \
++      	#-keyout key/psybnc.key.pem -nodes
++	#@echo "Generating self-signed certificate .. "
++	#@/usr/bin/openssl req -x509 -days 365 -in key/psybnc.req.pem \
++       #	-key key/psybnc.key.pem -out key/psybnc.cert.pem
++	#@echo "Generating fingerprint .."
++	#@/usr/bin/openssl x509 -subject -dates -fingerprint -noout \
++	#	-in key/psybnc.cert.pem
++	@echo psyBNC2.3.2-9-Linux ready. Please read the README before you run psybnc.
++
++include ./targets.mak

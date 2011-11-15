@@ -1,0 +1,6 @@
+ifeq ($(strip $(FREETZ_PACKAGE_PSYBNC)),y)
+PACKAGES+=psybnc
+endif
+ifeq ($(strip $(FREETZ_PACKAGE_PSYBNC)),y)
+PACKAGES+=psybnc
+endif

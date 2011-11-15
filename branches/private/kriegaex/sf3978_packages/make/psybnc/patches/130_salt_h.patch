@@ -1,0 +1,128 @@
+--- salt.h.orig	1970-01-01 01:00:00.000000000 +0100
++++ salt.h	2011-07-16 13:29:09.000000000 +0200
+@@ -0,0 +1,61 @@
++/* The 1. Salt -> string containing anything, 5 chars */
++#define SALT1 "mdjja"
++
++/* The 2. Salt -> string containing anything, 25 chars */
++#define SALT2 "eclilgoccbffjmhiippddjdgk"
++
++/* the 1. Code -> a one byte startup code */
++#define CODE1 74
++
++/* the 2. Code -> a one byte startup code */
++#define CODE2 67
++
++/* the 1. Salt Offset -> value from 0-4 */
++#define SA1 4
++
++/* the 2. Salt Offset -> value from 0-24 */
++#define SA2 0
++
++/* the make salt routine */
++/* dont wonder about the redundance, its needed to somehow hide the fully salts */
++
++/* salt buffers */
++
++unsigned char slt1[6];
++unsigned char slt2[26];
++
++int makesalt(void)
++{
++    slt1[0]=SALT1[0];
++    slt1[1]=SALT1[1];
++    slt1[2]=SALT1[2];
++    slt1[3]=SALT1[3];
++    slt1[4]=SALT1[4];
++    slt1[5]=0;
++    slt2[0]=SALT2[0];
++    slt2[1]=SALT2[1];
++    slt2[2]=SALT2[2];
++    slt2[3]=SALT2[3];
++    slt2[4]=SALT2[4];
++    slt2[5]=SALT2[5];
++    slt2[6]=SALT2[6];
++    slt2[7]=SALT2[7];
++    slt2[8]=SALT2[8];
++    slt2[9]=SALT2[9];
++    slt2[10]=SALT2[10];
++    slt2[11]=SALT2[11];
++    slt2[12]=SALT2[12];
++    slt2[13]=SALT2[13];
++    slt2[14]=SALT2[14];
++    slt2[15]=SALT2[15];
++    slt2[16]=SALT2[16];
++    slt2[17]=SALT2[17];
++    slt2[18]=SALT2[18];
++    slt2[19]=SALT2[19];
++    slt2[20]=SALT2[20];
++    slt2[21]=SALT2[21];
++    slt2[22]=SALT2[22];
++    slt2[23]=SALT2[23];
++    slt2[24]=SALT2[24];
++    slt2[25]=0;
++}
+--- salt.h.orig	1970-01-01 01:00:00.000000000 +0100
++++ salt.h	2011-07-16 13:29:09.000000000 +0200
+@@ -0,0 +1,61 @@
++/* The 1. Salt -> string containing anything, 5 chars */
++#define SALT1 "mdjja"
++
++/* The 2. Salt -> string containing anything, 25 chars */
++#define SALT2 "eclilgoccbffjmhiippddjdgk"
++
++/* the 1. Code -> a one byte startup code */
++#define CODE1 74
++
++/* the 2. Code -> a one byte startup code */
++#define CODE2 67
++
++/* the 1. Salt Offset -> value from 0-4 */
++#define SA1 4
++
++/* the 2. Salt Offset -> value from 0-24 */
++#define SA2 0
++
++/* the make salt routine */
++/* dont wonder about the redundance, its needed to somehow hide the fully salts */
++
++/* salt buffers */
++
++unsigned char slt1[6];
++unsigned char slt2[26];
++
++int makesalt(void)
++{
++    slt1[0]=SALT1[0];
++    slt1[1]=SALT1[1];
++    slt1[2]=SALT1[2];
++    slt1[3]=SALT1[3];
++    slt1[4]=SALT1[4];
++    slt1[5]=0;
++    slt2[0]=SALT2[0];
++    slt2[1]=SALT2[1];
++    slt2[2]=SALT2[2];
++    slt2[3]=SALT2[3];
++    slt2[4]=SALT2[4];
++    slt2[5]=SALT2[5];
++    slt2[6]=SALT2[6];
++    slt2[7]=SALT2[7];
++    slt2[8]=SALT2[8];
++    slt2[9]=SALT2[9];
++    slt2[10]=SALT2[10];
++    slt2[11]=SALT2[11];
++    slt2[12]=SALT2[12];
++    slt2[13]=SALT2[13];
++    slt2[14]=SALT2[14];
++    slt2[15]=SALT2[15];
++    slt2[16]=SALT2[16];
++    slt2[17]=SALT2[17];
++    slt2[18]=SALT2[18];
++    slt2[19]=SALT2[19];
++    slt2[20]=SALT2[20];
++    slt2[21]=SALT2[21];
++    slt2[22]=SALT2[22];
++    slt2[23]=SALT2[23];
++    slt2[24]=SALT2[24];
++    slt2[25]=0;
++}
