@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_CONNECT)),y)
+PACKAGES+=connect
+endif

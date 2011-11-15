@@ -1,0 +1,16 @@
+config FREETZ_PACKAGE_CONNECT
+	bool "connect 1.100 (binary only)"
+	default n
+	help
+		connect is the simple relaying command to make network connection
+		via SOCKS and https proxy. It is mainly intended to be used as proxy
+		command of OpenSSH. You can make SSH session beyond the firewall with
+		this command.
+		Features of connect are:
+		    * Supports SOCKS (version 4/4a/5) and https CONNECT method.
+		    * Supports NO-AUTH and USERPASS authentication of SOCKS
+		    * You can input password from tty, ssh-askpass or environment variable.
+		    * Run on UNIX or Windows platform.
+		    * Simple and general program independent from OpenSSH.
+		    * You can also relay local socket stream instead of standard I/O.
+		WWW: http://bent.latency.net/bent/git/goto-san-connect-1.85/src/connect.html#sec1
