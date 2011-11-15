@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_SIPP
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_SIPP
+	bool "sipp"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/sipp

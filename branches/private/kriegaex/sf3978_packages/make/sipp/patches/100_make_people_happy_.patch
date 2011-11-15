@@ -1,0 +1,20 @@
+--- Makefile.orig	2011-04-24 23:53:14.000000000 +0200
++++ Makefile	2011-04-25 00:53:19.000000000 +0200
+@@ -20,7 +20,7 @@
+ 
+ -include local.mk
+ SVN_VERSION=$(shell if test -d .svn ; then svnversion . | sed -e 's/^/svn/;' ;  else echo unknown ; fi)
+-VERINFO=-DSVN_VERSION="\"$(SVN_VERSION)\""
++VERINFO=-DSVN_VERSION="\"2010-11-16\""
+ 
+ # Output binary to be built
+ OUTPUT=sipp
+@@ -93,7 +93,7 @@
+ MFLAGS_i486=
+ MFLAGS_i386=
+ MFLAGS_ppc=
+-MFLAGS=$(MFLAGS_$(MODELNAME))
++MFLAGS=$(MFLAGS_mips)
+ 
+ #C Compiler Flags
+ # supress warning #829 (Implicit conversion of string literal to
