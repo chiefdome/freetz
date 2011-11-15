@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_BING)),y)
+PACKAGES+=bing
+endif

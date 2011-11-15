@@ -1,0 +1,11 @@
+--- Makefile.orig	2011-04-03 10:05:28.000000000 +0200
++++ Makefile	2011-04-03 09:54:31.000000000 +0200
+@@ -21,7 +21,7 @@
+ 
+ # Uncomment if you need the 4.4 BSD compatibility includes.
+ #  -> required on Linux (and Win32)
+-#COMPAT_INCS = -Iinclude
++COMPAT_INCS = -Iinclude
+ 
+ # Maybe specify some specific compatibility options
+ #  -> on AIX activate the BSD mode
