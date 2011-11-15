@@ -1,0 +1,10 @@
+config EXTERNAL_FREETZ_PACKAGE_UFTP
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_UFTP
+	bool "uftp"
+	default n
+	help
+		externals these file(s):
+		/usr/bin/uftp
+		/usr/bin/uftpd
+		/usr/bin/uftpproxyd
+		/usr/bin/uftp_keymgt

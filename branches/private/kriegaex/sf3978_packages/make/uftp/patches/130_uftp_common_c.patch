@@ -1,0 +1,11 @@
+--- uftp_common.c.orig	2011-08-29 22:02:14.000000000 +0200
++++ uftp_common.c	2011-08-29 22:02:29.000000000 +0200
+@@ -111,7 +111,7 @@
+ 
+ #ifdef HAS_GETIFADDRS
+ 
+-#include <ifaddrs.h>
++#include "ifaddrs.h"
+ 
+ void getiflist(struct iflist *list, int *len)
+ {

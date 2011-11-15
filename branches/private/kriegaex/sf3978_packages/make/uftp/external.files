@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_UFTP" == "y" ] && EXTERNAL_FILES+=" /usr/bin/uftp /usr/bin/uftpd /usr/bin/uftpproxyd /usr/bin/uftp_keymgt"
