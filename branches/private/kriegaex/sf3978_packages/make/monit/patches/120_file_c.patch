@@ -1,0 +1,25 @@
+--- file.c.orig
++++ file.c
+@@ -184,6 +184,11 @@
+     return (rcfile);
+   }
+   memset(rcfile, 0, STRLEN);
++  snprintf(rcfile, STRLEN, "/var/tmp/flash/mod/monit/%s", MONITRC);
++  if(File_exist(rcfile)) {
++    return (rcfile);
++  }
++  memset(rcfile, 0, STRLEN);
+   snprintf(rcfile, STRLEN, "/etc/%s", MONITRC);
+   if(File_exist(rcfile)) {
+     return (rcfile);
+@@ -204,8 +209,8 @@
+     return (rcfile);
+   }
+   LogError("%s: Cannot find the control file at "
+-      "~/.%s, /etc/%s, %s/%s, /usr/local/etc/%s or at ./%s \n",
+-      prog, MONITRC, MONITRC, SYSCONFDIR, MONITRC, MONITRC, MONITRC);
++       "/var/tmp/flash/mod/monit/%s \n",
++       prog, MONITRC, MONITRC, MONITRC, MONITRC, MONITRC);
+   exit(1);
+   
+ }

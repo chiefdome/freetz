@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_MONIT)),y)
+PACKAGES+=monit
+endif

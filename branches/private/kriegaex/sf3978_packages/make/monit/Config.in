@@ -1,0 +1,13 @@
+config FREETZ_PACKAGE_MONIT
+	bool "monit 5.2.5 (binary only)"
+	select FREETZ_LIB_libssl
+	select FREETZ_LIB_libcrypto
+	default n
+	help
+		  Monit is a free open source utility for managing and monitoring, processes,
+		  files, directories and filesystems on a UNIX system. Monit conducts automatic
+		  maintenance and repair and can execute meaningful causal actions in error
+		  situations.   
+		  WWW: http://mmonit.com/monit/
+		  Documentation: http://mmonit.com/monit/documentation/monit.html
+		  Wiki: http://mmonit.com/wiki/
