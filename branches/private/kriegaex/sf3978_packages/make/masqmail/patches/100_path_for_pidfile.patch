@@ -1,0 +1,11 @@
+--- src/masqmail.h.orig	2011-08-21 11:27:26.000000000 +0200
++++ src/masqmail.h	2011-08-21 11:28:15.000000000 +0200
+@@ -534,7 +534,7 @@
+ 
+ #define CONF_FILE CONF_DIR"/masqmail.conf"
+ 
+-#define PIDFILEDIR "/var/run/masqmail/"
++#define PIDFILEDIR "/var/media/ftp/uStor01/masqmail/run/"
+ 
+ #ifndef va_copy
+ #ifdef __va_copy

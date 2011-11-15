@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_MASQMAIL)),y)
+PACKAGES+=masqmail
+endif

@@ -1,0 +1,9 @@
+config EXTERNAL_FREETZ_PACKAGE_MASQMAIL
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_MASQMAIL
+	bool "masqmail"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/masqmail
+			/usr/bin/mservdetect
+			/usr/bin/smtpsend

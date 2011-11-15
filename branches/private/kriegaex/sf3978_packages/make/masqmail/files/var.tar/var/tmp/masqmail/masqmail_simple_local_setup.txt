@@ -1,0 +1,94 @@
+Simple Setup
+============
+
+You want
+--------
+
+- submit mail on stdin by calling masqmail on the commandline
+- submit mail with SMTP from the local machine
+- let masqmail deliver mail locally to the system mailboxes /var/mail/*
+
+You have luck, because this is what masqmail does by default.
+
+
+Set up
+------
+
+Follow the description in INSTALL.
+
+A common configure call would be:
+
+    ./configure --enable-auth --enable-ident
+
+
+Configuration
+-------------
+
+You just need a minimal config file, having one line:
+
+    host_name = "foo.example.org"
+
+(Substitute a real value, of course.)
+
+
+Starting the daemon
+-------------------
+
+Listening for SMTP connections on a port requires masqmail to run as
+daemon. You probably want to start masqmail as daemon each time the
+system comes up. How you have to do that is system dependent.
+/etc/rc.local is a good try to add the daemon call, because this file
+seems to be frequently available.
+
+    /usr/local/sbin/masqmail -bd -q10m
+
+This starts masqmail in daemon mode and does a queue run every ten
+minutes.
+
+
+Check the setup
+---------------
+
+Ensure you have the sendmail links correct:
+
+    $ ls -l /usr/lib/sendmail /usr/sbin/sendmail
+    lrwxrwxrwx 1 root root 25 2010-03-06 13:50 /usr/lib/sendmail -> /usr/local/sbin/masqmail*
+    lrwxrwxrwx 1 root root 25 2010-03-06 13:50 /usr/sbin/sendmail -> /usr/local/sbin/masqmail*
+
+Send a mail to yourself:
+
+    $ echo "some text" | mail `whoami`
+
+Check if the mail was delivered (then delete it and quit):
+
+    $  mail
+    Mail version 8.1.2 01/15/2001.  Type ? for help.
+    "/var/mail/meillo": 1 message 1 new
+    >N  1 meillo@serveme.sc  Wed Jul 14 22:50   13/467   
+    & p
+    Message 1:
+    From <meillo@serveme.schnalke.local> Wed Jul 14 22:50:13 2010
+    Envelope-to: <meillo@serveme.schnalke.local>
+    To: meillo
+    From: <meillo@serveme.schnalke.local>
+    Date: Wed, 14 Jul 2010 22:50:13 +0200
+    
+    some text
+    
+    & d
+    & q
+
+
+In case of problems
+-------------------
+
+Have a look at the log file: /var/log/masqmail/masqmail.log
+
+Set the debug level in masqmail.conf, restart the daemon, redo the
+test, and look at the debug file: /var/log/masqmail/debug.log
+
+Ask on the mailing list: <masqmail@marmaro.de>
+
+
+
+meillo 

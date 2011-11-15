@@ -1,0 +1,24 @@
+config FREETZ_PACKAGE_MASQMAIL
+	bool "masqmail 0.3.2 (binaries only)"
+	select FREETZ_LIB_libpcre
+	select FREETZ_LIB_libglib_2
+	select FREETZ_LIB_libintl
+#	select FREETZ_LIB_libcrypto
+	default n
+	help
+		  Masqmail is a mail server designed for hosts that are not permanently
+		  connected to the internet. It handles outgoing messages, i.e. those
+		  that are to be sent over the non-permanent link (usually a ppp or slip
+		  connection over a modem or ISDN adapter) specially and delivers them
+		  only when explicitely told to do so. There is support for multiple
+		  providers, it is possible to write different configurations for each
+		  one. The configuration chosen is selected at delivery time, so that if
+		  for example a delivery of a message failed while connected with
+		  provider 1, it may be delivered when connected to provider 2. For each
+		  provider another mail host (or none) can be specified.
+		  *** HINT: The use of MasqMail is *strongly* discouraged if you have a
+		  permanent connection to the internet without a firewall. First
+		  because it does not have the ability to block relaying (it relays
+		  every mail) and second because there are no capabilities to
+		  protect against SPAM.
+		  WWW: http://marmaro.de/prog/masqmail/
