@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_NBTSCAN
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_NBTSCAN
+	bool "nbtscan"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/nbtscan
