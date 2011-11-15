@@ -1,0 +1,11 @@
+config FREETZ_PACKAGE_TCPSCRIPT
+	bool "tcpscript 0.2 (binary only)"
+	select FREETZ_LIB_libutil
+	default n
+	help
+		tcpscript is a tool that easily allows other people to see
+		your terminal session screen in a way similar to the classic
+		Unix command, "script". It opens a TCP port that allows
+		anyone to connect to it using telnet and see in real time
+		what you see on the terminal. For example, you can use "nano"
+		in it as a blackboard or as a chat system.

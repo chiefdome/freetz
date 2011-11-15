@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_TCPSCRIPT
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_TCPSCRIPT
+	bool "tcpscript"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/tcpscript
