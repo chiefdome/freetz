@@ -1,0 +1,8 @@
+config FREETZ_PACKAGE_ELHTTP
+	bool "elhttp 0.22 (binary only)"
+	default n
+	help
+		elhttp is a very light HTTP proxy server, mostly useful on embedded
+		Linux systems such as ADSL routers. It supports HTTP 1.1 (keep-alive),
+		the connect method, IP-based ACLs, SSL relaying, and client request
+		logging. It runs on most Unix variants (Linux, *BSD, etc.) and Win32.  

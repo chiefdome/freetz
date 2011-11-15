@@ -1,0 +1,21 @@
+--- Makefile.orig	2011-03-26 15:06:09.000000000 +0100
++++ Makefile	2011-03-26 15:08:03.000000000 +0100
+@@ -1,13 +1,7 @@
++CC=
++CFLAGS=
+ 
+-linux:
+-	gcc -O -W -Wall -o elhttp elhttp.c
+-	strip elhttp
+-
+-sunos:
+-	gcc -O -W -Wall -o elhttp elhttp.c -lsocket -lnsl
+-	strip elhttp
+-
+-unix:
+-	cc -O -o elhttp elhttp.c
+-	strip elhttp
++all: elhttp
+ 
++elhttp: elhttp.c
++	${CC} ${CFLAGS} -o elhttp elhttp.c
