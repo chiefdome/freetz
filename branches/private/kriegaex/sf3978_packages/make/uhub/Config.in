@@ -1,0 +1,10 @@
+config FREETZ_PACKAGE_UHUB
+	bool "uhub 0.3.2 (binary only)"
+	select FREETZ_LIB_libssl
+	default n
+	help
+		uhub is a high performance peer-to-peer hub for the ADC network.
+	        Its low memory footprint allows it to handle several thousand users
+	        on high-end servers, or a small private hub on embedded hardware.  
+		WWW: http://www.uhub.org/index.php
+		config: http://www.uhub.org/config.php
