@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_TDETECT
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_TDETECT
+	bool "tdetect"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/tdetect

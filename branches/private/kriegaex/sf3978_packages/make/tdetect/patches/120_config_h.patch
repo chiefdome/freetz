@@ -1,0 +1,11 @@
+--- config.h.orig	2011-03-25 19:19:15.000000000 +0100
++++ config.h	2011-03-25 19:26:28.000000000 +0100
+@@ -5,5 +5,5 @@
+ #define	SYSLOG_LOG		LOG_AUTHPRIV
+ #define	SYSLOG_LEVEL	LOG_INFO
+ 
+-extern void log( char* str );
+-extern char	tmsg[100];
+\ Kein Zeilenumbruch am Dateiende.
++/*void log( char* str );*/
++extern char	tmsg[100];

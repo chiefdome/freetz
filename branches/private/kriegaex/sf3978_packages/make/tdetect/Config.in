@@ -1,0 +1,8 @@
+config FREETZ_PACKAGE_TDETECT
+	bool "tdetect 0.2 (binary only)"
+	select FREETZ_LIB_libpcap
+	default n
+	help
+		tdetect detects someone running traceroute against your system.
+		It does this by detecting UDP (Unix traceroute) or ICMP ECHO (Windows
+		traceroute) packets with TTL fields == 1.  

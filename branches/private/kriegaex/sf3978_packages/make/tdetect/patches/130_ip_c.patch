@@ -1,0 +1,23 @@
+--- ip.c.orig	2011-03-25 19:30:22.000000000 +0100
++++ ip.c	2011-03-25 19:38:06.000000000 +0100
+@@ -37,6 +37,11 @@
+ 
+ #include "config.h"
+ 
++void log1( char* str )
++{
++	syslog(SYSLOG_LEVEL, str);
++}
++
+ extern struct in_addr broadcast;
+ 
+ void ip_analyze(const struct ip *ip, int length)
+@@ -70,7 +75,7 @@
+ 		sprintf(tmsg,"%s traceroute attempt to %s from %s\n", 
+ 			type, dst, (char *)inet_ntoa(ip->ip_src));
+ 	
+-		log(tmsg);
++		log1(tmsg);
+ 		free(dst);
+ 	}
+ }

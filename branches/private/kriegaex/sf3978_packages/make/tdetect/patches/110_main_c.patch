@@ -1,0 +1,10 @@
+--- main.c.orig	2011-03-25 19:21:00.000000000 +0100
++++ main.c	2011-03-25 19:26:02.000000000 +0100
+@@ -42,6 +42,7 @@
+  */  
+ 
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <pcap.h>
+ #include <unistd.h>
+ #include <fcntl.h>
