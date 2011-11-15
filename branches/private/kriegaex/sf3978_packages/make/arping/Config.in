@@ -1,0 +1,18 @@
+config FREETZ_PACKAGE_ARPING
+	bool "arping 2.09 (binary only)"
+	select FREETZ_LIB_libpcap
+	select FREETZ_LIB_libnet
+	default n
+	help
+		arping is a utility to find out if a specific IP address
+		on the LAN is 'taken' and what MAC address owns it.
+		Sure, you could just use 'ping' to find out if it's
+		taken and even if the computer blocks ping (and everything
+		else) you still get an entry in your ARP cache. But what if
+		you aren't on a routable net? Or the host blocks ping (all
+		ICMP even)? Then you're screwed. Or you use arping.
+		Broadcasts a who-has ARP packet on the network and prints
+		answers. VERY useful when you are trying to pick an unused
+		IP for a net that you don't yet have routing to.
+		http://www.habets.pp.se/synscan/programs.php?prog=arping
+
