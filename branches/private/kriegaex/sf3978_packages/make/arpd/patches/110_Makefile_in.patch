@@ -1,0 +1,11 @@
+--- Makefile.in.orig	2003-02-09 19:31:27.000000000 +0100
++++ Makefile.in		2010-04-03 22:11:28.000000000 +0200
+@@ -154,7 +154,7 @@ $(srcdir)/config.h.in: $(srcdir)/stamp-h
+ 		$(MAKE) $(srcdir)/stamp-h.in; \
+ 	else :; fi
+ $(srcdir)/stamp-h.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) acconfig.h
+-	cd $(top_srcdir) && $(AUTOHEADER)
++	#cd $(top_srcdir) && $(AUTOHEADER)
+ 	@echo timestamp > $(srcdir)/stamp-h.in 2> /dev/null
+ 
+ mostlyclean-hdr:
