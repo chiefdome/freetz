@@ -1,0 +1,12 @@
+config FREETZ_PACKAGE_PKTSTAT
+	bool "pktstat 1.8.4 (binary only)"
+	select FREETZ_LIB_libncurses
+	select FREETZ_LIB_libpcap
+	default n
+	help
+		pktstat listens to the network and shows the bandwidth being consumed
+		by packets of various kinds in realtime. It understands some protocols
+		(including FTP, HTTP, and X11) and adds a descriptive name next to the
+		entry.
+		Author: David Leonard <leonard at users.sourceforge.net>
+		Manpage: http://linux.die.net/man/1/pktstat
