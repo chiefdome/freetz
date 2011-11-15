@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ ! -s /var/run/ndyndns.pid ] && [ "$1" = "online" ]; then
+	  logger -t info start NDYNDNS after IP-change
+	  (sleep 10; /etc/init.d/rc.ndyndns start_nodaemon)&
+fi

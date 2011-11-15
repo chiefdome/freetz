@@ -1,0 +1,24 @@
+--- Makefile.in.orig	2010-07-25 12:20:26.000000000 +0200
++++ Makefile.in		2010-07-25 12:29:03.000000000 +0200
+@@ -1,11 +1,9 @@
+-#CC = gcc -Wall -Wpointer-arith -Wstrict-prototypes -pedantic
+ CC = @CC@
+-dnslib = -lnss_dns
+ objects = log.o nstrl.o util.o chroot.o pidfile.o signals.o strlist.o checkip.o $(PLATFORM).o cfg.o ndyndns.o
+ CURLINC = @CURLINC@
+ CURLLIB = @CURLLIB@
+ VERSION = @VERSION@
+-CFLAGS = @CFLAGS@ -Wall -Wextra -pedantic $(CURLINC)
++CFLAGS =
+ PLATFORM = @PLATFORM@
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+@@ -16,7 +14,7 @@
+ all: ndyndns
+ 
+ ndyndns : $(objects)
+-	$(CC) $(LDFLAGS) $(dnslib) $(CURLLIB) -o ndyndns $(objects)
++	$(CC) $(LDFLAGS) $(CURLLIB) -o ndyndns $(objects)
+ 
+ ndyndns.o : log.h nstrl.h util.h chroot.h pidfile.h signals.h strlist.h checkip.h $(PLATFORM).h cfg.h
+ 	$(CC) $(CFLAGS) -c -o $@ ndyndns.c

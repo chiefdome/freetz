@@ -1,0 +1,18 @@
+config FREETZ_PACKAGE_NDYNDNS
+	bool "ndyndns 2.1 (binary only)"
+	select FREETZ_LIB_libcurl
+	select FREETZ_LIB_libcrypto
+	select FREETZ_LIB_libssl
+	default n
+	help		 
+		ndyndns is a GPL'ed update client written in C that supports custom,
+		static, and dynamic DNS. It avoids unnecessary updates, reports errors,
+		logs to syslog, and generally ought to be compliant with everything
+		required for a proper dyndns client. It is written to be secure and
+		supports running as an unprivileged process in a chroot jail. SSL-encrypted
+		transfers are also supported.
+		ndyndns is dependent on cURL and currently works on Linux and the BSDs,
+		but is easily portable to other POSIX platforms.
+		WWW: http://code.google.com/p/ndyndns/
+
+
