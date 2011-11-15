@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_DNSPROXY
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_DNSPROXY
+	bool "dnsproxy"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/dnsproxy
