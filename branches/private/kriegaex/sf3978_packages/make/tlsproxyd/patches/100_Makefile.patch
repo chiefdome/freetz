@@ -1,0 +1,91 @@
+--- Makefile.orig	2011-05-22 13:35:16.000000000 +0200
++++ Makefile	2011-05-27 21:48:46.000000000 +0200
+@@ -10,54 +10,59 @@
+ 
+ VERSION = 0.0.2
+ 
++CC=
++CFLAGS=
++LDFLAGS=
++LDLIBS=
++
+ #CC = gcc
+ 
+-CFLAGS  += -g -Wall -DTLSPROXYD_VERSION='"$(VERSION)"'
+-LDFLAGS += -g -L/software/lib
+-LDLIBS  += -lssl -lcrypto
++##CFLAGS  += -g -Wall -DTLSPROXYD_VERSION='"$(VERSION)"'
++##LDFLAGS += -g -L/software/lib
++##LDLIBS  += -lssl -lcrypto
+ 
+ # This may or may not be necessary on your system.
+-CFLAGS  += -I/software/include
++##CFLAGS  += -I/software/include
+ 
+ SUBDIRS = 
+ 
+-TXTS = README TODO COPYING CHANGES tlsproxyd.8 tlsproxyd.cat
++##TXTS = README TODO COPYING CHANGES tlsproxyd.8 tlsproxyd.cat
+ SRCS = config.c proxy.c tlsproxyd.c util.c
+ HDRS = tlsproxyd.h
+ BINS = tlsproxyd
+ 
+ OBJS = $(SRCS:.c=.o)
+ 
+-tlsproxyd:   depend $(OBJS)
++tlsproxyd:   $(OBJS)
+ 	$(CC) -o tlsproxyd $(OBJS) $(LDFLAGS) $(LDLIBS)
+ 
+ %.o:    %.c Makefile
+ 	$(CC) $(CFLAGS) -c -o $@ $<
+ 
+-clean:  nodepend
+-	rm -f *~ *.bak *.o core $(BINS) TAGS
++##clean:  nodepend
++##	rm -f *~ *.bak *.o core $(BINS) TAGS
+ 
+-tags:
+-	ctags *.c *.h
++##tags:
++##	ctags *.c *.h
+ 
+-tarball: nodepend $(SRCS) $(HDRS) $(TXTS)
+-	mkdir tlsproxyd-$(VERSION)
+-	set -e ; for i in Makefile $(SRCS) $(HDRS) $(TXTS) ; do cp $$i tlsproxyd-$(VERSION)/$$i ; done
+-	tar cvzf tlsproxyd-$(VERSION).tar.gz tlsproxyd-$(VERSION)
+-	rm -rf tlsproxyd-$(VERSION)
+-	mv tlsproxyd-$(VERSION).tar.gz ..
+-
+-tlsproxyd.cat: tlsproxyd.8 Makefile
+-	(echo -e ".pl 1100i" ; cat tlsproxyd.8 ; echo ".pl \n(nlu+10") \
+-            | groff -Tascii -man > tlsproxyd.cat
+-
+-depend:
+-	makedepend -- $(CFLAGS) -- $(SRCS)
+-	touch depend
+-	rm -f Makefile.bak
+-
+-nodepend:
+-	makedepend -- --
+-	rm -f depend Makefile.bak
++##tarball: nodepend $(SRCS) $(HDRS) $(TXTS)
++##	mkdir tlsproxyd-$(VERSION)
++##	set -e ; for i in Makefile $(SRCS) $(HDRS) $(TXTS) ; do cp $$i tlsproxyd-$(VERSION)/$$i ; done
++##	tar cvzf tlsproxyd-$(VERSION).tar.gz tlsproxyd-$(VERSION)
++##	rm -rf tlsproxyd-$(VERSION)
++##	mv tlsproxyd-$(VERSION).tar.gz ..
++
++##tlsproxyd.cat: tlsproxyd.8 Makefile
++##	(echo -e ".pl 1100i" ; cat tlsproxyd.8 ; echo ".pl \n(nlu+10") \
++##            | groff -Tascii -man > tlsproxyd.cat
++
++##depend:
++##	makedepend -- $(CFLAGS) -- $(SRCS)
++##	touch depend
++##	rm -f Makefile.bak
++
++##nodepend:
++##	makedepend -- --
++##	rm -f depend Makefile.bak
+ 
+ # DO NOT DELETE

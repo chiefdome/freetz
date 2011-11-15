@@ -1,0 +1,8 @@
+certificate=/var/tmp/flash/tlsproxyd/tlsproxyd.pem
+# openssl req -new -x509 -nodes -out tlsproxyd.pem -keyout tlsproxyd.pem
+max-processes=4
+timeout=45
+user=nobody
+group=nobody
+# listen for incoming connections on left_hand_host:left_hand_port
+<left_hand_host>:<left_hand_port> -> <right_hand_host>:<right_hand_port>

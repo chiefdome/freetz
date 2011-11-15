@@ -1,0 +1,19 @@
+config FREETZ_PACKAGE_TLSPROXYD
+	bool "tlsproxyd 0.0.2 (binary only)"
+	select FREETZ_LIB_libssl
+	select FREETZ_LIB_libcrypto
+	default n
+	help
+		tlsproxyd is a general proxying daemon for TLS/SSL. It allows you to connect
+		TLS-enabled clients to non-TLS-enabled servers, presumably over a secure
+		network so as not to miss the point entirely. It requires OpenSSL.
+		It differs from stunnel, sslwrap etc. in that it is a stand alone daemon,
+		rather than a program which runs from inetd. This is primarily so that it can
+		conveniently be used with a certificate which has a pass phrase. Also, stunnel
+		especially has a history of security holes; tlsproxyd is intended to be as
+		simple as possible, so as to avoid any obvious pitfalls of this sort. (The
+		third reason for writing it was to learn something about SSL; the take home
+		message from this exercise is, `SSL: run screaming and don't look back'.  
+		WWW: http://www.ex-parrot.com/~chris/tlsproxyd/
+		Manpage: http://www.ex-parrot.com/~chris/tlsproxyd/tlsproxyd.8.html
+		Readme: http://www.ex-parrot.com/~chris/tlsproxyd/README
