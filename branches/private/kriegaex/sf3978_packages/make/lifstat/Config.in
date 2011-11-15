@@ -1,0 +1,8 @@
+config FREETZ_PACKAGE_LIFSTAT
+	bool "lifstat 20100318 (binary only)"
+	default n
+	help
+		lifstat is a linux utility that reads /proc/net/dev and reports
+		input and output statistics for available network interfaces over
+		a repeating time inteval similar to the BSD 'netstat -i' command.   
+		WWW: http://fejes.net/frank/lifstat/

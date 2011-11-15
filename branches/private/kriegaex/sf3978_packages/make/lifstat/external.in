@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_LIFSTAT
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_LIFSTAT
+	bool "lifstat"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/lifstat
