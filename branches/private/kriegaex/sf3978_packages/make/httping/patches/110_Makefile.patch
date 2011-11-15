@@ -1,0 +1,61 @@
+--- Makefile.orig	2011-08-03 17:04:09.000000000 +0200
++++ Makefile	2011-08-03 17:16:58.000000000 +0200
+@@ -16,9 +16,11 @@
+ 
+ TARGET=httping
+ 
+-WFLAGS=-Wall -W
+-OFLAGS=-O2
+-CFLAGS+=$(WFLAGS) $(OFLAGS) -DVERSION=\"$(VERSION)\" -g
++#WFLAGS=-Wall -W
++#OFLAGS=-O2
++#CFLAGS+=$(WFLAGS) $(OFLAGS) -DVERSION=\"$(VERSION)\" -g
++CFLAGS=
++CC=
+ 
+ PACKAGE=$(TARGET)-$(VERSION)
+ PREFIX=/usr
+@@ -43,26 +45,27 @@
+ 
+ DOCS=license.txt license.OpenSSL readme.txt
+ 
+-ifeq ($(SSL),no)
+-CFLAGS+=-DNO_SSL
+-else
+-OBJS+=mssl.o
+-LDFLAGS+=-lssl -lcrypto
+-endif
+-
+-ifeq ($(DEBUG),yes)
+-CFLAGS+=-D_DEBUG -g
+-LDFLAGS+=-g
+-endif
+-
+-ifeq ($(ARM),yes)
+-CC=arm-linux-gcc
+-endif
++#ifeq ($(SSL),no)
++#CFLAGS+=-DNO_SSL
++#else
++#OBJS+=mssl.o
++#LDFLAGS+=-lssl -lcrypto
++#endif
++
++#ifeq ($(DEBUG),yes)
++#CFLAGS+=-D_DEBUG -g
++#LDFLAGS+=-g
++#endif
++
++#ifeq ($(ARM),yes)
++#CC=arm-linux-gcc
++#endif
+ 
+ all: $(TARGET)
+ 
+ $(TARGET): $(OBJS)
+-	$(CC) $(WFLAGS) $(OBJS) $(LDFLAGS) -o $(TARGET)
++	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
++	#$(CC) $(WFLAGS) $(OBJS) $(LDFLAGS) -o $(TARGET)
+ 	#
+ 	# Oh, blatant plug: http://keetweej.vanheusden.com/wishlist.html
+ 

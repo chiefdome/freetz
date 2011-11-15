@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_HTTPING
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_HTTPING
+	bool "httping"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/httping

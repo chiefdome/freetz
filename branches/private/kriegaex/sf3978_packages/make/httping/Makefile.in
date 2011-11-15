@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_HTTPING)),y)
+PACKAGES+=httping
+endif

@@ -1,0 +1,9 @@
+--- tcp.h.orig	2011-08-03 17:30:11.000000000 +0200
++++ tcp.h	2011-08-03 17:30:23.000000000 +0200
+@@ -13,5 +13,5 @@
+   files in the program, then also delete it here.
+ */
+ 
+-int connect_to(struct sockaddr *bind_to, struct addrinfo *ai, int timeout);
++int connect_to(struct sockaddr_in *bind_to, struct addrinfo *ai, int timeout);
+ int set_tcp_low_latency(int sock);

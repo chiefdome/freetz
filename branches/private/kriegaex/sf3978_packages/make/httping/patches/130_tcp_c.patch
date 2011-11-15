@@ -1,0 +1,20 @@
+--- tcp.c.orig	2011-08-03 17:47:17.000000000 +0200
++++ tcp.c	2011-08-03 18:06:05.000000000 +0200
+@@ -31,7 +31,7 @@
+ 
+ extern char last_error[];
+ 
+-int connect_to(struct sockaddr *bind_to, struct addrinfo *ai, int timeout)
++int connect_to(struct sockaddr_in *bind_to, struct addrinfo *ai, int timeout)
+ {
+ 	int     fd;
+ 	int 	rc;
+@@ -58,7 +58,7 @@
+ 			return -1;
+ 		}
+ 
+-		if (bind(fd, bind_to, sizeof(*bind_to)) == -1)
++		if (bind(fd, (struct sockaddr *) bind_to, sizeof(*bind_to)) == -1)
+ 		{
+ 			snprintf(last_error, ERROR_BUFFER_SIZE, "error binding to interface (%s)", strerror(errno));
+ 			return -1;
