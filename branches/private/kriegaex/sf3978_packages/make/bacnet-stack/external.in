@@ -1,0 +1,24 @@
+config EXTERNAL_FREETZ_PACKAGE_BACNET_STACK
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_BACNET_STACK
+	bool "bacnet-stack"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/bacarf
+		 /usr/bin/bacawf
+		 /usr/bin/bacdcc
+		 /usr/bin/bacepics
+		 /usr/bin/bacgateway
+		 /usr/bin/baciamr
+		 /usr/bin/bacinitr
+		 /usr/bin/bacrd
+		 /usr/bin/bacrp
+		 /usr/bin/bacrpm
+		 /usr/bin/bacserv
+		 /usr/bin/bacts
+		 /usr/bin/bacucov
+		 /usr/bin/bacwh
+		 /usr/bin/bacwi
+		 /usr/bin/bacwir
+		 /usr/bin/bacwp
+		 /usr/bin/mstpcap

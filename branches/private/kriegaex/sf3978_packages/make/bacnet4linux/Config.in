@@ -1,0 +1,11 @@
+config FREETZ_PACKAGE_BACNET4LINUX
+	bool "bacnet4linux 0.3.12 (binary only)"
+	default n
+	help
+		BACnet - A Data Communication Protocol for Building Automation
+		and Control Networks. Developed under the auspices of the American
+		Society of Heating, Refrigerating and Air-Conditioning Engineers
+		(ASHRAE), BACnet is an American national standard, a European
+		standard, a national standard in more than 30 countries, and an
+		ISO global standard.  
+		WWW: http://sourceforge.net/projects/bacnet4linux/

@@ -1,0 +1,57 @@
+--- Makefile.orig	2011-08-02 15:36:56.000000000 +0200
++++ Makefile	2011-08-02 16:59:20.000000000 +0200
+@@ -2,23 +2,23 @@
+ 
+ # tools - only if you need them.
+ # Most platforms have this already defined
+-# CC = gcc
+-# AR = ar
+-# MAKE = make
+-# SIZE = size
++CC =
++AR = ar
++MAKE = make
++SIZE = size
+ #
+ # Assumes rm and cp are available
+ 
+ # configuration
+ # If BACNET_DEFINES has not already been set, configure to your needs here
+-BACNET_DEFINES ?= -DPRINT_ENABLED=1 -DBACAPP_ALL -DBACFILE
++BACNET_DEFINES ?= -DPRINT_ENABLED=1 -DBACAPP_ALL -DBACFILE -DBAC_ROUTING
+ # un-comment the next line to build the routing demo application
+-#BACNET_DEFINES += -DBAC_ROUTING
++# BACNET_DEFINES += -DBAC_ROUTING
+ 
+ #BACDL_DEFINE=-DBACDL_ETHERNET=1
+ #BACDL_DEFINE=-DBACDL_ARCNET=1
+ #BACDL_DEFINE=-DBACDL_MSTP=1
+-BACDL_DEFINE?=-DBACDL_BIP=1
++BACDL_DEFINE?=-DBACDL_BIP=1
+ 
+ # Define WEAK_FUNC for [...somebody help here; I can't find any uses of it]
+ DEFINES = $(BACNET_DEFINES) $(BACDL_DEFINE) -DWEAK_FUNC=
+@@ -34,17 +34,18 @@
+ # compiler configuration
+ #STANDARDS = -std=c99
+ INCLUDES = -I$(BACNET_INCLUDE) -I$(BACNET_PORT_DIR) -I$(BACNET_OBJECT) -I$(BACNET_HANDLER)
+-OPTIMIZATION = -Os
++OPTIMIZATION =
+ DEBUGGING =
+-WARNINGS = -Wall -Wmissing-prototypes
++WARNINGS = -Wall -Wmissing-prototypes
+ ifeq (${BUILD},debug)
+-OPTIMIZATION = -O0
+-DEBUGGING = -g -DDEBUG_ENABLED=1
++OPTIMIZATION =
++DEBUGGING =
+ ifeq (${BACDL_DEFINE},-DBACDL_BIP=1)
+ DEFINES += -DBIP_DEBUG
+ endif
+ endif
+-CFLAGS  = $(WARNINGS) $(DEBUGGING) $(OPTIMIZATION) $(STANDARDS) $(INCLUDES) $(DEFINES)
++CFLAGS  = -march=4kc -Os -pipe -Wa,--trap -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 \
++$(INCLUDES) $(DEFINES)
+ 
+ # Export the variables defined here to all subprocesses
+ # (see http://www.gnu.org/software/automake/manual/make/Special-Targets.html)

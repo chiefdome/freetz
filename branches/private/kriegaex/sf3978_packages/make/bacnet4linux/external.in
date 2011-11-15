@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_BACNET4LINUX
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_BACNET4LINUX
+	bool "bacnet4linux"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/bacnet4linux

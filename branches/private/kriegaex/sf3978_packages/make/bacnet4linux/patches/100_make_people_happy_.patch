@@ -1,0 +1,16 @@
+--- Makefile.orig	2011-07-31 21:04:36.000000000 +0200
++++ Makefile	2011-07-31 21:05:12.000000000 +0200
+@@ -1,11 +1,11 @@
+ #Makefile to build BACnet4Linux
+-CC      = gcc
++CC=
+ BASEDIR = .
+ #CFLAGS  = -Wall -I.
+ # -g for debugging with gdb
+ #CFLAGS  = -Wall -I. -g
+ # -O2 optimize for better performance
+- CFLAGS  = -Wall -I. -g -O2
++CFLAGS=
+ 
+ TARGET = bacnet4linux
+ 

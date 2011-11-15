@@ -1,0 +1,10 @@
+config FREETZ_PACKAGE_BACNET_STACK
+	bool "bacnet-stack 0.5.9 (binaries only)"
+	default n
+	help
+		This BACnet protocol stack library provides a BACnet application
+		layer, network layer and media access (MAC) layer communications
+		services. It is an open source, royalty-free library for an embedded
+		system, Windows, Linux, or other operating system. Example BACnet
+		client and server applications are included.  
+		WWW: http://bacnet.sourceforge.net/

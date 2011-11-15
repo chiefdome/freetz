@@ -1,0 +1,11 @@
+--- send_npdu.c.orig	2011-07-31 21:30:10.000000000 +0200
++++ send_npdu.c	2011-07-31 21:30:26.000000000 +0200
+@@ -271,7 +271,7 @@
+                     " for destination [%d bytes]\n", apdu_len,
+                     dev_ptr->max_apdu);
+                 npdu_free(npdu);
+-                send_abort(dest_device, (uint8_t) invoke_id,
++                send_abort(dest_device, (uint32_t) invoke_id,
+                     ABORT_REASON_SEGMENTATION_NOT_SUPPORTED);
+                 return -1;      /* this packet is too large to send */
+             }
