@@ -1,0 +1,13 @@
+config FREETZ_PACKAGE_ADSUCK
+	bool "adsuck 2.3 (binary only)"
+	select FREETZ_LIB_libldns
+	select FREETZ_LIB_libevent
+	default n
+	help
+		adsuck is a small DNS server that spoofs blacklisted addresses and forwards all
+		other queries. The idea is to be able to prevent connections to undesirable
+		sites such as ad servers, crawlers, etc. It can be used locally, for the road
+		warrior, or on the network perimeter in order to protect local machines from
+		malicious sites.  
+		WWW: http://freshmeat.net/projects/adsuck
+		WIKI: http://opensource.conformal.com/wiki/Adsuck
