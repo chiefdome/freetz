@@ -1,0 +1,40 @@
+--- defs.h.orig	2011-02-05 21:09:33.000000000 +0100
++++ defs.h	2011-02-05 21:11:57.000000000 +0100
+@@ -1,12 +1,12 @@
+ /*
+  * Includes, defines and global variables used between functions.
+  */
+-
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <errno.h>
+ extern int	errno;
+ 
+-#include <sys/time.h>
++#include <time.h>
+ #include <sys/param.h>
+ #include <sys/socket.h>
+ #include <sys/file.h>
+@@ -24,7 +24,6 @@
+ #endif
+ #include <netinet/tcp.h>
+ #include <netdb.h>
+-
+ #include <syslog.h>
+ #include <unistd.h>
+ 
+@@ -53,6 +52,14 @@
+ DCLARE int     syslogdoutput; /* flag for stdoutput / syslogd output */
+ DCLARE int     noportquery;   /* flag for query/noquery of port -> serv name */
+ 
++int err_ret(char *);
++int pr_pack(char *, int, struct sockaddr_in *);
++void pid_file(void);
++void pid_kill(void);
++int err_quit(char *);
++int err_sys(char *);
++void recv_ping(void);
++
+ /* on some hosts (linux) netinet/ip_icmp.h is missing/empty : */
+ #ifndef ICMP_MINLEN
+ int bug=You_need_an_non_empty_netinet_ip_icmp_h;

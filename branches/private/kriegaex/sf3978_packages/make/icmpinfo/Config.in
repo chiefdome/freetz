@@ -1,0 +1,10 @@
+config FREETZ_PACKAGE_ICMPINFO
+	bool "icmpinfo 1.11 (binary only)"
+	default n
+	help
+		icmpinfo is a tool for looking at the icmp messages received on
+		the running host. The source code is written by Laurent Demailly,
+		and comes from an heavily modified BSD ping source; it comes AS IS
+		- no warranty, etc...
+		see LICENSE      <dl@hplyot.obspm.fr>
+		need to be chmod 4555 , chown root, or run as root [like ping]

@@ -1,0 +1,31 @@
+--- icmpinfo.c.orig	2011-02-05 21:09:14.000000000 +0100
++++ icmpinfo.c		2011-02-05 21:11:32.000000000 +0100
+@@ -62,7 +62,7 @@
+  *	This program has to run SUID to ROOT to access the ICMP socket.
+  */
+ 
+-char	usage[] = "Usage:  icmpinfo [-v[v[v]]] [-s] [-n] [-p] [-l]\n   -v : more and more info\n   -s : show local interface address\n   -n : no name query (dot ip only)\n   -p : no port -> service name query\n   -l : fork + syslog output\nv1.11 - 8/1995 - dl";
++char	usage[] = "Usage:  icmpinfo [-v[v[v]]] [-s] [-n] [-p] [-l] [-k]\n   -v : more and more info\n   -s : show local interface address\n   -n : no name query (dot ip only)\n   -p : no port -> service name query\n   -l : fork + syslog output\n   -k : kill background process\nv1.11 - 8/1995 - dl";
+ char	*pname;
+ 
+ int main(argc, argv)
+@@ -101,6 +101,11 @@
+ 			case 's':
+ 				showsrcip++;
+ 				break;
++			case 'k':
++				pid_kill();
++				exit(0);
++				/*NOTREACHED*/
++				break;
+ 			case 'h':
+ 		        default :
+ 				err_quit(usage);
+@@ -130,6 +135,7 @@
+ 	  openlog("icmpinfo",0,LOG_DAEMON);
+ 	  syslog(LOG_NOTICE,"started, PID=%d.",getpid());
+ 	  setsid();
++	  pid_file();
+ 	  close(0);
+ 	  close(1);
+ 	  close(2);

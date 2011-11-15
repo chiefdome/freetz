@@ -1,0 +1,55 @@
+--- pid.c.orig	1970-01-01 01:00:00.000000000 +0100
++++ pid.c	2011-02-05 21:10:53.000000000 +0100
+@@ -0,0 +1,52 @@
++#include <stdio.h>
++#include <stdlib.h>
++#include <signal.h>
++#include <unistd.h>
++
++#define PIDFILE                 "/var/run/icmpinfo.pid"
++
++extern char *pname;
++
++void sig_handler(int);
++
++void pid_file(void)
++{
++    FILE *fp;
++
++    if ((fp = fopen(PIDFILE, "w")) != (FILE *)NULL) {
++        fprintf(fp, "%d\n", getpid());
++        fclose(fp);
++    }
++    else
++    {
++        fprintf(stderr, "\n%s: Could not write PID file `%s', terminating.\n",
++            pname, PIDFILE);
++        exit(1);
++    }
++    signal(SIGHUP, sig_handler);
++    signal(SIGINT, sig_handler);
++    signal(SIGTERM, sig_handler);
++}
++
++void sig_handler(int sig)
++{
++    unlink(PIDFILE);
++    exit(0);
++}
++
++void pid_kill(void)
++{
++    FILE *fp;
++    int pid;
++
++    if ((fp = fopen(PIDFILE, "r")) != (FILE *)NULL)
++    {
++        if (fscanf(fp, "%d", &pid) == 1)
++        {
++            kill(pid, SIGHUP);
++            sleep(1);
++        }
++        fclose(fp);
++    }
++}
++ 

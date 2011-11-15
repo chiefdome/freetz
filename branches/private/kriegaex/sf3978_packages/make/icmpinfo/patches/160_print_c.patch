@@ -1,0 +1,135 @@
+--- print.c.orig	2011-02-05 21:09:58.000000000 +0100
++++ print.c		2011-02-05 21:10:43.000000000 +0100
+@@ -8,8 +8,11 @@
+ /* note : the original bsd code was *very* buggy !!!
+           it should be ok, now */
+ 
++#include <string.h>
++#include <stddef.h>
+ #include	"defs.h"
+ 
++
+ #ifndef ANSI_OFFSETOF
+ #ifndef offsetof
+ #        define offsetof(t,m)  (int)((&((t *)0L)->m))
+@@ -28,6 +31,7 @@
+ struct sockaddr_in	*from;	/* address of sender */
+ {
+   int			iphdrlen,doipdecoding=1;
++  int                  iplen;
+   struct ip		*ip;	/* ptr to IP header */
+   register struct icmp	*icp;	/* ptr to ICMP header */
+   struct tcphdr 	*tp;    /* ptr to TCP header */
+@@ -35,7 +39,7 @@
+   char			*pr_type(),*pr_subtype(),*strtime;
+   struct hostent	*hostent=NULL;
+   struct servent	*servent=NULL;
+-  static char prbuf[1024];	/* provide enough room for even the longest hosts*/
++  static char prbuf[1024]={'\0'};	/* provide enough room for even the longest hosts*/
+ 	
+   /*
+    * We have to look at the IP header, to get its length.
+@@ -44,17 +48,18 @@
+    */
+   ip = (struct ip *) buf;
+   iphdrlen = ip->ip_hl << 2;	/* convert # 16-bit words to #bytes */
+-  if (cc < iphdrlen + ICMP_MINLEN) {
++  if (cc < (iphdrlen + ICMP_MINLEN)) {
+     sprintf(prbuf,"packet too short (%d bytes) from %s", cc,
+ 	    inet_ntoa(from->sin_addr));
+     if (syslogdoutput) {
+       syslog(LOG_WARNING,"%s",prbuf);
+-      } else {
+-	puts(prbuf);
+-	fflush(stdout);
+-      }
++    } else {
++      puts(prbuf);
++      fflush(stdout);
++    }
+     return -1;
+   }
++  iplen = cc;
+   cc -= iphdrlen;
+ 
+   icp = (struct icmp *)(buf + iphdrlen);
+@@ -113,6 +118,29 @@
+ 		      inet_ntoa(icp->icmp_ip.ip_dst),
+ 		      hostent?hostent->h_name:NULL);
+ 	      tp = (struct tcphdr *)((char *)&(icp->icmp_dun)+sizeof(struct ip)) ;
++#if defined(__GLIBC__) && (__GLIBC__ >= 2)
++	      if (cc>=offsetof(struct icmp,icmp_dun)+sizeof(struct ip)+offsetof(struct tcphdr,seq)+sizeof(tp->seq))
++		{
++		  if (noportquery) {
++		      sprintf(prbuf+strlen(prbuf)," sp=%d dp=%d seq=0x%8.8x",
++			  ntohs(tp->source),ntohs(tp->dest),
++                          ntohl(tp->seq));
++		  } else {
++		    if ((servent=getservbyport(ntohs(tp->source),NULL))) 
++		      sprintf(prbuf+strlen(prbuf)," sp=%d [%s]",
++			      ntohs(tp->source),servent->s_name);
++		    else
++		      sprintf(prbuf+strlen(prbuf)," sp=%d",tp->source);
++		    if ((servent=getservbyport(ntohs(tp->dest),NULL))) 
++		      sprintf(prbuf+strlen(prbuf)," dp=%d [%s] seq=0x%8.8x",
++			      ntohs(tp->dest),servent->s_name,
++			      ntohl(tp->seq));
++		    else
++		      sprintf(prbuf+strlen(prbuf)," dp=%d seq=0x%8.8x",
++			      ntohs(tp->dest),ntohl(tp->seq));
++		  }
++		}
++#else
+ 	      if (cc>=offsetof(struct icmp,icmp_dun)+sizeof(struct ip)+offsetof(struct tcphdr,th_seq)+sizeof(tp->th_seq))
+ 		{
+ 		  if (noportquery) {
+@@ -134,6 +162,7 @@
+ 			      ntohs(tp->th_dport),ntohl(tp->th_seq));
+ 		  }
+ 		}
++#endif
+ 	    }
+ 	}
+       sprintf(prbuf+strlen(prbuf)," sz=%d(+%d)",cc,iphdrlen);
+@@ -153,7 +182,7 @@
+ 	    flagNEof = 1;
+ 	    while (flagNEof) {
+ 	      i = j = 0;
+-	      while (i < 16 && (flagNEof = cc--)) {
++	      while (i < 16 && (flagNEof = iplen--)) {
+ 		b= (int)(*(pbuf++));
+ 		h[j++] = to_hex(b >> 4);
+ 		h[j++] = to_hex(b & 0x0F);
+@@ -193,7 +222,7 @@
+ 		"Dest_Unreachable",
+ 		"Source_Quench",
+ 		"Redirect",
+-		"6",
++		"Alternate Host Address",
+ 		"7",
+ 		"Echo",
+ 		"RouterAdvert",
+@@ -205,7 +234,22 @@
+ 		"Info_Request",
+ 		"Info_Reply",
+ 		"Mask_Request",
+-		"Mask_Reply"
++		"Mask_Reply",
++		"19 (Reserved for Security)",
++		/* 20-29: reserved for robustness experiment */
++		"20","21","22","23","24","25","26","27","28","29",
++		"Traceroute",
++		"Datagram Convers. Err.",
++		"Mobile Host Redir",
++		"IPv6 Where-Are-You",
++		"IPv6 I-Am-Here",
++		"Mobile Registration Request",
++		"Mobile Registration Reply",
++		"Domain Name Req",
++		"Domain Name Reply",
++		"SKIP",
++		"Photuris",
++		"41 (ICMP messages utilized by experimental mobility protocols such as Seamoby)"
+ 	};
+ 
+ 	if (t < 0 || t > 18) {

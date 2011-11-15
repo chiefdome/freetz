@@ -1,0 +1,24 @@
+--- Makefile.orig	2011-02-05 21:07:30.000000000 +0100
++++ Makefile		2011-02-05 21:11:07.000000000 +0100
+@@ -16,17 +16,18 @@
+ #CFLAGS=-O2 -s
+ 
+ # To change default compiler
+-#CC=gcc
++CC=
++CFLAGS=
+ 
+ RM = rm -f
+ 
+ LDFLAGS= $(CFLAGS)
+ 
+-OBJECTS= recvping.o print.o err.o icmpinfo.o
++OBJECTS= recvping.o print.o err.o icmpinfo.o pid.o
+ TARGET = icmpinfo
+ 
+ $(TARGET):  $(OBJECTS)
+-	$(CC) $(LDFLAGS) -o $@ $(OBJECTS) $(LDLIBS)
++	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LDLIBS)
+ 
+ tgz: clean
+ 	rm -f CHECKSUMS.asc

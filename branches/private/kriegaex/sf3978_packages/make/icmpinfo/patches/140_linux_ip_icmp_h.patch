@@ -1,0 +1,27 @@
+--- linux_ip_icmp.h.orig	2011-02-05 21:08:31.000000000 +0100
++++ linux_ip_icmp.h		2011-02-05 21:13:01.000000000 +0100
+@@ -3,6 +3,8 @@
+ #ifndef _netinet_ip_icmp_h
+ #define _netinet_ip_icmp_h
+ 
++#include <netinet/ip.h>
++
+ struct icmp {
+ 	u_char	icmp_type;		/* type of message, see below */
+ 	u_char	icmp_code;		/* type sub code */
+@@ -22,6 +24,7 @@
+ #define	icmp_seq	icmp_hun.ih_idseq.icd_seq
+ #define	icmp_void	icmp_hun.ih_void
+ 
++#if 0
+ struct ip {
+         u_char  ip_hl:4,                /* header length */
+         ip_v:4;                 /* version */
+@@ -36,6 +39,7 @@
+         u_short ip_sum;                 /* checksum */
+         struct  in_addr ip_src,ip_dst;  /* source and dest address */
+       };
++#endif
+ 
+ 
+ 	union {
