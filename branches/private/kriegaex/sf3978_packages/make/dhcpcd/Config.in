@@ -1,0 +1,10 @@
+config FREETZ_PACKAGE_DHCPCD
+	bool "dhcpcd 4.99.7 (binary only)"
+	select FREETZ_LIB_STDCXXLIB
+	default n
+	help
+		  DHCP client for automatically configuring IPv4 networking.
+		  Simple configuration: supports executions of a script when
+		  the IP address changes.
+		  WWW: http://roy.marples.name/projects/dhcpcd
+		  Manpage: http://www.daemon-systems.org/man/dhcpcd.8.html
