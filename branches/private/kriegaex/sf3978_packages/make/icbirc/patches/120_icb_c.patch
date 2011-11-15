@@ -1,0 +1,175 @@
+--- icb.c.orig	2004-11-18 22:14:28.000000000 +0100
++++ icb.c	2011-08-06 10:30:23.000000000 +0200
+@@ -40,8 +40,8 @@
+ 
+ extern int	 sync_write(int, const char *, int);
+ 
+-static unsigned char	 icb_args(const char *, unsigned char, char [255][255]);
+-static void		 icb_cmd(const char *, unsigned char, int, int);
++static unsigned char	 icb_args(const unsigned char *, unsigned char, char [255][255]);
++static void		 icb_cmd(const unsigned char *, unsigned char, int, int);
+ static void		 icb_ico(int, const char *);
+ static void		 icb_iwl(int, const char *, const char *, long,
+ 			    long, const char *, const char *);
+@@ -108,7 +108,7 @@
+  */
+ 
+ void
+-scan(const char **s, char *d, size_t siz, const char *skip, const char *term)
++scan(const unsigned char **s, char *d, size_t siz, const char *skip, const char *term)
+ {
+ 	while (**s && strchr(skip, **s) != NULL)
+ 		(*s)++;
+@@ -149,7 +149,7 @@
+ }
+ 
+ static unsigned char
+-icb_args(const char *data, unsigned char len, char args[255][255])
++icb_args(const unsigned char *data, unsigned char len, char args[255][255])
+ {
+ 	unsigned char i = 0, j = 0, k = 0;
+ 
+@@ -175,10 +175,10 @@
+ }
+ 
+ static void
+-icb_cmd(const char *cmd, unsigned char len, int fd, int server_fd)
++icb_cmd(const unsigned char *cmd, unsigned char len, int fd, int server_fd)
+ {
+ 	char args[255][255];
+-	const char *a = args[1];
++	const unsigned char *a = (unsigned char *)args[1];
+ 	unsigned char i, j;
+ 	char s[8192];
+ 
+@@ -254,7 +254,7 @@
+ 			char old_nick[256], new_nick[256];
+ 
+ 			scan(&a, old_nick, sizeof(old_nick), " ", " ");
+-			if (strncmp(a, " changed nickname to ", 21))
++			if (strncmp((const char *)a, " changed nickname to ", 21))
+ 				return;
+ 			a += 21;
+ 			scan(&a, new_nick, sizeof(new_nick), " ", " ");
+@@ -262,13 +262,13 @@
+ 			    old_nick, new_nick);
+ 			sync_write(fd, s, strlen(s));
+ 			if (!strcmp(old_nick, irc_nick))
+-				strlcpy(irc_nick, new_nick,
++				strncpy(irc_nick, new_nick,
+ 				    sizeof(irc_nick));
+ 		} else if (!strcmp(args[0], "Topic")) {
+ 			char nick[256], topic[256];
+ 
+ 			scan(&a, nick, sizeof(nick), " ", " ");
+-			if (strncmp(a, " changed the topic to \"", 23))
++			if (strncmp((const char *)a, " changed the topic to \"", 23))
+ 				return;
+ 			a += 23;
+ 			scan(&a, topic, sizeof(topic), "", "\"");
+@@ -279,25 +279,25 @@
+ 			char old_mod[256], new_mod[256];
+ 
+ 			scan(&a, old_mod, sizeof(old_mod), " ", " ");
+-			if (!strncmp(a, " has passed moderation to ", 26)) {
++			if (!strncmp((const char *)a, " has passed moderation to ", 26)) {
+ 				a += 26;
+ 				scan(&a, new_mod, sizeof(new_mod), " ", " ");
+ 				snprintf(s, sizeof(s),
+ 				    ":%s MODE %s -o+o %s %s\r\n",
+ 				    old_mod, irc_channel, old_mod, new_mod);
+-			} else if (!strcmp(a, " is now mod.")) {
++			} else if (!strcmp((const char *)a, " is now mod.")) {
+ 				snprintf(s, sizeof(s),
+ 				    ":%s MODE %s +o %s\r\n",
+ 				    icb_hostid, irc_channel, old_mod);
+ 			} else
+ 				return;
+ 			sync_write(fd, s, strlen(s));
+-			strlcpy(icb_moderator, new_mod, sizeof(icb_moderator));
++			strncpy(icb_moderator, new_mod, sizeof(icb_moderator));
+ 		} else if (!strcmp(args[0], "Boot")) {
+ 			char nick[256];
+ 
+ 			scan(&a, nick, sizeof(nick), " ", " ");
+-			if (strcmp(a, " was booted."))
++			if (strcmp((const char *)a, " was booted."))
+ 				return;
+ 			snprintf(s, sizeof(s), ":%s KICK %s %s :booted\r\n",
+ 			    icb_moderator, irc_channel, nick);
+@@ -332,9 +332,9 @@
+ 			    args[0], i - 1);
+ 		break;
+ 	case 'j':	/* Protocol */
+-		strlcpy(icb_protolevel, args[0], sizeof(icb_protolevel));
+-		strlcpy(icb_hostid, args[1], sizeof(icb_hostid));
+-		strlcpy(icb_serverid, args[2], sizeof(icb_serverid));
++		strncpy(icb_protolevel, args[0], sizeof(icb_protolevel));
++		strncpy(icb_hostid, args[1], sizeof(icb_hostid));
++		strncpy(icb_serverid, args[2], sizeof(icb_serverid));
+ 		break;
+ 	case 'k':	/* Beep */
+ 		irc_send_notice(fd, "ICB Beep from %s", args[0]);
+@@ -411,7 +411,7 @@
+ 	}
+ 
+ 	if (chanop && !strcmp(icurgroup, irc_channel))
+-		strlcpy(icb_moderator, nick, sizeof(icb_moderator));
++		strncpy(icb_moderator, nick, sizeof(icb_moderator));
+ }
+ 
+ static void
+@@ -429,7 +429,7 @@
+ 		while (*arg && *arg != ' ')
+ 			group[i++] = *arg++;
+ 		group[i] = 0;
+-		strlcpy(icurgroup, group, sizeof(icurgroup));
++		strncpy(icurgroup, group, sizeof(icurgroup));
+ 		topic = strstr(arg, "Topic: ");
+ 		if (topic == NULL)
+ 			topic = "(None)";
+@@ -508,7 +508,7 @@
+ 		cmd[off++] = 0;
+ 		cmd[0] = off - 1;
+ 		/* cmd[0] <= MAX_MSG_SIZE */
+-		sync_write(fd, cmd, off);
++		sync_write(fd, (const char *)cmd, off);
+ 	}
+ }
+ 
+@@ -533,7 +533,7 @@
+ 		cmd[off++] = 0;
+ 		cmd[0] = off - 1;
+ 		/* cmd[0] <= MAX_MSG_SIZE */
+-		sync_write(fd, cmd, off);
++		sync_write(fd, (const char *)cmd, off);
+ 	}
+ }
+ 
+@@ -585,7 +585,7 @@
+ 	if (imode != imode_none)
+ 		return;
+ 	imode = imode_names;
+-	strlcpy(igroup, group, sizeof(igroup));
++	strncpy(igroup, group, sizeof(igroup));
+ 	icb_send_hw(fd, "");
+ }
+ 
+@@ -595,7 +595,7 @@
+ 	if (imode != imode_none)
+ 		return;
+ 	imode = imode_whois;
+-	strlcpy(inick, nick, sizeof(inick));
++	strncpy(inick, nick, sizeof(inick));
+ 	icb_send_hw(fd, "");
+ }
+ 
+@@ -605,7 +605,7 @@
+ 	if (imode != imode_none)
+ 		return;
+ 	imode = imode_who;
+-	strlcpy(ihostmask, hostmask, sizeof(ihostmask));
++	strncpy(ihostmask, hostmask, sizeof(ihostmask));
+ 	icb_send_hw(fd, "");
+ }
+ 

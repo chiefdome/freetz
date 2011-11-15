@@ -1,0 +1,66 @@
+--- icbirc.c.orig	2004-11-18 22:14:28.000000000 +0100
++++ icbirc.c	2011-08-06 10:19:01.000000000 +0200
+@@ -35,6 +35,7 @@
+ #include <sys/types.h>
+ #include <sys/socket.h>
+ #include <sys/stat.h>
++#include <sys/time.h>
+ #include <netinet/in.h>
+ #include <arpa/inet.h>
+ #include <ctype.h>
+@@ -51,18 +52,42 @@
+ #include "icb.h"
+ #include "irc.h"
+ 
++#ifdef NEED_PROGNAME
++char *__progname;
++#else
++extern char *__progname;
++#endif
++
+ int		sync_write(int, const char *, int);
+ static void	usage(void);
+ static void	handle_client(int);
++char		*get_progname(char *);
+ 
+ int terminate_client;
+ static struct sockaddr_in sa_connect;
+ 
++char 
++*get_progname(char *argv0)
++{
++#ifndef NEED_PROGNAME
++	return __progname;
++#else
++	char *p;
++
++	if (argv0 == NULL)
++		return "unknown";	/* XXX */
++	p = strrchr(argv0, '/');
++	if (p == NULL)
++		p = argv0;
++	else
++		p++;
++	return p;
++#endif
++}
++
+ static void
+ usage(void)
+ {
+-	extern char *__progname;
+-
+ 	fprintf(stderr, "usage: %s [-d] [-l address] [-p port] "
+ 	    "-s server [-P port]\n", __progname);
+ 	exit(1);
+@@ -322,8 +347,8 @@
+ 	    (unsigned long)(time(NULL) - t), bytes_out, bytes_in);
+ 	if (terminate_client)
+ 		irc_send_notice(client_fd, "Closing connection "
+-		    "(%u seconds, %lu:%lu bytes)",
+-		    time(NULL) - t, bytes_out, bytes_in);
++		    "(%lu seconds, %lu:%lu bytes)",
++		     (unsigned long)(time(NULL) - t), bytes_out, bytes_in);
+ }
+ 
+ int

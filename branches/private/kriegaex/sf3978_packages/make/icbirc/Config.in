@@ -1,0 +1,23 @@
+config FREETZ_PACKAGE_ICBIRC
+	bool "icbirc 1.8 (binary only)"
+	default n
+	help
+		icbirc is a proxy that allows to connect an IRC client to an ICB server.
+		The proxy accepts client connections, connects to the server, and for-
+		wards data between those two connections.
+		Commands from the IRC client are translated to ICB commands and forwarded
+		to the ICB server. Messages from the ICB server are translated to IRC
+		messages and forwarded to the IRC client.
+		ICB (Internet citizen's band) an obscure teleconferencing system used
+		primarily by alumni of certain universities (also called Internet CB or
+		International CB).
+		IRC (Internet Relay Chat) and ICB (Internet Citizen's Band) are two sepa-
+		rate chat protocols.  ICB is an older and simpler protocol, basically a
+		subset of IRC.  The two most significant differences (from the client's
+		perspective) are:
+		An ICB client can only join a single channel (called group).  Joining a
+		second channel automatically parts the first channel.
+		An ICB channel can only have a single operator (called moderator). Giv-
+		ing operator status to a second client automatically removes operator
+		status from the first client.
+		WWW: http://www.benzedrine.cx/icbirc.html

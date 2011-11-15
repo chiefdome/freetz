@@ -1,0 +1,31 @@
+--- Makefile.orig	2003-08-06 16:42:18.000000000 +0200
++++ Makefile	2011-08-06 10:33:30.000000000 +0200
+@@ -1,9 +1,22 @@
+-# $Id: Makefile,v 1.1.1.1 2003/08/06 14:42:18 dhartmei Exp $
++#Makefile to build icbirc
++CFLAGS+=
++TARGET = icbirc
++SRCS = icb.c irc.c icbirc.c
++OBJS = ${SRCS:.c=.o}
+ 
+-PROG=	icbirc
+-SRCS=	icbirc.c icb.c irc.c
+-MAN=	icbirc.8
++all: ${TARGET}
+ 
+-CFLAGS+= -Wall -Werror -Wstrict-prototypes -ansi
++${TARGET}: ${OBJS}
++	${CC} -o $@ ${OBJS} 
+ 
+-.include <bsd.prog.mk>
++.c.o:
++	${CC} -c ${CFLAGS} $*.c
++	
++#depend:
++#	rm -f .depend
++#	${CC} -MM ${CFLAGS} *.c >> .depend
++	
++clean:
++	rm -rf core ${OBJS} ${TARGET} *.bak
++
++#include: .depend
