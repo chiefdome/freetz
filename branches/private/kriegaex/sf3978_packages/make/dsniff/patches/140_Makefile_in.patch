@@ -1,0 +1,31 @@
+--- Makefile.in.orig	2011-04-30 09:21:49.000000000 +0200
++++ Makefile.in	2011-04-30 09:18:38.000000000 +0200
+@@ -51,7 +51,7 @@
+ 	  pathnames.h pcaputil.h record.h rpc.h tcp_raw.h trigger.h \
+ 	  version.h vroot.h
+ 
+-SRCS	= asn1.c base64.c buf.c hex.c magic.c mount.c pcaputil.c rpc.c \
++SRCS	= asn1.c base64.c buf.c dns.c hex.c magic.c mount.c pcaputil.c rpc.c \
+ 	  tcp_raw.c trigger.c record.c dsniff.c decode.c decode_aim.c \
+ 	  decode_citrix.c decode_cvs.c decode_ftp.c decode_hex.c \
+ 	  decode_http.c decode_icq.c decode_imap.c decode_irc.c \
+@@ -60,7 +60,7 @@
+ 	  decode_pop.c decode_portmap.c decode_postgresql.c decode_pptp.c \
+ 	  decode_rip.c decode_rlogin.c decode_smb.c decode_smtp.c \
+ 	  decode_sniffer.c decode_snmp.c decode_socks.c decode_tds.c \
+-	  decode_telnet.c decode_vrrp.c decode_yp.c decode_x11.c
++	  decode_telnet.c decode_vrrp.c decode_x11.c
+ 
+ GEN	= mount.h mount.c nfs_prot.h nfs_prot.c
+ 
+@@ -99,8 +99,8 @@
+ arpspoof: arpspoof.o arp.o
+ 	$(CC) $(LDFLAGS) -o $@ arpspoof.o arp.o $(LIBS) $(PCAPLIB) $(LNETLIB)
+ 
+-dnsspoof: dnsspoof.o pcaputil.o
+-	$(CC) $(LDFLAGS) -o $@ dnsspoof.o pcaputil.o $(LIBS) $(PCAPLIB) $(LNETLIB)
++dnsspoof: dnsspoof.o pcaputil.o dns.o
++	$(CC) $(LDFLAGS) -o $@ dnsspoof.o pcaputil.o dns.o $(LIBS) $(PCAPLIB) $(LNETLIB)
+ 
+ filesnarf: nfs_prot.o filesnarf.o pcaputil.o rpc.o
+ 	$(CC) $(LDFLAGS) -o $@ filesnarf.o nfs_prot.o pcaputil.o rpc.o $(LIBS) $(NIDSLIB) $(PCAPLIB) $(LNETLIB)

@@ -1,0 +1,3 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_DSNIFF" == "y" ] && EXTERNAL_FILES+=" /usr/bin/dsniff /usr/bin/arpspoof \
+/usr/bin/dnsspoof /usr/bin/filesnarf /usr/bin/macof /usr/bin/mailsnarf /usr/bin/msgsnarf /usr/bin/sshmitm \
+/usr/bin/sshow /usr/bin/tcpkill /usr/bin/tcpnice /usr/bin/urlsnarf /usr/bin/webmitm"

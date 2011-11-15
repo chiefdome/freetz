@@ -1,0 +1,20 @@
+--- decode.c.orig
++++ decode.c
+@@ -51,8 +51,6 @@
+ extern int decode_portmap(u_char *, int, u_char *, int);
+ extern int decode_mountd(u_char *, int, u_char *, int);
+ extern int decode_vrrp(u_char *, int, u_char *, int);
+-extern int decode_ypserv(u_char *, int, u_char *, int);
+-extern int decode_yppasswd(u_char *, int, u_char *, int);
+ 
+ static struct decode decodes[] = {
+ 	{ "hex",	decode_hex },
+@@ -88,8 +86,6 @@
+ 	{ "irc",	decode_irc },
+ 	{ "portmap",	decode_portmap },
+ 	{ "mountd",	decode_mountd },
+-	{ "ypserv",	decode_ypserv },
+-	{ "yppasswd",	decode_yppasswd },
+ 	{ NULL }
+ };
+

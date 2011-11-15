@@ -1,0 +1,49 @@
+config FREETZ_PACKAGE_DSNIFF
+	bool "dsniff 2.4 (binaries only)"
+	select FREETZ_LIB_libpcap
+	select FREETZ_LIB_libnids
+	select FREETZ_LIB_libnet
+	select FREETZ_LIB_libssl
+	select FREETZ_LIB_libcrypto
+	select FREETZ_LIB_libdb
+	select FREETZ_LIB_libgthread_2
+	default n
+	help
+		  Various tools for network auditing and security testing. *** For didactic
+		  and educational use only ***. Please do not abuse them.
+		    arpspoof     redirect packets from a target host (or all hosts) on the LAN
+				 intended for another host on the LAN by forging ARP replies.
+		    dnsspoof     forge replies to arbitrary DNS address / pointer queries on
+				 the LAN.
+		    dsniff       simple password sniffer.
+		    filesnarf    saves selected files sniffed from NFS traffic in the current
+				 working directory.
+		    macof        flood the local network with random MAC addresses.
+		    mailsnarf    a fast and easy way to violate the Electronic Communications
+				 Privacy Act of 1986 (18 USC 2701-2711), be careful.
+		    msgsnarf     record selected messages from sniffed AOL Instant Messenger,
+				 ICQ 2000, IRC, and Yahoo! Messenger chat sessions.
+		    sshmitm      SSH monkey-in-the-middle.
+		    sshow	 SSH traffic analysis tool.
+		    tcpkill      kills specified in-progress TCP connections.
+		    tcpnice      slow down specified TCP connections via "active" traffic
+				 shaping.
+		    urlsnarf     output all requested URLs sniffed from HTTP traffic in CLF
+				 (Common Log Format, used by almost all web servers), suitable
+				 for offline post-processing
+		    webmitm      HTTP / HTTPS monkey-in-the-middle.
+		  WWW: http://www.monkey.org/~dugsong/dsniff/
+		  Manpage: http://linux.die.net/man/8/dsniff
+		  Manpage: http://linux.die.net/man/8/arpspoof
+		  Manpage: http://linux.die.net/man/8/sshow
+		  Manpage: http://linux.die.net/man/8/filesnarf
+		  Manpage: http://linux.die.net/man/8/macof
+		  Manpage: http://linux.die.net/man/8/dnsspoof
+		  Manpage: http://linux.die.net/man/8/mailsnarf
+		  Manpage: http://linux.die.net/man/8/msgsnarf
+		  Manpage: http://linux.die.net/man/8/sshmitm
+		  Manpage: http://linux.die.net/man/8/tcpkill
+		  Manpage: http://linux.die.net/man/8/tcpnice
+		  Manpage: http://linux.die.net/man/8/urlsnarf
+		  Manpage: http://linux.die.net/man/8/webmitm
+		  Artikel: http://www.linux-magazin.de/Online-Artikel/Wenn-Programme-nach-Hause-telefonieren

@@ -1,0 +1,11 @@
+--- configure.orig	2011-04-30 08:54:48.000000000 +0200
++++ configure	2011-04-30 08:55:57.000000000 +0200
+@@ -3031,7 +3031,7 @@
+ 	PCAPINC="-I$withval -I$withval/bpf"
+ 	PCAPLIB="-L$withval -lpcap"
+      elif test -f $withval/include/pcap.h -a \
+-	       -f $withval/include/net/bpf.h -a \
++	       -f $withval/include/pcap-bpf.h -a \
+ 	       -f $withval/lib/libpcap.a; then
+ 	owd=`pwd`
+ 	if cd $withval; then withval=`pwd`; cd $owd; fi

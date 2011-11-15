@@ -1,0 +1,22 @@
+--- record.c.orig
++++ record.c
+@@ -14,7 +14,7 @@
+ 
+ #include <stdio.h>
+ #include <time.h>
+-#include <md5.h>
++#include "missing/md5.h"
+ #ifdef HAVE_DB_185_H
+ #define DB_LIBRARY_COMPATIBILITY_API
+ #include <db_185.h>
+@@ -65,8 +65,8 @@
+ 	tm = localtime(&rec->time);
+ 	strftime(tstr, sizeof(tstr), "%x %X", tm);
+ 	
+-	srcp = libnet_host_lookup(rec->src, Opt_dns);
+-	dstp = libnet_host_lookup(rec->dst, Opt_dns);
++	srcp = libnet_addr2name4(rec->src, Opt_dns);
++	dstp = libnet_addr2name4(rec->dst, Opt_dns);
+ 
+ 	if ((pr = getprotobynumber(rec->proto)) == NULL)
+ 		protop = "unknown";

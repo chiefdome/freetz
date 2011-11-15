@@ -1,0 +1,8 @@
+--- dsniff.services.orig
++++ dsniff.services
+@@ -66,5 +66,3 @@
+ aim		9898/tcp
+ pcanywhere	65301/tcp
+ mountd		100005/rpc
+-ypserv		100004/rpc
+-yppasswd	100009/rpc

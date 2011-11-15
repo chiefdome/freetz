@@ -1,0 +1,12 @@
+--- arpspoof.c.orig
++++ arpspoof.c
+@@ -113,7 +113,7 @@
+ 	int i = 0;
+ 
+ 	do {
+-		if (arp_cache_lookup(ip, mac) == 0)
++		if (arp_cache_lookup(ip, mac, intf) == 0)
+ 			return (1);
+ #ifdef __linux__
+ 		/* XXX - force the kernel to arp. feh. */
+ 
