@@ -1,0 +1,21 @@
+diff -Naur jnettop.c.orig jnettop.c
+--- jnettop.c.orig
++++ jnettop.c
+@@ -84,7 +84,6 @@ void parseCommandLineAndConfig(int argc, char ** argv) {
+ 				"\n"
+ 				"    -h, --help             display this help message\n"
+ 				"    -v, --version          display version information\n\n"
+-				"    -b, --bit-units        show BPS in bits per second, not bytes per second\n"
+ 				"    -c, --content-filter   disable content filtering\n"
+ 				"    -d, --debug filename   write debug information into file (or syslog)\n"
+ 				"    --display type         type of display (curses, text, uia)\n"
+@@ -100,7 +99,7 @@ void parseCommandLineAndConfig(int argc, char ** argv) {
+ 				"    -t, --timeout sec      timeout in seconds after which jnettop ends (text display)\n"
+ 				"    -x, --filter rule      allows for specification of custom filtering rule\n"
+ 				"                           this follows tcpdump(1) syntax. don't forget to\n"
+-				"                           enclose the filter into quotes when running from shell\n"
++				"                           enclose the filter in quotes when running from shell\n"
+ 				"\n"
+ 				"Report bugs to <j@kubs.cz>\n"
+ 				"\n"
+-- 

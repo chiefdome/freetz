@@ -1,0 +1,16 @@
+config FREETZ_PACKAGE_JNETTOP
+	bool "jnettop 0.13.0 (binary only)"
+	select FREETZ_LIB_STDCXXLIB
+	select FREETZ_LIB_libpthread
+	select FREETZ_LIB_libpcap
+	select FREETZ_LIB_libgthread_2
+	select FREETZ_LIB_libpcre
+	select FREETZ_LIB_libdl
+	select FREETZ_LIB_librt
+	select FREETZ_LIB_libncurses
+	default n
+	help
+		  Jnettop is a traffic visualiser, which captures traffic going
+		  through the host it is running from and displays streams sorted
+		  by bandwidth they use.
+		  WWW: http://jnettop.kubs.info/wiki/

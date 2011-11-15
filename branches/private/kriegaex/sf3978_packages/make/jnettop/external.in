@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_JNETTOP
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_JNETTOP
+	bool "jnettop"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/jnettop
