@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_BLD" == "y" ] && EXTERNAL_FILES+=" /usr/bin/bld /usr/bin/bldread /usr/bin/bldsubmit"

@@ -1,0 +1,22 @@
+config FREETZ_PACKAGE_BLD
+	bool "bld 0.3.4.1 (binary only)"
+	select FREETZ_LIB_libnsl
+	select FREETZ_LIB_libresolv
+	default n
+	help
+		BLD stands for "blacklist daemon" and is intended to serve a blacklist.
+		The blacklist is built by simply inserting IP addresses or by using
+		submission rate limits based on a maximum number of submissions of the
+		same IP address within a minimum time interval. You can build a BLD cluster
+		by configuring the daemon to notify other similar daemon(s) every time an
+		IP address is added to the blacklist. BLD was primarily designed to fight
+		against dictionary-based spams (by making the MTA report to BLD any host
+		that tries to send a mail to an unknown user) but can be used by any program.
+		As of now, it is highly recommended to USE IT IN A SAFE ENVIRONMENT: access
+		control is based on clients IP addresses. This is why, by default, BLD binds
+		to localhost and should not accept requests from a machine where non-trusted
+		users can be logged in or establish network connections to via other means (PHP
+		for example). 
+		http://bld.r14.freenix.org/Home/BSD-license
+		WWW: http://bld.r14.freenix.org/
+		http://bld.r14.freenix.org/Home/Manual-page

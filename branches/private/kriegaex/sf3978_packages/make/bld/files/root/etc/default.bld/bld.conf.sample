@@ -1,0 +1,53 @@
+## Fork as a daemon
+#daemon=0
+
+## Address to bind to
+#address=127.0.0.1
+
+## Port to listen to
+#port=2905
+
+## Minimum time interval before blacklisting (seconds)
+#min_interval=30
+
+## Maximum submissions in time interval
+#max_submissions=10
+
+## IP list size
+#ip_list_size=2000
+
+## Blacklist size
+#blacklist_size=1000
+
+## Blacklist expiration (seconds)
+#blacklist_expiration=900
+
+## Log level (0-3)
+#log_level=1
+
+## User to run as
+#user=
+
+## Group to run as
+#group=
+
+## Client timeout
+#client_timeout=60
+
+## File to dump IP list to
+#iplist_dump=/var/run/bld/bld_iplist.dump
+
+## File to dump blacklist to
+#blacklist_dump=/var/run/bld/bld_blacklist.dump
+
+## PID filename
+#pid_filename=/var/run/bld/bld.pid
+
+## ACL filename
+#acl_filename=/usr/local/etc/bld/bld_acl.conf
+
+## Whitelist filename
+#whitelist_filename=/usr/local/etc/bld/bld_whitelist.conf
+
+## Host to notify when a new address is inserted into the blacklist
+#notifies_to=my.host.tld, other.host.tld:2906
