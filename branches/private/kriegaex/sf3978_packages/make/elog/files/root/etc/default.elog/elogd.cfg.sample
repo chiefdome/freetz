@@ -1,0 +1,37 @@
+[global]
+port = 3333
+SSL = 0
+Usr = nobody
+Grp = nobody
+Resource dir = /var/media/ftp/uStor01/elog/resource
+Logbook dir = /var/media/ftp/uStor01/elog/logbooks
+Language = eloglang.german
+Logbook Tabs = 1
+Logging level = 1
+URL = http://192.168.122.1:3333
+Resolve host names = 0
+Logfile = /var/media/ftp/uStor01/elog/elogd.log
+Relative redirection = 1
+Guest menu commands = List, New, Find, Login, Help
+Self register = 0
+Enable attachments = 0
+Show attachments = 0
+Preview attachments = 0
+Default encoding = 1
+Allowed encoding = 1
+Suppress default = 1
+Suppress Email on edit = 1
+Display Email recipients = 0
+Restrict edit = 1
+Use Lock = 1
+
+[mylog]
+Theme = default
+Comment = Allgemein
+Attributes = Author, Subject
+Extendable Options = Category
+Required Attributes = Author
+Page Title = ELOG-Nachricht
+Reverse sort = 1
+Quick filter = Date
+Mirror exclude = 1

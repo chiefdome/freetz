@@ -1,0 +1,16 @@
+config FREETZ_PACKAGE_ELOG
+	bool "elog 2.7.8-1 (binary only)"
+	default n
+	help
+		 ELOG is part of a family of applications known as weblogs.
+		 Their general purpose is: 1. to make it easy for people to
+		 put information online in a chronological fashion, in the
+		 form of short, time-stamped text messages ("entries") with
+		 optional HTML markup for presentation, and optional file
+		 attachments (images, archives, etc.). 2. to make it easy
+		 for other people to access this information through a Web
+		 interface, browse entries, search, download files, and
+		 optionally add, update, delete or comment on entries.
+		 elogd ist the weblog server and elog is a standalone
+		 "client" program.
+		 https://midas.psi.ch/elog/
