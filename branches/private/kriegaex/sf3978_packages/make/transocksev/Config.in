@@ -1,0 +1,11 @@
+config FREETZ_PACKAGE_TRANSOCKSEV
+	bool "transocksev 0.0.1 (binary only)"
+	select FREETZ_LIB_libevent
+	default n
+	help
+		transocksev is a transparent socks proxy, inspired by the idea of
+		transocks (http://transocks.sourceforge.net).
+		In some cases you might redirect TCP/IP-Traffic on your network-router
+		trough a transparent SOCKS-Proxy. tranSOCKS_ev is a user-space daemon for
+		linux that does this job perfectly based on iptable-filter-rules.
+		WWW: http://oss.tiggerswelt.net/transocks_ev/

@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_TRANSOCKSEV" == "y" ] && EXTERNAL_FILES+=" /usr/bin/transocksev"
