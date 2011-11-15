@@ -1,0 +1,11 @@
+--- src/iplog.h.orig	2011-05-28 23:50:03.000000000 +0200
++++ src/iplog.h	2011-05-28 23:50:27.000000000 +0200
+@@ -48,7 +48,7 @@
+ ** Path of the iplog configuration file.
+ */
+ 
+-#define CONFFILE	"/etc/iplog.conf"
++#define CONFFILE	"/var/tmp/flash/iplog/iplog.conf"
+ 
+ /*
+ ** Making these smaller will probably do bad things.

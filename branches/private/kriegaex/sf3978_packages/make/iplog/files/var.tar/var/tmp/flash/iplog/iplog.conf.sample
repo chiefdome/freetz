@@ -1,0 +1,21 @@
+#user nobody
+#group nobody
+#pid-file /var/mod/home/nobody/iplog.pid
+#logfile /var/media/ftp/uStor01/archiv/iplog.log
+#facility log_daemon
+#priority log_info
+#set log_ip true
+#set log_dest true
+#set ignore_dns
+#interface lan,wifi0
+#promisc 192.168.178.0/24
+#ignore udp sport 53
+#ignore udp dport 53
+#log tcp dport 80
+#log tcp dport 443
+##ignore tcp dport 1024: sport 20
+#ignore tcp dport 83
+#ignore icmp type unreach
+#ignore icmp type !echo
+#ignore udp from 127.1.2/24
+#ignore udp from 127.1.2/255.255.255.0
