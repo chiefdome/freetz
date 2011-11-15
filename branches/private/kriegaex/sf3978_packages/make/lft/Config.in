@@ -1,0 +1,27 @@
+config FREETZ_PACKAGE_LFT
+	bool "lft 3.3 (binaries only)"
+	select FREETZ_LIB_libpcap
+	default n
+	help
+		  LFT, short for Layer Four Traceroute, is a sort of 'traceroute' that often
+		  works much faster (than the commonly-used Van Jacobson method) and goes
+		  through many configurations of packet-filters (firewalls). More importantly,
+		  LFT implements numerous other features including AS number lookups through
+		  several reliable sources, loose source routing, netblock name lookups, et al.
+		  What makes LFT unique? LFT is the all-in-one traceroute tool because it can
+		  launch a variety of different probes using ICMP, UDP, and TCP protocols, or
+		  the RFC1393 trace method. For example, rather than only launching UDP probes
+		  in an attempt to elicit ICMP "TTL exceeded" from hosts in the path, LFT can
+		  send TCP SYN or FIN probes to target arbitrary services. Then, LFT listens for
+		  "TTL exceeded" messages, TCP RST (reset), and various other interesting heuristics
+		  from firewalls or other gateways in the path. LFT also distinguishes between
+		  TCP-based protocols (source and destination), which make its statistics slightly
+		  more realistic, and gives a savvy user the ability to trace protocol routes, not
+		  just layer-3 (IP) hops. With LFT's verbose output, much can be discovered about
+		  a target network. WhoB is a likable whois client (see whois(1)) designed to provide
+		  everything a network engineer needs to know about a routed IP address by typing
+		  one line and reading one line.
+		  LFT and WhoB are released under the open source license.
+		  WWW: http://pwhois.org/lft/
+		  Manpage: http://pwhois.org/lft/lft-manpage.html
+		  Manpage: http://pwhois.org/lft/whob-manpage.html

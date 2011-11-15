@@ -1,0 +1,11 @@
+--- Makefile.in.orig	2011-02-19 22:29:25.000000000 +0100
++++ Makefile.in		2011-02-19 22:30:50.000000000 +0100
+@@ -46,7 +46,7 @@
+ 	$(CC) $(CFLAGS) -o lft $(OBJS) $(LDFLAGS) $(LIBS)
+ 
+ whob: whois.o
+-	$(CC) $(CFLAGS) -o whob whois.c -DSTANDALONE $(LDFLAGS) $(LIBS)
++	$(CC) $(CFLAGS) -o whob whois.c -DSTANDALONE -I$(TARGET_TOOLCHAIN_STAGING_DIR)/include/pcap $(LDFLAGS) $(LIBS)
+ 
+ install: lft lft.8 whob whob.8
+ 	@echo "LFT and WhoB"
