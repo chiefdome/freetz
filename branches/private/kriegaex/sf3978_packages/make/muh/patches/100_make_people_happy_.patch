@@ -1,0 +1,11 @@
+--- configure.orig	2011-09-11 00:07:45.000000000 +0200
++++ configure	2011-09-11 00:08:14.000000000 +0200
+@@ -4654,7 +4654,7 @@
+   if test "$cross_compiling" = yes; then
+   { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling" >&5
+ echo "$as_me: error: cannot run test program while cross compiling" >&2;}
+-   { (exit 1); exit 1; }; }
++   }
+ else
+   cat >conftest.$ac_ext <<_ACEOF
+ #line $LINENO "configure"

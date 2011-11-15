@@ -1,0 +1,8 @@
+config FREETZ_PACKAGE_MUH
+	bool "muh 2.2a (binary only)"
+	default n
+	help
+		  muh is a smart IRC-bouncing tool that remains on IRC all the time.
+		  You can take control over your nick by connecting to muh with an
+		  IRC client that is able to supply a password for the server connection.
+		  WWW: http://muh.sourceforge.net/
