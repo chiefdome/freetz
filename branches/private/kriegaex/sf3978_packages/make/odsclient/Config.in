@@ -1,0 +1,10 @@
+config FREETZ_PACKAGE_ODSCLIENT
+	bool "odsclient 1.03 (binary only)"
+	select FREETZ_LIB_libresolv
+	default n
+	help
+		update client for Open Domain Server (ODS).
+		Code by Aaron Sethman <androsyn@ratbox.org> for use with ODS and dnsQ
+		Modified ever so slightly by Jason DiCioccio <geniusj@ods.org>
+		Usage: odsclient username password hostname [ipaddress]
+		WWW: http://www.ods.org/
