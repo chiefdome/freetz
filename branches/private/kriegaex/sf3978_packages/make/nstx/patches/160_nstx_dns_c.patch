@@ -1,0 +1,139 @@
+--- nstx_dns.c.orig
++++ nstx_dns.c
+@@ -6,6 +6,7 @@
+ #include <fcntl.h>
+ #include <syslog.h>
+ #include <unistd.h>
++#include <assert.h>
+ 
+ #include "nstxfun.h"
+ #include "nstxdns.h"
+@@ -58,7 +59,7 @@
+  * DNS-packet 'msg'. */
+ 
+ static char *
+-decompress_label(const char *msg, int msglen, const char *lbl)
++decompress_label(const char *msg, unsigned int msglen, const char *lbl)
+ {
+    const char *ptr = lbl;
+    char *buf;
+@@ -69,7 +70,7 @@
+    
+    while ((chunklen = *ptr)) {
+       if (chunklen > 63) {
+-	 if ((ptr-msg) >= (msglen-1)) {
++	 if ((ptr-msg) >= ((signed int)msglen-1)) {
+ 	    DEBUG("Bad pointer at end of msg");
+ 	    if (buf)
+ 	      free(buf);
+@@ -104,13 +105,15 @@
+ 	 ptr += chunklen + 1;
+       }
+    }
+-   buf[buflen] = 0;
+-   buflen++;
++   if (buf) {
++     buf[buflen] = 0;
++     buflen++;
++   }
+    return buf;
+ }
+ 
+ static const unsigned char *
+-_cstringify(const unsigned char *data, int *dlen, int clen)
++_cstringify(const unsigned char *data, int *dlen, unsigned int clen)
+ {
+    static unsigned char *buf;
+    
+@@ -143,7 +146,7 @@
+ {
+    int len;
+    
+-   len = strlen(data);
++   len = strlen((char*)data);
+    return _cstringify(data, &len, 63);
+ }
+ 
+@@ -183,24 +186,24 @@
+ static const unsigned char *
+ lbl2data (const unsigned char *data, size_t len)
+ {
+-   static unsigned char *buf;
+-   
++   static signed char *buf = NULL;
+    const unsigned char *s = data;
+-   unsigned char *d;
+-   unsigned int llen;
++   signed char *d;
++   signed int llen;
+    
+    d = buf = realloc(buf, len);
++   assert(d);
+    do
+      {
+ 	llen = *s++;
+-	if ((llen > 63) || (llen > len - (s - data)))
+-	  return NULL;
++	if ((llen > 63) || (llen > (signed int)(len - (s - data))))
++	  break;
+ 	memcpy(d, s, llen);
+ 	s += llen;
+ 	d += llen;
+      } while (llen);
+    *d = '\0';
+-   return buf;
++   return (const unsigned char*)buf;
+ }
+ 
+ /* New DNS-Code */
+@@ -318,7 +321,7 @@
+    const char *ptr;
+    static char *fqdn;
+    
+-   ptr = data2lbl(data);
++   ptr = (char*)data2lbl((unsigned char*)data);
+    fqdn = realloc(fqdn, strlen(ptr)+strlen(suffix)+1);
+    strcpy(fqdn, ptr);
+    strcat(fqdn, suffix);
+@@ -336,8 +339,9 @@
+      free(buf);
+    
+    off = strstr(fqdn, suffix);
+-   if (off)
+-	buf = strdup(lbl2data(fqdn, off - fqdn));
++   /* only parse if the fqdn was found, and there is more than the fqdn */
++   if (off && off != fqdn)
++	buf = strdup((char*)lbl2data((unsigned char*)fqdn, off - fqdn));
+    else
+ 	/* Our suffix not found... */
+   	buf = NULL; 
+@@ -364,7 +368,7 @@
+    const char *ptr;
+    char *buf;
+    
+-   ptr = data2txt(data, &len);
++   ptr = (char*)data2txt((unsigned char*)data, &len);
+    buf = malloc(len);
+    memcpy(buf, ptr, len);
+    
+@@ -477,7 +481,7 @@
+      {
+ 	offsets[i++] = ptr - buf;
+ 	rrp = _new_listitem(&pkt->query);
+-	rrp->data = decompress_label(buf, len, ptr);
++	rrp->data = decompress_label((char*)buf, len, (char*)ptr);
+ 	if (!rrp->data)
+ 	  {
+ 	     syslog(LOG_ERR, "dns_extractpkt: decompress_label choked in qd\n");
+@@ -517,8 +521,9 @@
+ 	     if (j < i)
+ 	       rrp->link = j;
+ 	  }
+-	ptr = _skip_lbl(ptr, &remain);
+-	rrp->len = ptr[8]*256+ptr[9];
++	//	ptr = _skip_lbl(ptr, &remain);
++	//	rrp->len = ptr[8]*256+ptr[9];
++	rrp->len = ptr[10]*256+ptr[11];
+ 	ptr += 12;
+ 	remain -= 12;
+ 	if (remain < rrp->len)

@@ -1,0 +1,47 @@
+--- nstxd.c.orig
++++ nstxd.c
+@@ -67,7 +67,7 @@
+ }
+ 
+ int main (int argc, char *argv[]) {
+-   char		 ch;
++   signed char	 ch;
+    const char	*device = NULL, *dir = NULL;
+    in_addr_t	 bindto = INADDR_ANY;
+    uid_t	 uid = 0;
+@@ -172,7 +172,7 @@
+    dns_setid(pkt, q->id);
+    dns_settype(pkt, DNS_RESPONSE);
+    dns_addanswer(pkt, "\xb4\x00\x00\x00", 4, dns_addquery(pkt, q->name));
+-   buf = dns_constructpacket (pkt, &len);
++   buf = (char*)dns_constructpacket (pkt, &len);
+    sendns(buf, len, &q->peer);
+    free(buf);
+ }  
+@@ -188,7 +188,7 @@
+    
+    if (msg) {
+      if (msg->src == FROMNS) {
+-	pkt = dns_extractpkt(msg->data, msg->len);
++	pkt = dns_extractpkt((unsigned char*)msg->data, msg->len);
+ 	if (pkt)
+ 	  {
+ 	     name = dns_getquerydata(pkt);
+@@ -198,7 +198,7 @@
+ 			name);
+ 		  queueitem(pkt->id, name, &msg->peer);
+ 		  if ((data = dns_fqdn2data(name)) &&
+-		      (buf = nstx_decode(data, &len)))
++		      (buf = nstx_decode((unsigned char*)data, &len)))
+ 		    {
+ 		       nstx_handlepacket(buf, len, &sendtun);
+ 		    }
+@@ -220,7 +220,7 @@
+       len = dns_getfreespace(pkt, DNS_RESPONSE);
+       buf = dequeue_senditem(&len);
+       dns_addanswer(pkt, buf, len, link);
+-      buf = dns_constructpacket(pkt, &len);
++      buf = (char*)dns_constructpacket(pkt, &len);
+       sendns(buf, len, &qitem->peer);
+    }
+    timeoutqueue(do_timeout);

@@ -1,0 +1,11 @@
+--- nstx_tuntap.c.orig
++++ nstx_tuntap.c
+@@ -215,7 +215,7 @@
+ 
+ struct nstxmsg *nstx_select (int timeout)
+ {
+-   int peerlen;
++   unsigned peerlen;
+    fd_set set;
+    struct timeval tv;
+    static struct nstxmsg *ret = NULL;

@@ -1,0 +1,8 @@
+--- Makefile.orig
++++ Makefile
+@@ -1,4 +1,4 @@
+-CFLAGS += -ggdb -Wall -Werror
++CFLAGS += 
+ 
+ NSTXD_SRCS = nstxd.c nstx_encode.c nstx_pstack.c nstx_dns.c nstx_tuntap.c nstx_queue.c
+ NSTXD_OBJS = ${NSTXD_SRCS:.c=.o}

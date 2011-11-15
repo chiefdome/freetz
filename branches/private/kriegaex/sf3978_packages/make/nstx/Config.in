@@ -1,0 +1,11 @@
+config FREETZ_PACKAGE_NSTX
+	bool "nstx 1.1-beta6 (binaries only)"
+	default n
+	help
+		NSTX tunneling network-packets over DNS. NSTX (the Nameserver
+		Transfer Protocol) makes it possible to create IP tunnels using DNS
+		queries and replies for IP packet encapsulation where IP traffic
+		other than DNS isn't possible.  This project is not part of the GNU
+		Project.
+		Lizenz: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+		WWW: http://savannah.nongnu.org/projects/nstx/

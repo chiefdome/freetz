@@ -1,0 +1,31 @@
+--- nstx_encode.c.orig
++++ nstx_encode.c
+@@ -30,11 +30,11 @@
+ 
+ void init_revmap (void)
+ {
+-   int i;
++   unsigned int i;
+    
+    revmap = malloc(256);
+    
+-   for (i = 0; i < strlen(map); i++)
++   for (i = 0; i < strlen((char*)map); i++)
+      revmap[map[i]] = i;
+ }
+    
+@@ -70,11 +70,11 @@
+    if (!revmap)
+      init_revmap();
+    
+-   len = strlen(data)-1;
+-   
++   len = strlen((char*)data);
++
+    buf = realloc(buf, ((len+3)/4)*3);
+    
+-   while (off < len) {
++   while (off+3 < len) {
+       buf[i+0] = (revmap[data[off]]<<2)|((revmap[data[off+1]]&48)>>4);
+       buf[i+1] = ((revmap[data[off+1]]&15)<<4)|((revmap[data[off+2]]&60)>>2);
+       buf[i+2] = ((revmap[data[off+2]]&3)<<6)|(revmap[data[off+3]]);

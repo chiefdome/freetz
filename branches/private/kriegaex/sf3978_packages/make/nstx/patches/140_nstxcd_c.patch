@@ -1,0 +1,37 @@
+--- nstxcd.c.orig
++++ nstxcd.c
+@@ -63,7 +63,7 @@
+ int main (int argc, char * argv[]) {
+   struct nstxmsg *msg;
+   const char	*device = NULL;
+-  char		 ch;
++  int 		 ch;
+ 
+   nsid = time(NULL);
+  
+@@ -110,11 +110,11 @@
+    const char *data;
+    int datalen;
+    
+-   pkt = dns_extractpkt (reply, len);
++   pkt = dns_extractpkt ((unsigned char*)reply, len);
+    if (!pkt)
+      return;
+    while ((data = dns_getanswerdata(pkt, &datalen))) {
+-      data = txt2data(data, &datalen);
++      data = (char*)txt2data((unsigned char*)data, &datalen);
+       nstx_handlepacket (data, datalen, &sendtun);
+    }
+    dequeueitem(pkt->id);
+@@ -159,9 +159,9 @@
+     data += l;
+     datalen -= l;
+     
+-    dns_addquery(pkt, dns_data2fqdn(nstx_encode(p, sizeof(nh)+l)));
++    dns_addquery(pkt, dns_data2fqdn(nstx_encode((unsigned char*)p, sizeof(nh)+l)));
+     free(p);
+-    p = dns_constructpacket(pkt, &l);
++    p = (char*)dns_constructpacket(pkt, &l);
+     sendns(p, l, NULL);
+     free(p);
+ 

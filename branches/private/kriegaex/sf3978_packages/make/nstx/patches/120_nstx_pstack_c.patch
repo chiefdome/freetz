@@ -1,0 +1,11 @@
+--- nstx_pstack.c.orig
++++ nstx_pstack.c
+@@ -49,7 +49,7 @@
+    char *netpacket;
+    int netpacketlen;
+    
+-   if ((!ptr) || len < sizeof(struct nstxhdr))
++   if ((!ptr) || (signed int) len < (signed int) sizeof(struct nstxhdr))
+      return;
+ 
+    if (!nstxpkt->id)
