@@ -1,0 +1,10 @@
+config FREETZ_PACKAGE_BMON
+	bool "bmon 2.1.0 (binary only)"
+	select FREETZ_LIB_libncurses
+	select FREETZ_LIB_libm
+	default n
+	help
+		bmon is a bandwidth monitor capable of retrieving statistics from various
+		input modules. It provides various output methods including a curses based
+		interface. bmon is intended for debugging and real-time monitoring purposes. 
+		WWW: http://www.infradead.org/~tgr/bmon/

@@ -1,0 +1,11 @@
+--- src/out_xml_event.c
++++ src/out_xml_event.c
+@@ -127,7 +127,7 @@
+ 	.om_draw = xml_event_draw,
+ 	.om_set_opts = xml_event_set_opts,
+ 	.om_probe = xml_event_probe,
+-	.om_shutdown xml_event_shutdown,
++	.om_shutdown = xml_event_shutdown,
+ };
+ 
+ static void __init xml_event_init(void)

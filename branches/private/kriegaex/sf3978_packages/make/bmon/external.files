@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_BMON" == "y" ] && EXTERNAL_FILES+=" /usr/bin/bmon"

@@ -1,0 +1,11 @@
+--- src/out_audio.c
++++ src/out_audio.c
+@@ -141,7 +141,7 @@
+ 	.om_draw = audio_draw,
+ 	.om_set_opts = audio_set_opts,
+ 	.om_probe = audio_probe,
+-	.om_shutdown audio_shutdown,
++	.om_shutdown = audio_shutdown,
+ };
+ 
+ static void __init audio_init(void)
