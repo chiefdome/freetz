@@ -1,0 +1,14 @@
+config FREETZ_PACKAGE_SSLCAT
+	bool "sslcat 0.1 (binary only)"
+	select FREETZ_LIB_libssl
+	select FREETZ_LIB_libcrypto
+	default n
+	help
+		SSLCat is a simple Unix utility that reads and writes data
+		across an SSL enable network connection. SSLCat accepts a
+		hostname and optional port number (443 is used if none is
+		specified) and attempts to form a SSLv2 connection to the
+		specified host. If all goes well, data is read from stdin
+		and sent across the encrypted connection, while incoming
+		data from the encrypted connection is sent stdout.
+		WWW: http://www.bindshell.net/tools/sslcat
