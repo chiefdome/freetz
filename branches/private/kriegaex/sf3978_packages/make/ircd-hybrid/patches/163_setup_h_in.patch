@@ -1,0 +1,14 @@
+--- include/setup.h.in.orig	2007-02-28 05:17:43.000000000 +0100
++++ include/setup.h.in		2010-02-07 00:28:01.000000000 +0100
+@@ -318,3 +318,11 @@
+ 
+ /* Define to `unsigned long long' if <sys/types.h> does not define. */
+ #undef uint64_t
++
++/* undef per patch */
++#undef MODPATH
++#undef AUTOMODPATH
++#undef MSGPATH
++#undef LOGPATH
++#undef ETCPATH
++

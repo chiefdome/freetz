@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_IRCD_HYBRID)),y)
+PACKAGES+=ircd-hybrid
+endif

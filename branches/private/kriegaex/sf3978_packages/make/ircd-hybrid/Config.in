@@ -1,0 +1,39 @@
+config FREETZ_PACKAGE_IRCD_HYBRID
+	bool "ircd-hybird 7.2.3 (binary only)"
+	select FREETZ_LIB_libdl if ! FREETZ_PACKAGE_IRCD_HYBRID_STATIC
+	select FREETZ_LIB_libresolv if ! FREETZ_PACKAGE_IRCD_HYBRID_STATIC
+	default n
+	help
+		the ircd-hybrid IRC daemon. ircd-hybrid
+		includes a number of improvements over a standard
+		ircd-2.8 server, including compressed server<->server
+		links, chanmode +e, and TS5 support.
+		WWW: http://www.ircd-hybrid.org/
+
+config FREETZ_PACKAGE_IRCD_HYBRID_WITH_ZLIB
+	bool "With zlib Compression"
+	depends on FREETZ_PACKAGE_IRCD_HYBRID
+	select FREETZ_LIB_libz if ! FREETZ_PACKAGE_IRCD_HYBRID_STATIC
+	default n
+	help
+		ZLIB Compression for IRC Traffic
+
+config FREETZ_PACKAGE_IRCD_HYBRID_WITH_SSL
+	bool "build with SSL support"
+	depends on FREETZ_PACKAGE_IRCD_HYBRID
+	select FREETZ_LIB_libcrypto if ! FREETZ_PACKAGE_IRCD_HYBRID_STATIC
+	select FREETZ_LIB_libssl if ! FREETZ_PACKAGE_IRCD_HYBRID_STATIC
+	default n
+	help
+		This option enables SSL support for ircd-hybird.
+
+config FREETZ_PACKAGE_IRCD_HYBRID_STATIC
+	bool "Statically link libraries"
+	depends on FREETZ_PACKAGE_IRCD_HYBRID_WITH_SSL
+	default n
+	help
+		ircd-hybrid with SSL support needs the following shared
+		libraries which can be linked in statically by activating
+		this switch:
+		- libcrypto
+		- libssl

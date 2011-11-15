@@ -1,0 +1,10 @@
+--- src/irc_res.c.orig	2007-02-28 05:17:46.000000000 +0100
++++ src/irc_res.c	2010-02-02 16:09:11.000000000 +0100
+@@ -151,6 +151,7 @@
+     switch (srv->ss.ss_family)
+     {
+ #ifdef IPV6
++      char in6addr_any;
+       case AF_INET6:
+         if (srv->ss.ss_family == inp->ss.ss_family)
+           if (v6->sin6_port == v6in->sin6_port)

@@ -1,0 +1,34 @@
+--- src/s_log.c.orig	2007-02-28 05:17:46.000000000 +0100
++++ src/s_log.c	2010-02-02 12:51:59.000000000 +0100
+@@ -67,7 +67,9 @@
+   LOG_NOTICE,
+   LOG_INFO,
+   LOG_INFO,
+-  LOG_INFO
++  LOG_INFO,
++  LOG_PID,
++  LOG_NDELAY
+ };
+ #endif
+ 
+@@ -79,7 +81,10 @@
+   "L_NOTICE",
+   "L_TRACE",
+   "L_INFO",
+-  "L_DEBUG"
++  "L_DEBUG",
++  "L_PID",
++  "L_NDELAY",
++  "L_FACILITY"
+ };
+ 
+ /*
+@@ -153,7 +158,7 @@
+ {
+   open_log(filename);
+ #ifdef USE_SYSLOG
+-  openlog("ircd", LOG_PID | LOG_NDELAY, LOG_FACILITY);
++  openlog("ircd", LOG_PID | LOG_NDELAY, LOG_ERR);
+ #endif
+ #ifndef SYSLOG_USERS
+   eventAddIsh("user_log_resync", user_log_resync, NULL, 60);

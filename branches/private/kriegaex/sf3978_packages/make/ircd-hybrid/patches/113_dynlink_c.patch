@@ -1,0 +1,21 @@
+--- src/dynlink.c.orig	2007-02-28 05:17:46.000000000 +0100
++++ src/dynlink.c	2010-02-02 16:42:54.000000000 +0100
+@@ -35,7 +35,8 @@
+ #endif
+ 
+ #if defined(HAVE_DLINFO) && defined(HAVE_LINK_H)
+-# include <link.h>
++#define RTLD_DI_LINKMAP
++#include <link.h>
+ #endif
+ 
+ extern dlink_list mod_list;
+@@ -354,7 +355,7 @@
+ 
+   modp            = MyMalloc(sizeof(struct module));
+ #ifdef HAVE_DLINFO
+-  dlinfo(tmpptr, RTLD_DI_LINKMAP, &map);
++  dlinfo(RTLD_DI_LINKMAP);
+   if (map != NULL)
+     addr = (void *)map->l_addr;
+   else
