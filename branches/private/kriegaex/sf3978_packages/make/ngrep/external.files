@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_NGREP" == "y" ] && EXTERNAL_FILES+=" /usr/bin/ngrep"
