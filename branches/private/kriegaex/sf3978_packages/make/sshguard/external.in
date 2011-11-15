@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_SSHGUARD
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_SSHGUARD
+	bool "sshguard"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/sshguard

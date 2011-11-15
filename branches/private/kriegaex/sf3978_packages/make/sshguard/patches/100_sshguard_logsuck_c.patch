@@ -1,0 +1,12 @@
+--- src/sshguard_logsuck.c
++++ src/sshguard_logsuck.c
+@@ -58,6 +58,9 @@
+ #   define STDIN_FILENO     0
+ #endif
+ 
++#ifndef PATH_MAX
++#   include <sys/syslimits.h>
++#endif
+ 
+ /* factor of growth of the interval between polls while in idle */
+ #define     LOGPOLL_INTERVAL_GROWTHFACTOR     0.03

@@ -1,0 +1,14 @@
+config FREETZ_PACKAGE_SSHGUARD
+	bool "sshguard 1.5 (binary only)"
+	select FREETZ_PACKAGE_IPTABLES
+	default n
+	help
+		  sshguard monitors servers from their logging activity. When logs convey
+		  that someone is doing a Bad Thing, sshguard reacts by blocking he/she/it
+		  for a bit. Sshguard has a touchy personality: when a naughty tyke insists
+		  disturbing your host, it reacts firmer and firmer. sshguard supports many
+		  services out of the box, recognizes several log formats, and can operate
+		  many firewall systems. Many users appreciate its ease of use, compatibility
+		  and feature richness. 
+		  WWW: http://www.sshguard.net/
+		  FAQs: http://www.sshguard.net/docs/faqs/
