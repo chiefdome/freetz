@@ -1,0 +1,9 @@
+config FREETZ_PACKAGE_PRTUNNEL
+	bool "prtunnel 0.2.7 (binary only)"
+	default n
+	help
+		prtunnel tunnels a TCP connection through to a remote server
+		using an HTTP or SOCKS5 proxy. It is useful if you are behind a
+		proxy and want to use a program that doesn't have native proxy
+		support.  
+		WWW: http://joshbeam.com/software/prtunnel.php

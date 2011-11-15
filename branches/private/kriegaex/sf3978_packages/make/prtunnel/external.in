@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_PRTUNNEL
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_PRTUNNEL
+	bool "prtunnel"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/prtunnel
