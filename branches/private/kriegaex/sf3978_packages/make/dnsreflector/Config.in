@@ -1,0 +1,8 @@
+config FREETZ_PACKAGE_DNSREFLECTOR
+	bool "dnsreflector 1.02 (binary only)"
+	default n
+	help
+		The dnsreflector daemon listens for DNS queries on a local UDP port and
+		answers with records pointing back to localhost. Combined with iptables
+		this works as a bandwidth efficient spamtrap.
+		WWW: http://www.wolfermann.org/dnsreflector.html

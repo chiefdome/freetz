@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_DNSREFLECTOR)),y)
+PACKAGES+=dnsreflector
+endif
