@@ -1,0 +1,9 @@
+config EXTERNAL_FREETZ_PACKAGE_STUND
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_STUND
+	bool "stund"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/client
+		 /usr/bin/server
+

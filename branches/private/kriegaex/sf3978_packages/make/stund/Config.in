@@ -1,0 +1,12 @@
+config FREETZ_PACKAGE_STUND
+	bool "stund 0.1 (binaries only)"
+	select FREETZ_LIB_STDCXXLIB
+	default n
+	help
+		The STUN protocol (Simple Traversal of UDP through NATs) is
+		described in the IETF RFC 3489, available at
+		http://www.ietf.org/rfc/rfc3489.txt. It's used to help clients
+		behind NAT to tunnel incoming calls through. This server is the
+		counterpart to help the client identify the NAT and have it open
+		the proper ports for it.
+		WWW: http://sourceforge.net/projects/stun/

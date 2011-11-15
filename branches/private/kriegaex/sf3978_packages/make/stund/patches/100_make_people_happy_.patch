@@ -1,0 +1,15 @@
+--- Makefile.orig	2005-08-14 02:17:44.000000000 +0200
++++ Makefile		2010-11-06 15:29:35.000000000 +0100
+@@ -21,8 +21,10 @@
+ #
+ # Alternatively, for debugging.
+ #
+-CXXFLAGS+=-g -O -Wall
+-LDFLAGS+=-g -O -Wall
++#CXXFLAGS+=-g -O -Wall
++#LDFLAGS+=-g -O -Wall
++CXXFLAGS+=
++LDFLAGS+=
+ # for solaris
+ #LDFLAGS+= -lnsl -lsocket
+ 

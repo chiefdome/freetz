@@ -1,0 +1,12 @@
+--- udp.cxx.orig	2010-11-07 09:20:36.000000000 +0100
++++ udp.cxx		2010-11-07 09:19:00.000000000 +0100
+@@ -31,6 +31,9 @@
+ 
+ #include "udp.h"
+ 
++#define clog cerr
++/* The difference between clog and cerr is that clog is buffered but cerr is not. */
++
+ using namespace std;
+ 
+ 
