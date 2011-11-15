@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_NUTTCP
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_NUTTCP
+	bool "nuttcp"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/nuttcp

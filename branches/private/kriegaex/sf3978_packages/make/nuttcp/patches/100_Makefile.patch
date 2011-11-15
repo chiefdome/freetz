@@ -1,0 +1,25 @@
+--- Makefile.orig	2011-02-19 00:04:44.000000000 +0100
++++ Makefile		2011-02-19 00:02:03.000000000 +0100
+@@ -1,14 +1,14 @@
+-APP = nuttcp-6.1.2
++APP = nuttcp
+ #EXTRAVERSION=-pre1
+-CC = gcc -Wall
++CC =
+ #OPT = -g -O0
+-OPT = -O3
+-CFLAGS = $(OPT) $(NOIPV6)
++#OPT =
++CFLAGS =
+ LIBS = 
+-ifneq ($(NOIPV6),)
+-APPEXTV6=-noipv6
+-endif
+-APPEXT = $(APPEXTV6)
++#ifneq ($(NOIPV6),)
++#APPEXTV6=
++#endif
++#APPEXT = $(APPEXTV6)
+ 
+ CFLAGS.MISSING = -Imissing -DHAVE_CONFIG_H
+ OBJS.GETADD = getaddrinfo.o
