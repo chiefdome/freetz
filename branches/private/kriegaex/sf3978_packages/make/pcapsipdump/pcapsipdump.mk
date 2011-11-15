@@ -1,0 +1,38 @@
+$(call PKG_INIT_BIN, 0.1.4)
+$(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.gz
+$(PKG)_SOURCE_MD5:=95ed26caf66237a654cae2cacdaa3386
+$(PKG)_SITE:=@SF/$(pkg)
+$(PKG)_BINARIES:=$(pkg)
+$(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/%)
+$(PKG)_BINARIES_TARGET_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DEST_DIR)/usr/bin/%)
+
+$(PKG)_DEPENDS_ON := $(STDCXXLIB) libpcap
+
+$(PKG_SOURCE_DOWNLOAD)
+$(PKG_UNPACKED)
+$(PKG_CONFIGURED_NOP)
+
+$($(PKG)_BINARIES_BUILD_DIR): $($(PKG)_DIR)/.configured
+	$(SUBMAKE1) -C $(PCAPSIPDUMP_DIR) \
+		CC="$(TARGET_CC)" \
+		CXX="$(TARGET_CXX)" \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		CXXFLAGS="$(TARGET_CFLAGS) -I$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/include \
+		-I$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/include/uClibc++ \
+		-fno-builtin -fno-rtti -nostdinc++" \
+		LDFLAGS="$(TARGET_LDFLAGS) -L$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib"
+
+$($(PKG)_BINARIES_TARGET_DIR): $($(PKG)_DEST_DIR)/usr/bin/%: $($(PKG)_DIR)/%
+	$(INSTALL_BINARY_STRIP)
+
+$(pkg)-precompiled: $($(PKG)_BINARIES_TARGET_DIR)
+
+$(pkg)-clean:
+	-$(SUBMAKE1) -C $(PCAPSIPDUMP_DIR) clean
+	 $(RM) $(PCAPSIPDUMP_DIR)/.configured
+
+$(pkg)-uninstall:
+	$(RM) $(PCAPSIPDUMP_TARGET_BINARY)
+	$(RM) $(PCAPSIPDUMP_BINARIES_TARGET_DIR)
+
+$(PKG_FINISH)

@@ -1,0 +1,381 @@
+--- pcapsipdump.cpp.orig	2007-05-12 01:03:04.000000000 +0200
++++ pcapsipdump.cpp	2011-04-24 12:29:17.000000000 +0200
+@@ -22,17 +22,21 @@
+     This would be appreciated, but not required.
+ */
+ 
++#ifdef sparc
++#define __BIG_ENDIAN 1
++#endif
++#ifndef sparc
++#include <endian.h>
++#endif
++
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
+-#include <getopt.h>
+ #include <time.h>
+ #include <signal.h>
+-#include <endian.h>
+ #include <sys/stat.h>
+ #include <sys/types.h>
+-#include <net/ethernet.h>
+ 
+ #include <pcap.h>
+ 
+@@ -42,9 +46,13 @@
+ #define MAX(x,y) ((x) > (y) ? (x) : (y))
+ #define MIN(x,y) ((x) < (y) ? (x) : (y))
+ 
+-int get_sip_peername(char *data, int data_len, char *tag, char *caller, int caller_len);
++int get_sip_peername(char *data, int data_len, const char *tag, char *caller, int caller_len);
+ int get_ip_port_from_sdp(char *sdp_text, in_addr_t *addr, unsigned short *port);
+ char * gettag(const void *ptr, unsigned long len, const char *tag, unsigned long *gettaglen);
++uint32_t get_ssrc (void *ip_packet_data);
++#ifndef _GNU_SOURCE
++void *memmem(const void* haystack, size_t hl, const void* needle, size_t nl);
++#endif
+ 
+ calltable *ct;
+ 
+@@ -66,7 +74,7 @@
+ {
+ 
+     pcap_t *handle;/* Session handle */
+-    char *opt_chdir;/* directory to write dump */
++    const char *opt_chdir;/* directory to write dump */
+     char *ifname;/* interface to sniff on */
+     char *fname;/* pcap file to read on */
+     char errbuf[PCAP_ERRBUF_SIZE];/* Error string */
+@@ -74,22 +82,28 @@
+     char filter_exp[] = "udp";/* The filter expression */
+     bpf_u_int32 mask;/* Our netmask */
+     bpf_u_int32 net;/* Our IP */
+-    struct pcap_pkthdr header;/* The header that pcap gives us */
+-    const u_char *packet;/* The actual packet */
++    struct pcap_pkthdr *pkt_header; /* The header that pcap gives us */
++    const u_char *pkt_data; /* The actual packet */
+     unsigned long last_cleanup=0;
++    int res;
++    int offset_to_ip=0;
+     int opt_fork=1;
+     int opt_promisc=1;
+     int opt_packetbuffered=0;
++    int opt_t38only=0;
++    int opt_save_rtp=1;
+     int verbosity=0;
++    char number_filter[128];
+ 
+     ifname=NULL;
+     fname=NULL;
+     opt_chdir="/var/spool/pcapsipdump";
++    number_filter[0]=0;
++
+     while(1) {
+         char c;
+ 
+-        c = getopt_long (argc, argv, "i:r:d:v:fpU",
+-                        NULL, NULL);
++        c = getopt (argc, argv, "i:r:d:v:n:R:fpUt");
+         if (c == -1)
+             break;
+ 
+@@ -97,9 +111,29 @@
+             case 'i':
+                 ifname=optarg;
+                 break;
+-	    case 'v':
+-		verbosity=atoi(optarg);
+-		break;
++            case 'v':
++                verbosity=atoi(optarg);
++                break;
++            case 'n':
++                strcpy(number_filter,optarg);
++                break;
++            case 'R':
++                if (strcasecmp(optarg,"none")==0){
++                    opt_save_rtp=0;
++                }else if (strcasecmp(optarg,"rtpevent")==0){
++                    opt_save_rtp=2;
++                }else if (strcasecmp(optarg,"t38")==0){
++                    opt_t38only=1;
++                }else if (strcasecmp(optarg,"all")==0){
++                    opt_save_rtp=1;
++                }else{
++                    printf("Unrecognized RTP filter specification: '%s'\n",optarg);
++	            return 1;
++                }
++                break;
++            case 't':
++                opt_t38only=1;
++                break;
+             case 'r':
+                 fname=optarg;
+                 break;
+@@ -125,17 +159,23 @@
+ 
+     if ((fname==NULL)&&(ifname==NULL)){
+ 	printf( "pcapsipdump version %s\n"
+-		"Usage: pcapsipdump [-fpU] [-i <interface>] [-r <file>] [-d <working directory>] [-v level]\n"
++		"Usage: pcapsipdump [-fpU] [-i <interface>] [-r <file>] [-d <working directory>] [-v level] [-R filter]\n"
+ 		" -f   Do not fork or detach from controlling terminal.\n"
+ 		" -p   Do not put the interface into promiscuous mode.\n"
+-		" -U   Make .pcap files writing ‘‘packet-buffered’’ - more slow method,\n"
+-		"      but you can use partitialy writen file anytime, it will be consistent.\n"
++		" -R   RTP filter. Possible values: 'all' (default), 'rtpevent', 't38', or 'none'.\n"
++		" -U   Make .pcap files writing 'packet-buffered' - slower method,\n"
++		"      but you can use partitially written file anytime, it will be consistent.\n"
+ 		" -v   Set verbosity level (higher is more verbose).\n"
++		" -n   Number-filter. Only calls to/from specified number will be recorded\n"
++		" -t   T.38-filter. Only calls, containing T.38 payload indicated in SDP will be recorded\n"
+ 		,PCAPSIPDUMP_VERSION);
+ 	return 1;
+     }
+ 
+     ct = new calltable;
++    if (opt_t38only){
++        ct->erase_non_t38=1;
++    }
+     signal(SIGINT,sigint_handler);
+     signal(SIGTERM,sigterm_handler);
+ 
+@@ -149,7 +189,7 @@
+ 	}
+ 	handle = pcap_open_live(ifname, 1600, opt_promisc, 1000, errbuf);
+ 	if (handle == NULL) {
+-	    fprintf(stderr, "Couldn't open inteface '%s': %s\n", ifname, errbuf);
++	    fprintf(stderr, "Couldn't open interface '%s': %s\n", ifname, errbuf);
+ 	    return(2);
+ 	}
+     }else{
+@@ -180,7 +220,25 @@
+ 	if (fork()) exit(0);
+     }
+ 
+-    while ((packet = pcap_next(handle, &header))){
++    {
++	int dlt=pcap_datalink(handle);
++	switch (dlt){
++	    case DLT_EN10MB :
++		offset_to_ip=sizeof(struct ether_header);
++		break;
++	    case DLT_RAW :
++		offset_to_ip=0;
++		break;
++	    default : {
++		printf("Unknown interface type (%d).\n",dlt);
++		return 3;
++	    }
++	}
++    }
++
++
++    /* Retrieve the packets */
++    while((res = pcap_next_ex( handle, &pkt_header, &pkt_data)) >= 0){
+ 	{
+ 	    struct iphdr *header_ip;
+ 	    struct udphdr *header_udp;
+@@ -191,58 +249,72 @@
+ 	    unsigned long l;
+ 	    int idx;
+ 
+-	    if (header.ts.tv_sec-last_cleanup>15){
++            if(res == 0)
++                /* Timeout elapsed */
++                continue;
++
++	    if (pkt_header->ts.tv_sec-last_cleanup>15){
+ 		if (last_cleanup>=0){
+-		    ct->do_cleanup(header.ts.tv_sec);
++		    ct->do_cleanup(pkt_header->ts.tv_sec);
+ 		}
+-		last_cleanup=header.ts.tv_sec;
++		last_cleanup=pkt_header->ts.tv_sec;
+ 	    }
+-
+-	    header_ip=(iphdr *)((char*)packet+sizeof(struct ether_header));
++	    header_ip=(iphdr *)((char*)pkt_data+offset_to_ip);
+ 	    if (header_ip->protocol==17){//UPPROTO_UDP=17
+-		header_udp=(udphdr *)((char*)header_ip+sizeof(*header_ip));
+-		data=(char *)header_udp+sizeof(*header_udp);
+-		datalen=header.len-((unsigned long)data-(unsigned long)packet);
++                int idx_leg=0;
++                int idx_rtp=0;
++                int save_this_rtp_packet=0;
++
++                header_udp=(udphdr *)((char*)header_ip+sizeof(*header_ip));
++                data=(char *)header_udp+sizeof(*header_udp);
++                datalen=pkt_header->len-((unsigned long)data-(unsigned long)pkt_data);
++
++                if ((opt_save_rtp==1) ||
++                    (opt_save_rtp==2 && datalen==18 && (data[0]&0xff) == 0x80 && (data[1]&0x7d) == 0x65 )){
++                    save_this_rtp_packet=1;
++                }
++
++                if (save_this_rtp_packet && ct->find_ip_port_ssrc(header_ip->daddr,htons(header_udp->dest),get_ssrc(data),&idx_leg,&idx_rtp)){
++                    if (ct->table[idx_leg].f_pcap!=NULL) {
++                        ct->table[idx_leg].last_packet_time=pkt_header->ts.tv_sec;
++                        pcap_dump((u_char *)ct->table[idx_leg].f_pcap,pkt_header,pkt_data);
++                        if (opt_packetbuffered) {pcap_dump_flush(ct->table[idx_leg].f_pcap);}
++                    }
++                }else if (save_this_rtp_packet && ct->find_ip_port_ssrc(header_ip->saddr,htons(header_udp->source),get_ssrc(data),&idx_leg,&idx_rtp)){
++                    if (ct->table[idx_leg].f_pcap!=NULL) {
++                        ct->table[idx_leg].last_packet_time=pkt_header->ts.tv_sec;
++                        pcap_dump((u_char *)ct->table[idx_leg].f_pcap,pkt_header,pkt_data);
++                        if (opt_packetbuffered) {pcap_dump_flush(ct->table[idx_leg].f_pcap);}
++                    }
++                }else if (htons(header_udp->source)==5060||
++                    htons(header_udp->dest)==5060){
++                    char caller[256];
++                    char called[256];
++                    char sip_method[256];
++
++                    //figure out method
++                    memcpy(sip_method,data,sizeof(sip_method)-1);
++                    sip_method[sizeof(sip_method)-1]=' ';
++                    if (strchr(sip_method,' ')!=NULL){
++                        *strchr(sip_method,' ')='\0';
++                    }else{
++                        sip_method[0]='\0';
++                        if (verbosity>=2){
++                            printf("Empty SIP method!\n");
++                        }
++                    }
+ 
+-		if ((idx=ct->find_ip_port(header_ip->daddr,htons(header_udp->dest)))>=0){
+-		    if (ct->table[idx].f_pcap!=NULL){
+-			ct->table[idx].last_packet_time=header.ts.tv_sec;
+-			pcap_dump((u_char *)ct->table[idx].f_pcap,&header,packet);
+-			if (opt_packetbuffered) {pcap_dump_flush(ct->table[idx].f_pcap);}
+-		    }
+-		}else if ((idx=ct->find_ip_port(header_ip->saddr,htons(header_udp->source)))>=0){
+-		    if (ct->table[idx].f_pcap!=NULL){
+-			ct->table[idx].last_packet_time=header.ts.tv_sec;
+-			pcap_dump((u_char *)ct->table[idx].f_pcap,&header,packet);
+-			if (opt_packetbuffered) {pcap_dump_flush(ct->table[idx].f_pcap);}
+-		    }
+-		}else if (htons(header_udp->source)==5060||
+-		    htons(header_udp->dest)==5060){
+ 		    data[datalen]=0;
++		    get_sip_peername(data,datalen,"From:",caller,sizeof(caller));
++		    get_sip_peername(data,datalen,"To:",called,sizeof(called));
+ 		    s=gettag(data,datalen,"Call-ID:",&l);
+-		    if ((idx=ct->find_by_call_id(s,l))<0){
+-			if ((idx=ct->add(s,l,header.ts.tv_sec))<0){
+-			    printf("Too many simultanious calls. runt out of call table space!\n");
++		    if (s!=NULL && ((idx=ct->find_by_call_id(s,l))<0) && (number_filter[0]==0||(strcmp(number_filter,caller)==0)||(strcmp(number_filter,called)==0)) ){
++			if ((idx=ct->add(s,l,pkt_header->ts.tv_sec))<0){
++			    printf("Too many simultaneous calls. Ran out of call table space!\n");
+ 			}else{
+-			    char sip_method[256];
+-			    //figure out method
+-			    memcpy(sip_method,data,sizeof(sip_method)-1);
+-			    sip_method[sizeof(sip_method)-1]=' ';
+-			    if (strchr(sip_method,' ')!=NULL){
+-				*strchr(sip_method,' ')='\0';
+-			    }else{
+-				sip_method[0]='\0';
+-				if (verbosity>=2){
+-				    printf("Empty SIP method!\n");
+-				}
+-			    }
+ 			    if ((strcmp(sip_method,"INVITE")==0)||(strcmp(sip_method,"OPTIONS")==0)||(strcmp(sip_method,"REGISTER")==0)){
+ 				struct tm *t;
+-				char caller[256];
+-				char called[256];
+-				t=localtime(&header.ts.tv_sec);
+-				get_sip_peername(data,datalen,"From:",caller,sizeof(caller));
+-				get_sip_peername(data,datalen,"To:",called,sizeof(called));
++				t=localtime(&pkt_header->ts.tv_sec);
+ 				sprintf(str2,"%04d%02d%02d",
+ 					t->tm_year+1900,t->tm_mon+1,t->tm_mday);
+ 				mkdir(str2,0700);
+@@ -262,6 +334,7 @@
+ 				*strstr(str2,".raw")='\0';
+ 				strcat(str2,".pcap");
+ 				ct->table[idx].f_pcap=pcap_dump_open(handle,str2);
++				strncpy(ct->table[idx].fn_pcap,str2,sizeof(ct->table[idx].fn_pcap));
+ 			    }else{
+ 				if (verbosity>=2){
+ 				    printf("Unknown SIP method:'%s'!\n",sip_method);
+@@ -272,8 +345,12 @@
+ 			}
+ 		    }
+ 
++                    // idx holds a valid pointer to open leg at this point
++                    if (strcmp(sip_method,"BYE")==0){
++                        ct->table[idx].had_bye=1;
++                    }
+ 		    s=gettag(data,datalen,"Content-Type:",&l);
+-		    if(l>0 && strncasecmp(s,"application/sdp",l)==0 && strstr(data,"\r\n\r\n")!=NULL){
++		    if(idx>=0 && l>0 && strncasecmp(s,"application/sdp",l)==0 && strstr(data,"\r\n\r\n")!=NULL){
+ 			in_addr_t tmp_addr;
+ 			unsigned short tmp_port;
+ 			if (!get_ip_port_from_sdp(strstr(data,"\r\n\r\n")+1,&tmp_addr,&tmp_port)){
+@@ -283,10 +360,13 @@
+ 				printf("Can't get ip/port from SDP:\n%s\n\n",strstr(data,"\r\n\r\n")+1);
+ 			    }
+ 			}
++			if (opt_t38only && memmem(data,datalen,"udptl t38",9)!=NULL){
++			    ct->table[idx].had_t38=1;
++			}
+ 		    }
+ 
+ 		    if (ct->table[idx].f_pcap!=NULL){
+-			pcap_dump((u_char *)ct->table[idx].f_pcap,&header,packet);
++			pcap_dump((u_char *)ct->table[idx].f_pcap,pkt_header,pkt_data);
+ 			if (opt_packetbuffered) {pcap_dump_flush(ct->table[idx].f_pcap);}
+ 		    }
+ 		}else{
+@@ -305,12 +385,14 @@
+ 	    }
+ 	}
+     }
++    /* flush / close files */
++    ct->do_cleanup(1<<31);
+     /* And close the session */
+     pcap_close(handle);
+     return(0);
+ }
+ 
+-int get_sip_peername(char *data, int data_len, char *tag, char *peername, int peername_len){
++int get_sip_peername(char *data, int data_len, const char *tag, char *peername, int peername_len){
+     unsigned long r,r2,peername_tag_len;
+     char *peername_tag=gettag(data,data_len,tag,&peername_tag_len);
+     if ((r=(unsigned long)memmem(peername_tag,peername_tag_len,"sip:",4))==0){
+@@ -344,6 +426,9 @@
+ 	return 1;
+     }
+     s=gettag(sdp_text,strlen(sdp_text),"m=audio ",&l);
++    if (l==0){
++        s=gettag(sdp_text,strlen(sdp_text),"m=image ",&l);
++    }
+     if (l==0 || (*port=atoi(s))==0){
+ 	*port=0;
+ 	return 1;
+@@ -378,3 +463,22 @@
+     *gettaglen=l;
+     return rc;
+ }
++
++inline uint32_t get_ssrc (void *udp_packet_data_pointer){
++    return ntohl(*(uint32_t*)((uint8_t*)udp_packet_data_pointer+8));
++}
++
++#ifndef _GNU_SOURCE
++void *memmem(const void* haystack, size_t hl, const void* needle, size_t nl) {
++    int i;
++
++    if (nl>hl) return 0;
++    for (i=hl-nl+1; i; --i) {
++	if (!memcmp(haystack,needle,nl)){
++	    return (char*)haystack;
++	}
++	haystack=(void*)((char*)haystack+1);
++    }
++    return 0;
++}
++#endif
