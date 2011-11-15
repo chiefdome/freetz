@@ -1,0 +1,29 @@
+config FREETZ_PACKAGE_NAST
+	bool "nast 0.2.0 (binary only)"
+	select FREETZ_LIB_libpthread
+	select FREETZ_LIB_libncurses
+	select FREETZ_LIB_libpcap
+	select FREETZ_LIB_libnet
+	select FREETZ_LIB_libmenu
+	default n
+	help
+		Nast is a packet sniffer and a LAN analyzer based on Libnet and Libpcap.
+		It can sniff in normal mode or in promiscuos mode the packets on a network
+		interface and log it.  It dumps the headers of packets and the payload in
+		ascii or ascii-hex format.  You can apply a filter. The sniffed data can be
+		saved in a separated file.
+		As analyzer tool, it has many features like:
+		  * Build LAN hosts list
+		  * Follow a TCP-DATA stream
+		  * Find LAN internet gateways
+		  * Discorver promiscous nodes
+		  * Reset an established connection
+		  * Perform a single half-open portscanner
+		  * Perform a multi half-open portscanner
+		  * Find link type (hub or switch)
+		  * Catch daemon banner of LAN nodes
+		  * Control arp answers to discover possible arp-spoofings
+		  * Byte couting with an optional filter
+		  * Write reports logging
+		It also provides a new ncurses interface.
+		WWW: http://nast.berlios.de/

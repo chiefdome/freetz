@@ -1,0 +1,11 @@
+--- sniff.c
++++ sniff.c
+@@ -38,7 +38,7 @@
+    ldd = NULL;
+    ld = 0;
+    npkt = 0;
+-   if (strcmp (ldname, "NULL")) /* != NULL */
++   if (ldname != NULL) /* != NULL */
+      (ld=1);
+ 
+    /* ask pcap for the network address and mask of the device */

@@ -1,0 +1,202 @@
+--- configure.orig	2011-02-12 00:00:04.000000000 +0100
++++ configure		2011-02-12 01:39:57.000000000 +0100
+@@ -2337,16 +2337,16 @@
+ #
+ 
+ filechk="yes"
+-echo "$as_me:$LINENO: checking for /usr/lib/libnet.a" >&5
+-echo $ECHO_N "checking for /usr/lib/libnet.a... $ECHO_C" >&6
++echo "$as_me:$LINENO: checking for $libdir/libnet.a" >&5
++echo $ECHO_N "checking for $libdir/libnet.a... $ECHO_C" >&6
+ if test "${ac_cv_file__usr_lib_libnet_a+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+-  test "$cross_compiling" = yes &&
++  test "$cross_compiling" = no &&
+   { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+ echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+    { (exit 1); exit 1; }; }
+-if test -r "/usr/lib/libnet.a"; then
++if test -r "$libdir/libnet.a"; then
+   ac_cv_file__usr_lib_libnet_a=yes
+ else
+   ac_cv_file__usr_lib_libnet_a=no
+@@ -2361,8 +2361,8 @@
+ fi
+ 
+ if test "$filechk" = "no"; then
+- echo "$as_me:$LINENO: checking for /usr/local/lib/libnet.a" >&5
+-echo $ECHO_N "checking for /usr/local/lib/libnet.a... $ECHO_C" >&6
++ echo "$as_me:$LINENO: checking for $libdir/libnet.a" >&5
++echo $ECHO_N "checking for $libdir/libnet.a... $ECHO_C" >&6
+ if test "${ac_cv_file__usr_local_lib_libnet_a+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+@@ -2370,7 +2370,7 @@
+   { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+ echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+    { (exit 1); exit 1; }; }
+-if test -r "/usr/local/lib/libnet.a"; then
++if test -r "$libdir/libnet.a"; then
+   ac_cv_file__usr_local_lib_libnet_a=yes
+ else
+   ac_cv_file__usr_local_lib_libnet_a=no
+@@ -2379,7 +2379,7 @@
+ echo "$as_me:$LINENO: result: $ac_cv_file__usr_local_lib_libnet_a" >&5
+ echo "${ECHO_T}$ac_cv_file__usr_local_lib_libnet_a" >&6
+ if test $ac_cv_file__usr_local_lib_libnet_a = yes; then
+-  filechk="yes" ; LDFLAGS="-L/usr/local/lib"; CPPFLAGS="-I/usr/local/include"
++  filechk="yes" ; LDFLAGS="-L$libdir/lib"; CPPFLAGS="-I/usr/local/include"
+ fi
+ 
+ fi
+@@ -2488,16 +2488,16 @@
+ #
+ 
+ filechk="yes"
+-echo "$as_me:$LINENO: checking for /usr/lib/libpcap.a" >&5
+-echo $ECHO_N "checking for /usr/lib/libpcap.a... $ECHO_C" >&6
++echo "$as_me:$LINENO: checking for $libdir/libpcap.a" >&5
++echo $ECHO_N "checking for $libdir/libpcap.a... $ECHO_C" >&6
+ if test "${ac_cv_file__usr_lib_libpcap_a+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+-  test "$cross_compiling" = yes &&
++  test "$cross_compiling" = no &&
+   { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+ echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+    { (exit 1); exit 1; }; }
+-if test -r "/usr/lib/libpcap.a"; then
++if test -r "$libdir/libpcap.a"; then
+   ac_cv_file__usr_lib_libpcap_a=yes
+ else
+   ac_cv_file__usr_lib_libpcap_a=no
+@@ -2512,8 +2512,8 @@
+ fi
+ 
+ if test "$filechk" = "no"; then
+- echo "$as_me:$LINENO: checking for /usr/local/lib/libpcap.a" >&5
+-echo $ECHO_N "checking for /usr/local/lib/libpcap.a... $ECHO_C" >&6
++ echo "$as_me:$LINENO: checking for $libdir/libpcap.a" >&5
++echo $ECHO_N "checking for $libdir/libpcap.a... $ECHO_C" >&6
+ if test "${ac_cv_file__usr_local_lib_libpcap_a+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+@@ -2521,7 +2521,7 @@
+   { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+ echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+    { (exit 1); exit 1; }; }
+-if test -r "/usr/local/lib/libpcap.a"; then
++if test -r "$libdir/libpcap.a"; then
+   ac_cv_file__usr_local_lib_libpcap_a=yes
+ else
+   ac_cv_file__usr_local_lib_libpcap_a=no
+@@ -2530,7 +2530,7 @@
+ echo "$as_me:$LINENO: result: $ac_cv_file__usr_local_lib_libpcap_a" >&5
+ echo "${ECHO_T}$ac_cv_file__usr_local_lib_libpcap_a" >&6
+ if test $ac_cv_file__usr_local_lib_libpcap_a = yes; then
+-  filechk="yes" ; LDFLAGS="-L/usr/local/lib"; CPPFLAGS="-I/usr/local/include"
++  filechk="yes" ; LDFLAGS="-L$libdir/lib"; CPPFLAGS="-I/usr/local/include"
+ fi
+ 
+ fi
+@@ -2638,16 +2638,16 @@
+ #
+ 
+ filechk="yes"
+-echo "$as_me:$LINENO: checking for /usr/lib/libncurses.a" >&5
+-echo $ECHO_N "checking for /usr/lib/libncurses.a... $ECHO_C" >&6
++echo "$as_me:$LINENO: checking for $libdir/libncurses.a" >&5
++echo $ECHO_N "checking for $libdir/libncurses.a... $ECHO_C" >&6
+ if test "${ac_cv_file__usr_lib_libncurses_a+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+-  test "$cross_compiling" = yes &&
++  test "$cross_compiling" = no &&
+   { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+ echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+    { (exit 1); exit 1; }; }
+-if test -r "/usr/lib/libncurses.a"; then
++if test -r "$libdir/libncurses.a"; then
+   ac_cv_file__usr_lib_libncurses_a=yes
+ else
+   ac_cv_file__usr_lib_libncurses_a=no
+@@ -2662,8 +2662,8 @@
+ fi
+ 
+ if test "$filechk" = "no"; then
+- echo "$as_me:$LINENO: checking for /usr/local/lib/libncurses.a" >&5
+-echo $ECHO_N "checking for /usr/local/lib/libncurses.a... $ECHO_C" >&6
++ echo "$as_me:$LINENO: checking for $libdir/libncurses.a" >&5
++echo $ECHO_N "checking for $libdir/libncurses.a... $ECHO_C" >&6
+ if test "${ac_cv_file__usr_local_lib_libncurses_a+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+@@ -2671,7 +2671,7 @@
+   { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+ echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+    { (exit 1); exit 1; }; }
+-if test -r "/usr/local/lib/libncurses.a"; then
++if test -r "$libdir/libncurses.a"; then
+   ac_cv_file__usr_local_lib_libncurses_a=yes
+ else
+   ac_cv_file__usr_local_lib_libncurses_a=no
+@@ -2680,7 +2680,7 @@
+ echo "$as_me:$LINENO: result: $ac_cv_file__usr_local_lib_libncurses_a" >&5
+ echo "${ECHO_T}$ac_cv_file__usr_local_lib_libncurses_a" >&6
+ if test $ac_cv_file__usr_local_lib_libncurses_a = yes; then
+-  filechk="yes" ; LDFLAGS="-L/usr/local/lib"; CPPFLAGS="-I/usr/local/include"
++  filechk="yes" ; LDFLAGS="-L/$libdir"; CPPFLAGS="-I/usr/local/include"
+ fi
+ 
+ fi
+@@ -2798,16 +2798,16 @@
+ #
+ 
+ filechk="yes"
+-echo "$as_me:$LINENO: checking for /usr/lib/libmenu.a" >&5
+-echo $ECHO_N "checking for /usr/lib/libmenu.a... $ECHO_C" >&6
++echo "$as_me:$LINENO: checking for $libdir/libmenu.a" >&5
++echo $ECHO_N "checking for $libdir/libmenu.a... $ECHO_C" >&6
+ if test "${ac_cv_file__usr_lib_libmenu_a+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+-  test "$cross_compiling" = yes &&
++  test "$cross_compiling" = no &&
+   { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+ echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+    { (exit 1); exit 1; }; }
+-if test -r "/usr/lib/libmenu.a"; then
++if test -r "$libdir/libmenu.a"; then
+   ac_cv_file__usr_lib_libmenu_a=yes
+ else
+   ac_cv_file__usr_lib_libmenu_a=no
+@@ -2822,8 +2822,8 @@
+ fi
+ 
+ if test "$filechk" = "no"; then
+- echo "$as_me:$LINENO: checking for /usr/local/lib/libmenu.a" >&5
+-echo $ECHO_N "checking for /usr/local/lib/libmenu.a... $ECHO_C" >&6
++ echo "$as_me:$LINENO: checking for $libdir/libmenu.a" >&5
++echo $ECHO_N "checking for /$libdir/libmenu.a... $ECHO_C" >&6
+ if test "${ac_cv_file__usr_local_lib_libmenu_a+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+@@ -2831,7 +2831,7 @@
+   { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+ echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+    { (exit 1); exit 1; }; }
+-if test -r "/usr/local/lib/libmenu.a"; then
++if test -r "$libdir/libmenu.a"; then
+   ac_cv_file__usr_local_lib_libmenu_a=yes
+ else
+   ac_cv_file__usr_local_lib_libmenu_a=no
+@@ -2840,7 +2840,7 @@
+ echo "$as_me:$LINENO: result: $ac_cv_file__usr_local_lib_libmenu_a" >&5
+ echo "${ECHO_T}$ac_cv_file__usr_local_lib_libmenu_a" >&6
+ if test $ac_cv_file__usr_local_lib_libmenu_a = yes; then
+-  filechk="yes" ; LDFLAGS="-L/usr/local/lib"; CPPFLAGS="-I/usr/local/include"
++  filechk="yes" ; LDFLAGS="-L$libdir"; CPPFLAGS="-I/usr/local/include"
+ fi
+ 
+ fi

@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_NAST
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_NAST
+	bool "nast"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/nast
