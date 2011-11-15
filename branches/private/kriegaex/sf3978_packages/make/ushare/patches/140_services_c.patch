@@ -1,0 +1,11 @@
+--- src/services.c.orig	2011-04-02 15:18:50.000000000 +0200
++++ src/services.c	2011-04-02 15:19:18.000000000 +0200
+@@ -20,6 +20,8 @@
+  */
+ 
+ #include <stdlib.h>
++#include <stdio.h>
++#include <string.h>
+ #include <upnp/upnp.h>
+ #include <upnp/upnptools.h>
+ 

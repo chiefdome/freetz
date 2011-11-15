@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_USHARE
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_USHARE
+	bool "ushare"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/ushare

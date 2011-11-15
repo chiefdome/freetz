@@ -1,0 +1,12 @@
+--- src/cds.c.orig	2011-04-02 14:47:50.000000000 +0200
++++ src/cds.c	2011-04-02 14:52:05.000000000 +0200
+@@ -22,6 +22,9 @@
+ #include <stdlib.h>
+ #include <upnp/upnp.h>
+ #include <upnp/upnptools.h>
++#include <string.h>
++#include <stdio.h>
++#include <errno.h>
+ 
+ #include "ushare.h"
+ #include "services.h"

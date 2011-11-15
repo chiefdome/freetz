@@ -1,0 +1,11 @@
+--- src/cms.c.orig	2011-04-02 15:15:08.000000000 +0200
++++ src/cms.c	2011-04-02 15:15:39.000000000 +0200
+@@ -22,6 +22,8 @@
+ #include <stdlib.h>
+ #include <upnp/upnp.h>
+ #include <upnp/upnptools.h>
++#include <stdio.h>
++#include <string.h>
+ 
+ #include "ushare.h"
+ #include "services.h"
