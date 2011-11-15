@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_NETPIPE" == "y" ] && EXTERNAL_FILES+=" /usr/bin/NPtcp"
