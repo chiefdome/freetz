@@ -1,0 +1,15 @@
+--- cfg.h.orig	2011-07-10 18:21:25.000000000 +0200
++++ cfg.h	2011-07-10 18:23:25.000000000 +0200
+@@ -39,9 +39,11 @@
+ 
+ 	int		nowarn;
+ 	int		first;
++
++        char            piddir[256];
+ };
+ 
+-#define MAX_CHILDS	1024
++#define MAX_CHILDS	8
+ #define MAX_BACKLOG	64
+ #define MAX_PORTS	65535
+ #define MAX_UID		65535

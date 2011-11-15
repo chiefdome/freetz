@@ -1,0 +1,193 @@
+--- db.c
++++ db.c
+@@ -373,7 +373,13 @@
+ 			} else if (strcmp("timeout_connect", obuf) == 0) {
+ 				config.to_con = atoi(abuf);
+ 				continue;
+-			} else if (!config.first) {
++			} 
++			else if (strcmp("pid_dir", obuf) == 0) {
++				(void) strncpy(config.piddir, abuf, sizeof(config.piddir) - 1);
++				config.piddir[sizeof(config.piddir) - 1] = 0;
++				continue;
++			}
++			else if (!config.first) {
+ 				continue;
+ 			} else if (*obuf != '#') {
+ 				warn("unknown option in config file %s:  %s", config.file, obuf);
+--- main.c
++++ main.c
+@@ -20,19 +20,12 @@
+  */
+ 
+ #include "configure.h"
+-#ifdef HAVE_SYS_TYPES_H
+-# include <sys/types.h>
+-#endif
+-
+ #include <stdio.h>
+-
+-#ifdef HAVE_STDLIB_H
+-# include <stdlib.h>
+-#endif
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <stdlib.h>
+ #include <string.h>
+-#ifdef HAVE_UNISTD_H
+-# include <unistd.h>
+-#endif
++#include <unistd.h>
+ #include <time.h>
+ #include <pwd.h>
+ #include <grp.h>
+@@ -44,34 +37,9 @@
+ #include "dns.h"
+ #include "signals.h"
+ 
+-#if !defined(HAVE_DAEMON) || defined(NEED_DAEMON) || defined(__sun__)
+-#ifdef HAVE_SYS_TYPES_H
+-# include <sys/types.h>
+-#endif
+-#ifdef HAVE_SYS_STAT_H
+-# include <sys/stat.h>
+-#endif
+-#ifdef HAVE_FCNTL_H
+-# include <fcntl.h>
+-#endif
+-
+-static int daemon(int, int);
+-int
+-daemon(int nochdir, int noclose)
+-{
+-	int f;
+-	f = open("/dev/null", O_RDWR);
+-	(void) dup2(STDIN_FILENO, f);
+-	(void) dup2(STDERR_FILENO, f);
+-	(void) dup2(STDOUT_FILENO, f);
+-	if (fork())
+-		_exit(0);
+-	return 0;
+-}
+-#endif
+-
+ static void     usage(void);
+ static void     drop_privileges(void);
++static void     write_pid(char*, pid_t);
+ 
+ static const char version[] = "1.6";
+ static const char rcsid[] = "$Id: main.c,v 2.2 2005/01/05 15:12:49 niklas Exp niklas $";
+@@ -84,6 +52,7 @@
+ {
+ 	int             c, nowarn;
+ 	char		*prgname;
++	pid_t           pid;
+ 
+ 	prgname = argv[0];
+ 	nowarn = 0;
+@@ -119,8 +88,9 @@
+ 	config.unr_con = 0;
+ 	config.to_con = 5;
+ 	config.first = 1;
++	(void) strncpy(config.piddir, "/var/run", sizeof(config.piddir) - 1);
+ 
+-	while ((c = getopt(argc, argv, "vdbBc:C:p:x:X:l:u:g:r:D:F:f:s4a:A:h")) != -1) {
++	while ((c = getopt(argc, argv, "vdbBc:C:p:x:X:l:u:g:r:D:F:f:s4a:A:n:h")) != -1) {
+ 		switch (c) {
+ 		case 'v':
+ 			(void) printf("ffproxy version %s, %s\n",
+@@ -240,6 +210,14 @@
+ 			usage();
+ 			/* NOTREACHED */
+ 			break;
++		case 'n':
++		    if (strlen(optarg) > sizeof(config.piddir) - 1 ) {
++			(void) fprintf(stderr, "piddir directory too long\n");
++			exit(1);
++		    }
++		    (void) strncpy(config.piddir, optarg, sizeof(config.piddir) - 1);
++		    config.piddir[sizeof(config.piddir) - 1] = '\0';
++		    break;
+ 		default:
+ 			(void) fprintf(stderr, "Error, type `%s -h' for help on usage\n", prgname);
+ 			exit(1);
+@@ -258,26 +236,30 @@
+ 	info("started, initializing");
+ 	load_databases();
+ 	(void) resolve("localhost");
+-	drop_privileges();
+-
++	
++	pid = getpid();
+ 	if (config.daemon) {
+-		FILE           *fp;
+-
+-		if (daemon(1, 0) != 0)
+-			fatal("daemon() failed");
++	    pid = fork();
++	    if (pid == -1)
++		fatal("daemonize() failed");
++	    
++	    if (pid > 0) {
++		write_pid(config.piddir, pid);
++		_exit (0);
++	    }
++	    else {
+ 		(void) close(0);
+ 		(void) close(1);
+ 		(void) close(2);
++	    }
++	}
++	else
++	    write_pid(config.piddir, pid);
+ 
+-		(void) chdir(config.dbdir);
+-		if ((fp = fopen("ffproxy.pid", "w")) == NULL)
+-			fatal("cannot create pid file ffproxy.pid in %s", config.dbdir);
++	drop_privileges();
+ 
+-		(void) fprintf(fp, "%ld", (long) getpid());
+-		(void) fclose(fp);
+-	}
+ 	(void) snprintf(loop_header, sizeof(loop_header), "X-Loop-%d-%d: true", getpid(), (int) time(NULL));
+-
++	
+ 	init_sighandlers();
+ 	open_socket();
+ 
+@@ -312,8 +294,9 @@
+ 		       " -D dir       databases are in dir (default is %s)\n"
+ 		       " -f file      use config file (default is %s; *overwrites*)\n"
+ 		       " -a host|ip   auxiliary forward server to use\n"
+-		       " -A port      auxiliary forward server port (default is 80)\n",
+-			DATADIR, CFGFILE);
++		       " -A port      auxiliary forward server port (default is 80)\n"
++		       " -n dir       pid file (ffproxy.pid) will be written in dir\n",
++		       DATADIR, CFGFILE);
+ 	exit(1);
+ }
+ 
+@@ -348,3 +331,23 @@
+ 
+ 	info("=> UID(%d), EUID(%d), GID(%d), EGID(%d)", getuid(), geteuid(), getgid(), getegid());
+ }
++
++static void
++write_pid(char *dir, pid_t p)
++{
++    FILE *fp;
++    
++    if (*dir != '\0') {
++	if (chdir(dir) == 0) {
++	    if ((fp = fopen("ffproxy.pid", "w")) == NULL)
++		fatal("cannot create pid file ffproxy.pid in %s", dir);
++	    else {
++		info("writing pid in %s/ffproxy.pid", dir);
++		(void) fprintf(fp, "%ld", (long) p);
++		(void) fclose(fp);
++	    }
++	}
++	else
++	    fatal("cannot change directory for %s to write pid file", dir);
++    }
++}

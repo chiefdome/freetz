@@ -1,0 +1,59 @@
+--- socket.c
++++ socket.c
+@@ -71,6 +71,13 @@
+ 	int		num_fd;
+ 	int		isipv4;
+ 
++	if (config.bind_ipv4 && config.bind_ipv6) {
++			if (*config.ipv4 == '\0' && *config.ipv6 != '\0')
++					fatal("error: while binding port on ipv4 and ipv6, if option 'bind_ipv4_host' is set, bind_ipv6_host must be set too");
++			if (*config.ipv4 != '\0' && *config.ipv6 == '\0')
++					fatal("error: while binding port on ipv4 and ipv6, if option 'bind_ipv6_host' is set, bind_ipv4_host must be set too");
++	}
++
+ 	if (config.port == 0)
+ 		config.port = DFLT_PORT;
+ 	(void) snprintf(strport, sizeof(strport), "%d", config.port);
+@@ -80,13 +87,25 @@
+ 		num_fd++;
+ 	if (config.bind_ipv6)
+ 		num_fd++;
+-		
++
++	if (config.bind_ipv4 && config.bind_ipv6
++			&& *config.ipv4 == '\0' && *config.ipv6 == '\0')
++			num_fd--;
++
+ 	i = 0;
+ 	(void) memset(s, 0, sizeof(s));
+ 	s[0].fd = s[1].fd = 0;
+ 	while (i < num_fd) {
+ 		(void) memset(&hints[i], 0, sizeof(struct addrinfo));
+-		hints[i].ai_family = (i == 0 && config.bind_ipv4) ? PF_INET : PF_INET6;
++
++		if (config.bind_ipv4 && config.bind_ipv6
++				&& *config.ipv4 == '\0' && *config.ipv6 == '\0')
++				hints[i].ai_family = PF_UNSPEC;
++		else if (i == 0 && config.bind_ipv4)
++				hints[i].ai_family = PF_INET;
++		else
++				hints[i].ai_family = PF_INET6;
++
+ 		hints[i].ai_socktype = SOCK_STREAM;
+ 		hints[i].ai_flags = AI_PASSIVE;
+ 		if (i == 0 && config.bind_ipv4) {
+@@ -113,12 +132,8 @@
+ 			fatal("setsockopt() failed for (%s) %s", ip_add, (i == 0 && config.bind_ipv4) ? "IPv4" : "IPv6");
+ 		}
+ 		if (bind(s[i].fd, (struct sockaddr *) res->ai_addr, res->ai_addrlen) < 0) {
+-			(void) close(s[i].fd);
+-#if defined(__linux__)
+-			if (i == 1)
+-				fatal("could not bind to IPv6, possibly because of\nLinux's ``feature'' to bind to IPv4 also.\nTry -b or binding to specific IPv6 address via -C\nif you're using IPv6 with Linux 2.4\nError message");
+-#endif /* __linux__ */
+-			fatal("bind() failed for (%s) %s", ip_add, (i == 0 && config.bind_ipv4) ? "IPv4" : "IPv6");
++				(void) close(s[i].fd);
++				fatal("bind() failed for (%s) %s", ip_add, (i == 0 && config.bind_ipv4) ? "IPv4" : "IPv6");
+ 		}
+ 		if (listen(s[i].fd, config.backlog) != 0) {
+ 			(void) close(s[i].fd);
