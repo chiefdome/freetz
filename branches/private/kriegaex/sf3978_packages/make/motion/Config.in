@@ -1,0 +1,11 @@
+config FREETZ_PACKAGE_MOTION
+	bool "motion 3.2.12 (binary only)"
+	select FREETZ_LIB_libpthread
+	select FREETZ_LIB_libjpeg
+	select FREETZ_LIB_libm
+	default n
+	help
+		Motion is a program that monitors the video signal from one or
+		more cameras and is able to detect if a significant part of the
+		picture has changed; in other words, it can detect motion. 
+		WWW: http://www.lavrsen.dk/foswiki/bin/view/Motion/WebHome
