@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_HPING3
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_HPING3
+	bool "hping3"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/hping3

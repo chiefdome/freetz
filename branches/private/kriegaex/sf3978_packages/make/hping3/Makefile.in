@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_HPING3)),y)
+PACKAGES+=hping3
+endif
