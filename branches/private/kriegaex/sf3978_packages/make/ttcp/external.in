@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_TTCP
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_TTCP
+	bool "ttcp"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/ttcp
