@@ -1,0 +1,9 @@
+config EXTERNAL_FREETZ_PACKAGE_DUDDERS
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_DUDDERS
+	bool "dudders"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/dudders
+		 /usr/lib/freetz/crypt_gcrypt.so
+		 /usr/lib/freetz/crypt_openssl.so

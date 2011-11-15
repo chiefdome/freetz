@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_DUDDERS" == "y" ] && EXTERNAL_FILES+=" /usr/bin/dudders /usr/lib/freetz/crypt_gcrypt.so /usr/lib/freetz/crypt_openssl.so"
