@@ -1,0 +1,13 @@
+config FREETZ_PACKAGE_LOGROTATE
+	bool "logrotate 3.7.8 (binary only)"
+	select FREETZ_LIB_libpopt
+	default n
+	help
+		logrotate is designed to ease administration of systems
+		that generate large numbers of log files. It allows automatic
+		rotation, compression, removal, and mailing of log files.
+		Each log file may be handled daily, weekly, monthly, or when
+		it grows too large.
+		http://linux.die.net/man/8/logrotate
+		http://schlayer.org/logrotate.html
+

@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_LOGROTATE
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_LOGROTATE
+	bool "logrotate"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/logrotate

@@ -1,0 +1,36 @@
+--- logrotate.c.orig	2011-03-18 19:19:19.000000000 +0100
++++ logrotate.c	2011-03-18 19:18:07.000000000 +0100
+@@ -567,9 +567,14 @@
+ 	    /* rotate if:
+ 	       1) the current weekday is before the weekday of the
+ 	       last rotation
++	       1) the day of the week is the same as the day of the week of
+++	       the previous rotation but not the same day of the year
+++	       this will rotate it on the same day every week, but not
+++	       twice a day.
+ 	       2) more then a week has passed since the last
+ 	       rotation */
+-	    state->doRotate = ((now.tm_wday < state->lastRotated.tm_wday)
++	    state->doRotate = ((now.tm_wday == state->lastRotated.tm_wday
++			             && now.tm_yday != state->lastRotated.tm_yday)
+ 			       ||
+ 			       ((mktime(&now) -
+ 				 mktime(&state->lastRotated)) >
+@@ -1505,7 +1510,7 @@
+ 	}
+ 
+ 	/* Hack to hide earlier bug */
+-	if ((year != 1900) && (year < 1996 || year > 2100)) {
++	if ((year != 1900) && (year < 1970 || year > 2100)) {
+ 	    message(MESS_ERROR,
+ 		    "bad year %d for file %s in state file %s\n", year,
+ 		    argv[0], stateFilename);
+@@ -1606,7 +1611,7 @@
+ 
+     files = poptGetArgs((poptContext) optCon);
+     if (!files) {
+-	fprintf(stderr, "logrotate " VERSION
++	fprintf(stderr, "logrotate 3.7.8"
+ 		" - Copyright (C) 1995-2001 Red Hat, Inc.\n");
+ 	fprintf(stderr,
+ 		"This may be freely redistributed under the terms of "
