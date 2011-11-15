@@ -1,0 +1,47 @@
+--- Makefile.in
++++ Makefile.in
+@@ -37,12 +37,12 @@
+ mandir	=	@mandir@
+ BINDIR	=	$(bindir)
+ MANDIR	=	$(mandir)
++DESTDIR =
+ #
+-# install program. use our own, as AC_PROG_INSTALL doesn't work reliably
+-#
+-INSTALL	=		@srcdir@/install-sh
+-INSTALL_PROGRAM =	${INSTALL} -c
+-INSTALL_DATA =		${INSTALL} -c -m 644
++INSTALL = @INSTALL@
++INSTALL_PROGRAM = @INSTALL_PROGRAM@
++INSTALL_DATA = @INSTALL_DATA@
++INSTALL_SCRIPT = @INSTALL_SCRIPT@
+ #
+ # If you don't have the GNU C compiler installed, set CC=cc here
+ #
+@@ -183,23 +183,17 @@
+ 
+ install: 		$(DOINST)
+ 	-for d in $(MPAGES) ; do \
+-		$(INSTALL_DATA) $(srcdir)/man/$$d $(MANDIR)/man1/$$d ; \
++		$(INSTALL_DATA) $(srcdir)/man/$$d $(DESTDIR)$(MANDIR)/man1/$$d ; \
+ 	done
+ 
+ install-uudeview:	uudeview
+-	for d in uudeview uuenview ; do \
+-		$(INSTALL_PROGRAM) unix/$$d $(BINDIR)/$$d ; \
+-	done
++	(cd unix && $(MAKE) install)
+ 
+ install-tcl:		xdeview
+-	for d in xdeview uuwish ; do \
+-		$(INSTALL_PROGRAM) tcl/$$d $(BINDIR)/$$d ; \
+-	done
++	(cd tcl && $(MAKE) install)
+ 
+ install-minews:		minews
+-	for d in minews ; do \
+-		$(INSTALL_PROGRAM) inews/$$d $(BINDIR)/$$d ; \
+-	done
++	(cd inews && $(MAKE) install)
+ 
+ links:		tcl/config.h unix/config.h uulib/config.h

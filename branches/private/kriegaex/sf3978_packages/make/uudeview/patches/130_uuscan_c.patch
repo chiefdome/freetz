@@ -1,0 +1,17 @@
+--- uulib/uuscan.c
++++ uulib/uuscan.c
+@@ -387,10 +387,10 @@
+ 	   *attribute != '(' && *attribute != ')' &&
+ 	   *attribute != '<' && *attribute != '>' &&
+ 	   *attribute != '@' && *attribute != ',' &&
+-	   /* *attribute != ';' && */ *attribute != ':' &&
+-	   *attribute != '\\' &&*attribute != '"' &&
+-	   *attribute != '/' && /* *attribute != '[' &&
+-	   *attribute != ']' && */ *attribute != '?' &&
++	   *attribute != ';' && *attribute != ':' &&
++	   *attribute != '\\' && *attribute != '"' &&
++	   *attribute != '/' && *attribute != '[' &&
++	   *attribute != ']' && *attribute != '?' &&
+ 	   *attribute != '=' && length < 255) {
+       *ptr++ = *attribute++;
+       length++;

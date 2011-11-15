@@ -1,0 +1,9 @@
+config EXTERNAL_FREETZ_PACKAGE_UUDEVIEW
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_UUDEVIEW
+	bool "uudeview"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/uudeview
+			/usr/bin/uuenview
+			/usr/lib/freetz/libuu.so.0.5.20

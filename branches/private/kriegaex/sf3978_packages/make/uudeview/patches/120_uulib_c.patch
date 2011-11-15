@@ -1,0 +1,48 @@
+--- uulib/uulib.c
++++ uulib/uulib.c
+@@ -872,7 +872,10 @@
+ }
+ 
+ /*
+- * decode file first to temp file, then copy it to a final location
++ * Decode file first to temp file, then copy it to a final location.
++ * A move is preferable to a copy.  If the file is on the same
++ * partition, no copy is performed.  This is important for large
++ * files.
+  */
+ 
+ int UUEXPORT
+@@ -978,6 +981,12 @@
+     return UURET_IOERR;
+   }
+ 
++  if (rename(thefile->binfile, uugen_fnbuffer) == 0) {
++    fclose(source);
++    close(fildes);
++    goto finish_ok;
++  }
++
+   if ((target = fdopen (fildes, "wb")) == NULL) {
+     progress.action = 0;
+     UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
+@@ -1042,6 +1051,8 @@
+ 	       thefile->binfile,
+ 	       strerror (uu_errno = errno));
+   }
++
++ finish_ok:
+   _FP_free (thefile->binfile);
+   thefile->binfile = NULL;
+   thefile->state  &= ~UUFILE_TMPFILE;
+@@ -1103,9 +1114,9 @@
+ 
+   while (!feof (inpfile) && 
+ 	 (uu_fast_scanning || ftell(inpfile) < maxpos)) {
+-    if (_FP_fgets (uugen_inbuffer, 511, inpfile) == NULL)
++    if (_FP_fgets (uugen_inbuffer, 411, inpfile) == NULL)
+       break;
+-    uugen_inbuffer[511] = '\0';
++    uugen_inbuffer[411] = '\0';
+ 
+     if (ferror (inpfile))
+       break;

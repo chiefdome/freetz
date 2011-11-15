@@ -1,0 +1,71 @@
+--- unix/Makefile.in
++++ unix/Makefile.in
+@@ -34,12 +34,12 @@
+ #
+ BINDIR	=	@bindir@
+ MANDIR	=	@mandir@
++DESTDIR =
+ #
+-# install program. use our own, as AC_PROG_INSTALL doesn't work reliably
+-#
+-INSTALL	=		@srcdir@/install-sh
+-INSTALL_PROGRAM =	${INSTALL} -c
+-INSTALL_DATA =		${INSTALL} -c -m 644
++INSTALL = @INSTALL@
++INSTALL_PROGRAM = @INSTALL_PROGRAM@
++INSTALL_DATA = @INSTALL_DATA@
++INSTALL_SCRIPT = @INSTALL_SCRIPT@
+ #
+ # If you don't have the GNU C compiler installed, set CC=cc here
+ #
+@@ -47,11 +47,11 @@
+ #
+ # C Compiler Options
+ #
+-CFLAGS	=	@CFLAGS@ -I@srcdir@ @CPPFLAGS@ @DEFS@
++CFLAGS	=	@CFLAGS@ -I@srcdir@ -I../uulib @CPPFLAGS@ @DEFS@
+ #
+ # Libraries to link and their paths
+ #
+-LIBS	=	@LDFLAGS@ @LIBS@
++LIBS	=	@LDFLAGS@
+ #
+ # the ranlib program
+ #
+@@ -78,6 +78,7 @@
+ @SET_MAKE@
+ #
+ 
++PROGS		=	uudeview uuenview
+ UUDEVIEW_SOURCE	=	uudeview.c uufnflt.c
+ UUENVIEW_SOURCE =	uuenview.c uufnflt.c
+ UUDEVIEW_OBJ	=	${UUDEVIEW_SOURCE:.c=.o}
+@@ -104,24 +105,21 @@
+ 
+ install: 	all
+ 	for d in $(PROGS) ; do \
+-		$(INSTALL_PROGRAM) $(srcdir)/$$d $(BINDIR)/$$d ; \
+-	done
+-	-for d in $(MPAGES) ; do \
+-		$(INSTALL_DATA) $(srcdir)/$$d $(MANDIR)/man1/$$d ; \
++		$(INSTALL_PROGRAM) $(srcdir)/$$d $(DESTDIR)$(BINDIR)/$$d ; \
+ 	done
+ 
+ new:		clean
+ 	rm -f uudeview uuenview
+ 	make all
+ 
+-uudeview:	$(UUDEVIEW_OBJ) ../uulib/libuu.a
++uudeview:	$(UUDEVIEW_OBJ)
+ 	$(CC) -o $@ $(UUDEVIEW_OBJ) -L../uulib -luu $(LIBS)
+ 
+-uuenview:	$(UUENVIEW_OBJ) ../uulib/libuu.a
++uuenview:	$(UUENVIEW_OBJ)
+ 	$(CC) -o $@ $(UUENVIEW_OBJ) -L../uulib -luu $(LIBS)
+ 
+ .c.o:
+-	$(CC) -c $(CFLAGS) -I../uulib $(VDEF) $<
++	$(CC) -c $(CFLAGS) $(VDEF) $<
+ 
+ uudeview.o:	uudeview.c config.h
+ uuenview.o:	uuenview.c config.h

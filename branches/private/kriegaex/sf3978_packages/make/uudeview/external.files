@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_UUDEVIEW" == "y" ] && EXTERNAL_FILES+=" /usr/bin/uuenview /usr/bin/uudeview /usr/lib/freetz/libuu.so.0.5.20"

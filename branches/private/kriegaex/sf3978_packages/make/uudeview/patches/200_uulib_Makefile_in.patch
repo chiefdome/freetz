@@ -1,0 +1,47 @@
+--- uulib/Makefile.in.orig	2011-04-16 07:47:17.000000000 +0200
++++ uulib/Makefile.in	2011-04-16 08:02:33.000000000 +0200
+@@ -20,10 +20,17 @@
+ # If you don't have the GNU C compiler installed, set CC=cc here
+ #
+ CC	=	@CC@
++# Library options
++SOMAJOR =	0
++SOMINOR =	5.20
++SHLIB =	libuu.so.$(SOMAJOR).$(SOMINOR)
++SHLIBSOMAJ =	libuu.so.$(SOMAJOR)
++SHLIBSO =	libuu.so
++#
+ #
+ # C Compiler Options
+ #
+-CFLAGS	=	@CFLAGS@ -I. @CPPFLAGS@ @DEFS@
++CFLAGS	=	@CFLAGS@ -I. @CPPFLAGS@ @DEFS@ -fpic -shared
+ #
+ # the ranlib program
+ #
+@@ -51,11 +58,11 @@
+ .SUFFIXES:
+ .SUFFIXES: .c .o
+ 
+-all:		libuu.a
++all:		$(SHLIB)
+ 
+ clean:
+ 	rm -f [Xx]deview gif2gfp
+-	rm -f *.o *.a *.so core *~ TAGS
++	rm -f *.o *.a *.so $(SHLIBSOMAJ) $(SHLIB) core *~ TAGS
+ 
+ distclean:	clean
+ 	rm -f config.status config.cache config.log Makefile config.h
+@@ -67,6 +74,11 @@
+ 	rm -f libuu.a
+ 	$(MAKE) all
+ 
++$(SHLIB): $(UULIB_OBJ)
++	$(CC) -o $@ -fpic -shared -Wl,-soname,$(SHLIBSOMAJ) $^
++	ln -sf $(SHLIB) $(SHLIBSOMAJ)
++	ln -sf $(SHLIBSOMAJ) $(SHLIBSO)
++
+ libuu.a:	$(UULIB_OBJ)
+ 	rm -f $@
+ 	ar r $@ $(UULIB_OBJ)
