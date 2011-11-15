@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_VGP
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_VGP
+	bool "vgp"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/vgpd

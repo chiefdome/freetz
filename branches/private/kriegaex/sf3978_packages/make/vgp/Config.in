@@ -1,0 +1,10 @@
+config FREETZ_PACKAGE_VGP
+	bool "vgp 0.2.1 (binary only)"
+	default n
+	help
+		VGP (Virtual Gateway Protocol) is a very simple protocol able to 
+	        work in a way similar to Cisco(c) HSRP. It implements the idea 
+	        of Virtual Gateway to provide fault tollerance (and load 
+	        balancing) on your net. Each client on your net has as its 
+	        default gateway set to the virtual gateway and not the real router.
+		WWW: http://vgpd.freaknet.org
