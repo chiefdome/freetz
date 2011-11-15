@@ -1,0 +1,13 @@
+config FREETZ_PACKAGE_NYLON
+	bool "nylon 1.21 (binary only)"
+	select FREETZ_LIB_libpthread
+	select FREETZ_LIB_libevent
+	select FREETZ_LIB_libresolv
+	select FREETZ_LIB_librt
+	default n
+	help
+		nylon is a proxy server, developed on OpenBSD. It supports SOCKS
+		version 4 and 5, as well as a mirror mode so that services can be
+		mirrored directly. It is compatible with BSD, Solaris, HP-UX and
+		Linux.
+		WWW: http://monkey.org/~marius/pages/?page=nylon
