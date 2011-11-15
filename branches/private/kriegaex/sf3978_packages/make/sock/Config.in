@@ -1,0 +1,13 @@
+config FREETZ_PACKAGE_SOCK
+	bool "sock 1.1 (binary only)"
+	select FREETZ_LIB_libresolv
+	select FREETZ_LIB_libnsl
+	default n
+	help
+		This program serves as an interface for network sockets for use
+		in both shell scripts and manually from the command line. In
+		contrast to netcat, it handles EOF in a way so, for example, tar
+		archives can easily be transferred. See the man page (man 1 sock)
+		for more details.   
+		WWW: http://dir.filewatcher.com/d/SuSE/9.1/i586/Productivity/Networking/Other/sock-1.1-120.i586.rpm.12455.html
+		Hompage: http://atrey.karlin.mff.cuni.cz/~mj/linux.shtml
