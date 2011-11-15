@@ -1,0 +1,22 @@
+config FREETZ_PACKAGE_TCPREEN
+	bool "tcpreen 1.4.4 (binary only)"
+	select FREETZ_LIB_libiconv
+	select FREETZ_LIB_libintl
+	select FREETZ_LIB_STDCXXLIB
+	default n
+	help
+		  TCPreen is a simple tool to monitor and analyze data transmitted between
+		  clients and servers through connection-oriented streams data such as a
+		  TCP sessions; it supports TCP over either IPv4 or IPv6. This tool focuses
+		  on the data stream (software/socket layer), not on the lower level
+		  transmission protocol as packet sniffers do. TCPreen listens on a TCP port
+		  and wait for incoming connections to come in. Then, it forwards data sent
+		  by the connecting client to another server port (possibly on another computer)
+		  and forwards server responses back to the client. TCPreen can display data on
+		  your console in real-time and/or save it to log files for later reference.
+		  Various display formats are available. While it was originally meant to help
+		  developers reverse-engineer TCP-based protocols, it can also be very useful
+		  to debug network server or client software or for a system administrator to
+		  monitor a TCP service. 
+		  WWW: http://www.remlab.net/tcpreen/
+		  Manpage: http://manpages.ubuntu.com/manpages/hardy/man1/tcpreen.1.html
