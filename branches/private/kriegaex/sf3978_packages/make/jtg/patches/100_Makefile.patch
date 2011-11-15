@@ -1,0 +1,31 @@
+--- Makefile.orig	2011-04-23 00:31:57.000000000 +0200
++++ Makefile	2011-04-23 00:34:00.000000000 +0200
+@@ -1,19 +1,23 @@
+ BINDIR= $(HOME)/bin
+ VERSION=1.95
+ 
+-CC = gcc
+-CFLAGS= -O3 -Wall -Winline -pedantic
+-CFLAGS+= -g
++##CC = gcc
++##CFLAGS= -O3 -Wall -Winline -pedantic
++##CFLAGS+= -g
++
++CC=
++CFLAGS=
+ 
+ # The "-DLinuxTCP" controls which TCP options are in use
+ # If defined, Linux TCP are expected
+-CFLAGS+= -DLinuxTCP
++##CFLAGS+= -DLinuxTCP
+ 
+ # You can tell jtg the HZ value, it helps in estimating select()-latency
+ # Default is HZ=100
+ #CFLAGS+= -DHZ=1024
+ 
+-LDFLAGS=-lm
++##LDFLAGS=-lm
++LDFLAGS=
+ 
+ OBJS=  jtg_vers.h *.o
+ PROGS = jtg jtg_calc jrg jrg_test

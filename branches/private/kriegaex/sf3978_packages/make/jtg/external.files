@@ -1,0 +1,2 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_JTG" == "y" ] && EXTERNAL_FILES+=" /usr/bin/jtg \
+/usr/bin/jtg_calc /usr/bin/jrg /usr/bin/jrg_test"
