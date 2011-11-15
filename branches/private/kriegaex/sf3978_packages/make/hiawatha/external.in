@@ -1,0 +1,39 @@
+config EXTERNAL_FREETZ_PACKAGE_HIAWATHA
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_HIAWATHA
+	bool "hiawatha"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/hiawatha
+
+config EXTERNAL_FREETZ_PACKAGE_HIAWATHA_WITH_WIGWAM
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_HIAWATHA_WITH_WIGWAM
+	bool "wigwam"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/wigwam
+
+config EXTERNAL_FREETZ_PACKAGE_HIAWATHA_WITH_SSI_CGI
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_HIAWATHA_WITH_SSI_CGI
+	bool "ssi-cgi"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/ssi-cgi
+
+config EXTERNAL_FREETZ_PACKAGE_HIAWATHA_WITH_PHP_FCGI
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_HIAWATHA_WITH_PHP_FCGI
+	bool "php-fcgi"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/php-fcgi
+
+config EXTERNAL_FREETZ_PACKAGE_HIAWATHA_WITH_CGI_WRAPPER
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_HIAWATHA_WITH_CGI_WRAPPER
+	bool "cgi-wrapper"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/cgi-wrapper

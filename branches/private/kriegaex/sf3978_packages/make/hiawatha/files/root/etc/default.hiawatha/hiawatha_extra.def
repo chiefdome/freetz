@@ -1,0 +1,7 @@
+CAPTION='hiawatha_extra.conf'
+
+CONFIG_FILE='/tmp/flash/hiawatha/hiawatha_extra.conf'
+CONFIG_SAVE='modsave flash; if pidof hiawatha > /dev/null; then echo ""; /mod/etc/init.d/rc.hiawatha restart; fi'
+CONFIG_TYPE='text'
+
+TEXT_ROWS=30

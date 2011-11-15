@@ -1,0 +1,79 @@
+#!/bin/sh
+
+DAEMON=hiawatha
+DAEMON_CONFIG=/tmp/${DAEMON}/${DAEMON}.conf
+. /etc/init.d/modlibrc
+
+config() {
+	modlib_config
+	touch /tmp/$DAEMON/mimetype.conf
+	if [ -n "`which php-cgi`" ] && [ -n "`which php-fcgi`" ]; then
+		phpini="/tmp/flash/php.ini"
+		[ ! -e "$phpini" ] && phpini="/etc/default.php/php.ini"
+		echo "Server = `which php-cgi` ; 127.0.0.1:2005 ; wwwrun ; $phpini" >/tmp/${DAEMON}/php-fcgi.conf
+	fi
+}
+
+check() {
+	config
+	if [ -n "`which wigwam`" ]; then
+		echo -e "wigwam config check ..."
+		wigwam -c /tmp/${DAEMON}
+	fi
+	echo -e "hiawatha config check ..."
+	$DAEMON -c /tmp/${DAEMON} -k
+}
+
+start() {
+	modlib_startdaemon $DAEMON -c /tmp/$DAEMON
+	[ "$HIAWATHA_FASTCGI" = "yes" ] && [ -n "`which php-cgi`" ] && [ -n "`which php-fcgi`" ] && php-fcgi -c /tmp/${DAEMON}/php-fcgi.conf
+}
+
+stop_post() {
+	[ -n "`pidof -s php-cgi`" ] && php-fcgi -k -c /tmp/${DAEMON}/php-fcgi.conf
+}
+
+case $1 in
+	""|load)
+		modlib_addgroup wwwrun
+		modlib_adduser wwwrun -G wwwrun -s /bin/false -H -D -g "lighttpd account"
+
+		mkdir -p /tmp/$DAEMON
+		chown wwwrun /tmp/$DAEMON
+
+		modreg cgi 'hiawatha' 'hiawatha'
+		modreg daemon $DAEMON
+		modreg file $DAEMON conf 'Extra' 0 hiawatha_extra
+		modreg status hiawatha hiawatha-log hiawatha-log
+
+		modlib_start $HIAWATHA_ENABLED
+		;;
+	unload)
+		modunreg status hiawatha hiawatha-log
+		modunreg file $DAEMON
+		modunreg daemon $DAEMON
+		modunreg cgi 'hiawatha'
+		modlib_stop
+		;;
+	start)
+		modlib_start
+		;;
+	stop)
+		modlib_stop
+		;;
+	restart)
+		modlib_restart
+		;;
+	status)
+		modlib_status
+		;;
+	check)
+		check
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|reload|restart|status|check]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0

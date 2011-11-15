@@ -1,0 +1,102 @@
+config FREETZ_PACKAGE_HIAWATHA
+	bool "hiawatha 7.6 (binaries only)"
+	select FREETZ_LIB_libpthread
+	select FREETZ_LIB_libz
+	default n
+	help
+		  Hiawatha is an open source webserver with a focus on security.
+		  A very lightweight web server.
+		  WWW: http://www.hiawatha-webserver.org/
+		  german: http://www.admin-magazin.de/content/der-sichere-webserver-hiawatha
+		  english: http://www.linux-magazine.com/Issues/2009/107/Hiawatha
+		  spanish: http://www.linux-magazine.es/issue/55/018-025HiawathaLM55.pdf
+
+config FREETZ_PACKAGE_HIAWATHA_WITH_CHROOT
+	bool "enable chroot support"
+	depends on FREETZ_PACKAGE_HIAWATHA
+	default n
+	help
+		This option enable chroot support for hiawatha
+
+config FREETZ_PACKAGE_HIAWATHA_WITH_COMMAND
+	bool "enable CommandChannel"
+	depends on FREETZ_PACKAGE_HIAWATHA
+	default n
+	help
+		This option enable CommandChannel for hiawatha
+
+config FREETZ_PACKAGE_HIAWATHA_WITH_CACHE
+	bool "enable cache"
+	depends on FREETZ_PACKAGE_HIAWATHA
+	default n
+	help
+		This option enable cache for hiawatha
+
+config FREETZ_PACKAGE_HIAWATHA_WITH_SSL
+	bool "enable ssl"
+	depends on FREETZ_PACKAGE_HIAWATHA
+	select FREETZ_LIB_libcrypto
+	select FREETZ_LIB_libssl
+	default n
+	help
+		This option enable ssl for hiawatha
+
+config FREETZ_PACKAGE_HIAWATHA_WITH_IPV6
+	bool "enable ipv6"
+	depends on FREETZ_PACKAGE_HIAWATHA
+	default n
+	help
+		This option enable ipv6 for hiawatha
+
+config FREETZ_PACKAGE_HIAWATHA_WITH_TOOLKIT
+	bool "enable toolkit"
+	depends on FREETZ_PACKAGE_HIAWATHA
+	default n
+	help
+		This option enable toolkit for hiawatha
+
+config FREETZ_PACKAGE_HIAWATHA_WITH_MONITOR
+	bool "enable monitor"
+	depends on FREETZ_PACKAGE_HIAWATHA
+	default n
+	help
+		This option enable monitor for hiawatha
+
+config FREETZ_PACKAGE_HIAWATHA_WITH_XSLT
+	bool "enable xslt"
+	depends on FREETZ_PACKAGE_HIAWATHA
+	select FREETZ_PACKAGE_XSLTPROC
+	select FREETZ_LIB_libxml2
+	select FREETZ_LIB_libxml2_WITH_HTML
+	select FREETZ_LIB_libxslt
+	default n
+	help
+		This option enable xslt for hiawatha
+
+config FREETZ_PACKAGE_HIAWATHA_WITH_WIGWAM
+	bool "wigwam (binary only)"
+	depends on FREETZ_PACKAGE_HIAWATHA
+	default n
+	help
+		This option adds wigwam
+
+config FREETZ_PACKAGE_HIAWATHA_WITH_SSI_CGI
+	bool "ssi-cgi (binary only)"
+	depends on FREETZ_PACKAGE_HIAWATHA
+	default n
+	help
+		This option adds ssi-cgi
+
+config FREETZ_PACKAGE_HIAWATHA_WITH_PHP_FCGI
+	bool "php-fcgi (binary only)"
+	depends on FREETZ_PACKAGE_HIAWATHA
+	default n
+	help
+		This option adds php-fcgi
+
+config FREETZ_PACKAGE_HIAWATHA_WITH_CGI_WRAPPER
+	bool "cgi-wrapper (binary only)"
+	depends on FREETZ_PACKAGE_HIAWATHA
+	default n
+	help
+		This option adds cgi-wrapper

@@ -1,0 +1,11 @@
+languages
+{ de en }
+default
+{ en }
+files
+{
+	etc/init.d/rc.hiawatha
+	etc/default.hiawatha/hiawatha_extra.def
+	usr/lib/cgi-bin/hiawatha.cgi
+	usr/lib/cgi-bin/hiawatha/hiawatha-log.cgi
+}

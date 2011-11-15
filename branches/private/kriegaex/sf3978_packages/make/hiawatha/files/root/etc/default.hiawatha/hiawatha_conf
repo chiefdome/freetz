@@ -1,0 +1,41 @@
+#!/bin/sh
+[ -z "$HIAWATHA_WEBSITEROOT" ] && HIAWATHA_WEBSITEROOT=/tmp/hiawatha
+[ -z "$HIAWATHA_LOGDIR" ] && HIAWATHA_LOGDIR=/tmp/hiawatha
+
+cat << EOF
+Binding {
+	Port = $HIAWATHA_PORT
+	Interface = $HIAWATHA_INTERFACE
+}
+
+WebsiteRoot = $HIAWATHA_WEBSITEROOT
+Hostname = $HIAWATHA_HOSTNAME
+
+PIDfile = /var/run/hiawatha.pid
+ServerId = wwwrun:wwwrun
+
+FastCGIserver {
+	FastCGIid = PHPFCGI
+	ConnectTo = 127.0.0.1:2005
+	Extension = php
+}
+
+SystemLogfile = $HIAWATHA_LOGDIR/system.log
+GarbageLogfile = $HIAWATHA_LOGDIR/garbage.log
+ExploitLogfile = $HIAWATHA_LOGDIR/exploit.log
+AccessLogfile = $HIAWATHA_LOGDIR/access.log
+ErrorLogfile = $HIAWATHA_LOGDIR/error.log
+
+EOF
+
+if [ -n "`which php-cgi`" ]; then
+	if [ "$HIAWATHA_FASTCGI" = "yes" ] && [ -n "`which php-fcgi`" ]; then
+		echo "UseFastCGI = PHPFCGI"
+	else
+		echo "CGIhandler = `which php-cgi`:php"
+		echo "ExecuteCGI = yes"
+	fi
+fi
+
+HIAWATHA_EXTRA=/tmp/flash/hiawatha/hiawatha_extra.conf
+[ -e "$HIAWATHA_EXTRA" ] && cat $HIAWATHA_EXTRA
