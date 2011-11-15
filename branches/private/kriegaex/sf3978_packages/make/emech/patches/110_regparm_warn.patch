@@ -1,0 +1,11 @@
+--- src/channel.c.orig	2011-07-18 15:52:52.000000000 +0200
++++ src/channel.c	2011-07-18 15:54:34.000000000 +0200
+@@ -58,7 +58,7 @@
+ 	}
+ }
+ 
+-__attr (CORE_SEG, regparm(2))
++__attr (CORE_SEG, __regparm(2))
+ Chan *find_channel(char *name, int anychannel)
+ {
+ 	Chan	*chan;

@@ -1,0 +1,12 @@
+--- src/function.c.orig	2011-07-16 22:58:53.000000000 +0200
++++ src/function.c	2011-07-16 22:59:20.000000000 +0200
+@@ -27,6 +27,9 @@
+ #include "h.h"
+ #include "text.h"
+ 
++/*#define PATH_MAX        4095*/
++#include <limits.h>
++
+ LS char timebuf[24];		/* max format lentgh == 20+1, round up to nearest longword -> 24 */
+ LS char idlestr[36];		/* max format lentgh == 24+1, round up to nearest longword -> 28 */
+ 

@@ -1,0 +1,16 @@
+config FREETZ_PACKAGE_EMECH
+	bool "emech 3.0.99p3 (binary only)"
+	default n
+	help
+		The EnergyMech is a fully functional IRC bot, written entirely
+		in the C programming language. It has common features such as
+		userlists, shitlists, channel protection, DCC partyline, botnet
+		and lots more.
+		The EnergyMech started out as a hack of the combot but is today
+		quite different and more sophisticated. One of the main ideas of
+		the EnergyMech is that it should be easy both to setup and use.
+		The popular eggdrop requires that TCL is installed on a system
+		for it to compile sucessfully, the EnergyMech has no such
+		requirements. A person that is familiar with UNIX would have no
+		trouble installing an EnergyMech and getting it up and running.  
+		WWW: http://www.energymech.net/features.html
