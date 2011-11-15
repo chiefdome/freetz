@@ -1,0 +1,9 @@
+--- config.h.orig	1970-01-01 01:00:00.000000000 +0100
++++ config.h		2011-01-30 22:08:07.000000000 +0100
+@@ -0,0 +1,6 @@
++/* Axel settings */
++#define _REENTRANT
++#define _THREAD_SAFE
++#define ETCDIR "/etc"
++#define LOCALE "/usr/share/locale"
++#define ARCH "mips"

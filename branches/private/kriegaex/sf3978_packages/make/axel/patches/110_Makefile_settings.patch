@@ -1,0 +1,21 @@
+--- Makefile.settings.orig	1970-01-01 01:00:00.000000000 +0100
++++ Makefile.settings		2011-01-30 22:02:41.000000000 +0100
+@@ -0,0 +1,18 @@
++## Axel settings
++PREFIX=/usr
++BINDIR=/usr/bin
++ETCDIR=/etc
++SHAREDIR=/usr/share
++MANDIR=/usr/share/man
++LOCALE=/usr/share/locale
++
++OUTFILE=axel
++ARCH=mips
++
++DESTDIR=
++LFLAGS=
++
++CFLAGS=
++CC=
++#STRIP=\# skip strip
++LFLAGS+=-lpthread
