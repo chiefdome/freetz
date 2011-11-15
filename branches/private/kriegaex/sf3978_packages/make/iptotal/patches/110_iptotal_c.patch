@@ -1,0 +1,38 @@
+--- iptotal.c.orig	2011-03-05 23:51:05.000000000 +0100
++++ iptotal.c		2011-03-05 23:49:50.000000000 +0100
+@@ -44,10 +44,16 @@
+ #include <signal.h>
+ #include <unistd.h>
+ #include <time.h>
+-#include <netinet/in.h>			
++#include <netinet/in.h>
++#ifdef __linux__
+ #include <linux/if.h>
++#else
++#include <net/if.h>
++#endif
+ #include <errno.h>
++#ifdef __linux
+ #include <asm/errno.h>			/* for EINVAL */
++#endif
+ 
+ /*
+ ------------------------------------------------------------------------
+@@ -417,7 +423,7 @@
+ 	   double din = (double) intotal / div;
+ 	   double dout = (double) outtotal / div;
+ 	   t0 = t1;
+-	   printf("Total: %5.2f kBytes/s In: %5.2f Kbytes/s Out: %5.2f Kbytes/s\n",
++	   printf("Total: %5.2f kbyte(s) In: %5.2f kbyte(s) Out: %5.2f kbyte(s)\n",
+ 			dtotal, din, dout);
+ 	   total =0; intotal=0; outtotal=0;
+ 	   break;
+@@ -464,7 +470,7 @@
+ /*  Read options from command line  */
+ void read_options (int argc, char *argv[]) {
+ 
+-     char optchar;
++     signed char optchar;
+      while(-1 != (optchar=getopt(argc,argv,"a:Ab:c:Cd:Ff:hl:L:m:M:o:Pr:t:v")))
+      {
+ 		switch (optchar) {
