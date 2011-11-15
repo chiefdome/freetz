@@ -1,0 +1,23 @@
+--- Makefile.orig	2011-02-19 14:12:38.000000000 +0100
++++ Makefile		2011-02-19 14:13:20.000000000 +0100
+@@ -3,8 +3,9 @@
+ # Edited for Debian GNU/Linux.
+ DESTDIR =
+ 
+-LDFLAGS = -lncurses
+-CFLAGS = -O2 -Wall
++LDFLAGS =
++CFLAGS =
++CC =
+ #CFLAGS = -Wall -g
+ 
+ BIN = ethstatus
+@@ -19,7 +20,7 @@
+ all : ethstatus
+ 
+ ethstatus : ethstatus.c ethstatus.h
+-	gcc $(CFLAGS) $(LDFLAGS) -o ${BIN} ${SRC}
++	$(CC) $(CFLAGS) $(LDFLAGS) -o ${BIN} ${SRC}
+ 
+ clean:
+ 	rm -f ${BIN} *.o core *~ 

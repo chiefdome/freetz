@@ -1,0 +1,8 @@
+config FREETZ_PACKAGE_ETHSTATUS
+	bool "ethstatus 0.4.3 (binary only)"
+	select FREETZ_LIB_libncurses
+	default n
+	help
+		ethstatus is a console-based monitoring utility for displaying
+		statistical data of the ethernet interface on a quantity basis.
+		Manpage: http://manpages.ubuntu.com/manpages/hardy/man1/ethstatus.1.html

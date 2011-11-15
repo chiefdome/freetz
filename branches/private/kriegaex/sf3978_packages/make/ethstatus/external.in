@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_ETHSTATUS
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_ETHSTATUS
+	bool "ethstatus"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/ethstatus
