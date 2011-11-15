@@ -1,0 +1,10 @@
+--- autossh.c.orig	2011-03-06 08:43:03.000000000 +0100
++++ autossh.c		2011-03-06 08:47:26.000000000 +0100
+@@ -87,6 +87,7 @@
+ #  define SSH_PATH "/usr/bin/ssh"
+ #endif
+ 
++#define VER		"1.4b"
+ #define POLL_TIME	600	/* 10 minutes default */
+ #define GATE_TIME	30	/* 30 seconds default */
+ #define MAX_LIFETIME	0	/* default max lifetime of forever */
