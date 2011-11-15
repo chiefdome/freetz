@@ -1,0 +1,10 @@
+config FREETZ_PACKAGE_COREUTILS
+	bool "coreutils 8.12 (binaries only)"
+	select FREETZ_LIB_libpcap
+	select FREETZ_LIB_STDCXXLIB
+	default n
+	help
+		  These are the GNU core utilities. This package is
+		  the union of the GNU fileutils, sh-utils, and
+		  textutils packages.
+		  WWW: http://ftp.gnu.org/gnu/coreutils/

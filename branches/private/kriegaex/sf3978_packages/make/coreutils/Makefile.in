@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_COREUTILS)),y)
+PACKAGES+=coreutils
+endif
