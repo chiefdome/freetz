@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_DRIFTNET" == "y" ] && EXTERNAL_FILES+=" /usr/bin/driftnet"

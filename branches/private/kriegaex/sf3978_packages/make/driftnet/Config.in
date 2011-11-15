@@ -1,0 +1,12 @@
+config FREETZ_PACKAGE_DRIFTNET
+	bool "driftnet 0.1.6 (binary only)"
+	select FREETZ_LIB_libpcap
+	default n
+	help
+		Driftnet is a program which listens to network traffic and picks out
+		images from TCP streams it observes. Fun to run on a host which sees
+		lots of web traffic.  Obviously, driftnet is an invasion of privacy
+		of a fairly blatant sort. Also, if you are possessed of Victorian
+		sensibilities, and share an unswitched network with others who are
+		not, you should probably not use it.
+		WWW: http://www.ex-parrot.com/~chris/driftnet/

@@ -1,0 +1,28 @@
+--- display.c.orig	2011-05-22 09:39:18.000000000 +0200
++++ display.c	2011-05-22 09:44:09.000000000 +0200
+@@ -20,6 +20,7 @@
+ #include <fcntl.h>
+ #include <string.h>
+ #include <errno.h>
++#include <time.h>
+ 
+ #include <sys/stat.h>
+ 
+@@ -301,7 +302,7 @@
+     int nimgs = 0;
+ 
+     if (!path)
+-        path = malloc(strlen(tmpdir) + 34);
++        path = malloc(strlen(tmpdir) + 64);
+ 
+     /* We are sent messages continaing the length of the filename, then the
+      * length of the file, then the filename. */
+@@ -408,7 +409,7 @@
+     
+     /* mouse button press/release for saving images */
+     gtk_signal_connect(GTK_OBJECT(darea), "button_press_event", GTK_SIGNAL_FUNC(button_press_event), NULL);
+-    gtk_signal_connect(GTK_OBJECT(darea), "button_press_event", GTK_SIGNAL_FUNC(button_release_event), NULL);
++    gtk_signal_connect(GTK_OBJECT(darea), "button_release_event", GTK_SIGNAL_FUNC(button_release_event), NULL);
+ 
+     gtk_widget_show_all(window);
+ 
