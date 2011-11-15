@@ -1,0 +1,16 @@
+config FREETZ_PACKAGE_CMDFTP
+	bool "cmdftp 0.9.7 (binary only)"
+	default n
+	help
+		  cmdftp is a command line FTP client for Unix under GPLv3. cmdftp
+		  is aimed at being small and simple. Features include passive
+		  mode for all data transfers, shell like transparent syntax for
+		  local and remote modes, multiple and recursive file transfers
+		  using wildcards, recursive copy and move commands, remote and
+		  local text file viewing and editing, network errors detection
+		  and resuming of currently executing command, partial download
+		  resuming (if server accepts REST command), tab completion for
+		  both local and remote names, autologin using classic ~/.netrc
+		  approach, large file support.
+		  WWW: http://www.nongnu.org/cmdftp/
+
