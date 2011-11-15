@@ -1,0 +1,19 @@
+config FREETZ_PACKAGE_NETSCRIPT
+	bool "netscript 1.7.1"
+	select FREETZ_LIB_libdl
+	default n
+	help
+		netscript (portable/multi-platform) is a lightweight tcp/udp socket
+		scripting. Intended for (non-)experienced persons to be able to use
+		to automate situations, built on a word-to-word ruleset response system,
+		includes wildcard support, character replacement, random replacement,
+		argument inclusion, server timeout, initial send, display altering,
+		multiple character dump formats, telnet protocol support, logging,
+		program to socket dumping, executable ruleset support, reverse binding,
+		module support, data truncation, data formatting, permission options,
+		virtual hosting support, history storage, dynamic storage variables,
+		directory placement, character omitting, timed rules, background support,
+		syslog support, routing support, socket options, interactive mode, and a
+		graphical user interface among other things.
+		AUTHOR: v9@fakehalo.deadpig.org, fakehalo.deadpig.org. [ihadnihn]
+		www: http://netscript.sourceforge.net/

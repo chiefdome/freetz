@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_NETSCRIPT
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_NETSCRIPT
+	bool "netscript"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/netscript

@@ -1,0 +1,186 @@
+--- Makefile.orig	2011-02-27 12:05:21.000000000 +0100
++++ Makefile		2011-02-27 12:28:52.000000000 +0100
+@@ -1,179 +1,5 @@
+-# only need to compile netscript with a single command, so this isn't going to
+-# look typical. (probably should have though, at this point)
+-CC=gcc
+-MAKE=make
+-ECHO=echo
+-LN=ln
+-RM=rm
+-CHMOD=chmod
+-# odd isn't it? this will be more multi-platformed, just one file anyways.
+-INSTALL=cp
+-BINDIR=/usr/bin
+-
+-all:
+-	@$(ECHO) "Usage: make <platform>, or <function>"
+-	@$(ECHO) "* where <platform> is: linux, bsd, bsdi, irix, sunos, generic, or bare."
+-	@$(ECHO) "* where <platform> is: nlinux, nbsd, nbsdi, nirix, or nsunos. (ncurses)"
+-	@$(ECHO) "* where <platform> is: glinux, gbsd, gbsdi, girix, or gsunos. (gtk)"
+-	@$(ECHO) "* where <platform> is: gnlinux, gnbsd, gnbsdi, gnirix, or gnsunos. (gtk+ncurses)"
+-	@$(ECHO) "* where <function> is: install, clean, or cleanall."
+-
+-# for the ./automake support. (using uname)
+-Linux: linux
+-FreeBSD: bsd
+-NetBSD: bsd
+-OpenBSD: bsd
+-BSD/OS: bsdi
+-IRIX: irix
+-SunOS: sunos
+-# for any confusion.
+-Solaris: sunos
+-solaris: sunos
+-NLinux: nlinux
+-NFreeBSD: nbsd
+-NNetBSD: nbsd
+-NOpenBSD: nbsd
+-NBSD/OS: nbsdi
+-NIRIX: nirix
+-NSunOS: nsunos
+-NSolaris: nsunos
+-Nsolaris: nsunos
+-GLinux: glinux
+-GFreeBSD: gbsd
+-GNetBSD: gbsd
+-GOpenBSD: gbsd
+-GBSD/OS: gbsdi
+-GIRIX: girix
+-GSunOS: gsunos
+-GSolaris: gsunos
+-Gsolaris: gsunos
+-GNLinux: gnlinux
+-GNFreeBSD: gnbsd
+-GNNetBSD: gnbsd
+-GNOpenBSD: gnbsd
+-GNBSD/OS: gnbsdi
+-GNIRIX: gnirix
+-GNSunOS: gnsunos
+-GNSolaris: gnsunos
+-GNsolaris: gnsunos
+-# for auto-* link.
+-Ninstall: install ninstall
+-Ginstall: install ginstall
+-GNinstall: install ginstall ninstall
+-# the make functions, mostly minor differences.
+-linux:
+-	@$(ECHO) "* Compiling linux-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -rdynamic -lc -ldl -DARPA -DLINUX_T
+-
+-nlinux:
+-	@$(ECHO) "* Compiling NCURSES-linux-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -rdynamic -lc -ldl -DARPA -DLINUX_T -DNCURSES -lcurses
+-
+-glinux:
+-	@$(ECHO) "* Compiling GTK-linux-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -rdynamic -lc -ldl -DARPA -DLINUX_T -DGTK `gtk-config --cflags --libs gthread`
+-
+-gnlinux:
+-	@$(ECHO) "* Compiling GTK-NCURSES-linux-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -rdynamic -lc -ldl -DARPA -DLINUX_T -DGTK `gtk-config --cflags --libs gthread` -DNCURSES -lcurses
+-
+-bsd:
+-	@$(ECHO) "* Compiling bsd-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -rdynamic -lc -DARPA -DBSD_T
+-
+-nbsd:
+-	@$(ECHO) "* Compiling NCURSES-bsd-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -rdynamic -lc -DARPA -DBSD_T -DNCURSES -lcurses
+-
+-gbsd:
+-	@$(ECHO) "* Compiling GTK-bsd-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -rdynamic -lc -DARPA -DBSD_T -DGTK `gtk-config --cflags --libs gthread`
+-
+-gnbsd:
+-	@$(ECHO) "* Compiling GTK-NCURSES-bsd-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -rdynamic -lc -DARPA -DBSD_T -DGTK `gtk-config --cflags --libs gthread` -DNCURSES -lcurses
+-
+-bsdi:
+-	@$(ECHO) "* Compiling bsd-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -rdynamic -lc -ldl -DARPA -DBSD_T
+-
+-nbsdi:
+-	@$(ECHO) "* Compiling NCURSES-bsd-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -rdynamic -lc -ldl -DARPA -DBSD_T -DNCURSES -lcurses
+-
+-gbsdi:
+-	@$(ECHO) "* Compiling GTK-bsd-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -rdynamic -lc -ldl -DARPA -DBSD_T -DGTK `gtk-config --cflags --libs gthread`
+-
+-gnbsdi:
+-	@$(ECHO) "* Compiling GTK-NCURSES-bsd-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -rdynamic -lc -ldl -DARPA -DBSD_T -DGTK `gtk-config --cflags --libs gthread` -DNCURSES -lcurses
+-
+-irix:
+-	@$(ECHO) "* Compiling irix-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -lc -DARPA -DIRIX_T
+-
+-nirix:
+-	@$(ECHO) "* Compiling NCURSES-irix-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -lc -DARPA -DIRIX_T -DNCURSES -lcurses
+-
+-girix:
+-	@$(ECHO) "* Compiling GTK-irix-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -lc -DARPA -DIRIX_T -DGTK `gtk-config --cflags --libs gthread`
+-
+-gnirix:
+-	@$(ECHO) "* Compiling GTK-NCURSES-irix-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -lc -DARPA -DIRIX_T -DGTK `gtk-config --cflags --libs gthread` -DNCURSES -lcurses
+-
+-sunos:
+-	@$(ECHO) "* Compiling sunos-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -lc -ldl -lnsl -lsocket -DARPA -DSUNOS_T
+-
+-nsunos:
+-	@$(ECHO) "* Compiling NCURSES-sunos-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -lc -ldl -lnsl -lsocket -DARPA -DSUNOS_T -DNCURSES -lcurses
+-
+-gsunos:
+-	@$(ECHO) "* Compiling GTK-sunos-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -lc -ldl -lnsl -lsocket -DARPA -DSUNOS_T -DGTK `gtk-config --cflags --libs gthread`
+-
+-gnsunos:
+-	@$(ECHO) "* Compiling GTK-NCURSES-sunos-variant style netscript..."
+-	@$(CC) netscript.c -o netscript -lc -ldl -lnsl -lsocket -DARPA -DSUNOS_T -DGTK `gtk-config --cflags --libs gthread` -DNCURSES -lcurses
+-
+-generic:
+-	@$(ECHO) "* Compiling generic style netscript..."
+-	@$(CC) netscript.c -o netscript -rdynamic -lc -ldl -DARPA
+-
+-bare:
+-	@$(ECHO) "* Compiling bare style netscript..."
+-	@$(CC) netscript.c -o netscript -DDISABLE_MODULES -DDISABLE_SRCIP -DDISABLE_SYSLOG
+-
+-install:
+-	@$(ECHO) "* Installing netscript to bin directory, and linking..."
+-	@$(INSTALL) netscript $(BINDIR)
+-	@$(CHMOD) 755 $(BINDIR)/netscript
+-	@$(LN) -sf $(BINDIR)/netscript $(BINDIR)/ns
+-
+-ninstall:
+-	@$(ECHO) "* Installing netscript auto-NCURSES link to bin directory..."
+-	@$(LN) -sf $(BINDIR)/netscript $(BINDIR)/nnetscript
+-
+-ginstall:
+-	@$(ECHO) "* Installing netscript auto-GTK link to bin directory..."
+-	@$(LN) -sf $(BINDIR)/netscript $(BINDIR)/gnetscript
+-
+-gninstall:
+-	@$(ECHO) "* Installing netscript auto-GTK-NCURSES link to bin directory..."
+-	@$(LN) -sf $(BINDIR)/netscript $(BINDIR)/nnetscript
+-	@$(LN) -sf $(BINDIR)/netscript $(BINDIR)/gnetscript
+-
+-clean:
+-	@$(ECHO) "* Cleaning local netscript file(s)..."
+-	@$(RM) -rf netscript
+-
+-cleanall:
+-	@$(ECHO) "* Cleaning global netscript file(s)..."
+-	@$(RM) -rf netscript $(BINDIR)/netscript $(BINDIR)/ns $(BINDIR)/nnetscript $(BINDIR)/gnetscript 
+-	@$(RM) -rf /usr/share/man/man1/netscript.1.gz /usr/share/man/man1/gnetscript.1.gz /usr/share/man/man1/ns.1.gz
++CC=
++CFLAGS=
+ 
++netscript: netscript.c
++	${CC} ${CFLAGS} netscript.c -o netscript -rdynamic -lc -ldl -DARPA -DLINUX_T
