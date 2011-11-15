@@ -1,0 +1,18 @@
+config FREETZ_PACKAGE_POUND
+	bool "pound 2.5 (binaries only)"
+	select FREETZ_LIB_libpcre
+	select FREETZ_LIB_libdl
+	select FREETZ_LIB_libm
+	select FREETZ_LIB_libpthread
+	select FREETZ_LIB_libresolv
+	select FREETZ_LIB_libpcreposix
+	default n
+	help
+		The Pound program is a reverse proxy, load balancer
+		and HTTPS front-end for Web server(s). Pound was
+		developed to enable distributing the load among several
+		Web-servers and to allow for a convenient SSL wrapper
+		for those Web servers that do not offer it natively.
+		Pound is distributed under the GPL - no warranty, it's
+		free to use, copy and give away.
+		http://www.apsis.ch/pound/index_html
