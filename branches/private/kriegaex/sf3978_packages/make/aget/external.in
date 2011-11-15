@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_AGET
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_AGET
+	bool "aget"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/aget
