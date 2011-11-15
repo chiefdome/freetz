@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_RINETD
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_RINETD
+	bool "rinetd"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/rinetd

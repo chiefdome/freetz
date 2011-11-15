@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_RINETD)),y)
+PACKAGES+=rinetd
+endif
