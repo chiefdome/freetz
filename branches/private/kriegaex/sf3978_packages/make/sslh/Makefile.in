@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_SSLH)),y)
+PACKAGES+=sslh
+endif
