@@ -1,0 +1,11 @@
+--- throttle.c		2005-11-17 09:14:13.000000000 +0100
++++ throttle.c		2010-04-04 10:11:05.000000000 +0200
+@@ -525,7 +525,7 @@
+ 	    sync = BSECS(bytesread, Bps) - TSECS(elapsedtime);
+ 	}
+ 	if (sync >= syncmin) {
+-	    fractional = modf(sync, &integral);
++	    /*fractional = modf(sync, &integral);*/
+ 	    synctime.tv_sec = (time_t)integral;
+ 	    TIME_SUBSEC(synctime) = (long)(fractional * TIME_1SEC_IN_SUBSECS);
+ 	    if (TIME_SUBSEC(synctime) >= TIME_1SEC_IN_SUBSECS)

@@ -1,0 +1,10 @@
+config FREETZ_PACKAGE_THROTTLE
+	bool "throttle 1.2 (binary only)"
+	default n
+	help
+		throttle is a simple pipe which rate limits data
+		passed from standard input to output.
+		WWW: http://klicman.org/throttle/
+
+
+

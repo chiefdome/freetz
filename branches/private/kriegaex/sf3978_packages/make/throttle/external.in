@@ -1,0 +1,8 @@
+config EXTERNAL_FREETZ_PACKAGE_THROTTLE
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_THROTTLE
+	bool "throttle"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/throttle
+
