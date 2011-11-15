@@ -1,0 +1,11 @@
+config FREETZ_PACKAGE_CCRYPT
+	bool "ccrypt 1.9 (binary only)"
+	default n
+	help
+		  ccrypt is a utility for encrypting and decrypting files and streams.
+		  It was designed as a replacement for the standard unix crypt utility,
+		  which is notorious for using a very weak encryption algorithm. ccrypt
+		  is based on the Rijndael cipher. This cipher is believed to provide
+		  very strong security.
+		  WWW: http://ccrypt.sourceforge.net/
+
