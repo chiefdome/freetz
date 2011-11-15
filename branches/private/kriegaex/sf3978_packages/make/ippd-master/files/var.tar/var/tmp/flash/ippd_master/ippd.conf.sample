@@ -1,0 +1,72 @@
+# This is an ippd config file example.
+# Copyright (c) 2011 Bo Yang <ybable@gmail.com>
+# All rights reserved
+
+
+# Define ipp configration in "ipp"
+[ipp]
+
+# Bind Interface
+# Default is unbound
+#
+# interface = eth1
+
+# Domain name
+# Default is no domain name
+#
+# domain = "www.example.com"
+
+# Listen Port
+# Default value is 631
+#
+# port = 9633
+
+# SSL Support
+# Define certfile means using ssl
+# certfile = ""
+# When using cipher, need define
+# cipher = ""
+
+# Prefix
+# You can define a prefix for uri.
+# Example:
+#   prefix = "test/"
+#   printers_uri = "printers/"
+# You can access printer "prt1" with uri:
+# x.x.x.x:x/test/printers/prt1
+# Default value is ""
+#
+# prefix = ""
+
+# Printers uri
+# Default value is "printers/"
+#
+# printers_uri = "printers/"
+
+# Jobs uri
+# Default value is "jobs/"
+#
+# jobs_uri = "jobs/"
+
+# Devices uri
+# Default value is "jobs/"
+#
+# devices_uri = "devices/"
+
+
+# Define all printers in "printers"
+[printers]
+
+# Format is name = device
+# Example:
+#    printer1 = /dev/lp1
+#  And we can define some attributes of the printer
+# [printer1]
+#    make = "ippd"
+
+# For testing
+# (Create an file named testfile)
+# test = testfile
+#
+# [test]
+#  make = "test-ippd"

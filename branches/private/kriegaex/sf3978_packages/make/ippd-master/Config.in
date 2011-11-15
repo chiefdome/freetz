@@ -1,0 +1,32 @@
+config FREETZ_PACKAGE_IPPD_MASTER
+	bool "ippd-master 1.0.0 (binary only)"
+	default n
+	help
+		Yaa Ippd is an ipp(Internet Printing Protocol) server.
+		It's small and fast. It is more suitable for embedded
+		system. As now, it only supports Linux.
+		Why use Yaa Ippd? 
+		For the IPP is a protocol which is widely supported in
+		most OSs, and it can be used on Internel with url.
+		(P910nd doesn`t support this function.) As an
+		application layer protocol, IPP has one of its designed
+		goals, not to invent new security features when it can
+		use existing protocols. 
+		We know that CUPS supports ipp, and it is more powerful.
+		Why not we use it? Because it is so powerful that it
+		have so many functions that we don`t need. For most
+		embedded system, we only need a printer server
+		application, and the smaller the better.
+		Features:
+		1. Only use basic library. So, It can easily run in most
+		    system.
+		2. Support simultaneously printing works. And that only
+		    uses one thread(also, one process). So, it doesn't
+		    need a pthread library, and doesn't need CPU cost of
+		    processes switching.
+		3. Minimal memory cost.
+		4. Minimal CPU cost.
+		5. Support SSL.(On developing.)
+		6. Support IPv6.(On developing.)
+		7. Better architecture. Object-oriented code with C  
+		WWW: http://www.yaabou.com/prj/ippd/

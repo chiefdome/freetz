@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_IPPD_MASTER)),y)
+PACKAGES+=ippd-master
+endif
