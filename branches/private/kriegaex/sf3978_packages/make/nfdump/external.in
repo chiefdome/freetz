@@ -1,0 +1,10 @@
+config EXTERNAL_FREETZ_PACKAGE_NFDUMP
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_NFDUMP
+	bool "nfdump"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/nfcapd
+			/usr/bin/nfdump
+			/usr/bin/nfreplay
+			/usr/bin/nfexpire
