@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_IPCAD" == "y" ] && EXTERNAL_FILES+=" /usr/bin/ipcad"

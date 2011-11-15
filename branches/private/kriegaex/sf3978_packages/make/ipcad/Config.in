@@ -1,0 +1,13 @@
+config FREETZ_PACKAGE_IPCAD
+	bool "ipcad 3.7.3 (binary only)"
+	select FREETZ_LIB_libpcap
+	select FREETZ_LIB_libpthread
+	select FREETZ_LIB_libnsl
+	default n
+	help
+		ipcad listens for traffic on the specified interfaces.
+	        It has the built-in RSH and NetFlow engines to allow exporting
+	        the accounting data the same way as Cisco routers do.
+		WWW: http://lionet.info/ipcad/
+		Manpage: http://lionet.info/ipcad/man-ipcad.html
+		Manpage for ipcad.conf: http://lionet.info/ipcad/man-ipcad.conf.html
