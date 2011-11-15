@@ -1,0 +1,9 @@
+config FREETZ_PACKAGE_CFTP
+	bool "cftp 0.12 (binary only)"
+	select FREETZ_LIB_libncurses
+	default n
+	help
+		  This is comfortable FTP, a full screen ftp client.
+		  Supported are FTP both, with active and passive data
+		  connections.
+		  WWW: http://nih.at/cftp/index.html

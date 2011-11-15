@@ -1,0 +1,46 @@
+--- Makefile.in.orig	2011-08-16 23:36:30.000000000 +0200
++++ Makefile.in	2011-08-17 16:06:45.000000000 +0200
+@@ -73,13 +73,13 @@
+ cftp_SOURCES = bindings.c directory.c display.c fn_basic.c fn_bind.c 	fn_scroll.c fn_select.c fn_tag.c fntable.c ftp.c functions.c 	keys.c list.c loop.c main.c methods.c options.c rc.c readdir.c 	readrc.c sftp.c signals.c sockets.c status.c tag.c tty.c url.c util.c
+ 
+ 
+-mkbind_SOURCES = fn_bind.c functions.c mkbind.c keys.c rc.c
++mkbind_SOURCES = fn_bind1.c functions1.c mkbind.c keys1.c rc1.c
+ 
+ noinst_HEADERS = bindings.h directory.h display.h fnmatch_repl.h fntable.h 	ftp.h functions.h getopt.h keys.h list.h loop.h methods.h options.h 	rc.h readdir.h signals.h sockets.h status.h tag.h tty.h url.h util.h
+ 
+ 
+ cftp_DEPENDENCIES = @LIBOBJS@
+-mkbind_DEPENDENCIES = @LIBOBJS@
++mkbind_DEPENDENCIES =
+ 
+ EXTRA_DIST = bindings.desc 		mkfntexi.m4 mkfntab-c.m4 mkfntab-h.m4 fntable.fn 		mkoptexi.m4 mkoptab-c.m4 mkoptab-h.m4 options.op 		mkmethods-c.m4 mkmethods-h.m4 methods.mt
+ 
+@@ -103,8 +103,8 @@
+ signals.o sockets.o status.o tag.o tty.o url.o util.o
+ cftp_LDADD = $(LDADD)
+ cftp_LDFLAGS = 
+-mkbind_OBJECTS =  fn_bind.o functions.o mkbind.o keys.o rc.o
+-mkbind_LDADD = $(LDADD)
++mkbind_OBJECTS =  fn_bind1.o functions1.o mkbind.o keys1.o rc1.o
++mkbind_LDADD =
+ mkbind_LDFLAGS = 
+ CFLAGS = @CFLAGS@
+ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+@@ -456,12 +456,16 @@
+ 	done
+ 	$(MAKE) $(AM_MAKEFLAGS) top_distdir="$(top_distdir)" distdir="$(distdir)" dist-info
+ fn_bind.o: fn_bind.c bindings.h functions.h display.h keys.h rc.h
++fn_bind1.o: fn_bind.c bindings.h functions.h display.h keys.h rc.h
+ fputchar.o: fputchar.c config.h
+ functions.o: functions.c display.h bindings.h functions.h options.h
++functions1.o: functions.c display.h bindings.h functions.h options.h
+ keys.o: keys.c keys.h
++keys1.o: keys.c keys.h
+ mkbind.o: mkbind.c bindings.h display.h fntable.h functions.h keys.h \
+ 	rc.h
+ rc.o: rc.c rc.h
++rc1.o: rc.c rc.h
+ tparam.o: tparam.c config.h
+ 
+ info-am: $(INFO_DEPS)
