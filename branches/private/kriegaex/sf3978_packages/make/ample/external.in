@@ -1,0 +1,8 @@
+config EXTERNAL_FREETZ_PACKAGE_AMPLE
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_AMPLE
+	bool "ample"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/ample
+
