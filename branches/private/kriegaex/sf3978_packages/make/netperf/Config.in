@@ -1,0 +1,16 @@
+config FREETZ_PACKAGE_NETPERF
+	bool "netperf 2.4.5 (binaries only)"
+	default n
+	help
+		Netperf is a benchmark that can be used to measure the
+		performance of many different types of networking. It
+		provides tests for both unidirecitonal throughput, and
+		end-to-end latency. The environments currently measureable
+		by netperf include:
+		  * TCP and UDP via BSD Sockets for both IPv4 and IPv6
+		  * DLPI
+		  * Unix Domain Sockets
+		  * SCTP for both IPv4 and IPv6  
+		WWW: http://www.netperf.org/netperf/
+		manual: http://www.netperf.org/svn/netperf2/tags/netperf-2.4.5/doc/netperf.html
+		manpage: http://manpages.ubuntu.com/manpages/lucid/man1/netperf.1.html

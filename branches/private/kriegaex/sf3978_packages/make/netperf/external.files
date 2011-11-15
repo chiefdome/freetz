@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_NETPERF" == "y" ] && EXTERNAL_FILES+=" /usr/bin/netperf /usr/bin/netserver"
