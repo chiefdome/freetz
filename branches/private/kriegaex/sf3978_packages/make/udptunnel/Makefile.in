@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_UDPTUNNEL)),y)
+PACKAGES+=udptunnel
+endif

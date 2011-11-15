@@ -1,0 +1,27 @@
+--- Makefile.orig	2011-03-26 23:33:07.000000000 +0100
++++ Makefile		2011-03-26 23:36:58.000000000 +0100
+@@ -29,12 +29,8 @@
+ # Uncomment to build with debugging symbols
+ #DEBUG=-g
+ 
+-CC=gcc
+-CFLAGS=-Wall -Wshadow -Wpointer-arith -Wwrite-strings ${M32} ${DEBUG} -D ${OS}
+-
+-ifeq (${OS}, SOLARIS)
+-LDFLAGS=-lnsl -lsocket -lresolv
+-endif
++CC=
++CFLAGS=
+ 
+ all: udptunnel
+ 
+@@ -43,8 +39,7 @@
+ #
+ OBJS=socket.o message.o client.o list.o acl.o udpserver.o udpclient.o
+ udptunnel: udptunnel.c ${OBJS}
+-	${CC} ${CFLAGS} -o udptunnel udptunnel.c ${OBJS} ${LDFLAGS}
+-	strip udptunnel
++	${CC} ${CFLAGS} -o udptunnel udptunnel.c ${OBJS}
+ 
+ #
+ # Supporting code

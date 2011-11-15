@@ -1,0 +1,12 @@
+config FREETZ_PACKAGE_UDPTUNNEL
+	bool "udptunnel r16 (binary only)"
+	default n
+	help
+		This project tunnels TCP data through a UDP tunnel. The executable can act as
+		the server or client. The server acts as a proxy for the client, listening
+		on a specified UDP port and creating a connection to a TCP server that the
+		client specifies. The client listens on a TCP port, acting as the server that
+		some TCP client connects to. The client recevies any TCP data on that port 
+		and sends the data to the udpserver, which sends it to the TCP connection it
+		made with the desired TCP server.   
+		WWW: https://code.google.com/p/udptunnel/
