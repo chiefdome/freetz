@@ -1,0 +1,29 @@
+--- Makefile.orig	2011-06-24 22:54:24.000000000 +0200
++++ Makefile	2011-06-24 22:57:40.000000000 +0200
+@@ -1,22 +1,12 @@
+-# Don't use make, use gmake.
+-CC=	gcc
++CC=
+ SRC=	aeked.o buffer.o common.o crypto.o io.o log.o utils.o 
+ CSRC=	aeke.o client.o buffer.o common.o crypto.o io.o log.o utils.o 
+ CPSRC=	aeke_cp.o client.o buffer.o common.o crypto.o io.o log.o utils.o 
+ ITEST=	io_test.o io.o buffer.o utils.o log.o crypto.o
+ CTEST=	common_test.o io.o buffer.o utils.o log.o common.o crypto.o
+-CFLAGS=	-I. -I../../include -g -Wall -pedantic #-DPORTKNOCKING
+-LDFLAGS=	-lcrypto 
+-EXTRALDFLAGS=	
+-
+-OS=	$(shell uname)
+-
+-ifeq ($(OS),	Linux)
+-EXTRALDFLAGS += -lutil
+-endif
+-ifeq	($(OS), OpenBSD)
+-EXTRALDFLAGS += -lutil
+-endif
++CFLAGS=
++LDFLAGS=	-lcrypto -lz
++EXTRALDFLAGS=	-lutil -pedantic -I. -I../../include -g
+ 
+ all:	aeked aeke aeke_cp
+ 	

@@ -1,0 +1,19 @@
+config FREETZ_PACKAGE_AEKE
+	bool "aeke r4 (binaries only)"
+	select FREETZ_LIB_STDCXXLIB
+	select FREETZ_LIB_libcrypto
+	select FREETZ_LIB_libutil
+	select FREETZ_LIB_libz
+	select FREETZ_LIB_libdl
+	default n
+	help
+		Aeke is a light-weight, SSH-like program that uses an identity-based
+		authentication protocol to guard against MITM attacks.
+		Aeke consists of three distinct programs:
+		aeked - the server. This is conceptually equivalent to sshd(8), but
+		with a few important differences.
+		aeke - the client program, conceptually equivalent to ssh(1). This
+		is a commandline based program used to connect to an aeked server.
+		aeke_cp - the copy program, similar to scp.
+		WWW: https://aeke.googlecode.com/svn/trunk/
+		Readme: https://aeke.googlecode.com/svn/trunk/README

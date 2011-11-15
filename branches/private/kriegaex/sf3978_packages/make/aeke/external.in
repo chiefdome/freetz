@@ -1,0 +1,9 @@
+config EXTERNAL_FREETZ_PACKAGE_AEKE
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_AEKE
+	bool "aeke"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/aeked
+		 /usr/bin/aeke
+		 /usr/bin/aeke_cp
