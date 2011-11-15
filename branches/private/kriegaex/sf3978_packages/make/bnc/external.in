@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_BNC
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_BNC
+	bool "bnc"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/bnc

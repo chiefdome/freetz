@@ -1,0 +1,33 @@
+# Bnc Configuration File
+#
+# <REQUIRED>
+# listen <port> [maxusers]	Port to listen for connections on
+# Or..
+# listenex [--ssl] [--limit <maxusers>] [--localhost <hostname>] <port>
+# adminpass <password>		Password for Supervisor Access	
+#
+# [Optional]
+# privatekey <filename>       Required if SSL server is used
+# publickey <filename>        Required if SSL server is used
+# password <password>		Password required for general connection (recommended)
+# allow <address> [address ...]	list of ip/dns's that can use the bnc
+# vhost <address> [address ...] Other Vhosts That Can Be Used (display only)
+# defaultvhost <address>	Default Virtual Host to Use
+# pidfile <filename>		Name of PID File (recommended if you use crontab)
+# motdfile <filename>		Message of the day, displayed on connection of valid user
+# logfile <filename>		Filename where to store logs
+#
+# EXAMPLE CONFIG - CHANGE THIS:
+# if your pass starts with + it is encrypted, if not it is a normal pass
+#
+
+listen 9000
+password testpass
+adminpass +qcNQHJfDIAfhQ
+allow *
+
+vhost vhost.test.com
+defaultvhost 192.168.0.1
+pidfile pid.bnc
+motdfile motd
+logfile bnc.log

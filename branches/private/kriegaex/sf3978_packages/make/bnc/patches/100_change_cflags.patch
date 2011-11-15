@@ -1,0 +1,9 @@
+--- Makefile.in.orig	2011-07-10 11:22:21.000000000 +0200
++++ Makefile.in	2011-07-10 11:22:48.000000000 +0200
+@@ -1,5 +1,5 @@
+ LIBS=@LIBS@
+-CFLAGS=-O3 -Wall -include config.h
++CFLAGS=@CFLAGS@ -include config.h
+ CC=@CC@
+ 
+ ALL: bnc mkpasswd
