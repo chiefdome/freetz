@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_BWPING
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_BWPING
+	bool "bwping"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/bwping

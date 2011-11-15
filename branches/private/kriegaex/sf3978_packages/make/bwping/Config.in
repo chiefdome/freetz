@@ -1,0 +1,9 @@
+config FREETZ_PACKAGE_BWPING
+	bool "bwping 1.4 (binary only)"
+	default n
+	help
+		  BWPing is a bandwidth measurement tool based on ICMP echo
+		  request/reply.  It is especially well suited for lossy links.
+		  BWPing does not not require any special software on the remote
+		  host (only the ability to respond on ICMP echo request messages).
+		  WWW: http://bwping.sourceforge.net
