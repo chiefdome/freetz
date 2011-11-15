@@ -1,0 +1,10 @@
+--- Makefile.in.orig	2011-07-07 23:17:53.000000000 +0200
++++ Makefile.in	2011-07-07 23:18:27.000000000 +0200
+@@ -35,6 +35,7 @@
+ decode.c	\
+ dns.c		\
+ err.c		\
++getifaddrs.c	\
+ graph_db.c	\
+ hosts_db.c	\
+ hosts_sort.c	\

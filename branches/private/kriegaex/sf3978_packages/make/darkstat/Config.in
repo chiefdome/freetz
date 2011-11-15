@@ -1,0 +1,12 @@
+config FREETZ_PACKAGE_DARKSTAT
+	bool "darkstat 3.0.714 (binary only)"
+	select FREETZ_LIB_libpcap
+	select FREETZ_LIB_libz
+	default n
+	help
+		 darkstat is a packet sniffer that runs as a background process on a cable/DSL
+		 router, gathers all sorts of statistics about network usage, and serves them
+		 over HTTP.
+		 WWW: http://dmr.ath.cx/net/darkstat/
+
+
