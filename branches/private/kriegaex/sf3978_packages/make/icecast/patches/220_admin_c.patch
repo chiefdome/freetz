@@ -1,0 +1,12 @@
+--- src/admin.c
++++ src/admin.c
+@@ -20,6 +20,9 @@
+ 
+ /* Last overhauled: 990419 <eel@musiknet.se> */
+ 
++#undef HAVE_HISTORY_H
++#undef HAVE_READLINE_HISTORY_H
++
+ #ifdef HAVE_CONFIG_H
+ #ifdef _WIN32
+ #include <win32config.h>

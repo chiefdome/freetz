@@ -1,0 +1,11 @@
+--- configure.orig	2010-05-01 00:48:05.000000000 +0200
++++ configure	2010-05-01 00:49:42.000000000 +0200
+@@ -529,7 +529,7 @@
+ if test "x$prefix" = "xNONE"; then
+         prefix="/usr/local"
+ else
+-        prefix=$prefix
++        prefix="/var/mod/etc"
+ fi
+ 
+ if test "x$enable_fsstd" = "xyes"; then

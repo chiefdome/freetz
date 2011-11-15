@@ -1,0 +1,44 @@
+--- sock.c	2010-04-30 22:18:27.000000000 +0200
++++ sock.c	2010-04-30 23:31:02.000000000 +0200
+@@ -12,8 +12,10 @@
+ #include <process.h>
+ #include <winbase.h>
+ #else /*  *NIX  */
++#include <sys/types.h>
+ #include <sys/socket.h>
+ #include <netinet/in.h>
++#include <arpa/inet.h>
+ #include <netdb.h>
+ #include <fcntl.h>
+ #include <sys/wait.h>
+@@ -22,11 +24,10 @@
+ #include <ctype.h>
+ #include <stdarg.h>
+ #include <errno.h>
+-#include <arpa/inet.h>
+ #include <sys/time.h>
+ #include <unistd.h>
+ #endif /* !win32 */
+-
++#include <string.h>
+ #include "sock.h"
+ #include "util.h"
+ #include "shout.h"
+@@ -37,7 +38,7 @@
+ 	sock_t sockfd;
+ 	struct sockaddr_in sin, server;
+ 	struct hostent *host;
+-
++	int inet_aton ();
+ #ifdef _WIN32
+ 	unsigned int addr;
+ 
+@@ -169,7 +170,7 @@
+ 	char buff[BUFSIZE];
+ 	va_list ap;
+ 	int write_bytes;
+-
++	int vsnprintf ();
+ 	va_start (ap, fmt);
+ #ifdef HAVE_VSNPRINTF
+ 	vsnprintf (buff, BUFSIZE, fmt, ap);

@@ -1,0 +1,13 @@
+--- src/threads.c
++++ src/threads.c
+@@ -39,7 +39,10 @@
+ #include <errno.h>
+ #include <sys/types.h>
+ #include <time.h>
++
++#define __XSI_VISIBLE 1
+ #include <signal.h>
++#undef __XSI_VISIBLE
+ 
+ #ifdef HAVE_UNISTD_H
+ #include <unistd.h>

@@ -1,0 +1,11 @@
+--- configfile.c	2010-04-30 22:10:21.000000000 +0200
++++ configfile.c	2010-04-30 23:39:11.000000000 +0200
+@@ -53,7 +53,7 @@
+ 	FILE *fp;
+ 	struct stat st;
+ 	char filename[BUFSIZE]="";
+-
++	int snprintf ();
+ 	strcpy (filename, path);
+ 
+ #ifndef _WIN32

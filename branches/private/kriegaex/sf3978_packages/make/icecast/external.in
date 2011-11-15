@@ -1,0 +1,8 @@
+config EXTERNAL_FREETZ_PACKAGE_ICECAST
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_ICECAST
+	bool "icecast"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/icecast
+

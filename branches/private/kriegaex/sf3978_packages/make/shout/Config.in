@@ -1,0 +1,7 @@
+config FREETZ_PACKAGE_SHOUT
+	bool "shout 0.8.0 (binary only)"
+	default n
+	help
+		shout feeds an mp3 stream to your icecast server.
+		WWW: http://www.icecast.org/
+
