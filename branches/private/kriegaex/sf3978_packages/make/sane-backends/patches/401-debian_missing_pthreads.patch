@@ -1,0 +1,11 @@
+--- backend/Makefile.in.orig	2011-02-14 18:06:57.510188054 +0100
++++ backend/Makefile.in	2011-02-14 18:06:57.654188054 +0100
+@@ -1848,7 +1848,7 @@
+ lib_LTLIBRARIES = libsane.la
+ sanelibdir = $(libdir)/sane
+ sanelib_LTLIBRARIES = $(BACKEND_LIBS_ENABLED) libsane-dll.la
+-COMMON_LIBS = ../lib/liblib.la
++COMMON_LIBS = ../lib/liblib.la $(PTHREAD_LIBS)
+ 
+ # Each backend should define a convenience library that compiles
+ # all related files within backend directory.  General guideline
