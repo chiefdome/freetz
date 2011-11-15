@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_CASU)),y)
+PACKAGES+=casu
+endif

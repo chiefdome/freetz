@@ -1,0 +1,11 @@
+--- casu.h.orig	2011-03-13 21:47:45.000000000 +0100
++++ casu.h	2011-03-13 21:41:39.000000000 +0100
+@@ -83,7 +83,7 @@
+ #   define MAXHOSTNAMELEN	256
+ #endif
+ 
+-#if HAVE_UTMPX_H
++#if HAVE_UTMPX_H && !defined(linux)
+ #   include <utmpx.h>			/* assume includes <utmp.h> */
+ #   define PATH_UTMP		UTMPX_FILE
+ #   define getutent		getutxent

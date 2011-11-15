@@ -1,0 +1,9 @@
+config FREETZ_PACKAGE_CASU
+	bool "casu 3.3.3 (binaries only)"
+	default n
+	help
+		casu is a collection of programs for communicating with, and showing
+		the status of, other users. The package currently consists of:
+		    flon --	lists your friends who are logged on
+		    to --	sends a short message to another user
+		WWW (german): http://packages.debian.org/lenny/casu
