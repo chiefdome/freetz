@@ -1,0 +1,14 @@
+config FREETZ_PACKAGE_THC_IPV6
+	bool "thc-ipv6 1.6 (binaries only)"
+	select FREETZ_LIB_STDCXXLIB
+	select FREETZ_LIB_libssl
+	select FREETZ_LIB_libcrypto
+	select FREETZ_LIB_libpcap
+	default n
+	help
+		THC is proud to be the first who are releasing an comprehensive attack
+		toolkit for the IPv6 protocol suite. It comprises of state-of-the-art
+		tools for alive scanning, man-in-the-middle attacks, denial-of-service
+		etc. which exploits inherent vulnerabilities in IPv6. Included is a fast
+		and easy to use packet crafting library to create your own attack tools.  
+		WWW: http://freeworld.thc.org/releases.php

@@ -1,0 +1,6 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_THC_IPV6" == "y" ] && EXTERNAL_FILES+=" /usr/bin/alive6 /usr/bin/covert_send6 \
+/usr/bin/covert_send6d /usr/bin/denial6 /usr/bin/detect-new-ip6 /usr/bin/dnsdict6 /usr/bin/dos-new-ip6 \
+/usr/bin/exploit6 /usr/bin/fake_advertise6 /usr/bin/fake_mipv6 /usr/bin/fake_mld26 /usr/bin/fake_mld6 \
+/usr/bin/fake_mldrouter6 /usr/bin/fake_router6 /usr/bin/flood_advertise6 /usr/bin/flood_router6 \
+/usr/bin/fuzz_ip6 /usr/bin/implementation6 /usr/bin/implementation6d /usr/bin/parasite6 /usr/bin/redir6 \
+/usr/bin/rsmurf6 /usr/bin/sendpees6 /usr/bin/smurf6 /usr/bin/thcping6 /usr/bin/toobig6 /usr/bin/trace6"
