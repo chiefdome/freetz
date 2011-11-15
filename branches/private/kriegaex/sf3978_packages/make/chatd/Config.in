@@ -1,0 +1,8 @@
+config FREETZ_PACKAGE_CHATD
+	bool "chatd 0.1 (binary only)"
+	default n
+	help
+		simple and lightweight chat server, for telnet & co.
+		start server: ./chatd <port> &
+		start client(s): telnet <IP address server> <port>
+		WWW: http://www.andreadrian.de/select/
