@@ -1,0 +1,30 @@
+config FREETZ_PACKAGE_BOST
+	bool "bost 0.0.8 (binary only)"
+	select FREETZ_LIB_libm
+	default n
+	help
+		A very simple "host" implementation by Patrik Lembke <blambi@chebab.com>
+		It is not meant to be a full host replacement etc just translate hostname
+		to a IP.  "This program is free software; you can redistribute it and/or
+		modify it under the terms of the GNU General Public License as published by
+		the Free Software Foundation; either version 3 of the License, or
+		(at your option) any later version."
+		Usage:
+		  For a single host
+		  $ bost host
+		  For an IP address:
+		  $ bost 10.0.0.1
+		  or
+		  $ bost 2001:6b0:17:f0a0::b3
+		  For N hosts
+		  $ bost host1 ... hostN
+		  For a subnet/range
+		  $ bost 192.168.0.0/24
+		  Another range
+		  $ bost 192.168.0.0/32
+		current options are:
+		  -h, --help     Show help
+		  -d, --double   enable double check
+		for example "bost -d foo" would output both the ip(s) of foo
+		and the hostname(s) for the ip(s).
+		WWW: http://blambi.chebab.com/software/bost/

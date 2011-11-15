@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_BOST
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_BOST
+	bool "bost"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/bost

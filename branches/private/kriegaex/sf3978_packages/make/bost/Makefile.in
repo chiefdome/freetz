@@ -1,0 +1,3 @@
+ifeq ($(strip $(FREETZ_PACKAGE_BOST)),y)
+PACKAGES+=bost
+endif
