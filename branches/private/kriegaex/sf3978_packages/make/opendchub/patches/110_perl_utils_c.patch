@@ -1,0 +1,13 @@
+--- src/perl_utils.c
++++ src/perl_utils.c
+@@ -104,7 +104,7 @@ int perl_init(void)
+ 	/* If we are the parent */   
+ 	if(pid > 0)
+ 	  {
+-	     logprintf(3, "Forked new script parsing process for script %s, childs pid is %d and parents pid is %d\n", script_list[i], pid, getpid());
++	     logprintf(3, "Forked new script parsing process for script %s, child pid is %d and parent pid is %d\n", script_list[i], pid, getpid());
+ 	     pid = getpid();
+ 	  }
+ 	
+-- 
+tg: (72e6e12..) fixes/spelling (depends on: upstream)
