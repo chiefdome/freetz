@@ -1,0 +1,9 @@
+--- std_cmds.h
++++ std_cmds.h
+@@ -42,6 +42,7 @@
+ 	{ "QUIT", std_quit },
+ 	{ "LIST", std_list },
+ 	{ "NLST", std_list },
++    { "MLSD", std_list },
+ 	{ 0, 0 }
+ };
