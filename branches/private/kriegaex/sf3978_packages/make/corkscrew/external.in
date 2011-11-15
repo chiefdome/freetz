@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_CORKSCREW
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_CORKSCREW
+	bool "corkscrew"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/corkscrew
