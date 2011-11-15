@@ -1,0 +1,11 @@
+config FREETZ_PACKAGE_XZ
+	bool "xz 5.0.3 (binary only)"
+	default n
+	help
+		XZ Utils is free general-purpose data compression software
+		with high compression ratio. XZ Utils were written for
+		POSIX-like systems, but also work on some not-so-POSIX
+		systems. XZ Utils are the successor to LZMA Utils.
+		- liblzma is a compression library with API similar to that of zlib.
+		- xz is a command line tool with syntax similar to that of gzip.
+		WWW: http://tukaani.org/xz/

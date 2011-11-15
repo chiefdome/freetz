@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_XZ" == "y" ] && EXTERNAL_FILES+=" /usr/bin/xz /usr/lib/freetz/liblzma.so.5.0.3"
