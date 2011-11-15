@@ -1,0 +1,9 @@
+config FREETZ_PACKAGE_BANDWIDTH
+	bool "bandwidth 0.9.8 (binary only)"
+	default n
+	help
+		Bandwidth-tool is a sniffer program for 802.3 networks designed
+		for command line which works without using any external library.
+		You can obtain the amount of kb/s of any communication and get
+		statistics of ports used and traffic by IPs.  
+		WWW: https://code.google.com/p/bandwidth-tool/

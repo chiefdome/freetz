@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_BANDWIDTH
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_BANDWIDTH
+	bool "bandwidth"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/bw

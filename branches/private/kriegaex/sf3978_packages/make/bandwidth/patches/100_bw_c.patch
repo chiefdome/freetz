@@ -1,0 +1,11 @@
+--- bw.c.orig	2011-02-06 09:11:51.000000000 +0100
++++ bw.c	2011-02-06 09:11:37.000000000 +0100
+@@ -881,7 +881,7 @@
+ {
+ 	struct ifreq	ifr;
+ 	
+-	strncpy ( ifr.ifr_name, interface, strnlen ( interface ) + 1 );
++	strncpy ( ifr.ifr_name, interface, strnlen ( interface, 16 ) + 1 );
+ 	if ( ioctl ( sock, SIOCGIFFLAGS, &ifr ) == -1 ) {
+ 		perror ( "ioctl()" );
+ 		close ( sock );
