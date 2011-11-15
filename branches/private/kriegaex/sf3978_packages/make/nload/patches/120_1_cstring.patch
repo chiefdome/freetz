@@ -1,0 +1,10 @@
+--- src/dev.cpp
++++ src/dev.cpp
+@@ -20,6 +20,7 @@
+ #include "graph.h"
+ #include "window.h"
+ #include "options.h"
++#include <cstring>
+ 
+ Dev::Dev() : Proc::Proc()
+ {

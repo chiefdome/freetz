@@ -1,0 +1,10 @@
+--- src/opt_window.cpp
++++ src/opt_window.cpp
+@@ -17,6 +17,7 @@
+ 
+ #include "opt_window.h"
+ #include "options.h"
++#include <cstring>
+ 
+ const int BORDER_LEFT = 1;
+ const int BORDER_RIGHT = 1;

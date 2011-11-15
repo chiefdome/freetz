@@ -1,0 +1,14 @@
+config FREETZ_PACKAGE_NLOAD
+	bool "nload 0.6.0 (binary only)"
+	select FREETZ_LIB_libncurses
+	select FREETZ_LIB_libform
+	select FREETZ_LIB_libm
+	select FREETZ_LIB_libdl
+	select FREETZ_LIB_STDCXXLIB
+	default n
+	help
+		  nload is a console application which monitors network traffic and
+		  bandwidth usage in real time. It visualizes the in- and outgoing
+		  traffic using two graphs and provides additional info like the
+		  total amount of transfered data and min/max network usage.
+		  Manpage: http://linux.die.net/man/1/nload
