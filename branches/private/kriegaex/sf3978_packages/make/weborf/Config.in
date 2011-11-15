@@ -1,0 +1,22 @@
+config FREETZ_PACKAGE_WEBORF
+	bool "weborf 0.13 (binary only)"
+	default n
+	help
+		  Weborf is a lightweight webserver designed to rapidly share directories.
+		  Weborf uses the thread pool pattern to handle his threads. When it starts
+		  it creates a first group of thread, and they will serve incoming connections
+		  without terminating. If there are more connections than threads, a second
+		  group of thread is created. And so on… When the hi-traffic situation is over,
+		  it will slowly terminate existing threads, to free memory. If the number of
+		  threads reaches the limit, new incoming connections will be dropped.
+		  Weborf is also able to execute scripts. It is also possible to use script to
+		  perform authentication. Weborf can be used to let clients surf a site. It is
+		  possible to start it quickly, with no need of being superuser. So it is often
+		  a good choice to share a directory with other people without needing a
+		  particular client. Weborf supports both IPv4 and IPv6. Works on POSIX compliant
+		  systems, Weborf is written in C. Supports basic authentication, but doesn't implement
+		  completely the http specification. Can be used to easily share directories,
+		  since it's basedir can be set using directly the command line. Allows the execution
+		  of server-side cgi scripts and implements the thread-pool pattern to reuse it's
+		  threads. Works on GNU/Linux and MacOsX. Has a partial support for webdav. 
+		  WWW: http://galileo.dmi.unict.it/wiki/weborf/doku.php

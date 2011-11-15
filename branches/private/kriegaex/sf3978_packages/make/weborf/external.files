@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_WEBORF" == "y" ] && EXTERNAL_FILES+=" /usr/bin/weborf /usr/bin/cgi_wrapper/weborf_cgi_wrapper"
