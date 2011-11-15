@@ -1,0 +1,28 @@
+--- src/iroffer_config.h.orig	1970-01-01 01:00:00.000000000 +0100
++++ src/iroffer_config.h	2011-08-14 11:25:11.000000000 +0200
+@@ -0,0 +1,25 @@
++/* Automatically Generated, Do Not Edit */
++
++#define VERSIONLONG "1.4.b03-lamm.b02 [20051213024435]"
++#define _OS_Linux
++typedef short ir_int16;
++typedef unsigned short ir_uint16;
++typedef int ir_int32;
++typedef unsigned int ir_uint32;
++typedef long long ir_int64;
++typedef unsigned long long ir_uint64;
++#define IR_ENDIAN_LITTLE
++#define _FILE_OFFSET_BITS 64
++#define _LARGEFILE_SOURCE
++#define SIGNEDSOCK signed
++#define LLPRINTFMT "ll"
++#define NO_SNPRINTF
++#define HAS_SYS_MMAN_H
++#define HAS_SYS_SENDFILE_H
++#define HAS_SYS_VFS_H
++#define HAS_SYS_STATFS_H
++#define HAS_SYS_PARAM_H
++#define HAS_SYS_MOUNT_H
++#define HAS_SYS_STATVFS_H
++#define HAVE_LINUX_SENDFILE
++#define HAVE_MMAP

@@ -1,0 +1,14 @@
+config FREETZ_PACKAGE_IROFFER
+	bool "iroffer 1.4.b03-lamm.b02 (binary only)"
+	select FREETZ_LIB_libcrypt
+	default n
+	help
+		  iroffer is a fileserver for irc (commonly referred to as a DCC bot). It
+		  uses the DCC feature of irc to send files to other users. iroffer will
+		  connect to an irc server and let people request files from it.
+		  This is a fork of Iroffer with extended features.
+		  It does support mIRC-style DCC Server Protocol.
+		  LICENSE: GPL2 or later
+		  WWW1: http://iroffer.org/docs/quick_start.html
+		  WWW2: http://iroffer-lamm.sourceforge.net/
+		  WWW3: http://sourceforge.net/projects/iroffer-lamm/

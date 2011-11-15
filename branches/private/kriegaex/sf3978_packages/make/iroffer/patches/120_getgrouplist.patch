@@ -1,0 +1,50 @@
+--- src/iroffer_misc.c.orig	2011-08-14 22:08:43.000000000 +0200
++++ src/iroffer_misc.c	2011-08-14 22:11:44.000000000 +0200
+@@ -22,6 +22,47 @@
+ #include "dinoex_utilities.h"
+ #include "dinoex_misc.h"
+ 
++int getgrouplist(const char *uname, gid_t agroup, gid_t *groups, int *grpcnt) {
++        const struct group *grp;
++        int i, maxgroups, ngroups, ret;
++
++        ret = 0;
++        ngroups = 0;
++        maxgroups = *grpcnt;
++        /*
++         * When installing primary group, duplicate it;
++         * the first element of groups is the effective gid
++         * and will be overwritten when a setgid file is executed.
++         */
++        groups[ngroups++] = agroup;
++        if (maxgroups > 1)
++                groups[ngroups++] = agroup;
++        /*
++         * Scan the group file to find additional groups.
++         */
++        setgrent();
++        while ((grp = getgrent()) != NULL) {
++                for (i = 0; i < ngroups; i++) {
++                        if (grp->gr_gid == groups[i])
++                                goto skip;
++                }
++                for (i = 0; grp->gr_mem[i]; i++) {
++                        if (!strcmp(grp->gr_mem[i], uname)) {
++                                if (ngroups >= maxgroups) {
++                                        ret = -1;
++                                        break;
++                                }
++                                groups[ngroups++] = grp->gr_gid;
++                                break;
++                        }
++                }
++skip:
++                ;
++        }
++        endgrent();
++        *grpcnt = ngroups;
++        return (ret);
++}
+ 
+ void getconfig (void) {
+    char *templine = mycalloc(maxtextlength);
