@@ -1,0 +1,22 @@
+config FREETZ_PACKAGE_REDSOCKS
+	bool "redsocks 0.1 (binary only)"
+	select FREETZ_LIB_libevent
+	default n
+	help
+		This tool allows you to redirect any TCP connection to SOCKS
+		or HTTPS proxy using your firewall, so redirection is system-wide.
+		Why is that useful? I can suggest following reasons:
+		    * you use tor and don't want any TCP connection to leak
+		    * you use DVB ISP and this ISP provides internet connectivity with
+		      some special daemon that may be also called "Internet accelerator"
+		      and this accelerator acts as proxy. Globax is example of such an
+		      accelerator
+		Linux/iptables, OpenBSD/pf and FreeBSD/ipfw are supported. Linux/iptables
+		is well-tested, other implementations may have bugs, your bugreports are welcome.
+		Features:
+		Redirect any TCP connection to SOCKS4, SOCKS5 or HTTPS (HTTP/CONNECT) proxy server.
+		Login/password authentication is supported for SOCKS5 connections. SOCKS4 supports
+		only username, password is ignored. Redirect any HTTP connection to proxy that does
+		not support transparent proxying (e.g. old SQUID had broken `acl myport' for such
+		connections).  
+		WWW: http://darkk.net.ru/redsocks/

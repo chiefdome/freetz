@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_REDSOCKS
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_REDSOCKS
+	bool "redsocks"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/redsocks
