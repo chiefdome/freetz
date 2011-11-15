@@ -1,0 +1,40 @@
+config FREETZ_PACKAGE_INADYN
+	bool "inadyn 1.98.1 (binary only)"
+	select FREETZ_LIB_libresolv
+	default n
+	help
+		Inadyn is a simple and small DDNS client. By using a DDNS client
+		such as inadyn you can register an Internet name at certain providers
+		that the DDNS client updates, periodically and/or on demand when your IP
+		changes. Inadyn can maintain MULTIPLE host NAMES with the SAME IP address,
+		and has a WEB BASED IP DETECTION which RUNS well BEHIND a NAT router.
+		Inadyn supports updating SEVERAL DDNS servers, SEVERAL ACCOUNTS even on
+		DIFFERENT DDNS providers.
+
+		Common DDNS service providers supported by inadyn:
+		    http://www.dyndns.org
+		    http://freedns.afraid.org
+		    http://www.zoneedit.com
+		    http://www.no-ip.com
+		    http://www.easydns.com
+		    http://www.tzo.com
+		    http://www.3322.org
+		    http://www.dnsomatic.com
+		    http://www.tunnelbroker.net, i.e., http://dns.he.net/
+		    http://www.dynsip.org
+		    http://www.sitelutions.com
+
+		This is a fork of the original INADYN implementation from Narcis Ilisei. Most
+		of the fixes and additions from the new "upstream" by Christoph Brill have been
+		added. Excluding the GNU Autotools build system introduction, Windows platform
+		fixes and a highly suspicious set of base64 API fixes from inadyn-advanced.
+		However, this project is not a fork off of Christoph's repository, but rather a
+		reengineered version of the original 1.96.2 release with all additional patches
+		audited and merged separately. Additionally a further set of code cleanups,
+		features and bug fixes have been added. The most interesting one, which no other
+		Inadyn fork seems to have, is a fix to a rather nasty socket leak.
+		The goal of this project is to entirely focus on *BSD, UN*X and various embedded
+		Linux platforms. All sane patches addressing this target audience are welcome! 
+		WWW: http://vmlinux.org/jocke/inadyn.shtml
+		www: http://eyrich-net.org/programmiertes.html
+		git: https://github.com/troglobit/inadyn

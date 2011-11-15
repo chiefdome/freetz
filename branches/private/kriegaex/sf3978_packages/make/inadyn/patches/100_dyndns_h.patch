@@ -1,0 +1,24 @@
+--- include/dyndns.h.orig	2011-08-27 23:52:46.000000000 +0200
++++ include/dyndns.h	2011-08-27 23:50:34.000000000 +0200
+@@ -26,8 +26,8 @@
+ #include "http_client.h"
+ #include "debug_if.h"
+ 
+-#define DYNDNS_VERSION_STRING	"Inadyn version " VERSION_STRING " -- Dynamic DNS update client."
+-#define DYNDNS_AGENT_NAME	"inadyn/" VERSION_STRING
++#define DYNDNS_VERSION_STRING	VERSION_STRING
++#define DYNDNS_AGENT_NAME	"inadyn/" DYNDNS_VERSION_STRING
+ #define DYNDNS_EMAIL_ADDR	"troglobit@vmlinux.org"
+ 
+ typedef enum
+@@ -52,8 +52,8 @@
+ 
+ /*test values*/
+ #define DYNDNS_DEFAULT_DEBUG_LEVEL	1
+-#define DYNDNS_DEFAULT_CONFIG_FILE	"/etc/inadyn.conf"
+-#define DYNDNS_RUNTIME_DATA_DIR		"/var/run/inadyn"
++#define DYNDNS_DEFAULT_CONFIG_FILE	"/tmp/flash/mod/inadyn.conf"
++#define DYNDNS_RUNTIME_DATA_DIR		"/var/mod/home/nobody"
+ #define DYNDNS_DEFAULT_CACHE_FILE	DYNDNS_RUNTIME_DATA_DIR"/inadyn.cache"
+ #define DYNDNS_DEFAULT_PIDFILE		DYNDNS_RUNTIME_DATA_DIR"/inadyn.pid"
+ 

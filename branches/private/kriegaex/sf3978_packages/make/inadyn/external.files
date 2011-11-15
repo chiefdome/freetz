@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_INADYN" == "y" ] && EXTERNAL_FILES+=" /usr/bin/inadyn"
