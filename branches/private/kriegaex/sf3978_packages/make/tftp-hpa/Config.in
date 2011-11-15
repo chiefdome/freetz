@@ -1,0 +1,14 @@
+config FREETZ_PACKAGE_TFTP_HPA
+	bool "tftp-hpa 5.1 (binary only)"
+	default n
+	help
+		  Trivial File Transfer Protocol (TFTP) is a file transfer protocol,
+		  mainly to serve boot images over the network to other machines (PXE).
+		  tftp-hpa is an enhanced version of the BSD TFTP client and server.
+		  tftp-hpa is portable, BSD derived tftp server.  It supports advanced
+		  options such as blksize, blksize2, tsize, timeout, and utimeout.
+		  It also supported rulebased security options. It possesses a number
+		  of bugfixes and enhancements over the original. This package contains
+		  the server. 
+		  WWW: http://www.in.kernel.org/pub/software/network/tftp/
+		  Manpage: http://linux.die.net/man/8/tftpd
