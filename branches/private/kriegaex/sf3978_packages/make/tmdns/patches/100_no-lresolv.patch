@@ -1,0 +1,27 @@
+--- configure.orig	2011-06-25 21:50:17.000000000 +0200
++++ configure	2011-06-25 21:59:49.000000000 +0200
+@@ -3041,7 +3041,7 @@
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+   ac_check_lib_save_LIBS=$LIBS
+-LIBS="-lresolv  $LIBS"
++LIBS="$LIBS"
+ cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF
+@@ -3098,12 +3098,12 @@
+ fi
+ echo "$as_me:$LINENO: result: $ac_cv_lib_resolv___dn_expand" >&5
+ echo "${ECHO_T}$ac_cv_lib_resolv___dn_expand" >&6
+-if test $ac_cv_lib_resolv___dn_expand = yes; then
++if test $ac_cv_lib_resolv___dn_expand = no; then
+   cat >>confdefs.h <<_ACEOF
+-#define HAVE_LIBRESOLV 1
++#undef HAVE_LIBRESOLV
+ _ACEOF
+ 
+-  LIBS="-lresolv $LIBS"
++  LIBS="$LIBS"
+ 
+ fi
+ 

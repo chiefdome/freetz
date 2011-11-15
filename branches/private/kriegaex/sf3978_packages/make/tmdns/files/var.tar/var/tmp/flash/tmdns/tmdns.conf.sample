@@ -1,0 +1,173 @@
+#
+# config for tmdns version 0.5.3
+#
+# param hostname 
+#
+# If you leave this empty, tmdns will announce the name from the system config
+# usually configured in '/etc/hostname'. You can use this parameter to change
+# the advertised name.
+# Note that only the part up to the first dot (if any) is used as hostname.
+#.
+#
+# Default : 
+#
+hostname = 
+
+# param username 
+#
+# if not empty, tmdns will run as this user.
+#
+# Default : daemon
+#
+username = daemon
+
+# param service_file 
+#
+# You can advertise services running on your machine in a static service
+# definition file. This will allow other machines on your network to discover
+# and use those services.
+# 
+# Some distributions may support automatic service registration in the services
+# 'init' scripts, in which case you can leave this setting (and the file) alone.
+# 
+#
+# Default : /etc/tmdns.services
+#
+service_file = /var/tmp/flash/tmdns/tmdns.services
+
+# param pid_file 
+#
+# tmdns will save its pid in that file
+#
+# Default : /var/run/tmdns.pid
+#
+pid_file = /var/run/tmdns.pid
+
+# param debug_file 
+#
+# Debug info log file
+# If you want tmdns to log debug info, specify a file here.
+#
+# Default : /var/log/tmdns.debug.log
+#
+debug_file = 
+
+# param default_ttl 
+#
+# The time-to-live (in seconds) when we respond to multicast queries.
+# Mutlicast DNS clients will regard data we send as valid for this time.
+#
+# Default : 7200
+#
+default_ttl = 7200
+
+# param unicast_ttl 
+#
+# The time-to-live (in seconds) when we send data via the dns bridge.
+# We may respond to a caching dns server, so we should force it not 
+# to cache our responses for too much time.
+#
+# Default : 10
+#
+unicast_ttl = 10
+
+# param dns_bridge 
+#
+# When set to true, dns unicast queries from the localhost will be.
+# forwarded as multicast queries to the local net. Multiple answers
+# will be gathered and passed back to the calling process as one
+# unicast dns answer.
+#
+# Default : yes
+#
+dns_bridge = yes
+
+# param allow_nonlocal 
+#
+# When set to true, dns unicast queries for names and addresses that
+# are not in the ".local." zone are forwarded to the multicast group.
+# This is insecure and also would require a unicast DNS server that 
+# can answer such a question.
+# When set to "no", such a query will be answered with "SERVFAIL"
+# what in turn should make your resolver ask the next DNS server in
+# your resolver conf.
+#
+# Default : no
+#
+allow_nonlocal = no
+
+# param local_domains 
+#
+# If you have set "allow_nonlocal" to "no", you may want additional names
+# to be queried by multicast dns, maybe because you also use one of the private
+# network address ranges in your network. 
+# With this parameter, you can specify which domain suffixes also should be
+# searched by mDNS requests.
+# This parameter only has some effect when "dns_bridge" is set to "yes"
+# and "allow_nonlocal" is set to "no".
+# 
+# Example: 
+#   To allow to lookup the 192.168.9.0/24 network, add "9.168.192.in-addr.arpa"
+#   to the list.
+# 
+# Note that you can not use both, unicast AND multicast DNS for the same domain.
+# Do not use this parameter if there is a real DNS for a domain and that nameserver
+# does not support multicast dns.
+# 
+#
+# Default :  .local .254.169.in-addr.arpa .0.8.e.f.ip6.arpa
+#
+local_domains =  .local .254.169.in-addr.arpa .0.8.e.f.ip6.arpa
+
+# param dns_port 
+#
+# When dns_bridge above is enabled, on which port should tmdns listen
+# for unicast dns messages.
+# You may want to change this if you have another dns server running
+# on your machine and want to forward the ".local." domain to tmdns.
+#
+# Default : 53
+#
+dns_port = 53
+
+# param gather_delay 
+#
+# number of seconds to delay unicast dns answers to allow more answers
+# to be gatered. Do not set this to something more then about 4 sec.
+# Only relevant if you also enabled dns_bridge above.
+#
+# Default : 2
+#
+gather_delay = 2
+
+# param dynamic_service_file 
+#
+# In addition to the above 'service_file', there is a second file that will
+# be modified by the 'register-service' utility. You should not change this
+# setting until you know what you're doing. If you like to change it here, 
+# anyway, you also need to modify the 'register-service� script to
+# reflect the new path.
+# 
+# You have been warned !
+# 
+# 
+#
+# Default : /var/run/tmdns.services
+#
+dynamic_service_file = /var/run/tmdns.services
+
+# param exclude_interfaces 
+#
+# By default, tmdns accepts and sends multicast DNS packets on all network
+# interfaces.
+# 
+# It may be sensible to exclude some interfaces, for example the external
+# interface of an internet router.
+# 
+# Remember, that mDNS may give away some usefull informations to someone
+# who want to attack your system.
+# 
+#
+# Default : 
+#
+exclude_interfaces =  

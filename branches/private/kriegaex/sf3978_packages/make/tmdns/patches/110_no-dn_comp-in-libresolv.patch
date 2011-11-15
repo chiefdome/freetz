@@ -1,0 +1,14 @@
+--- server/dns.c.orig	2011-06-25 09:15:48.000000000 +0200
++++ server/dns.c	2011-06-25 22:06:58.000000000 +0200
+@@ -79,10 +79,7 @@
+  ****************************************************************************/
+ static int dns_compress_domain( dns_t * pkt , const char * domain ) {
+     int count = 0;
+-    count = dn_comp( domain,
+-	             pkt->data   , BYTESLEFT(pkt) ,
+-		     //NULL, NULL );
+-		     pkt->dnptrs , &(pkt->last_dnptr) );
++    count = 5;
+     if( count < 0 ) return -1;
+ 
+     pkt->data += count;

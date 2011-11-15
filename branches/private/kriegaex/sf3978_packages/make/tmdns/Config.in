@@ -1,0 +1,10 @@
+config FREETZ_PACKAGE_TMDNS
+	bool "tmdns 0.5.3 (binary only)"
+	default n
+	help
+		  tmdns is tiny/trivial Multicast DNS Responder for Linux. It
+		  should allow you to take part in a zeroconf environment.
+		  tmdns is Copyright (C) 2003 Andreas Hofmeister
+		  (andreas.hofmeister@pyramid.de) and others (see Authors &
+		  History below).
+		  WWW: http://zeroconf.sourceforge.net/
