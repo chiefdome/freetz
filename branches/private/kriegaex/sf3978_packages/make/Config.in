@@ -82,7 +82,6 @@ source make/xmail/Config.in
 endmenu
 
 menu "Testing"
-source make/aget/Config.in
 source make/apache/Config.in
 source make/autofs/Config.in
 source make/avahi/Config.in

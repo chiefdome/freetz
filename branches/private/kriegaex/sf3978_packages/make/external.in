@@ -1,6 +1,5 @@
 comment "packages"
 	depends on EXTERNAL_ENABLED
-source make/aget/external.in
 source make/bash/external.in
 source make/bip/external.in
 source make/bittwist/external.in
