@@ -1,0 +1,10 @@
+config FREETZ_PACKAGE_SIPSAK
+	bool "sipsak 0.9.6 (binary only)"
+	select FREETZ_LIB_libcrypto
+	default n
+	help
+		  sipsak is a small command line tool (stress and diagnostics utility)
+		  for developers and administrators of Session Initiation Protocol (SIP)
+		  applications. It can be used for some simple tests on SIP applications
+		  and devices.
+		  WWW: http://www.sipsak.org/

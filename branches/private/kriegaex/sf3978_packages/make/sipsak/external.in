@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_PACKAGE_SIPSAK
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_SIPSAK
+	bool "sipsak"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/sipsak
