@@ -1,0 +1,8 @@
+config EXTERNAL_FREETZ_PACKAGE_CAPISNOOP
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_CAPISNOOP
+	bool "capisnoop"
+	default n
+	help
+		externals these file(s):
+		 /usr/bin/capitest
+		 /usr/bin/capiinfo

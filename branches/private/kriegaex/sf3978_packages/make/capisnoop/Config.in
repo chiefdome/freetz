@@ -1,0 +1,8 @@
+config FREETZ_PACKAGE_CAPISNOOP
+	bool "capisnoop (binaries only)"
+	select FREETZ_LIB_libcapi20
+	default n
+	help
+		capisnoop is an ISDN snooper program to display incoming call
+		number over ISDN map and CAPI interface.
+		WWW: http://www.akk.org/~enrik/fbox/capistuff/
