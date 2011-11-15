@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_UDPCAST" == "y" ] && EXTERNAL_FILES+=" /usr/bin/udp-receiver /usr/bin/udp-sender"

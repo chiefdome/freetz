@@ -1,0 +1,28 @@
+config FREETZ_PACKAGE_UDPCAST
+	bool "udpcast 20100130 (binaries only)"
+	select FREETZ_LIB_libpthread
+	default n
+	help
+		UDPcast is a file transfer tool that can send data simultaneously
+		to many destinations on a LAN. This can for instance be used to
+		install entire classrooms of PC's at once. The advantage of UDPcast
+		over using other methods (nfs, ftp, whatever) is that UDPcast uses
+		Ethernet's multicast abilities: it won't take longer to install 15
+		machines than it would to install just 2.
+		UDPcast is released under the GPL 2.0 license. Parts of the code (fec.c)
+		falls under a BSD-like license. The new boot loader contains cardmgr,
+		which falls under the mozilla public license. All other included third-party
+		software (busybox, dialog, lzop, udhcp, ...) falls under GPL (to the best
+		of my knowledge. If you notice software falling under a different license,
+		especially one with a BSD-like publicity clause, please notify me).
+		UDPcast can be started from the included busybox boot image for OS
+		installations, or from the command line when using it for other purposes.
+		Udpcast may be booted from CD, floppy media, or via the network, by uding
+		PXE or Etherboot. A configuration file (udpcfg.txt) may be included on
+		these boot media in order to bypass the setup menu.
+		There is an udpcast mailing list at udpcast@udpcast.linux.lu . Please send
+		all bug reports to this list. Note: You must be subscribed to the list in
+		order to be able to send comments. You may subscribe to the list by sending
+		a message with 'subscribe' in its body or subject to udpcast-request@udpcast.linux.lu,
+		or by visiting: https://udpcast.linux.lu/mailman/listinfo/udpcast 
+		WWW: http://udpcast.linux.lu/source.html
