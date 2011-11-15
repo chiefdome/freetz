@@ -1,0 +1,16 @@
+config FREETZ_PACKAGE_RTPPROXY
+	bool "rtpproxy 1.2.1 (binary only)"
+	select FREETZ_LIB_libpthread
+	default n
+	help
+		  The Sippy RTPproxy is a high-performance software proxy server for
+		  RTP streams that can work together with  SIP Express Router (SER),
+		  OpenSIPS,  Kamailio, Sippy B2BUA or  reSIProcate B2BUA.
+		  The main purpose of RTPproxy originally had been to make the
+		  communication between SIP user agents behind NAT(s) (Network Address
+		  Translator) possible. Several cases existed when direct end-to-end
+		  communication is not possible and RTP streams have to be relayed
+		  through another host. The RTPproxy can be used to setup such a relaying
+		  host. 
+		  WWW: http://b2bua.org/wiki/RTPproxy
+
