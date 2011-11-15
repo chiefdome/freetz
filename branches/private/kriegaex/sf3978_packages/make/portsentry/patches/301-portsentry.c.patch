@@ -1,0 +1,40 @@
+--- portsentry.c.orig	2003-05-23 20:10:13.000000000 +0200
++++ portsentry.c	2009-09-26 22:47:10.000000000 +0200
+@@ -1077,7 +1077,7 @@
+ {
+ 
+   struct sockaddr_in client, server;
+-  int length, portCount = 0, ports[MAXSOCKS];
++  unsigned int length, portCount = 0, ports[MAXSOCKS];
+   int openSockfd[MAXSOCKS], incomingSockfd, result = TRUE;
+   int count = 0, scanDetectTrigger = TRUE, showBanner = FALSE, boundPortCount = 0;
+   int selectResult = 0;
+@@ -1182,9 +1182,7 @@
+ 	    {
+ 	      if (FD_ISSET (openSockfd[count], &selectFds))
+ 		{
+-		  incomingSockfd =
+-		    accept (openSockfd[count], (struct sockaddr *) &client,
+-			    &length);
++		  incomingSockfd = accept (openSockfd[count], (struct sockaddr *) &client, &length);
+ 		  if (incomingSockfd < 0)
+ 		    {
+ 		      Log ("attackalert: Possible stealth scan from unknown host to TCP port: %d (accept failed)",
+@@ -1277,7 +1275,7 @@
+ PortSentryModeUDP (void)
+ {
+   struct sockaddr_in client, server;
+-  int length, ports[MAXSOCKS], openSockfd[MAXSOCKS], result = TRUE;
++  unsigned int length, ports[MAXSOCKS], openSockfd[MAXSOCKS], result = TRUE;
+   int count = 0, portCount = 0, selectResult = 0, scanDetectTrigger = 0;
+   int boundPortCount = 0, showBanner = FALSE;
+   char *temp, target[IPMAXBUF], bannerBuffer[MAXBUF], configToken[MAXBUF];
+@@ -1581,7 +1579,7 @@
+ Usage (void)
+ {
+   printf ("PortSentry - Port Scan Detector.\n");
+-  printf ("Copyright 1997-2003 Craig H. Rowland <craigrowland at users dot 
++  printf ("Copyright 1997-2003 Craig H. Rowland <craigrowland at users dot \
+ sourceforget dot net>\n");
+   printf ("Licensing restrictions apply. Please see documentation\n");
+   printf ("Version: %s\n\n", VERSION);

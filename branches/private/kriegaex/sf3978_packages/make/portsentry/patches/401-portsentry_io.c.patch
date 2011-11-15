@@ -1,0 +1,33 @@
+--- portsentry_io.c.orig	2003-05-23 20:10:13.000000000 +0200
++++ portsentry_io.c	2009-09-26 23:18:48.000000000 +0200
+@@ -318,10 +318,9 @@
+ #endif
+ 	      /* search for the token and make sure the trailing character */
+ 	      /* is a " " or "=" to make sure the entire token was found */
+-	      if ((strstr (buffer, token) != (char) NULL) && 
+-		   ((buffer[strlen(token)] == '=') || (buffer[strlen(token)] == ' '))) 
++	      if ((strstr (buffer, token) != (char *) NULL) && ((buffer[strlen(token)] == '=') || (buffer[strlen(token)] == ' '))) 
+ 		{		/* cut off the '=' and send it back */
+-		  if (strstr (buffer, "\"") == (char) NULL)
++		  if (strstr (buffer, "\"") == (char *) NULL)
+ 		    {
+ 		      Log ("adminalert: Quotes missing from %s token. Option skipped\n", token);
+ 		      fclose (config);
+@@ -667,7 +666,7 @@
+ 
+   while (fgets (buffer, MAXBUF, input) != NULL)
+   {
+-	if((ipOffset = strstr(buffer, target)) != (char) NULL)
++	if((ipOffset = strstr(buffer, target)) != (char *) NULL)
+ 	{
+ 		for(count = 0; count < strlen(ipOffset); count++)
+ 		{
+@@ -724,7 +723,7 @@
+ #endif
+ 
+ 	/* string not found in target */
+-  	if (strstr (target, find) == (char) NULL)
++  	if (strstr (target, find) == (char *) NULL)
+ 	{
+ 		strncpy(result, target, MAXBUF);
+ 		#ifdef DEBUG
