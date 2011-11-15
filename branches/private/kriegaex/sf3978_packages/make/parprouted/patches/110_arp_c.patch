@@ -1,0 +1,11 @@
+--- arp.c.orig	2011-04-24 10:03:53.000000000 +0200
++++ arp.c	2011-04-24 10:04:03.000000000 +0200
+@@ -368,7 +368,7 @@
+     do {
+       pthread_testcancel();
+       /* Sleep a bit in order not to overload the system */
+-      usleep(300);
++      usleep(3000);
+ 
+       if (arp_recv(sock, &frame) <= 0)
+     	    continue;

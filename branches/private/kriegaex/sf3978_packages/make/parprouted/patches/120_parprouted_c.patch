@@ -1,0 +1,20 @@
+--- parprouted.c.orig	2011-04-24 10:05:52.000000000 +0200
++++ parprouted.c	2011-04-24 10:06:13.000000000 +0200
+@@ -92,7 +92,7 @@
+ 	{
+ 	    /* added route to the kernel */
+ 	    if (snprintf(routecmd_str, ROUTE_CMD_LEN-1, 
+-		     "/sbin/ip route add %s/32 metric 50 dev %s scope link",
++		     "/bin/ip route add %s/32 metric 50 dev %s scope link",
+ 		     inet_ntoa(cur_entry->ipaddr_ia), cur_entry->ifname) > ROUTE_CMD_LEN-1) 
+ 	    {
+ 		syslog(LOG_INFO, "ip route command too large to fit in buffer!");
+@@ -111,7 +111,7 @@
+ 
+ 	    /* remove entry from arp table and remove route from kernel */
+ 	    if (snprintf(routecmd_str, ROUTE_CMD_LEN-1, 
+-		     "/sbin/ip route del %s/32 metric 50 dev %s scope link",
++		     "/bin/ip route del %s/32 metric 50 dev %s scope link",
+ 		     inet_ntoa(cur_entry->ipaddr_ia), cur_entry->ifname) > ROUTE_CMD_LEN-1) 
+ 	    {
+ 		syslog(LOG_INFO, "ip route command too large to fit in buffer!");

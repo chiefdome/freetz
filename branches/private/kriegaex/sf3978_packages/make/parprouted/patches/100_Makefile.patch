@@ -1,0 +1,13 @@
+--- Makefile.orig	2011-04-24 09:20:24.000000000 +0200
++++ Makefile	2011-04-24 09:20:56.000000000 +0200
+@@ -1,8 +1,8 @@
+ EXTRA_CFLAGS = 
+ 
+-CC = gcc
++CC =
+ 
+-CFLAGS = -g -O2 -Wall $(EXTRA_CFLAGS)
++CFLAGS =
+ LDFLAGS = -s 
+ OBJS = parprouted.o arp.o
+ 
