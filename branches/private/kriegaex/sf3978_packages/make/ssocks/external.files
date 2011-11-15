@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_PACKAGE_SSOCKS" == "y" ] && EXTERNAL_FILES+=" /usr/bin/ssocks /usr/bin/ssocksd /usr/bin/nsocks"

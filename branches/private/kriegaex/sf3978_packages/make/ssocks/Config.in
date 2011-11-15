@@ -1,0 +1,11 @@
+config FREETZ_PACKAGE_SSOCKS
+	bool "ssocks 0.0.8 (binaries only)"
+	select FREETZ_LIB_libssl
+	select FREETZ_LIB_libcrypto
+	default n
+	help
+		  sSocks is socks5 server, implements RFC 1928 (SOCKS V5) and RFC 1929
+		  (Authentication for SOCKS V5), a netcat like tool, which supports
+		  socks5 with authentication and a socks5 relay (run a server and send
+		  to a another socks5 server).   
+		  WWW: http://sourceforge.net/projects/ssocks/

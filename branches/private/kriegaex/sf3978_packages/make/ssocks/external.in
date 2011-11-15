@@ -1,0 +1,9 @@
+config EXTERNAL_FREETZ_PACKAGE_SSOCKS
+	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_SSOCKS
+	bool "ssocks"
+	default n
+	help
+		externals these file(s):
+			/usr/bin/ssocks
+			/usr/bin/ssocksd
+			/usr/bin/nsocks
