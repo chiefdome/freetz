@@ -1,0 +1,12 @@
+config FREETZ_PACKAGE_ARPWATCH
+	bool "arpwatch 2.1a15 (binary only)"
+	select FREETZ_LIB_libpcap
+	default n
+	help
+		Arpwatch keeps track  for  ethernet/ip
+		address  pairings.  It  syslogs activity
+		and can report certain changes via email.
+		Arpwatch uses pcap to listen for arp
+		packets on a local ethernet interface.
+		http://en.wikipedia.org/wiki/Arpwatch
+
