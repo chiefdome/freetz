@@ -1,0 +1,15 @@
+config FREETZ_PACKAGE_BALANCE
+	bool "balance 3.54 (binary only)"
+	default n
+	help
+		Balance is a load balancing solution being a simple
+		but powerful generic tcp proxy with round robin load
+		balancing and failover mechanisms. Its behaviour can
+		be controlled at runtime using a simple command line syntax.
+		Balance supports IPv6 on the listening side which makes it
+		a very useful tool for IPv6 migration of IPv4 only services
+		and servers. Balance successfully runs at least on Linux(386),
+		Linux(Itanium), FreeBSD, BSD/OS, Solaris, Cygwin, Mac-OS X,
+		HP-UX and many more. Balance is Open Source Software and
+		released under GPL licensing terms.
+		http://www.inlab.de/balance.html
