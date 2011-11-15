@@ -1,0 +1,10 @@
+config FREETZ_PACKAGE_FPROBE
+	bool "fprobe 1.1 (binary only)"
+	select FREETZ_LIB_libpthread
+	select FREETZ_LIB_libpcap
+	default n
+	help
+		  NetFlow probe: fprobe - libpcap-based tool that collect
+		  network traffic data and emit it as NetFlow flows towards
+		  the specified collector.
+		  WWW: http://fprobe.sourceforge.net/
