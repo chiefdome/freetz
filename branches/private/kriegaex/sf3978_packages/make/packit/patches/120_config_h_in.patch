@@ -1,0 +1,11 @@
+--- config.h.in.orig	2003-09-27 15:34:00.000000000 +0200
++++ config.h.in	2010-03-28 00:05:04.000000000 +0100
+@@ -49,7 +49,7 @@
+ #undef HAVE_MEMSET
+ 
+ /* Define to 1 if you have the <net/bpf.h> header file. */
+-#undef HAVE_NET_BPF_H
++#define HAVE_NET_BPF_H 1
+ 
+ /* Define to 1 if you have the <pcap.h> header file. */
+ #undef HAVE_PCAP_H

@@ -1,0 +1,16 @@
+config FREETZ_PACKAGE_PACKIT
+	bool "packit 1.0 (binary only)"
+	select FREETZ_LIB_libpcap
+	select FREETZ_LIB_libnet
+	select FREETZ_LIB_libresolv
+	default n
+	help
+		Packit is a network auditing tool. Its value is derived from
+		its ability to customize, inject, monitor, and manipulate IP
+		traffic. By allowing you to define (spoof) nearly all TCP, UDP,
+		ICMP, IP, ARP, RARP, and Ethernet header options, Packit can be
+		useful in testing firewalls, intrusion detection systems, port
+		scanning, simulating network traffic, and general TCP/IP
+		auditing. Packit is also an excellent tool for learning TCP/IP.
+		WWW: http://packit.sourceforge.net/
+
