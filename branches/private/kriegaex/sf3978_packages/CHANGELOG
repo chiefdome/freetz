@@ -7,7 +7,7 @@ Latest changes:
 - Build system:
   * binutils: bump version to 2.21.53.0.2
   * ccache:
-    + Bump to version 3.1.6 
+    + Bump to version 3.1.6
     + Use external cache dir (~/.freetz-ccache)
   * fakeroot: bump version to 1.18.1
   * use host tar to unpack packages again as busybox' tar doesn't support pax (aka POSIX 1003.1-2001) tar format
@@ -23,145 +23,146 @@ Latest changes:
 	* replace dtrace: execute a custom action by phone
 
 - New packages, libs, modules:
-    * adsuck
-    * aeke
-    * aget
-    * ample
-    * apf
-    * arpd
-    * arping
-    * arpon
-    * arpwatch
-    * autossh
+    * adsuck 2.3 (binary only)
+    * aeke r4 (binaries only)
+    * aget 0.4.1 (binary only)
+    * ample 0.5.7 (binary only)
+    * apf 0.8.4 (binaries only)
+    * arpd 0.2 (binary only)
+    * arping 2.09 (binary only)
+    * arpon 2.6 (binary only)
+    * arpwatch 2.1a15 (binary only)
+    * autossh 1.4b (binary only)
     * avahi 0.6.30
-    * axel
-    * bacnet4linux
-    * balance
-    * bandwidth
-    * bing
-    * bld
-    * bmon
-    * bnc
-    * bost
-    * bwping
-    * capisnoop
-    * casu
-    * ccrypt
-    * cftp
-    * chatd
-    * cmdftp
-    * connect
-    * coreutils
-    * corkscrew
-    * darkhttpd
-    * darkstat
+    * axel 2.4 (binary only)
+    * bacnet4linux 0.3.12 (binary only)
+    * bacnet-stack 0.5.9 (binaries only)
+    * balance 3.54 (binary only)
+    * bandwidth 0.9.8 (binary only)
+    * bing 1.1.3 (binary only)
+    * bld 0.3.4.1 (binary only)
+    * bmon 2.1.0 (binary only)
+    * bnc 2.9.4 (binary only)
+    * bost 0.0.8 (binary only)
+    * bwping 1.4 (binary only)
+    * capisnoop (binaries only)
+    * casu 3.3.3 (binaries only)
+    * ccrypt 1.9 (binary only)
+    * cftp 0.12 (binary only)
+    * chatd 0.1 (binary only)
+    * cmdftp 0.9.7 (binary only)
+    * connect 1.100 (binary only)
+    * coreutils 8.12 (binaries only)
+    * corkscrew 2.0 (binary only)
+    * darkhttpd 1.8 (binary only)
+    * darkstat 3.0.714 (binary only)
+    * dccserver 0.4 (binaries only)
     * dbus 1.5.6
-    * dccserver
-    * devio
-    * dhcpcd
-    * dhid
-    * dnsproxy
-    * dnsreflector
-    * driftnet
-    * dsniff
-    * dudders
-    * elhttp
-    * elog
-    * email
-    * emech
-    * ethstatus
-    * ffproxy
-    * fprobe
-    * hiawatha
-    * hping3
-    * httping
-    * icbirc
-    * icecast
-    * icmpinfo
-    * ident2
-    * inadyn
-    * ipband
-    * ipcad
-    * iperf
-    * iplog
-    * ippd-master
-    * iptotal
-    * ircd-hybrid
-    * iroffer
-    * jftpgw
-    * jnettop
-    * jtg
-    * lamahub
-    * lft
-    * libidn library
-    * lifstat
-    * logrotate
-    * masqmail
-    * monit
-    * monitord
-    * motion
-    * muh
-    * nast
-    * nbtscan
-    * ndyndns
-    * netio
-    * netperf
-    * NetPIPE
-    * netscript
-    * nfdump
-    * ngrep
-    * nload
-    * nstx
-    * nuttcp
-    * nylon
-    * odsclient
-    * opendchub
-    * packit
-    * parprouted
-    * pcapsipdump
-    * pipe viewer
-    * pktstat
-    * portsentry
-    * pound
+    * devio 1.2 (binary only)
+    * dhcpcd 4.99.7 (binary only)
+    * dhid 5.5 (binaries only)
+    * dnsproxy 1.16 (binary only)
+    * dnsreflector 1.02 (binary only)
+    * driftnet 0.1.6 (binary only)
+    * dsniff 2.4 (binaries only)
+    * dudders 1.04 (binary and libraries only)
+    * elhttp 0.22 (binary only)
+    * elog 2.7.8-1 (binary only)
+    * email 3.1.3 (binary only)
+    * emech 3.0.99p3 (binary only)
+    * ethstatus 0.4.3 (binary only)
+    * ffproxy 1.6 (binary only)
+    * fprobe 1.1 (binary only)
+    * hiawatha 7.6 (binaries only)
+    * hping3 20051105 (binary only)
+    * httping 1.5.1 (binary only)
+    * icbirc 1.8 (binary only)
+    * icecast 1.3.12 (binary only)
+    * icmpinfo 1.11 (binary only)
+    * ident2 1.07_FINAL (binary only)
+    * inadyn 1.98.1 (binary only)
+    * ipband 0.8.1 (binary only)
+    * ipcad 3.7.3 (binary only)
+    * iperf 2.0.5 (binary only)
+    * iplog 2.2.3 (binary only)
+    * ippd-master 1.0.0 (binary only)
+    * iptotal 0.3.3 (binary only)
+    * ircd-hybird 7.2.3 (binary only)
+    * iroffer 1.4.b03-lamm.b02 (binary only)
+    * jftpgw 0.13.5 (binary only)
+    * jnettop 0.13.0 (binary only)
+    * jtg v1.95 (binaries only)
+    * lamahub 0.0.6.3 (binary only)
+    * lft 3.3 (binaries only)
+    * lifstat 20100318 (binary only)
+    * logrotate 3.7.8 (binary only)
+    * masqmail 0.3.2 (binaries only)
+    * miau 0.6.6 (binary only)
+    * monit 5.2.5 (binary only)
+    * monitord 0.4.1 (binary only)
+    * motion 3.2.12 (binary only)
+    * muh 2.2a (binary only)
+    * nast 0.2.0 (binary only)
+    * nbtscan 1.5.1a (binary only)
+    * ndyndns 2.1 (binary only)
+    * netio 1.31 (binary only)
+    * netperf 2.4.5 (binaries only)
+    * NetPIPE 3.7.1 (binary only)
+    * netscript 1.7.1
+    * nfdump 1.6.2 (binaries only)
+    * ngrep 1.45 (binary only)
+    * nload 0.6.0 (binary only)
+    * nstx 1.1-beta6 (binaries only)
+    * nuttcp 6.1.2 (binary only)
+    * nylon 1.21 (binary only)
+    * odsclient 1.03 (binary only)
+    * opendchub 0.8.2 (binary only)
+    * packit 1.0 (binary only)
+    * parprouted 0.65 (binary only)
+    * pcapsipdump 0.1.4 (binary only)
+    * pktstat 1.8.4 (binary only)
+    * portsentry 1.2 (binary only)
+    * pound 2.5 (binaries only)
     * protobuf-c 0.15
-    * prtunnel
-    * psybnc
-    * redsocks
-    * rinetd
-    * RTPproxy
-    * sendip
-    * shout
-    * sipp
-    * sipsak
-    * smap
-    * sock
-    * sshguard
-    * sshl
-    * sslcat
-    * ssocks
-    * stund
-    * sudo
-    * tcpflow
-    * tcpick
-    * tcpreen
-    * tcpscript
-    * tdetect
-    * tftp-hpa
-    * thc-ipv6
-    * throttle
-    * tlsproxyd
-    * tmdns
-    * transocks_ev
-    * ttcp
-    * udpcast
-    * udptunnel
-    * uftp*
-    * uhub
-    * ushare
-    * uudeview
-    * vgp
-    * weborf
-    * xz
+    * prtunnel 0.2.7 (binary only)
+    * psybnc 2.3.2-9 (binary only)
+    * pv 1.2.0 (binary only)
+    * redsocks 0.1 (binary only)
+    * rinetd 0.62 (binary only)
+    * rtpproxy 1.2.1 (binary only)
+    * sendip 2.5 (binary and modules only)
+    * shout 0.8.0 (binary only)
+    * sipp 3.2 (binary only)
+    * sipsak 0.9.6 (binary only)
+    * smap 0.6.0 (binary only)
+    * sock 1.1 (binary only)
+    * sshguard 1.5 (binary only)
+    * sslcat 0.1 (binary only)
+    * sslh 1.9 (binary only)
+    * ssocks 0.0.8 (binaries only)
+    * stund 0.1 (binaries only)
+    * sudo 1.7.4p4 (binaries only)
+    * tcpflow 0.21 (binary only)
+    * tcpick 0.2.1 (binary only)
+    * tcpreen 1.4.4 (binary only)
+    * tcpscript 0.2 (binary only)
+    * tdetect 0.2 (binary only)
+    * tftp-hpa 5.1 (binary only)
+    * thc-ipv6 1.6 (binaries only)
+    * throttle 1.2 (binary only)
+    * tlsproxyd 0.0.2 (binary only)
+    * tmdns 0.5.3 (binary only)
+    * transocksev 0.0.1 (binary only)
+    * ttcp 3.8 (binary only)
+    * udpcast 20100130 (binaries only)
+    * udptunnel r16 (binary only)
+    * uftp 3.5.1 (binaries only)
+    * uhub 0.3.2 (binary only)
+    * ushare 1.1a (binary only)
+    * uudeview 0.5.20 (binaries only)
+    * vgp 0.2.1 (binary only)
+    * weborf 0.13 (binary only)
+    * xz 5.0.3 (binary only)
 
 - Updated tools and hooks:
 	* get_ip:
