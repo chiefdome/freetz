@@ -1,0 +1,23 @@
+config EXTERNAL_FREETZ_LIB_libupnp
+	depends on EXTERNAL_ENABLED && FREETZ_LIB_libupnp
+	bool "libupnp"
+	default n
+	help
+		externals these file(s):
+		 /usr/lib/freetz/libupnp.so.6.1.0
+
+config EXTERNAL_FREETZ_LIB_libixml
+	depends on EXTERNAL_ENABLED && FREETZ_LIB_libixml
+	bool "libixml"
+	default n
+	help
+		externals these file(s):
+		 /usr/lib/freetz/libixml.so.2.0.6
+
+config EXTERNAL_FREETZ_LIB_libthreadutil
+	depends on EXTERNAL_ENABLED && FREETZ_LIB_libthreadutil
+	bool "libthreadutil"
+	default n
+	help
+		externals these file(s):
+		 /usr/lib/freetz/libthreadutil.so.6.0.0

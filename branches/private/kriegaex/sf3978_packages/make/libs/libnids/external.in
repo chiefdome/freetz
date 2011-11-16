@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_LIB_libnids
+    depends on EXTERNAL_ENABLED && FREETZ_LIB_libnids
+    bool "libnids"
+    default n
+    help
+        externals these file(s):
+         /usr/lib/freetz/libnids.so.1.24

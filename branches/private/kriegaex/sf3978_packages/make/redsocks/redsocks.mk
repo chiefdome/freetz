@@ -4,6 +4,8 @@ $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.gz
 $(PKG)_DIR:=$($(PKG)_SOURCE_DIR)/darkk-$(pkg)-9fce864
 $(PKG)_SOURCE_MD5:579af9d0bccdeb5d391541b70016ecc9
 $(PKG)_SITE:=https://github.com/darkk/redsocks/tarball/master
+
+$(PKG)_DIR:=$($(PKG)_SOURCE_DIR)/darkk-$(pkg)-9fce864
 $(PKG)_BINARIES:=$(pkg)
 $(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/%)
 $(PKG)_BINARIES_TARGET_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DEST_DIR)/usr/bin/%)

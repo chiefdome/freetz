@@ -1,6 +1,6 @@
-$(call PKG_INIT_BIN, 1.7.4p4)
+$(call PKG_INIT_BIN, 1.7.8p1)
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.gz
-$(PKG)_SOURCE_MD5:=55d9906535d70a1de347cd3d3550ee87
+$(PKG)_SOURCE_MD5:=5552b9aabc43e34bbc8dc557c098a933
 $(PKG)_SITE:=http://www.sudo.ws/sudo/dist
 $(PKG)_BINARIES:=$(pkg) vi$(pkg) $(pkg)replay
 $(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/%)
@@ -9,8 +9,6 @@ $(PKG)_BINARIES_TARGET_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DEST_DIR)/usr/bin/%)
 $(PKG)_LIBS:=lib$(pkg)_noexec.so
 $(PKG)_LIBS_BUILD_DIR:=$($(PKG)_LIBS:%=$($(PKG)_DIR)/.libs/%)
 $(PKG)_LIBS_TARGET_DIR:=$($(PKG)_LIBS:%=$($(PKG)_DEST_LIBDIR)/%)
-
-$(PKG)_CONFIGURE_PRE_CMDS += $(call PKG_PREVENT_RPATH_HARDCODING,./configure)
 
 $(PKG)_CONFIGURE_OPTIONS += --without-pam \
 			    --disable-pam-session \
@@ -26,7 +24,7 @@ $(PKG_UNPACKED)
 $(PKG_CONFIGURED_CONFIGURE)
 
 $($(PKG)_BINARIES_BUILD_DIR) $($(PKG)_LIBS_BUILD_DIR): $($(PKG)_DIR)/.configured
-		$(SUBMAKE1) -C $(SUDO_DIR)
+		$(SUBMAKE) -C $(SUDO_DIR)
 
 $($(PKG)_BINARIES_TARGET_DIR): $($(PKG)_DEST_DIR)/usr/bin/%: $($(PKG)_DIR)/%
 	$(INSTALL_BINARY_STRIP)

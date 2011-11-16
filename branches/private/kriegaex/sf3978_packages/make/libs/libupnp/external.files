@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_LIB_libupnp" == "y" ] && EXTERNAL_FILES+=" $FREETZ_LIBRARY_DIR/libupnp.so.6.1.0"

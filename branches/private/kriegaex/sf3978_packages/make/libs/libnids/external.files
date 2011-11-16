@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_LIB_libnids" == "y" ] && EXTERNAL_FILES+=" $FREETZ_LIBRARY_DIR/libnids.so.1.24

@@ -16,7 +16,6 @@ $(PKG)_BINARY2:=$($(PKG)_DIR)/threadutil/.libs/libthreadutil.so.6.0.0
 $(PKG)_STAGING_BINARY2:=$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/libthreadutil.so.6.0.0
 $(PKG)_TARGET_BINARY2:=$($(PKG)_TARGET_DIR)/libthreadutil.so.6.0.0
 
-$(PKG)_CONFIGURE_PRE_CMDS += $(call PKG_PREVENT_RPATH_HARDCODING,./configure)
 $(PKG)_CONFIGURE_OPTIONS += --disable-notification_reordering
 $(PKG)_CONFIGURE_OPTIONS += --disable-blocking_tcp_connections
 $(PKG)_CONFIGURE_OPTIONS += --disable-samples
@@ -27,10 +26,10 @@ $(PKG_UNPACKED)
 $(PKG_CONFIGURED_CONFIGURE)
 
 $($(PKG)_BINARY): $($(PKG)_DIR)/.configured
-	$(SUBMAKE1) -C $(LIBUPNP_DIR) all
+	$(SUBMAKE) -C $(LIBUPNP_DIR) all
 
 $($(PKG)_STAGING_BINARY): $($(PKG)_BINARY)
-	$(SUBMAKE1) -C $(LIBUPNP_DIR) \
+	$(SUBMAKE) -C $(LIBUPNP_DIR) \
 		DESTDIR="$(TARGET_TOOLCHAIN_STAGING_DIR)" \
 		install
 	$(PKG_FIX_LIBTOOL_LA) \

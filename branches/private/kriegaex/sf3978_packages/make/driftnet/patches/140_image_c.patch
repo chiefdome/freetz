@@ -4,7 +4,7 @@
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
-+#include </usr/include/png.h>
++#include "img.h"
  
  /* memstr:
   * Locate needle, of length n_len, in haystack, of length h_len, returning NULL.

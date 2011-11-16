@@ -157,6 +157,7 @@ source make/libs/libcapi/Config.in
 
 comment "Misc networking ------------------------"
 source make/libs/libdnet/Config.in
+source make/libs/libnids/Config
 source make/libs/libpcap/Config.in
 source make/libs/libnet/Config.in
 source make/libs/liboping/Config.in
@@ -217,6 +218,7 @@ source make/libs/libffi-sable/Config.in
 source make/libs/libfreetz/Config.in
 source make/libs/libtool/Config.in
 source make/lua/Config.in.libs
+source make/libs/libupnp/Config.in
 source make/libs/pjproject/Config.in
 source make/libs/popt/Config.in
 source make/libs/protobuf-c/Config.in

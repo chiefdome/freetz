@@ -1,0 +1,6 @@
+config FREETZ_LIB_libnids
+	bool "libnids (libnids.so)"
+	default n
+	help
+		An implementation of an E-component of Network Intrusion Detection
+		System.

@@ -50,6 +50,7 @@ source make/libs/mpfr/external.in
 source make/libs/neon/external.in
 source make/libs/libnet/external.in
 source make/netpbm/external.in.libs
+source make/libs/libnids/external.in
 source make/ntfs/external.in.libs
 source make/libs/libogg/external.in
 source make/libs/openjpeg/external.in
@@ -70,6 +71,7 @@ source make/libs/libsynce/external.in
 source make/libs/sysfsutils/external.in
 source make/libs/taglib/external.in
 source make/libs/libtasn1/external.in
+source make/libs/libupnp/external.in
 source make/libs/libusb/external.in
 source make/libs/libusb1/external.in
 source make/libs/uclibc/external.in

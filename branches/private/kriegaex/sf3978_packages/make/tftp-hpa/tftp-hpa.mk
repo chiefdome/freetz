@@ -6,18 +6,17 @@ $(PKG)_BINARIES:=tftpd
 $(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/tftpd/%)
 $(PKG)_BINARIES_TARGET_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DEST_DIR)/usr/bin/%)
 
-$(PKG)_CONFIGURE_PRE_CMDS += $(call PKG_PREVENT_RPATH_HARDCODING,./configure)
-
-$(PKG)_CONFIGURE_OPTIONS += --without-tcpwrappers \
-			    --without-remap \
-			    --without-readline
+$(PKG)_CONFIGURE_OPTIONS += --without-tcpwrappers
+$(PKG)_CONFIGURE_OPTIONS += --without-remap
+$(PKG)_CONFIGURE_OPTIONS += --without-readline
+$(PKG)_CONFIGURE_OPTIONS += $(if $(FREETZ_TARGET_IPV6_SUPPORT),--with-ipv6,--without-ipv6)
 
 $(PKG_SOURCE_DOWNLOAD)
 $(PKG_UNPACKED)
 $(PKG_CONFIGURED_CONFIGURE)
 
 $($(PKG)_BINARIES_BUILD_DIR): $($(PKG)_DIR)/.configured
-		$(SUBMAKE1) -C $(TFTP_HPA_DIR)
+		$(SUBMAKE) -C $(TFTP_HPA_DIR)
 
 $($(PKG)_BINARIES_TARGET_DIR): $($(PKG)_DEST_DIR)/usr/bin/%: $($(PKG)_DIR)/tftpd/%
 	$(INSTALL_BINARY_STRIP)
