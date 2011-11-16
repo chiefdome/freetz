@@ -1,7 +1,7 @@
 $(call PKG_INIT_BIN, 5.1)
-$(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.gz
-$(PKG)_SOURCE_MD5:=d086b1bd6e5ed6375ad407e273afccdf
-$(PKG)_SITE:=http://www.in.kernel.org/pub/software/network/tftp/
+$(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.bz2
+$(PKG)_SOURCE_MD5:=86ddd4e33395b0ae43b3ddce78605d8d
+$(PKG)_SITE:=http://mirrors.dotsrc.org/software/network/tftp/
 $(PKG)_BINARIES:=tftpd
 $(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/tftpd/%)
 $(PKG)_BINARIES_TARGET_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DEST_DIR)/usr/bin/%)
@@ -10,9 +10,7 @@ $(PKG)_CONFIGURE_PRE_CMDS += $(call PKG_PREVENT_RPATH_HARDCODING,./configure)
 
 $(PKG)_CONFIGURE_OPTIONS += --without-tcpwrappers \
 			    --without-remap \
-			    --without-readline \
-			    --without-ipv6 \
-			    --disable-largefile
+			    --without-readline
 
 $(PKG_SOURCE_DOWNLOAD)
 $(PKG_UNPACKED)

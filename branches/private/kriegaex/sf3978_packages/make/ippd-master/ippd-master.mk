@@ -1,6 +1,6 @@
 $(call PKG_INIT_BIN, 1.0.0)
 $(PKG)_SOURCE:=$(pkg).tar.bz2
-$(PKG)_SOURCE_MD5:=5e8c1ffdfa739a8e0f5b57acf93bb802
+$(PKG)_SOURCE_MD5:=deaa110c68208c97cfad984ca80ef7e4
 $(PKG)_SITE:=http://www.yaabou.com/cgit/ippd.git/snapshot/
 $(PKG)_DIR:=$(SOURCE_DIR)/$(pkg)
 $(PKG)_BINARIES:=ippd

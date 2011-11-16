@@ -1,7 +1,7 @@
 $(call PKG_INIT_BIN, 0.1)
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.gz
 $(PKG)_SOURCE_MD5:=9e3e81dae6b816089b6d3befa12f66e9
-$(PKG)_SITE:=dl
+$(PKG)_SITE:=http://freetz.magenbrot.net
 $(PKG)_BINARIES:=capitest capiinfo
 $(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/%)
 $(PKG)_BINARIES_TARGET_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DEST_DIR)/usr/bin/%)

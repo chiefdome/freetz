@@ -1,7 +1,7 @@
 $(call PKG_INIT_BIN, 0.1)
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.gz
-#$(PKG)_SOURCE_MD5:=5485a5834d5b27fe7f8ebe1b6917b9b6
-#$(PKG)_SITE:=https://github.com/darkk/redsocks/tarball/master
+$(PKG)_SOURCE_MD5:579af9d0bccdeb5d391541b70016ecc9
+$(PKG)_SITE:=https://github.com/darkk/redsocks/tarball/master
 $(PKG)_BINARIES:=$(pkg)
 $(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/%)
 $(PKG)_BINARIES_TARGET_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DEST_DIR)/usr/bin/%)

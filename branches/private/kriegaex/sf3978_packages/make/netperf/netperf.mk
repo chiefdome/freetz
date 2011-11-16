@@ -1,7 +1,7 @@
-$(call PKG_INIT_BIN, 2.4.5)
-$(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.gz
-$(PKG)_SOURCE_MD5:=e5b006b9d05048cd0e8087f3d80d7566
-$(PKG)_SITE:=ftp://ftp.$(pkg).org/$(pkg)/
+$(call PKG_INIT_BIN, 2.5.0)
+$(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.bz2
+$(PKG)_SOURCE_MD5:=fe23629f061a161b9d52d39b16620318
+$(PKG)_SITE:=ftp://ftp.$(pkg).org/$(pkg)
 $(PKG)_BINARIES:=$(pkg) netserver
 $(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/src/%)
 $(PKG)_BINARIES_TARGET_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DEST_DIR)/usr/bin/%)

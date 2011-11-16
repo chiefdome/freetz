@@ -1,7 +1,7 @@
 $(call PKG_INIT_BIN, 1.98.1)
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.bz2
 $(PKG)_SOURCE_MD5:=44ac1fb2af7d947172c87be93da79c1d
-$(PKG)_SITE:=ftp://ftp.vmlinux.org/pub/People/jocke/$(pkg)/
+$(PKG)_SITE:=https://github.com/downloads/troglobit/inadyn
 $(PKG)_BINARIES:=$(pkg)
 $(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/src/%)
 $(PKG)_BINARIES_TARGET_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DEST_DIR)/usr/bin/%)

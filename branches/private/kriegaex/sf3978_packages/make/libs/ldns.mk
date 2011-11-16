@@ -8,14 +8,16 @@ $(PKG)_STAGING_BINARY:=$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/lib$(pkg).so.$($(
 $(PKG)_TARGET_BINARY:=$($(PKG)_TARGET_DIR)/lib$(pkg).so.$($(PKG)_LIB_VERSION)
 
 $(PKG)_CONFIGURE_PRE_CMDS += $(call PKG_PREVENT_RPATH_HARDCODING,./configure)
-$(PKG)_DEPENDS_ON := openssl libpcap
+$(PKG)_DEPENDS_ON := libpcap 
 
-#$(PKG)_CONFIGURE_OPTIONS += --disable-gost
+$(PKG)_CONFIGURE_OPTIONS += --disable-gost
 $(PKG)_CONFIGURE_OPTIONS += --without-pyldns
 $(PKG)_CONFIGURE_OPTIONS += --disable-ldns-config
 $(PKG)_CONFIGURE_OPTIONS += --with-pcap=yes
-$(PKG)_CONFIGURE_OPTIONS += --with-ssl="$(TARGET_TOOLCHAIN_STAGING_DIR)/usr"
-			    
+
+# Needs openssl >= 1.0.0
+#$(PKG)_CONFIGURE_OPTIONS += --with-ssl="$(TARGET_TOOLCHAIN_STAGING_DIR)/usr"  
+
 $(PKG_SOURCE_DOWNLOAD)
 $(PKG_UNPACKED)
 $(PKG_CONFIGURED_CONFIGURE)

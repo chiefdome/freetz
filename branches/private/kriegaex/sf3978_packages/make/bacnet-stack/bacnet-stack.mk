@@ -2,7 +2,7 @@ $(call PKG_INIT_BIN, 0.5.9)
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tgz
 $(PKG)_SOURCE_MD5:=dbc09cacde7e4436266948700b6268aa
 $(PKG)_SITE:=http://downloads.sourceforge.net/project/bacnet/$(pkg)/$(pkg)-0.5.9/
-$(PKG)_BINARIES:=bacwir bacarf bacawf bacdcc bacepics bacgateway baciamr \
+$(PKG)_BINARIES:=bacarf bacawf bacdcc bacepics bacgateway baciamr \
 bacinitr bacrd bacrp bacrpm bacserv bacts bacucov bacwh bacwi bacwir \
 bacwp mstpcap
 $(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/bin/%)
