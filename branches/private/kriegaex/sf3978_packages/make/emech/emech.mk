@@ -1,7 +1,7 @@
 $(call PKG_INIT_BIN, 3.0.99p3)
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.gz
 $(PKG)_SOURCE_MD5:=40c0bde6b7c9964584445da1f6d34b39
-$(PKG)_SITE:=http://www.energymech.net/files/
+$(PKG)_SITE:=http://www.energymech.net/files
 $(PKG)_BINARIES:=energymech
 $(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/src/%)
 $(PKG)_BINARIES_TARGET_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DEST_DIR)/usr/bin/%)
@@ -13,6 +13,7 @@ $(PKG_CONFIGURED_NOP)
 $($(PKG)_BINARIES_BUILD_DIR): $($(PKG)_DIR)/.configured
 	$(SUBMAKE1) -C $(EMECH_DIR) \
 		    CC="$(TARGET_CC)" \
+		    CROSS="$(TARGET_CROSS)" \
 		    CFLAGS="$(TARGET_CFLAGS) -D__BSD_SOURCE"
 	
 $($(PKG)_BINARIES_TARGET_DIR): $($(PKG)_DEST_DIR)/usr/bin/%: $($(PKG)_DIR)/src/%

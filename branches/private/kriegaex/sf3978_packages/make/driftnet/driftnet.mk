@@ -22,7 +22,6 @@ $($(PKG)_BINARIES_BUILD_DIR): $($(PKG)_DIR)/.configured
 		CC="$(TARGET_CC)" \
 		CFLAGS="$(TARGET_CFLAGS) -g -DNO_DISPLAY_WINDOW  \
 		-DDRIFTNET_VERSION='\"$(VERSION)\"' -D_BSD_SOURCE" \
-		LDFLAGS="-g" \
 		LDLIBS="-lpcap -lpthread"
 
 $($(PKG)_BINARIES_TARGET_DIR): $($(PKG)_DEST_DIR)/usr/bin/%: $($(PKG)_DIR)/%

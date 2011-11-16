@@ -16,7 +16,6 @@ $($(PKG)_BINARY): $($(PKG)_DIR)/.configured
 		$(SUBMAKE1) -C $(PSYBNC_DIR) \
 		CC="$(TARGET_CC)" \
 		CFLAGS="$(TARGET_CFLAGS) $(if $(FREETZ_TARGET_ARCH_BE),-DBIGENDIAN,)" 
-		
 
 $($(PKG)_TARGET_BINARY): $($(PKG)_BINARY)
 	$(INSTALL_BINARY_STRIP)
@@ -31,3 +30,5 @@ $(pkg)-clean:
 
 $(pkg)-uninstall:
 	$(RM) $(PSYBNC_TARGET_BINARY)
+
+$(PKG_FINISH)

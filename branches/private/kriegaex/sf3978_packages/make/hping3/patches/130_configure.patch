@@ -1,13 +1,11 @@
 --- configure.orig	2010-12-25 21:34:02.000000000 +0100
 +++ configure		2010-12-25 21:38:00.000000000 +0100
-@@ -22,7 +22,9 @@
+@@ -22,7 +22,7 @@
  if [ "$INSTALL_MANPATH" = "" ]; then
  	INSTALL_MANPATH="/usr/local/man"
  fi
 -BYTEORDER=`./byteorder -m`
-+# Das binary "byteorder" darf nicht in der MIPS, MIPS32-Version verwendet werden!!
-+# Den Pfad zum binary "byteorder" evtl. anpassen!
-+BYTEORDER=`~/hping3-20051105/byteorder -m`
++BYTEORDER="whatever"
  
  echo create byteorder.h...
  cat > byteorder.h <<EOF

@@ -25,8 +25,7 @@ $($(PKG)_BINARIES_BUILD_DIR): $($(PKG)_DIR)/.configured
 		-fno-builtin -fno-rtti -nostdinc++ \
 		-I$(TARGET_TOOLCHAIN_STAGING_DIR)/include/openssl" \
 		LFLAGS_linux="$(TARGET_LDFLAGS)" \
-		LIBS="-lncurses -ldl -lpthread -lm -luClibc++ -L /usr/lib -L /lib \
-		-L /var/lib -L /var/mod/lib -L /var/mod/usr/lib" \
+		LIBS="-lncurses -ldl -lpthread -lm -luClibc++" \
 		all
 
 $($(PKG)_BINARIES_TARGET_DIR): $($(PKG)_DEST_DIR)/usr/bin/%: $($(PKG)_DIR)/%
