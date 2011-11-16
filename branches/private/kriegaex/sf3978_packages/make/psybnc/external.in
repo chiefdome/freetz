@@ -5,10 +5,3 @@ config EXTERNAL_FREETZ_PACKAGE_PSYBNC
 	help
 		externals these file(s):
 		 /usr/bin/psybnc
-config EXTERNAL_FREETZ_PACKAGE_PSYBNC
-	depends on EXTERNAL_ENABLED && FREETZ_PACKAGE_PSYBNC
-	bool "psybnc"
-	default n
-	help
-		externals these file(s):
-		 /usr/bin/psybnc
