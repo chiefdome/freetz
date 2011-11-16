@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_LIB_libdlna
+    depends on EXTERNAL_ENABLED && FREETZ_LIB_libdlna
+    bool "libdlna"
+    default n
+    help
+        externals these file(s):
+         /usr/lib/freetz/libdlna.so.0.2.3

@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_LIB_ldns
+    depends on EXTERNAL_ENABLED && FREETZ_LIB_ldns
+    bool "ldns"
+    default n
+    help
+        externals these file(s):
+         /usr/lib/freetz/ldns.so.1.6.11

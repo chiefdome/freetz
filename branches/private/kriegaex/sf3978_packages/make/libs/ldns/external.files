@@ -1,0 +1,1 @@
+[ "$EXTERNAL_FREETZ_LIB_ldns" == "y" ] && EXTERNAL_FILES+=" $FREETZ_LIBRARY_DIR/libldns.so.1.6.11"

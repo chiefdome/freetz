@@ -8,8 +8,6 @@ $(PKG)_BINARY:=$($(PKG)_DIR)/src/$(pkg).so.$($(PKG)_LIB_VERSION)
 $(PKG)_STAGING_BINARY:=$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/$(pkg).so.$($(PKG)_LIB_VERSION)
 $(PKG)_TARGET_BINARY:=$($(PKG)_TARGET_DIR)/$(pkg).so.$($(PKG)_LIB_VERSION)
 
-$(PKG)_CONFIGURE_PRE_CMDS += $(call PKG_PREVENT_RPATH_HARDCODING,./configure)
-
 $(PKG)_DEPENDS_ON := ffmpeg
 
 $(PKG)_CONFIGURE_DEFOPTS := n
@@ -18,18 +16,19 @@ $(PKG)_CONFIGURE_OPTIONS += --disable-static
 $(PKG)_CONFIGURE_OPTIONS += --disable-debug
 $(PKG)_CONFIGURE_OPTIONS += --disable-optimize
 $(PKG)_CONFIGURE_OPTIONS += --disable-strip
-$(PKG)_CONFIGURE_OPTIONS += --cross-compile
+$(PKG)_CONFIGURE_OPTIONS += --cross-prefix="$(TARGET_CROSS)"
 $(PKG)_CONFIGURE_OPTIONS += --prefix="/usr"
+$(PKG)_CONFIGURE_OPTIONS += --with-ffmpeg-dir="$(TARGET_TOOLCHAIN_STAGING_DIR)/usr"
 
 $(PKG_SOURCE_DOWNLOAD)
 $(PKG_UNPACKED)
 $(PKG_CONFIGURED_CONFIGURE)
 
 $($(PKG)_BINARY): $($(PKG)_DIR)/.configured
-	$(SUBMAKE1) -C $(LIBDLNA_DIR)
+	$(SUBMAKE) -C $(LIBDLNA_DIR)
 
 $($(PKG)_STAGING_BINARY): $($(PKG)_BINARY)
-	$(SUBMAKE1) -C $(LIBDLNA_DIR) \
+	$(SUBMAKE) -C $(LIBDLNA_DIR) \
 		DESTDIR="$(TARGET_TOOLCHAIN_STAGING_DIR)" \
 		install
 

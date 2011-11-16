@@ -1,7 +1,7 @@
-$(call PKG_INIT_LIB, 1.6.9)
-$(PKG)_LIB_VERSION:=1.6.9
+$(call PKG_INIT_LIB, 1.6.11)
+$(PKG)_LIB_VERSION:=1.6.11
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.gz
-$(PKG)_SOURCE_MD5:=fc9db99cfe7c9d7f86da8f53efdbbbd6
+$(PKG)_SOURCE_MD5:=c55b592a679672281712c457fbb41eb5
 $(PKG)_SITE:=http://nlnetlabs.nl/downloads/$(pkg)/
 $(PKG)_BINARY:=$($(PKG)_DIR)/.libs/lib$(pkg).so.$($(PKG)_LIB_VERSION)
 $(PKG)_STAGING_BINARY:=$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/lib$(pkg).so.$($(PKG)_LIB_VERSION)

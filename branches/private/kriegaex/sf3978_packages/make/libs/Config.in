@@ -116,6 +116,7 @@ source make/libs/libogg/Config.in
 endmenu
 
 source make/ffmpeg/Config.in.libs
+source make/libdlna/Config.in
 
 menu "Video codecs"
 comment "Vorbis video codec ---------------------"
@@ -147,6 +148,9 @@ source make/libs/linux-atm/Config.in
 comment "Bluetooth ------------------------------"
 source make/libs/bluez-libs/Config.in
 source make/libs/openobex/Config.in
+
+comment "DNS ------------------------------------"
+source make/libs/ldns/Config.in
 
 comment "ISDN & CAPI ----------------------------"
 source make/libs/libcapi/Config.in
