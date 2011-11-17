@@ -1,0 +1,7 @@
+config FREETZ_LIB_libidn
+	bool "libidn (libidn.so)"
+	default n
+	help
+		GNU Libidn is a fully documented implementation of the Stringprep,
+		Punycode and IDNA specifications. Libidn's purpose is to encode and
+		decode internationalized domain names.

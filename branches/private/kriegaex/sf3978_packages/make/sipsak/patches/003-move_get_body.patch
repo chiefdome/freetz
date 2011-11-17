@@ -1,0 +1,32 @@
+--- header_f.c.orig	2006-01-28 22:11:50.000000000 +0100
++++ header_f.c	2011-11-16 15:29:33.000000000 +0100
+@@ -603,12 +603,3 @@
+ 	printf("%.*s\n", (int)(crlf - message), message);
+ }
+ 
+-/* return pointer to the beginning of the message body */
+-inline char* get_body(char *mes) {
+-	char *cr;
+-
+-	if ((cr = strstr(mes, "\r\n\r\n")) != NULL) {
+-		cr+=4;
+-	}
+-	return cr;
+-}
+--- header_f.h.orig	2006-01-28 22:11:50.000000000 +0100
++++ header_f.h	2011-11-16 15:29:41.000000000 +0100
+@@ -62,4 +62,14 @@
+ void print_message_line(char *message);
+ 
+ inline char* get_body(char *mes);
++
++/* return pointer to the beginning of the message body */                                                                                    
++inline char* get_body(char *mes) {                                                                                                           
++        char *cr;                                                                                                                            
++                                                                                                                                             
++        if ((cr = strstr(mes, "\r\n\r\n")) != NULL) {                                                                                        
++                cr+=4;                                                                                                                       
++        }                                                                                                                                    
++        return cr;                                                                                                                           
++}  
+ #endif

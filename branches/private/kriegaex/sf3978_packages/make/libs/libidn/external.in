@@ -1,0 +1,7 @@
+config EXTERNAL_FREETZ_LIB_libidn
+    depends on EXTERNAL_ENABLED && FREETZ_LIB_libidn
+    bool "libidn"
+    default n
+    help
+        externals these file(s):
+         /usr/lib/freetz/libidn.so.11.6.5

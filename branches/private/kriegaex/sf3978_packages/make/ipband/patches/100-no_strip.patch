@@ -1,0 +1,10 @@
+--- Makefile.orig	2008-06-17 19:23:19.000000000 +0200
++++ Makefile	2011-11-16 11:42:23.731055094 +0100
+@@ -50,7 +50,6 @@
+ 
+ $(BIN):	$(OBJ_C)
+ 	$(CC) -o $(BIN) $(OBJ_C) $(LIBS) $(CFLAGS)
+-	strip $(BIN)
+ 
+ install-strip:	install
+ 

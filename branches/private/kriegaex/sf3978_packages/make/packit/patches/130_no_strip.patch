@@ -1,0 +1,13 @@
+--- src/Makefile.in.orig	2003-09-27 15:34:08.000000000 +0200
++++ src/Makefile.in	2011-11-16 11:57:34.855014472 +0100
+@@ -449,10 +449,6 @@
+ 	uninstall-info-am uninstall-sbinPROGRAMS
+ 
+ 
+-all:
+-	strip @BINS@
+-	cp @BINS@ $(top_srcdir)
+-
+ clean:
+ 	rm -f $(top_srcdir)/packit
+ 
