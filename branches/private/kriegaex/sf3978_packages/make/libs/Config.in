@@ -116,7 +116,7 @@ source make/libs/libogg/Config.in
 endmenu
 
 source make/ffmpeg/Config.in.libs
-source make/libdlna/Config.in
+source make/libs/libdlna/Config.in
 
 menu "Video codecs"
 comment "Vorbis video codec ---------------------"
@@ -157,7 +157,7 @@ source make/libs/libcapi/Config.in
 
 comment "Misc networking ------------------------"
 source make/libs/libdnet/Config.in
-source make/libs/libnids/Config
+source make/libs/libnids/Config.in
 source make/libs/libpcap/Config.in
 source make/libs/libnet/Config.in
 source make/libs/liboping/Config.in
