@@ -1,7 +1,7 @@
 $(call PKG_INIT_BIN, 5.1)
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.bz2
 $(PKG)_SOURCE_MD5:=86ddd4e33395b0ae43b3ddce78605d8d
-$(PKG)_SITE:=http://mirrors.dotsrc.org/software/network/tftp/
+$(PKG)_SITE:=http://www.kernel.org/pub/software/network/tftp/tftp-hpa
 $(PKG)_BINARIES:=tftpd
 $(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/tftpd/%)
 $(PKG)_BINARIES_TARGET_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DEST_DIR)/usr/bin/%)
