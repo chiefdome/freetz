@@ -5,13 +5,15 @@ Latest changes:
 === devel ===
 
 - Build system:
-  * binutils: bump version to 2.21.53.0.2
+  * binutils: bump version to 2.22
   * ccache:
     + Bump to version 3.1.6
     + Use external cache dir (~/.freetz-ccache)
   * fakeroot: bump version to 1.18.1
   * use host tar to unpack packages again as busybox' tar doesn't support pax (aka POSIX 1003.1-2001) tar format
   * Move each library-package into separate subdirectory (#1093)
+  * Readd unsquashfs and mksquashfs without lzma support (needed for 3370)
+
   * kconfig 2.6.39
   * menu configuration cache (Config.in.cache)
   * target-toolchain:
@@ -135,6 +137,7 @@ Latest changes:
     * sipp 3.2 (binary only)
     * sipsak 0.9.6 (binary only)
     * smap 0.6.0 (binary only)
+    * smusbutil 1.1 (binary only) 
     * sock 1.1 (binary only)
     * sshguard 1.5 (binary only)
     * sslcat 0.1 (binary only)
@@ -171,19 +174,23 @@ Latest changes:
 
 - Updated patches:
     * Update freetzmount patch (by hermann, updated by cuma)
+    * modify umtsd: only start if a known modem is detected
 
 - Updated packages and libs:
+    * apr-util 1.4.1
     * bind 9.8.0-P4
     * callmonitor 1.19.3
-    * curl 7.22.0
+    * curl 7.23.1
+    * cyassl 2.0.2
     * dnsmasq 2.59
     * dosfstools 3.0.12
-    * ffmpeg 0.8.6
+    * dropbear 2011.54
+    * ffmpeg 0.8.7
     * gdb 7.3.1
-    * git 1.7.7.3
+    * git 1.7.8.1
     * httpry: 0.1.6 and webinterface added
     * iptables 1.4.11.1
-    * libevent 2.0.15
+    * libevent 2.0.16
     * libfreetz 0.5
     * libftdi 0.19
     * libosip2 3.5.0
@@ -194,21 +201,26 @@ Latest changes:
     * netatalk 2.2.1
     * netpbm 10.35.82
     * ngircd 18
+    * openssh 5.9p1
     * openvpn 2.2.1
     * pcre 8.13
     * php 5.3.8
+    * Pingtunnel 0.72
     * radvd 1.8.3
     * readline 6.2
+    * RRDstats: Cisco EPC support
     * rsync 3.0.9
     * ser2net 2.7
     * siproxd 0.8.1
     * slang 2.2.4
     * squid 3.0.STABLE26
     * sqlite 3.7.9
-    * subversion 1.7.1
+    * sshfs-fuse 2.3
+    * stunnel 4.50
+    * subversion 1.7.2
     * tinc 1.0.15
     * tmux 1.5
-    * tor 0.2.2.34
+    * tor 0.2.2.35
     * transmission 2.33
     * truecrypt 7.1
     * umurmur 0.2.8
@@ -223,6 +235,7 @@ Latest changes:
 - BusyBox:
 	* Updated to version 1.19.3
 	* Enhanced blkid und findfs support for busybox (used in freetzmount)
+	* new applet stun-ip (by ralf) determines the external IP address via STUN protocol
 
 - Web interface:
 

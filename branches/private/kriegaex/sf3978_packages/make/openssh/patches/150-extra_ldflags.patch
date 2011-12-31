@@ -1,0 +1,11 @@
+--- Makefile.in
++++ Makefile.in
+@@ -55,7 +55,7 @@
+ SED=@SED@
+ ENT=@ENT@
+ XAUTH_PATH=@XAUTH_PATH@
+-LDFLAGS=-L. -Lopenbsd-compat/ @LDFLAGS@
++LDFLAGS=-L. -Lopenbsd-compat/ @LDFLAGS@ $(EXTRA_LDFLAGS)
+ EXEEXT=@EXEEXT@
+ MANFMT=@MANFMT@
+ 

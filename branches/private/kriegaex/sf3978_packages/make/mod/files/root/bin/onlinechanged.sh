@@ -9,10 +9,19 @@ log() {
 		addline="\n"
 		shift
 	done
-	echo -e "[$$]: [$OC_STATE] $*$addline" >>/var/log/onlinechanged.log
+	echo -e "$(date '+%Y-%m-%d %H:%M:%S') [$$]: [$OC_STATE] $*$addline" >>/var/log/onlinechanged.log
 	echo "ONLINECHANGED[$$]: [$OC_STATE] $*" >/dev/console
 	logger -t ONLINECHANGED[$$] "[$OC_STATE] $*"
 }
+
+# semaphore older than 3 min -> kill waiting sibling scripts
+if [ "$(find $PID_FILE -prune -mmin +3 2>/dev/null)" == "$PID_FILE" ]; then
+	for pid in $(pidof onlinechanged.sh | sed "s/ \?$$//"); do
+		log "killing old process #$pid"
+		kill $pid
+	done
+	rm -rf $PID_FILE 2>/dev/null
+fi
 
 # shutdown: do nothing
 if [ -e /var/run/shutdown ]; then

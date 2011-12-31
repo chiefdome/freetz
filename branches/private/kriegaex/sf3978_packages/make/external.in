@@ -1,7 +1,6 @@
 comment "packages"
 	depends on EXTERNAL_ENABLED
 source make/bash/external.in
-source make/bip/external.in
 source make/bittwist/external.in
 source make/bluez-utils/external.in
 source make/classpath/external.in
@@ -54,7 +53,6 @@ source make/ngircd/external.in
 source make/nmap/external.in
 source make/ntfs/external.in
 source make/obexftp/external.in
-source make/oidentd/external.in
 source make/owfs/external.in
 source make/php/external.in
 source make/polipo/external.in
@@ -98,6 +96,7 @@ source make/aiccu/external.in
 source make/autofs/external.in
 source make/avahi/external.in
 source make/bind/external.in
+source make/bip/external.in
 source make/checkmaild/external.in
 source make/collectd/external.in
 source make/dbus/external.in
@@ -106,6 +105,7 @@ source make/gw6/external.in
 source make/knock/external.in
 source make/lighttpd/external.in
 source make/minidlna/external.in
+source make/oidentd/external.in
 source make/opendd/external.in
 source make/openssh/external.in
 source make/openvpn/external.in
