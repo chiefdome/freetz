@@ -1,3 +1,0 @@
-pkg_apply_save() {
-	/etc/init.d/rc.inetd config
-}
