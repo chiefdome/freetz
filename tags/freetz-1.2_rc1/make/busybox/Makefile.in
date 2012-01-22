@@ -1,0 +1,3 @@
+BUSYBOX_REF:=$(call qstrip,$(FREETZ_TARGET_REF))
+
+TARGETS+=busybox

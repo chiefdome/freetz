@@ -1,0 +1,412 @@
+config FREETZ_KERNEL_VERSION_2_6_13_1
+	bool
+	default y if ! ( \
+			FREETZ_KERNEL_VERSION_2_6_19_2 || \
+			FREETZ_KERNEL_VERSION_2_6_28 || \
+			FREETZ_KERNEL_VERSION_2_6_32 \
+			)
+	default n
+
+config FREETZ_KERNEL_VERSION_2_6_19_2
+	bool
+	default y if ( \
+			FREETZ_TYPE_WLAN_3270 || \
+			FREETZ_TYPE_WLAN_3270_V3 || \
+			(FREETZ_TYPE_FON_WLAN_7240 && ! FREETZ_TYPE_LABOR_PREVIEW) || \
+			(FREETZ_TYPE_FON_WLAN_7270 && ! FREETZ_TYPE_LABOR_PREVIEW) || \
+			FREETZ_TYPE_FON_WLAN_7340 || \
+			(FREETZ_TYPE_FON_WLAN_7390 && ! FREETZ_TYPE_LABOR_PREVIEW) || \
+			FREETZ_TYPE_FON_WLAN_7570 \
+			)
+	default n
+
+config FREETZ_KERNEL_VERSION_2_6_28
+	bool
+	default y if FREETZ_TYPE_FON_WLAN_7320 || \
+			(FREETZ_TYPE_LABOR_PREVIEW && FREETZ_TYPE_FON_WLAN_7390)
+	default n
+
+
+config FREETZ_KERNEL_VERSION_2_6_32
+	bool
+	default y if FREETZ_TYPE_LABOR_PREVIEW && \
+			( \
+			FREETZ_TYPE_FON_WLAN_7240 || \
+			FREETZ_TYPE_FON_WLAN_7270_V2 || \
+			FREETZ_TYPE_FON_WLAN_7270_V3 \
+			)
+	default n
+
+config FREETZ_KERNEL_VERSION
+	string
+	default "2.6.13.1"  if FREETZ_KERNEL_VERSION_2_6_13_1
+	default "2.6.19.2"  if FREETZ_KERNEL_VERSION_2_6_19_2
+	default "2.6.28"    if FREETZ_KERNEL_VERSION_2_6_28
+	default "2.6.32.21" if FREETZ_KERNEL_VERSION_2_6_32
+
+config FREETZ_KERNEL_LAYOUT_AR7
+	bool
+	default y if \
+		FREETZ_TYPE_300IP_AS_FON || \
+		FREETZ_TYPE_FON || \
+		FREETZ_TYPE_FON_5010 || \
+		FREETZ_TYPE_FON_5050 || \
+		FREETZ_TYPE_FON_WLAN || \
+		FREETZ_TYPE_FON_WLAN_7050 || \
+		FREETZ_TYPE_WLAN_3020 || \
+		FREETZ_TYPE_WLAN_3030
+
+config FREETZ_KERNEL_LAYOUT_AR9
+	bool
+	default y if FREETZ_TYPE_FON_WLAN_7320
+
+config FREETZ_KERNEL_LAYOUT_IKS
+	bool
+	default y if \
+		FREETZ_TYPE_FON_WLAN_7340 || \
+		FREETZ_TYPE_FON_WLAN_7390
+
+config FREETZ_KERNEL_LAYOUT_OHIO
+	bool
+	default y if \
+		FREETZ_TYPE_2170 || \
+		FREETZ_TYPE_FON_5124 || \
+		FREETZ_TYPE_FON_5140 || \
+		FREETZ_TYPE_FON_WLAN_7112 || \
+		FREETZ_TYPE_FON_WLAN_7113 || \
+		FREETZ_TYPE_FON_WLAN_7140 || \
+		FREETZ_TYPE_FON_WLAN_7141 || \
+		FREETZ_TYPE_FON_7150 || \
+		FREETZ_TYPE_FON_WLAN_7170 || \
+		FREETZ_TYPE_WLAN_3130 || \
+		FREETZ_TYPE_WLAN_3131 || \
+		FREETZ_TYPE_WLAN_3170 || \
+		FREETZ_TYPE_SPEEDPORT_W501V
+
+config FREETZ_KERNEL_LAYOUT_UR8
+	bool
+	default y if \
+		FREETZ_TYPE_FON_WLAN_7240 || \
+		FREETZ_TYPE_FON_WLAN_7270 || \
+		FREETZ_TYPE_FON_WLAN_7570 || \
+		FREETZ_TYPE_WLAN_3270 || \
+		FREETZ_TYPE_WLAN_3270_V3
+
+config FREETZ_KERNEL_LAYOUT
+	string
+	default "ar7" if FREETZ_KERNEL_LAYOUT_AR7
+	default "ar9" if FREETZ_KERNEL_LAYOUT_AR9
+	default "iks" if FREETZ_KERNEL_LAYOUT_IKS
+	default "ohio" if FREETZ_KERNEL_LAYOUT_OHIO
+	default "ur8" if FREETZ_KERNEL_LAYOUT_UR8
+
+config FREETZ_UCLIBC_0_9_28_BASED_BOX
+	bool
+	default y if \
+		! FREETZ_UCLIBC_0_9_29_BASED_BOX && \
+		! FREETZ_UCLIBC_0_9_30_BASED_BOX && \
+		! FREETZ_UCLIBC_0_9_31_BASED_BOX
+	default n
+
+config FREETZ_UCLIBC_0_9_29_BASED_BOX
+	bool
+	default y if \
+		FREETZ_TYPE_WLAN_3270 || \
+		FREETZ_TYPE_WLAN_3270_V3 || \
+		FREETZ_TYPE_FON_5124 || \
+		FREETZ_TYPE_FON_WLAN_7112 || \
+		FREETZ_TYPE_FON_WLAN_7113 && FREETZ_TYPE_LANG_EN || \
+		(FREETZ_TYPE_FON_WLAN_7140 && (FREETZ_TYPE_LANG_EN || FREETZ_TYPE_LANG_A_CH)) || \
+		FREETZ_TYPE_FON_WLAN_7141 || \
+		FREETZ_TYPE_FON_7150 || \
+		FREETZ_TYPE_FON_WLAN_7170 || \
+		(FREETZ_TYPE_FON_WLAN_7240 && ! FREETZ_TYPE_LABOR_PREVIEW) || \
+		(FREETZ_TYPE_FON_WLAN_7270 && ! FREETZ_TYPE_LABOR_PREVIEW) || \
+		FREETZ_TYPE_FON_WLAN_7340 || \
+		(FREETZ_TYPE_FON_WLAN_7390 && ! FREETZ_TYPE_LABOR_PREVIEW) || \
+		FREETZ_TYPE_FON_WLAN_7570
+	default n
+
+config FREETZ_UCLIBC_0_9_30_BASED_BOX
+	bool
+	default y if FREETZ_TYPE_FON_WLAN_7320
+	default n
+
+config FREETZ_UCLIBC_0_9_31_BASED_BOX
+	bool
+	default y if FREETZ_TYPE_LABOR_PREVIEW && \
+			( \
+			FREETZ_TYPE_FON_WLAN_7240 || \
+			FREETZ_TYPE_FON_WLAN_7270_V2 || \
+			FREETZ_TYPE_FON_WLAN_7270_V3 || \
+			FREETZ_TYPE_FON_WLAN_7390 \
+			)
+	default n
+
+comment "Kernel toolchain options ----------------------------------"
+choice
+	prompt "Kernel compiler"
+	default FREETZ_KERNEL_COMPILER_GCC_4_4_6 if FREETZ_KERNEL_VERSION_2_6_28 || FREETZ_KERNEL_VERSION_2_6_32
+	default FREETZ_KERNEL_COMPILER_GCC_3_4_6
+
+	config FREETZ_KERNEL_COMPILER_GCC_3_4_6
+		bool "gcc-3.4.6"
+		depends on \
+			FREETZ_KERNEL_VERSION_2_6_13_1 || \
+			FREETZ_KERNEL_VERSION_2_6_19_2
+
+	config FREETZ_KERNEL_COMPILER_GCC_4_4_6
+		bool "gcc-4.4.6"
+		depends on \
+			FREETZ_KERNEL_VERSION_2_6_28 || \
+			FREETZ_KERNEL_VERSION_2_6_32
+endchoice
+
+config FREETZ_KERNEL_GCC_VERSION
+	string
+	default "4.4.6" if FREETZ_KERNEL_COMPILER_GCC_4_4_6
+	default "3.4.6"
+
+config FREETZ_KERNEL_BINUTILS_VERSION
+	string
+	default "2.21.52.0.2" if FREETZ_KERNEL_COMPILER_GCC_4_4_6
+	default "2.18"
+
+comment "Target toolchain options ----------------------------------"
+choice
+	prompt "Target uClibc version"
+	default FREETZ_TARGET_UCLIBC_VERSION_0_9_28 if FREETZ_UCLIBC_0_9_28_BASED_BOX
+	default FREETZ_TARGET_UCLIBC_VERSION_0_9_29 if FREETZ_UCLIBC_0_9_29_BASED_BOX
+	default FREETZ_TARGET_UCLIBC_VERSION_0_9_30 if FREETZ_UCLIBC_0_9_30_BASED_BOX
+	default FREETZ_TARGET_UCLIBC_VERSION_0_9_31 if FREETZ_UCLIBC_0_9_31_BASED_BOX
+
+	config FREETZ_TARGET_UCLIBC_VERSION_0_9_28
+	bool "0.9.28"
+	depends on FREETZ_UCLIBC_0_9_28_BASED_BOX
+
+	config FREETZ_TARGET_UCLIBC_VERSION_0_9_29
+	bool "0.9.29"
+	depends on FREETZ_UCLIBC_0_9_29_BASED_BOX
+
+	config FREETZ_TARGET_UCLIBC_VERSION_0_9_30
+	bool "0.9.30.3"
+	depends on FREETZ_UCLIBC_0_9_30_BASED_BOX \
+		|| (FREETZ_BUILD_TOOLCHAIN && FREETZ_UCLIBC_0_9_29_BASED_BOX)
+
+	config FREETZ_TARGET_UCLIBC_VERSION_0_9_31
+	bool "0.9.31.1"
+	depends on FREETZ_UCLIBC_0_9_31_BASED_BOX \
+		|| (FREETZ_BUILD_TOOLCHAIN && (FREETZ_UCLIBC_0_9_29_BASED_BOX || FREETZ_UCLIBC_0_9_30_BASED_BOX))
+
+	config FREETZ_TARGET_UCLIBC_VERSION_0_9_32
+	bool "0.9.32"
+	depends on FREETZ_BUILD_TOOLCHAIN && \
+		( \
+			FREETZ_UCLIBC_0_9_29_BASED_BOX \
+			|| FREETZ_UCLIBC_0_9_30_BASED_BOX \
+			|| FREETZ_UCLIBC_0_9_31_BASED_BOX \
+		)
+endchoice
+
+comment "CAUTION: Usage of an uClibc version higher than that used by AVM may lead to an unstable box"
+	depends on (FREETZ_UCLIBC_0_9_29_BASED_BOX && !FREETZ_TARGET_UCLIBC_VERSION_0_9_29) \
+		|| (FREETZ_UCLIBC_0_9_30_BASED_BOX && !FREETZ_TARGET_UCLIBC_VERSION_0_9_30) \
+		|| (FREETZ_UCLIBC_0_9_31_BASED_BOX && !FREETZ_TARGET_UCLIBC_VERSION_0_9_31)
+
+choice
+	prompt "uClibc config" if \
+		FREETZ_BUILD_TOOLCHAIN && \
+		( \
+			(FREETZ_UCLIBC_0_9_28_BASED_BOX && FREETZ_TARGET_UCLIBC_VERSION_0_9_28) || \
+			(FREETZ_UCLIBC_0_9_29_BASED_BOX && FREETZ_TARGET_UCLIBC_VERSION_0_9_29) || \
+			(FREETZ_UCLIBC_0_9_30_BASED_BOX && FREETZ_TARGET_UCLIBC_VERSION_0_9_30) || \
+			(FREETZ_UCLIBC_0_9_31_BASED_BOX && FREETZ_TARGET_UCLIBC_VERSION_0_9_31) \
+		)
+	default FREETZ_TARGET_UCLIBC_CONFIG_MOD
+
+	config FREETZ_TARGET_UCLIBC_CONFIG_MOD
+		bool "mod (recommended)"
+
+	config FREETZ_TARGET_UCLIBC_CONFIG_4MB
+		bool "4MB" if FREETZ_TARGET_REF_4MB
+
+	config FREETZ_TARGET_UCLIBC_CONFIG_8MB
+		bool "8MB" if FREETZ_TARGET_REF_8MB
+
+	config FREETZ_TARGET_UCLIBC_CONFIG_16MB
+		bool "16MB" if FREETZ_TARGET_REF_16MB
+endchoice
+
+choice
+	prompt "Target compiler"
+	default FREETZ_TARGET_COMPILER_GCC_4_5_3 if FREETZ_TARGET_UCLIBC_VERSION_0_9_31
+	default FREETZ_TARGET_COMPILER_GCC_4_4_6
+
+	config FREETZ_TARGET_COMPILER_GCC_4_4_6
+		bool "gcc-4.4.6"
+		depends on ! (FREETZ_DOWNLOAD_TOOLCHAIN && FREETZ_TARGET_UCLIBC_VERSION_0_9_31)
+
+	config FREETZ_TARGET_COMPILER_GCC_4_5_3
+		bool "gcc-4.5.3"
+		depends on FREETZ_BUILD_TOOLCHAIN \
+			|| (FREETZ_DOWNLOAD_TOOLCHAIN && FREETZ_TARGET_UCLIBC_VERSION_0_9_31)
+
+	config FREETZ_TARGET_COMPILER_GCC_4_6_1
+		bool "gcc-4.6.1"
+		depends on FREETZ_BUILD_TOOLCHAIN
+endchoice
+
+choice
+
+	prompt "Standard C++ Library"
+	default FREETZ_STDCXXLIB_USE_UCLIBCXX
+	help
+		Library to be used as the implementation of the Standard C++ Library.
+
+	config FREETZ_STDCXXLIB_USE_UCLIBCXX
+		bool "uClibc++"
+		help
+			uClibc++ is an implementation of the Standard C++ Library optimized
+			for embedded systems (primarily for size). Its size is ~160KB.
+			It however lacks a complete support for wchar type. It also has some
+			performance deficiencies, e.g. std::map::find requires O(n), bubble
+			sort O(n^2) is used as sort algorithm, and etc.
+
+	config FREETZ_STDCXXLIB_USE_GNULIBSTDCXX
+		bool "GNU libstdc++"
+		help
+			GNU libstdc++ is an implementation of the Standard C++ Library from
+			the developers of the GNU Compiler Collection (GCC). It provides
+			a full support for all features defined in the 2nd edition of the
+			C++ Standard (ISO/IEC 14882:2003) and for many features of the
+			upcoming version of the Standard. The only disadvantage it has
+			compared to uClibc++ is its size - upto 900KB depending on the
+			compiler version.
+
+endchoice
+
+config FREETZ_TARGET_UCLIBC_VERSION
+	string
+	default "0.9.28"	if FREETZ_TARGET_UCLIBC_VERSION_0_9_28
+	default "0.9.29"	if FREETZ_TARGET_UCLIBC_VERSION_0_9_29
+	default "0.9.30.3"	if FREETZ_TARGET_UCLIBC_VERSION_0_9_30
+	default "0.9.31.1"	if FREETZ_TARGET_UCLIBC_VERSION_0_9_31
+	default "0.9.32"	if FREETZ_TARGET_UCLIBC_VERSION_0_9_32
+
+config FREETZ_TARGET_GCC_VERSION
+	string
+	default "4.4.6"		if FREETZ_TARGET_COMPILER_GCC_4_4_6
+	default "4.5.3"		if FREETZ_TARGET_COMPILER_GCC_4_5_3
+	default "4.6.1"		if FREETZ_TARGET_COMPILER_GCC_4_6_1
+
+config FREETZ_GNULIBSTDCXX_VERSION
+	string
+	default "6.0.13"	if FREETZ_TARGET_COMPILER_GCC_4_4_6
+	default "6.0.14"	if FREETZ_TARGET_COMPILER_GCC_4_5_3
+	default "6.0.16"	if FREETZ_TARGET_COMPILER_GCC_4_6_1
+
+config FREETZ_STDCXXLIB
+	string
+	default "uclibcxx"	if FREETZ_STDCXXLIB_USE_UCLIBCXX
+	default "libstdcxx"	if FREETZ_STDCXXLIB_USE_GNULIBSTDCXX
+
+config FREETZ_TARGET_BINUTILS_VERSION
+	string
+	default "2.21.52.0.2"
+
+config FREETZ_TARGET_UCLIBC_REF
+	string
+	default "orig-4mb"	if FREETZ_TARGET_UCLIBC_CONFIG_4MB
+	default "orig-8mb"	if FREETZ_TARGET_UCLIBC_CONFIG_8MB
+	default "orig-16mb"	if FREETZ_TARGET_UCLIBC_CONFIG_16MB
+	default "mod"
+
+config FREETZ_TARGET_CFLAGS
+	string "Target compiler flags"
+	default "-Os -pipe -Wa,--trap"
+
+config FREETZ_TARGET_UCLIBC_REDUCED_LOCALE_SET
+	bool "Use reduced set of locales" if FREETZ_BUILD_TOOLCHAIN && \
+						( \
+						FREETZ_TARGET_UCLIBC_VERSION_0_9_29 || \
+						FREETZ_TARGET_UCLIBC_VERSION_0_9_30 || \
+						FREETZ_TARGET_UCLIBC_VERSION_0_9_31 || \
+						FREETZ_TARGET_UCLIBC_VERSION_0_9_32 \
+						)
+	default n
+	help
+		This option causes only the following locales to be included into uClibc:
+		 - en_US
+		 - en_US.UTF-8
+		 - de_DE
+		 - de_DE.UTF-8
+
+		This saves about 235KB in the image and at run-time.
+
+config FREETZ_TARGET_NLS
+#	bool "Native language support (NLS) for target toolchain" if FREETZ_BUILD_TOOLCHAIN
+	bool
+	default n
+	help
+		Support NLS-enabled programs and Linux tools on target system.
+
+		Example:
+			$ ls /foo/bar
+			ls: /foo/bar: No such file or directory
+			$ export LANG=de_DE.8859-1
+			$ ls /foo/bar
+			ls: /foo/bar: Datei oder Verzeichnis nicht gefunden
+
+config FREETZ_TARGET_LFS
+	bool "Large file support (LFS) for target toolchain" if FREETZ_BUILD_TOOLCHAIN
+	default y
+	help
+		Support files > 2 GB on target system. This is desirable for Torrent
+		clients, for example. This option is enabled by default and should not
+		be changed unless you know what you are doing, as it can easily cause
+		problems.
+
+config FREETZ_TARGET_TOOLCHAIN
+	select FREETZ_LIB_libgmp
+	select FREETZ_LIB_libmpfr
+	select FREETZ_LIB_libmpc if (FREETZ_TARGET_COMPILER_GCC_4_5_3 || FREETZ_TARGET_COMPILER_GCC_4_6_1)
+	bool "Build binutils and gcc for target" if FREETZ_BUILD_TOOLCHAIN
+	default n
+	help
+		Build the binutils and gcc to run on the target.
+		Files are installed into toolchain/target/target-utils.
+
+comment "Both kernel and target toolchain related options ----------"
+config FREETZ_STATIC_TOOLCHAIN
+	bool "Build static toolchains" if FREETZ_BUILD_TOOLCHAIN
+	default n
+	help
+		Build statically linked kernel and target toolchains.
+
+config FREETZ_TOOLCHAIN_MINIMIZE_REQUIRED_GLIBC_VERSION
+#	bool "Minimize required GLIBC version" if FREETZ_BUILD_TOOLCHAIN
+	bool
+	default y
+#	help
+#		This options causes apgcc to be used to compile toolchain.
+#		It requires the latest(trunk) version of apgcc to be
+#		properly installed and configured on the build system.
+
+config FREETZ_BUILD_32BIT_TOOLCHAIN
+	bool "Build 32-bit toolchain" if FREETZ_BUILD_TOOLCHAIN
+	default n
+	help
+		This option causes a 32-bit toolchain to be built even on 64-bit systems.
+
+config FREETZ_TARGET_CCACHE
+	bool "Build ccache"
+	default n
+	help
+		ccache is a compiler cache. It acts as a caching pre-processor to C/C++
+		compilers, using the -E compiler switch and a hash to detect when a
+		compilation can be satisfied from cache. This often results in a 5 to 10
+		times speedup in common compilations.
+
+		The idea came from Erik Thiele wrote the original compilercache program
+		as a bourne shell script. ccache is a re-implementation of Erik's idea
+		in C with more features and better performance.
