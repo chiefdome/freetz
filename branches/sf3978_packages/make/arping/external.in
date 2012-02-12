@@ -4,5 +4,4 @@ config EXTERNAL_FREETZ_PACKAGE_ARPING
 	default n
 	help
 		externals these file(s):
-			/usr/sbin/arping
-
+		 /usr/sbin/arping

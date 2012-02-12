@@ -3,14 +3,13 @@ config FREETZ_PACKAGE_AMPLE
 	select FREETZ_PACKAGE_TCP_WRAPPERS
 	default n
 	help
-		 ample is  an MP3 server that allows you to listen
-		 to your music that can be stored locally or remotely.
-		 It does not intend  to  support mixing, radio shows
-		 etc. It is just an easy way to listen to your MP3 files
-		 everywhere using the "open location" features already
-		 present in  XMMS, WinAmp  and  Media  Player.
-		 WWW: http://ample.sourceforge.net/index.shtml
-		 http://manpages.ubuntu.com/manpages/hardy/man1/ample.1.html
-		 http://manpages.ubuntu.com/manpages/hardy/man5/ample.conf.5.html
-		 http://manpages.ubuntu.com/manpages/hardy/man5/ample.html.5.html
-
+		ample is  an MP3 server that allows you to listen
+		to your music that can be stored locally or remotely.
+		It does not intend  to  support mixing, radio shows
+		etc. It is just an easy way to listen to your MP3 files
+		everywhere using the "open location" features already
+		present in  XMMS, WinAmp  and  Media  Player.
+		WWW: http://ample.sourceforge.net/index.shtml
+		http://manpages.ubuntu.com/manpages/hardy/man1/ample.1.html
+		http://manpages.ubuntu.com/manpages/hardy/man5/ample.conf.5.html
+		http://manpages.ubuntu.com/manpages/hardy/man5/ample.html.5.html

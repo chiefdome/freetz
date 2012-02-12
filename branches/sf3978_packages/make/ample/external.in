@@ -4,5 +4,4 @@ config EXTERNAL_FREETZ_PACKAGE_AMPLE
 	default n
 	help
 		externals these file(s):
-			/usr/bin/ample
-
+		 /usr/bin/ample

@@ -4,4 +4,4 @@ config EXTERNAL_FREETZ_PACKAGE_AUTOSSH
 	default n
 	help
 		externals these file(s):
-			/usr/bin/autossh
+		 /usr/bin/autossh

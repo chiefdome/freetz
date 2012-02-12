@@ -2,7 +2,9 @@ $(call PKG_INIT_BIN, 2.7)
 $(PKG)_SOURCE:=ArpON-$($(PKG)_VERSION).tar.gz
 $(PKG)_SOURCE_MD5:=3c3230f6852b9ffd5618a35c2f25221c
 $(PKG)_SITE:=@SF/$(pkg)
+
 $(PKG)_DIR:=$(SOURCE_DIR)/ArpON-$($(PKG)_VERSION)
+
 $(PKG)_BINARIES:=$(pkg)
 $(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/src/%)
 $(PKG)_BINARIES_TARGET_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DEST_DIR)/usr/bin/%)

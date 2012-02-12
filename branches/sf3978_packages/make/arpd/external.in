@@ -4,5 +4,4 @@ config EXTERNAL_FREETZ_PACKAGE_ARPD
 	default n
 	help
 		externals these file(s):
-			/usr/bin/arpd
-
+		 /usr/bin/arpd

@@ -9,4 +9,3 @@ config FREETZ_PACKAGE_ARPWATCH
 		Arpwatch uses pcap to listen for arp
 		packets on a local ethernet interface.
 		http://en.wikipedia.org/wiki/Arpwatch
-

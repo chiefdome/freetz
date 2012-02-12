@@ -15,4 +15,3 @@ config FREETZ_PACKAGE_ARPD
 		This enables a single host to claim all unassigned
 		addresses on a LAN for network monitoring or simulation.
 		http://linux.die.net/man/8/arpd
-

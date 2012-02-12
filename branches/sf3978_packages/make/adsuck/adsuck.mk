@@ -1,7 +1,8 @@
 $(call PKG_INIT_BIN, 2.3)
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tgz
 $(PKG)_SOURCE_MD5:=3ddc11598ab7e397a5555cf659e64a09
-$(PKG)_SITE:=http://opensource.conformal.com/snapshots/$(pkg)/
+$(PKG)_SITE:=http://opensource.conformal.com/snapshots/$(pkg)
+
 $(PKG)_BINARIES:=$(pkg)
 $(PKG)_BINARIES_BUILD_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DIR)/%)
 $(PKG)_BINARIES_TARGET_DIR:=$($(PKG)_BINARIES:%=$($(PKG)_DEST_DIR)/usr/bin/%)

@@ -1,9 +1,10 @@
 $(call PKG_INIT_BIN, 1.4b)
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tgz
+$(PKG)_SOURCE_MD5:=8f9aa006f6f69e912d3c2f504622d6f7
 $(PKG)_SITE:=http://www.harding.motd.ca/$(pkg)
+
 $(PKG)_BINARY:=$($(PKG)_DIR)/$(pkg)
 $(PKG)_TARGET_BINARY:=$($(PKG)_DEST_DIR)/usr/bin/$(pkg)
-$(PKG)_SOURCE_MD5:=8f9aa006f6f69e912d3c2f504622d6f7
 
 $(PKG)_CONFIGURE_PRE_CMDS += $(call PKG_PREVENT_RPATH_HARDCODING,./configure)
 $(PKG)_CONFIGURE_OPTIONS += --with-ssh=/usr/bin/ssh

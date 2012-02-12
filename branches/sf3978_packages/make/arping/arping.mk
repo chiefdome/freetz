@@ -2,6 +2,7 @@ $(call PKG_INIT_BIN, 2.09)
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.gz
 $(PKG)_SOURCE_MD5:=6f6a91c8700fcc7454b4e89480e417e3
 $(PKG)_SITE:=http://www.habets.pp.se/synscan/files
+
 $(PKG)_BINARY:=$($(PKG)_DIR)/src/$(pkg)
 $(PKG)_TARGET_BINARY:=$($(PKG)_DEST_DIR)/usr/sbin/$(pkg)
 
@@ -17,7 +18,7 @@ $(PKG_UNPACKED)
 $(PKG_CONFIGURED_CONFIGURE)
 
 $($(PKG)_BINARY): $($(PKG)_DIR)/.configured
-		$(SUBMAKE) -C $(ARPING_DIR)
+	$(SUBMAKE) -C $(ARPING_DIR)
 
 $($(PKG)_TARGET_BINARY): $($(PKG)_BINARY)
 	$(INSTALL_BINARY_STRIP)

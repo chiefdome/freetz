@@ -8,6 +8,6 @@ config FREETZ_PACKAGE_ADSUCK
 		other queries. The idea is to be able to prevent connections to undesirable
 		sites such as ad servers, crawlers, etc. It can be used locally, for the road
 		warrior, or on the network perimeter in order to protect local machines from
-		malicious sites.  
+		malicious sites.
 		WWW: http://freshmeat.net/projects/adsuck
 		WIKI: http://opensource.conformal.com/wiki/Adsuck

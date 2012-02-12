@@ -4,5 +4,4 @@ config EXTERNAL_FREETZ_PACKAGE_ARPWATCH
 	default n
 	help
 		externals these file(s):
-			/usr/bin/arpwatch
-
+		 /usr/bin/arpwatch
