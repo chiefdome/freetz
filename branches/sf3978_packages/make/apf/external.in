@@ -4,5 +4,5 @@ config EXTERNAL_FREETZ_PACKAGE_APF
 	default n
 	help
 		externals these file(s):
-			/usr/bin/afserver
-			/usr/bin/afclient
+		 /usr/bin/afserver
+		 /usr/bin/afclient

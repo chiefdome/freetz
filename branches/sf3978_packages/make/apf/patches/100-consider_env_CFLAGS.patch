@@ -1,0 +1,11 @@
+--- configure
++++ configure
+@@ -2236,7 +2236,7 @@
+ ac_config_files="$ac_config_files Makefile modules/Makefile src/Makefile"
+ 
+ 
+-CFLAGS="-pedantic -Wall -O2"
++CFLAGS="$CFLAGS -pedantic -Wall"
+ 
+ # Enabling/disabling asserts and debugging
+ { echo "$as_me:$LINENO: checking whether to enable debugging" >&5
