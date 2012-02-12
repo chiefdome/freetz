@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_NETPIPE)),y)
-PACKAGES+=NetPIPE
-endif

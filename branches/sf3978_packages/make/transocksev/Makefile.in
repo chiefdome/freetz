@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_TRANSOCKSEV)),y)
-PACKAGES+=transocksev
-endif

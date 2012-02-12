@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_SMAP)),y)
-PACKAGES+=smap
-endif

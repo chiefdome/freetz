@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_SIPP)),y)
-PACKAGES+=sipp
-endif

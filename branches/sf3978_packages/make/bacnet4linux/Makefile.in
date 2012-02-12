@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_BACNET4LINUX)),y)
-PACKAGES+=bacnet4linux
-endif

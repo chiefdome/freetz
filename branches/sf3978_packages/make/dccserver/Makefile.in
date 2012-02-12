@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_DCCSERVER)),y)
-PACKAGES+=dccserver
-endif

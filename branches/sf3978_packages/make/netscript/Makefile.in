@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_NETSCRIPT)),y)
-PACKAGES+=netscript
-endif

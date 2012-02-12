@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_SOCK)),y)
-PACKAGES+=sock
-endif

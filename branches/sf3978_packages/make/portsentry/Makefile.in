@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_PORTSENTRY)),y)
-PACKAGES+=portsentry
-endif

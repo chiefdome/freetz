@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_IDENT2)),y)
-PACKAGES+=ident2
-endif

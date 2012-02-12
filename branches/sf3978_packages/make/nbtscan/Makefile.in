@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_NBTSCAN)),y)
-PACKAGES+=nbtscan
-endif

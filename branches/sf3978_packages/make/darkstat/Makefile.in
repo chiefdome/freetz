@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_DARKSTAT)),y)
-PACKAGES+=darkstat
-endif

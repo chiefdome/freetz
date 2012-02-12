@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_TDETECT)),y)
-PACKAGES+=tdetect
-endif

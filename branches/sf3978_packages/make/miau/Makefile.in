@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_MIAU)),y)
-PACKAGES+=miau
-endif

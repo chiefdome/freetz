@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_ARPD)),y)
-PACKAGES+=arpd
-endif

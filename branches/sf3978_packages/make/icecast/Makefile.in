@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_ICECAST)),y)
-PACKAGES+=icecast
-endif

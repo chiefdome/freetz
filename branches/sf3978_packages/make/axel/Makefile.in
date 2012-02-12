@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_AXEL)),y)
-PACKAGES+=axel
-endif

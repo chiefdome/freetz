@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_THC_IPV6)),y)
-PACKAGES+=thc-ipv6
-endif

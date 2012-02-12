@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_BALANCE)),y)
-PACKAGES+=balance
-endif

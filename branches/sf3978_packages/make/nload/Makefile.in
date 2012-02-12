@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_NLOAD)),y)
-PACKAGES+=nload
-endif

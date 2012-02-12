@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_PV)),y)
-PACKAGES+=pv
-endif

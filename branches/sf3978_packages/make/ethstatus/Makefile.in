@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_ETHSTATUS)),y)
-PACKAGES+=ethstatus
-endif

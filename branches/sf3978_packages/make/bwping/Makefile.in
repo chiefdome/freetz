@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_BWPING)),y)
-PACKAGES+=bwping
-endif

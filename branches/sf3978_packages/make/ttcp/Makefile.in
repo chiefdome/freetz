@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_TTCP)),y)
-PACKAGES+=ttcp
-endif

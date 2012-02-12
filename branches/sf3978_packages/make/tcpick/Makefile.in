@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_TCPICK)),y)
-PACKAGES+=tcpick
-endif

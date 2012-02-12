@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_BNC)),y)
-PACKAGES+=bnc
-endif

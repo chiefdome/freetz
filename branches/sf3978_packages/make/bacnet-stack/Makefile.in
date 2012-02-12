@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_BACNET_STACK)),y)
-PACKAGES+=bacnet-stack
-endif

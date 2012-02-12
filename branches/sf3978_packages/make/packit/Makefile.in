@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_PACKIT)),y)
-PACKAGES+=packit
-endif

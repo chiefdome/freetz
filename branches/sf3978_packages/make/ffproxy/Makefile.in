@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_FFPROXY)),y)
-PACKAGES+=ffproxy
-endif

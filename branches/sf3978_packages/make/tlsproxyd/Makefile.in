@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_TLSPROXYD)),y)
-PACKAGES+=tlsproxyd
-endif

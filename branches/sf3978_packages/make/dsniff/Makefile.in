@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_DSNIFF)),y)
-PACKAGES+=dsniff
-endif

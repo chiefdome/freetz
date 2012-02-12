@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_RTPPROXY)),y)
-PACKAGES+=rtpproxy
-endif

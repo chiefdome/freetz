@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_MUH)),y)
-PACKAGES+=muh
-endif

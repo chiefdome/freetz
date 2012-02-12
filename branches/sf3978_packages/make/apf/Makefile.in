@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_APF)),y)
-PACKAGES+=apf
-endif

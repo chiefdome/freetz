@@ -1,3 +1,0 @@
-ifeq ($(strip $(FREETZ_PACKAGE_VGP)),y)
-PACKAGES+=vgp
-endif
