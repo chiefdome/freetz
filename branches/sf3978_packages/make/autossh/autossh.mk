@@ -7,16 +7,15 @@ $(PKG)_BINARY:=$($(PKG)_DIR)/$(pkg)
 $(PKG)_TARGET_BINARY:=$($(PKG)_DEST_DIR)/usr/bin/$(pkg)
 
 $(PKG)_CONFIGURE_PRE_CMDS += $(call PKG_PREVENT_RPATH_HARDCODING,./configure)
+$(PKG)_CONFIGURE_ENV += ac_cv_lib_nsl_gethostbyname=no
 $(PKG)_CONFIGURE_OPTIONS += --with-ssh=/usr/bin/ssh
-$(PKG)_LIBS := -lnsl
 
 $(PKG_SOURCE_DOWNLOAD)
 $(PKG_UNPACKED)
 $(PKG_CONFIGURED_CONFIGURE)
 
 $($(PKG)_BINARY): $($(PKG)_DIR)/.configured
-		$(SUBMAKE1) -C $(AUTOSSH_DIR) \
-		LIBS="$(AUTOSSH_LIBS)"
+	$(SUBMAKE) -C $(AUTOSSH_DIR)
 
 $($(PKG)_TARGET_BINARY): $($(PKG)_BINARY)
 	$(INSTALL_BINARY_STRIP)
