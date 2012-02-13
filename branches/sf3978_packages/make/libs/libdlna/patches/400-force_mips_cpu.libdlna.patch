@@ -1,0 +1,11 @@
+--- configure
++++ configure
+@@ -329,7 +329,7 @@
+ ranlib="ranlib"
+ make="make"
+ strip="strip"
+-cpu=`uname -m`
++cpu="mips" # mips & mipsel are treated identically
+ optimize="yes"
+ debug="no"
+ dostrip="yes"

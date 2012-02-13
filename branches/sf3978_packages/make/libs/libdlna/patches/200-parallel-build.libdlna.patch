@@ -1,10 +1,6 @@
----
- Makefile |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
 --- Makefile
 +++ Makefile
-@@ -32,8 +32,8 @@ lib:
+@@ -32,8 +32,8 @@
  
  test: $(LIBTEST)
  

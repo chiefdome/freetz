@@ -1,4 +1,3 @@
-diff -ruN libdlna-0.2.3.orig/configure libdlna-0.2.3/configure
 --- configure	2007-11-26 21:47:43.000000000 +0100
 +++ configure	2008-04-19 21:59:15.000000000 +0200
 @@ -177,6 +177,19 @@
@@ -68,7 +67,6 @@ diff -ruN libdlna-0.2.3.orig/configure libdlna-0.2.3/configure
  
  
  #################################################
-diff -ruN libdlna-0.2.3.orig/src/av_mpeg4_part10.c libdlna-0.2.3/src/av_mpeg4_part10.c
 --- src/av_mpeg4_part10.c	2007-11-26 21:47:43.000000000 +0100
 +++ src/av_mpeg4_part10.c	2008-04-19 21:48:45.000000000 +0200
 @@ -26,7 +26,7 @@
@@ -80,7 +78,6 @@ diff -ruN libdlna-0.2.3.orig/src/av_mpeg4_part10.c libdlna-0.2.3/src/av_mpeg4_pa
  
  #include "dlna_internals.h"
  #include "profiles.h"
-diff -ruN libdlna-0.2.3.orig/src/av_mpeg4_part2.c libdlna-0.2.3/src/av_mpeg4_part2.c
 --- src/av_mpeg4_part2.c	2007-11-26 21:47:43.000000000 +0100
 +++ src/av_mpeg4_part2.c	2008-04-19 21:48:45.000000000 +0200
 @@ -26,7 +26,7 @@
@@ -92,7 +89,6 @@ diff -ruN libdlna-0.2.3.orig/src/av_mpeg4_part2.c libdlna-0.2.3/src/av_mpeg4_par
  
  #include "dlna_internals.h"
  #include "profiles.h"
-diff -ruN libdlna-0.2.3.orig/src/containers.c libdlna-0.2.3/src/containers.c
 --- src/containers.c	2007-11-26 21:47:43.000000000 +0100
 +++ src/containers.c	2008-04-19 21:48:45.000000000 +0200
 @@ -4,7 +4,7 @@
@@ -104,7 +100,6 @@ diff -ruN libdlna-0.2.3.orig/src/containers.c libdlna-0.2.3/src/containers.c
  
  #include "containers.h"
  #include "profiles.h"
-diff -ruN libdlna-0.2.3.orig/src/profiles.h libdlna-0.2.3/src/profiles.h
 --- src/profiles.h	2007-11-26 21:47:43.000000000 +0100
 +++ src/profiles.h	2008-04-19 21:48:45.000000000 +0200
 @@ -22,8 +22,8 @@

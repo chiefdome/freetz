@@ -1,9 +1,12 @@
 config FREETZ_LIB_libdlna
-    bool "libdlna (libdlna.so)"
-    default n
-    help
-        libdlna aims at being the reference open-source implementation of DLNA
-        (Digital Living Network Alliance) standards. Its primary goal is to
-        provide DLNA support to uShare, an embedded DLNA & UPnP A/V Media Server,
-        but it will be used to build both DLNA servers and players in the long
-        term.
+	bool "libdlna (libdlna.so)"
+	select FREETZ_LIB_libavformat
+	select FREETZ_LIB_libavcodec
+	select FREETZ_LIB_libavutil
+	default n
+	help
+		libdlna aims at being the reference open-source implementation of DLNA
+		(Digital Living Network Alliance) standards. Its primary goal is to
+		provide DLNA support to uShare, an embedded DLNA & UPnP A/V Media Server,
+		but it will be used to build both DLNA servers and players in the long
+		term.
