@@ -1,12 +1,15 @@
-$(call PKG_INIT_LIB, 1.22)
-$(PKG)_LIB_VERSION:=11.6.5
+$(call PKG_INIT_LIB, 1.24)
+$(PKG)_LIB_VERSION:=11.6.7
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.gz
-$(PKG)_SOURCE_MD5:=893a1df0cf3b28b72d248382eaeaca71
-$(PKG)_SITE:=http://ftp.gnu.org/gnu/$(pkg)/
+$(PKG)_SOURCE_MD5:=764d7258eeb273941680499fab2c7367
+$(PKG)_SITE:=@GNU/$(pkg)
+
 $(PKG)_BINARY:=$($(PKG)_DIR)/lib/.libs/$(pkg).so.$($(PKG)_LIB_VERSION)
 $(PKG)_STAGING_BINARY:=$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/$(pkg).so.$($(PKG)_LIB_VERSION)
 $(PKG)_TARGET_BINARY:=$($(PKG)_TARGET_DIR)/$(pkg).so.$($(PKG)_LIB_VERSION)
 
+$(PKG)_CONFIGURE_OPTIONS += --enable-shared
+$(PKG)_CONFIGURE_OPTIONS += --enable-static
 $(PKG)_CONFIGURE_OPTIONS += --disable-gtk-doc-html
 
 $(PKG_SOURCE_DOWNLOAD)
@@ -36,10 +39,7 @@ $(pkg)-clean:
 	$(RM) -r \
 		$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/libidn* \
 		$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/include/idn* \
-		$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/pkgconfig/libidn.pc \
-		$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/Libidn.dll \
-		$(TARGET_TOOLCHAIN_STAGING_DIR)/share/info/libidn* \
-		$(TARGET_TOOLCHAIN_STAGING_DIR)/share/man/man3/idna*
+		$(TARGET_TOOLCHAIN_STAGING_DIR)/usr/lib/pkgconfig/libidn.pc
 
 $(pkg)-uninstall:
 	$(RM) $(LIBIDN_TARGET_DIR)/libidn*.so*

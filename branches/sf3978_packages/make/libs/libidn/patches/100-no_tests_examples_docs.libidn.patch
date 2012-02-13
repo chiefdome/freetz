@@ -1,0 +1,12 @@
+--- Makefile.in
++++ Makefile.in
+@@ -1053,8 +1053,7 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-SUBDIRS = gl lib/gl lib po src doc gltests lib/gltests tests examples	\
+-	java csharp
++SUBDIRS = gl lib/gl lib
+ 
+ 
+ # Visual Studio project files.
