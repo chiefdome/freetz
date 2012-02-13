@@ -1,7 +1,6 @@
 config FREETZ_LIB_ldns
-    bool "ldns(libldns.so)"
-    default n
-    help
-        A library to simplify DNS programming
-       
-        http://www.nlnetlabs.nl/projects/ldns/
+	bool "ldns (libldns.so)"
+	default n
+	help
+		A library to simplify DNS programming
+		http://www.nlnetlabs.nl/projects/ldns/
