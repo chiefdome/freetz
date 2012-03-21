@@ -1,0 +1,10 @@
+--- dialects/linux/machine.h.orig	2010-07-29 16:02:52.000000000 +0000
++++ dialects/linux/machine.h	2010-11-04 20:51:47.060823453 +0000
+@@ -632,6 +632,6 @@
+  * zeromem is a macro that uses bzero or memset.
+  */
+ 
+-#define	zeromem(a, l)	bzero(a, l)
++#define	zeromem(a, l)	memset(a, 0, l)
+ 
+ #endif	/* !defined(LSOF_MACHINE_H) */
