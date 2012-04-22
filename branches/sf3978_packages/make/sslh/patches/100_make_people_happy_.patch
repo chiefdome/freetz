@@ -1,28 +1,30 @@
---- Makefile.orig	2011-09-07 15:32:01.000000000 +0200
-+++ Makefile	2011-09-07 15:34:25.000000000 +0200
-@@ -1,25 +1,25 @@
+--- Makefile.orig	2012-04-22 13:21:28.019641097 +0200
++++ Makefile	2012-04-22 13:22:46.411644537 +0200
+@@ -1,9 +1,9 @@
  # Configuration
  
- VERSION="v1.9"
+ VERSION="v1.11"
 -USELIBWRAP=	# Use libwrap?
--PREFIX=/usr/local
 +#USELIBWRAP=	# Use libwrap?
+ COV_TEST= 	# Perform test coverage?
+-PREFIX=/usr/local
 +PREFIX=/usr
  
  MAN=sslh.8.gz	# man page name
  
- # End of configuration -- the rest should take care of
- # itself
+@@ -14,17 +14,17 @@
+     CFLAGS_COV=-fprofile-arcs -ftest-coverage
+ endif
  
 -CC = gcc
--CFLAGS=-Wall -g
-+CC=
+-CFLAGS=-Wall -g $(CFLAGS_COV)
++CC =
 +CFLAGS=
  
  #LIBS=-lnet
 -LIBS=
 +LIBS=-lwrap
- OBJS=common.o
+ OBJS=common.o sslh-main.o
  
 -ifneq ($(strip $(USELIBWRAP)),)
 -	LIBS:=$(LIBS) -lwrap
@@ -33,19 +35,5 @@
 +#	CFLAGS:=$(CFLAGS) -DLIBWRAP
 +#endif
  
- all: sslh $(MAN)
+ all: sslh $(MAN) echosrv
  
-@@ -31,11 +31,11 @@
- 
- sslh-fork: $(OBJS) sslh-fork.o Makefile common.h
- 	$(CC) $(CFLAGS) -D'VERSION=$(VERSION)' -o sslh-fork sslh-fork.o $(OBJS) $(LIBS)
--	strip sslh-fork
-+#	strip sslh-fork
- 
- sslh-select: $(OBJS) sslh-select.o Makefile common.h 
- 	$(CC) $(CFLAGS) -D'VERSION=$(VERSION)' -o sslh-select sslh-select.o $(OBJS) $(LIBS)
--	strip sslh-select
-+#	strip sslh-select
- 
- 
- $(MAN): sslh.pod Makefile

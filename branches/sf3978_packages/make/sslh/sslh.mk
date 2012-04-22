@@ -1,6 +1,6 @@
-$(call PKG_INIT_BIN, 1.9)
+$(call PKG_INIT_BIN, 1.11)
 $(PKG)_SOURCE:=$(pkg)-$($(PKG)_VERSION).tar.gz
-$(PKG)_SOURCE_MD5:=1c0193853ef35f80e3e4b1a744832cd1
+$(PKG)_SOURCE_MD5:=4ea599f0fa31ae235646e5a200b8f8fb
 $(PKG)_SITE:=http://rutschle.net/tech/
 $(PKG)_BINARY:=$($(PKG)_DIR)/$(pkg)-fork
 $(PKG)_TARGET_BINARY:=$($(PKG)_DEST_DIR)/usr/bin/$(pkg)
@@ -15,7 +15,7 @@ $($(PKG)_BINARY): $($(PKG)_DIR)/.configured
 		$(SUBMAKE1) -C $(SSLH_DIR) \
 		CC="$(TARGET_CC)" \
 		CFLAGS="$(TARGET_CFLAGS) -DLIBWRAP" \
-		all
+		sslh
 
 $($(PKG)_TARGET_BINARY): $($(PKG)_BINARY)
 	$(INSTALL_BINARY_STRIP)
