@@ -1,0 +1,12 @@
+languages
+{ de en }
+default
+{ en }
+files
+{
+	etc/default.authorized-keys/authorized_keys.def
+	etc/default.authorized-keys/known_hosts.def
+	etc/default.authorized-keys/id_dsa.def
+	etc/default.authorized-keys/id_rsa.def
+
+}
