@@ -1,0 +1,18 @@
+--- configure
++++ configure
+@@ -8423,6 +8423,7 @@
+   done
+ 
+ 
++if test "${enable_nls}" = yes && test "${with_included_gettext}" = yes; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for iconv" >&5
+ $as_echo_n "checking for iconv... " >&6; }
+ if test "${am_cv_func_iconv+set}" = set; then :
+@@ -8547,6 +8548,7 @@
+ _ACEOF
+ 
+   fi
++fi
+ 
+ 
+   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for nl_langinfo and CODESET" >&5

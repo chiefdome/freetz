@@ -1,0 +1,124 @@
+--- doc/hlp/Makefile.am
++++ doc/hlp/Makefile.am
+@@ -1,4 +1,7 @@
+-DIST_SUBDIRS = es hu it pl ru sr
++DIST_SUBDIRS =
++if USE_NLS
++DIST_SUBDIRS += es hu it pl ru sr
++endif
+ if USE_NLS
+ SUBDIRS = $(DOC_LINGUAS)
+ endif
+--- doc/hlp/Makefile.in
++++ doc/hlp/Makefile.in
+@@ -378,7 +378,8 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-DIST_SUBDIRS = es hu it pl ru sr
++DIST_SUBDIRS =
++@USE_NLS_TRUE@DIST_SUBDIRS += es hu it pl ru sr
+ @USE_NLS_TRUE@SUBDIRS = $(DOC_LINGUAS)
+ hlpdir = $(pkgdatadir)/help
+ hlp_DATA = mc.hlp
+--- doc/man/Makefile.am
++++ doc/man/Makefile.am
+@@ -1,4 +1,7 @@
+-DIST_SUBDIRS = es hu it pl ru sr
++DIST_SUBDIRS =
++if USE_NLS
++DIST_SUBDIRS += es hu it pl ru sr
++endif
+ if USE_NLS
+ SUBDIRS = $(DOC_LINGUAS)
+ endif
+--- doc/man/Makefile.in
++++ doc/man/Makefile.in
+@@ -380,7 +380,8 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-DIST_SUBDIRS = es hu it pl ru sr
++DIST_SUBDIRS =
++@USE_NLS_TRUE@DIST_SUBDIRS += es hu it pl ru sr
+ @USE_NLS_TRUE@SUBDIRS = $(DOC_LINGUAS)
+ man_MANS = mc.1 mcedit.1 mcview.1
+ CLEANFILES = $(man_MANS)
+@@ -694,7 +695,8 @@
+ 	for dir in "$(DESTDIR)$(man1dir)"; do \
+ 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
+ 	done
+-install: install-recursive
++install:
++#install: install-recursive
+ install-exec: install-exec-recursive
+ install-data: install-data-recursive
+ uninstall: uninstall-recursive
+--- misc/Makefile.am
++++ misc/Makefile.am
+@@ -18,8 +18,7 @@
+ 	mc.keymap \
+ 	mc.keymap.default \
+ 	mc.keymap.emacs \
+-	mc.menu \
+-	mc.menu.sr
++	mc.menu
+ 
+ LIBFILES_SCRIPT = \
+ 	edit.indent.rc
+--- misc/Makefile.in
++++ misc/Makefile.in
+@@ -396,8 +396,7 @@
+ 	mc.keymap \
+ 	mc.keymap.default \
+ 	mc.keymap.emacs \
+-	mc.menu \
+-	mc.menu.sr
++	mc.menu
+ 
+ LIBFILES_SCRIPT = \
+ 	edit.indent.rc
+--- src/vfs/extfs/helpers/Makefile.am
++++ src/vfs/extfs/helpers/Makefile.am
+@@ -3,7 +3,7 @@
+ EXTFSCONFFILES = sfs.ini
+ 
+ # Files to install and distribute other than extfs scripts
+-EXTFS_MISC  = README README.extfs
++EXTFS_MISC  =
+ 
+ # Scripts hat don't need adaptation to the local system
+ EXTFS_CONST = bpp changesetfs gitfs+ patchsetfs rpm trpm uc1541 u7z
+--- src/vfs/extfs/helpers/Makefile.in
++++ src/vfs/extfs/helpers/Makefile.in
+@@ -357,7 +357,7 @@
+ EXTFSCONFFILES = sfs.ini
+ 
+ # Files to install and distribute other than extfs scripts
+-EXTFS_MISC = README README.extfs
++EXTFS_MISC =
+ 
+ # Scripts hat don't need adaptation to the local system
+ EXTFS_CONST = bpp changesetfs gitfs+ patchsetfs rpm trpm uc1541 u7z
+--- src/vfs/fish/helpers/Makefile.am
++++ src/vfs/fish/helpers/Makefile.am
+@@ -1,7 +1,7 @@
+ fishdir = $(libexecdir)/@PACKAGE@/fish
+ 
+ # Files to install and distribute other than fish scripts
+-FISH_MISC  = README.fish
++FISH_MISC  =
+ 
+ fish_DATA = $(FISH_MISC)
+ fish_SCRIPTS = ls mkdir fexists unlink chown chmod rmdir ln mv hardlink get send append info utime
+--- src/vfs/fish/helpers/Makefile.in
++++ src/vfs/fish/helpers/Makefile.in
+@@ -344,7 +344,7 @@
+ fishdir = $(libexecdir)/@PACKAGE@/fish
+ 
+ # Files to install and distribute other than fish scripts
+-FISH_MISC = README.fish
++FISH_MISC =
+ fish_DATA = $(FISH_MISC)
+ fish_SCRIPTS = ls mkdir fexists unlink chown chmod rmdir ln mv hardlink get send append info utime
+ fishconfdir = $(sysconfdir)/@PACKAGE@
