@@ -9,7 +9,7 @@ menu "System Logging Utilities"
 
 config FREETZ_BUSYBOX_SYSLOGD
 	bool "syslogd"
-	default y
+	default n
 	help
 	  The syslogd utility is used to record logs of all the
 	  significant events that occur on a system. Every
@@ -24,7 +24,7 @@ config FREETZ_BUSYBOX_SYSLOGD
 
 config FREETZ_BUSYBOX_FEATURE_ROTATE_LOGFILE
 	bool "Rotate message files"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_SYSLOGD
 	help
 	  This enables syslogd to rotate the message files
@@ -32,7 +32,7 @@ config FREETZ_BUSYBOX_FEATURE_ROTATE_LOGFILE
 
 config FREETZ_BUSYBOX_FEATURE_REMOTE_LOG
 	bool "Remote Log support"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_SYSLOGD
 	help
 	  When you enable this feature, the syslogd utility can
@@ -46,7 +46,7 @@ config FREETZ_BUSYBOX_FEATURE_REMOTE_LOG
 
 config FREETZ_BUSYBOX_FEATURE_SYSLOGD_DUP
 	bool "Support -D (drop dups) option"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_SYSLOGD
 	help
 	  Option -D instructs syslogd to drop consecutive messages
@@ -54,7 +54,7 @@ config FREETZ_BUSYBOX_FEATURE_SYSLOGD_DUP
 
 config FREETZ_BUSYBOX_FEATURE_SYSLOGD_CFG
 	bool "Support syslog.conf"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_SYSLOGD
 	help
 	  Supports restricted syslogd config. See docs/syslog.conf.txt
@@ -71,7 +71,7 @@ config FREETZ_BUSYBOX_FEATURE_SYSLOGD_READ_BUFFER_SIZE
 
 config FREETZ_BUSYBOX_FEATURE_IPC_SYSLOG
 	bool "Circular Buffer support"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_SYSLOGD
 	help
 	  When you enable this feature, the syslogd utility will
@@ -94,7 +94,7 @@ config FREETZ_BUSYBOX_FEATURE_IPC_SYSLOG_BUFFER_SIZE
 
 config FREETZ_BUSYBOX_LOGREAD
 	bool "logread"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_IPC_SYSLOG
 	help
 	  If you enabled Circular Buffer support, you almost
@@ -104,7 +104,7 @@ config FREETZ_BUSYBOX_LOGREAD
 
 config FREETZ_BUSYBOX_FEATURE_LOGREAD_REDUCED_LOCKING
 	bool "Double buffering"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_LOGREAD
 	help
 	  'logread' ouput to slow serial terminals can have
@@ -115,7 +115,7 @@ config FREETZ_BUSYBOX_FEATURE_LOGREAD_REDUCED_LOCKING
 
 config FREETZ_BUSYBOX_KLOGD
 	bool "klogd"
-	default y
+	default n
 	help
 	  klogd is a utility which intercepts and logs all
 	  messages from the Linux kernel and sends the messages
@@ -125,7 +125,7 @@ config FREETZ_BUSYBOX_KLOGD
 
 config FREETZ_BUSYBOX_FEATURE_KLOGD_KLOGCTL
 	bool "Use the klogctl() interface"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_KLOGD
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
@@ -142,7 +142,7 @@ config FREETZ_BUSYBOX_FEATURE_KLOGD_KLOGCTL
 
 config FREETZ_BUSYBOX_LOGGER
 	bool "logger"
-	default y
+	default n
 	select FREETZ_BUSYBOX_FEATURE_SYSLOG
 	help
 	    The logger utility allows you to send arbitrary text

@@ -12,7 +12,7 @@ config FREETZ_BUSYBOX_UDHCPC6
 
 config FREETZ_BUSYBOX_UDHCPD
 	bool "udhcp server (udhcpd)"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  udhcpd is a DHCP server geared primarily toward embedded systems,
@@ -20,7 +20,7 @@ config FREETZ_BUSYBOX_UDHCPD
 
 config FREETZ_BUSYBOX_DHCPRELAY
 	bool "dhcprelay"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_UDHCPD
 	help
 	  dhcprelay listens for dhcp requests on one or more interfaces
@@ -29,7 +29,7 @@ config FREETZ_BUSYBOX_DHCPRELAY
 
 config FREETZ_BUSYBOX_DUMPLEASES
 	bool "Lease display utility (dumpleases)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_UDHCPD
 	help
 	  dumpleases displays the leases written out by the udhcpd server.
@@ -38,7 +38,7 @@ config FREETZ_BUSYBOX_DUMPLEASES
 
 config FREETZ_BUSYBOX_FEATURE_UDHCPD_WRITE_LEASES_EARLY
 	bool "Rewrite the lease file at every new acknowledge"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_UDHCPD
 	help
 	  If selected, udhcpd will write a new file with leases every
@@ -70,7 +70,7 @@ config FREETZ_BUSYBOX_DHCPD_LEASES_FILE
 
 config FREETZ_BUSYBOX_UDHCPC
 	bool "udhcp client (udhcpc)"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  udhcpc is a DHCP client geared primarily toward embedded systems,
@@ -81,7 +81,7 @@ config FREETZ_BUSYBOX_UDHCPC
 
 config FREETZ_BUSYBOX_FEATURE_UDHCPC_ARPING
 	bool "Verify that the offered address is free, using FREETZ_BUSYBOX_ARP ping"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_UDHCPC
 	help
 	  If selected, udhcpc will send FREETZ_BUSYBOX_ARP probes and make sure
@@ -111,7 +111,7 @@ config FREETZ_BUSYBOX_UDHCP_DEBUG
 
 config FREETZ_BUSYBOX_FEATURE_UDHCP_RFC3397
 	bool "Support for RFC3397 domain search (experimental)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_UDHCPD || FREETZ_BUSYBOX_UDHCPC
 	help
 	  If selected, both client and server will support passing of domain
@@ -120,7 +120,7 @@ config FREETZ_BUSYBOX_FEATURE_UDHCP_RFC3397
 
 config FREETZ_BUSYBOX_FEATURE_UDHCP_8021Q
 	bool "Support for 802.1Q VLAN parameters"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_UDHCPD || FREETZ_BUSYBOX_UDHCPC
 	help
 	  If selected, both client and server will support passing of VLAN

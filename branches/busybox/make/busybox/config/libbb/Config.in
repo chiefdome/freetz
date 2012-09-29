@@ -8,7 +8,7 @@ menu "Busybox Library Tuning"
 
 config FREETZ_BUSYBOX_FEATURE_SYSTEMD
 	bool "Enable systemd support"
-	default y
+	default n
 	help
 	  If you plan to use busybox daemons on a system where daemons
 	  are controlled by systemd, enable this option.
@@ -16,7 +16,7 @@ config FREETZ_BUSYBOX_FEATURE_SYSTEMD
 	  but the downside is increased code size.
 config FREETZ_BUSYBOX_FEATURE_RTMINMAX
 	bool "Support RTMIN[+n] and RTMAX[-n] signal names"
-	default y
+	default n
 	help
 	  Support RTMIN[+n] and RTMAX[-n] signal names
 	  in kill, killall etc. This costs ~250 bytes.
@@ -44,7 +44,7 @@ config FREETZ_BUSYBOX_MD5_SMALL
 
 config FREETZ_BUSYBOX_FEATURE_FAST_TOP
 	bool "Faster /proc scanning code (+100 bytes)"
-	default y
+	default n
 	help
 	  This option makes top (and ps) ~20% faster (or 20% less CPU hungry),
 	  but code size is slightly bigger.
@@ -59,7 +59,7 @@ config FREETZ_BUSYBOX_FEATURE_ETC_NETWORKS
 
 config FREETZ_BUSYBOX_FEATURE_USE_TERMIOS
 	bool "Use termios to manipulate the screen"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_MORE || FREETZ_BUSYBOX_TOP || FREETZ_BUSYBOX_POWERTOP
 	help
 	  This option allows utilities such as 'more' and 'top' to determine
@@ -70,7 +70,7 @@ config FREETZ_BUSYBOX_FEATURE_USE_TERMIOS
 
 config FREETZ_BUSYBOX_FEATURE_EDITING
 	bool "Command line editing"
-	default y
+	default n
 	help
 	  Enable line editing (mainly for shell command line).
 
@@ -103,7 +103,7 @@ config FREETZ_BUSYBOX_FEATURE_EDITING_HISTORY
 
 config FREETZ_BUSYBOX_FEATURE_EDITING_SAVEHISTORY
 	bool "History saving"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_EDITING
 	help
 	  Enable history saving in shells.
@@ -117,7 +117,7 @@ config FREETZ_BUSYBOX_FEATURE_EDITING_SAVE_ON_EXIT
 
 config FREETZ_BUSYBOX_FEATURE_REVERSE_SEARCH
 	bool "Reverse history search"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_EDITING_SAVEHISTORY
 	help
 	  Enable readline-like Ctrl-R combination for reverse history search.
@@ -125,7 +125,7 @@ config FREETZ_BUSYBOX_FEATURE_REVERSE_SEARCH
 
 config FREETZ_BUSYBOX_FEATURE_TAB_COMPLETION
 	bool "Tab completion"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_EDITING
 	help
 	  Enable tab completion.
@@ -139,7 +139,7 @@ config FREETZ_BUSYBOX_FEATURE_USERNAME_COMPLETION
 
 config FREETZ_BUSYBOX_FEATURE_EDITING_FANCY_PROMPT
 	bool "Fancy shell prompts"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_EDITING
 	help
 	  Setting this option allows for prompts to use things like \w and
@@ -159,7 +159,7 @@ config FREETZ_BUSYBOX_FEATURE_EDITING_ASK_TERMINAL
 
 config FREETZ_BUSYBOX_FEATURE_NON_POSIX_CP
 	bool "Non-POSIX, but safer, copying to special nodes"
-	default y
+	default n
 	help
 	  With this option, "cp file symlink" will delete symlink
 	  and create a regular file. This does not conform to POSIX,
@@ -193,7 +193,7 @@ config FREETZ_BUSYBOX_FEATURE_COPYBUF_KB
 
 config FREETZ_BUSYBOX_FEATURE_SKIP_ROOTFS
 	bool "Skip rootfs in mount table"
-	default y
+	default n
 	help
 	  Ignore rootfs entry in mount table.
 
@@ -223,7 +223,7 @@ config FREETZ_BUSYBOX_MONOTONIC_SYSCALL
 
 config FREETZ_BUSYBOX_IOCTL_HEX2STR_ERROR
 	bool "Use ioctl names rather than hex values in error messages"
-	default y
+	default n
 	help
 	  Use ioctl names rather than hex values in error messages
 	  (e.g. VT_DISALLOCATE rather than 0x5608). If disabled this
@@ -231,7 +231,7 @@ config FREETZ_BUSYBOX_IOCTL_HEX2STR_ERROR
 
 config FREETZ_BUSYBOX_FEATURE_HWIB
 	bool "Support infiniband HW"
-	default y
+	default n
 	help
 	  Support for printing infiniband addresses in
 	  network applets.

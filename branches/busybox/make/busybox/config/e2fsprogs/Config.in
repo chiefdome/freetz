@@ -9,13 +9,13 @@ menu "Linux Ext2 FS Progs"
 
 config FREETZ_BUSYBOX_CHATTR
 	bool "chattr"
-	default y
+	default n
 	help
 	  chattr changes the file attributes on a second extended file system.
 
 ### config FREETZ_BUSYBOX_E2FSCK
 ###	bool "e2fsck"
-###	default y
+###	default n
 ###	help
 ###	  e2fsck is used to check Linux second extended file systems (ext2fs).
 ###	  e2fsck also supports ext2 filesystems countaining a journal (ext3).
@@ -24,7 +24,7 @@ config FREETZ_BUSYBOX_CHATTR
 
 config FREETZ_BUSYBOX_FSCK
 	bool "fsck"
-	default y
+	default n
 	help
 	  fsck is used to check and optionally repair one or more filesystems.
 	  In actuality, fsck is simply a front-end for the various file system
@@ -32,14 +32,14 @@ config FREETZ_BUSYBOX_FSCK
 
 config FREETZ_BUSYBOX_LSATTR
 	bool "lsattr"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  lsattr lists the file attributes on a second extended file system.
 
 ### config FREETZ_BUSYBOX_MKE2FS
 ###	bool "mke2fs"
-###	default y
+###	default n
 ###	help
 ###	  mke2fs is used to create an ext2/ext3 filesystem. The normal compat
 ###	  symlinks 'mkfs.ext2' and 'mkfs.ext3' are also provided.
@@ -53,7 +53,7 @@ config FREETZ_BUSYBOX_TUNE2FS
 
 ### config FREETZ_BUSYBOX_E2LABEL
 ###	bool "e2label"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_TUNE2FS
 ###	help
 ###	  e2label will display or change the filesystem label on the ext2
@@ -62,7 +62,7 @@ config FREETZ_BUSYBOX_TUNE2FS
 ### NB: this one is now provided by util-linux/volume_id/*
 ### config FREETZ_BUSYBOX_FINDFS
 ###	bool "findfs"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_TUNE2FS
 ###	help
 ###	  findfs will search the disks in the system looking for a filesystem

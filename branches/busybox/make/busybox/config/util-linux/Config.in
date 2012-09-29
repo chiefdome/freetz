@@ -8,12 +8,12 @@ menu "Linux System Utilities"
 
 config FREETZ_BUSYBOX_BLOCKDEV
 	bool "blockdev"
-	default y
+	default n
 	help
 	  Performs some ioctls with block devices.
 config FREETZ_BUSYBOX_MDEV
 	bool "mdev"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  mdev is a mini-udev implementation for dynamically creating device
@@ -23,7 +23,7 @@ config FREETZ_BUSYBOX_MDEV
 
 config FREETZ_BUSYBOX_FEATURE_MDEV_CONF
 	bool "Support /etc/mdev.conf"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_MDEV
 	help
 	  Add support for the mdev config file to control ownership and
@@ -33,7 +33,7 @@ config FREETZ_BUSYBOX_FEATURE_MDEV_CONF
 
 config FREETZ_BUSYBOX_FEATURE_MDEV_RENAME
 	bool "Support subdirs/symlinks"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_MDEV_CONF
 	help
 	  Add support for renaming devices and creating symlinks.
@@ -42,7 +42,7 @@ config FREETZ_BUSYBOX_FEATURE_MDEV_RENAME
 
 config FREETZ_BUSYBOX_FEATURE_MDEV_RENAME_REGEXP
 	bool "Support regular expressions substitutions when renaming device"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_MDEV_RENAME
 	help
 	  Add support for regular expressions substitutions when renaming
@@ -50,7 +50,7 @@ config FREETZ_BUSYBOX_FEATURE_MDEV_RENAME_REGEXP
 
 config FREETZ_BUSYBOX_FEATURE_MDEV_EXEC
 	bool "Support command execution at device addition/removal"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_MDEV_CONF
 	help
 	  This adds support for an optional field to /etc/mdev.conf for
@@ -60,7 +60,7 @@ config FREETZ_BUSYBOX_FEATURE_MDEV_EXEC
 
 config FREETZ_BUSYBOX_FEATURE_MDEV_LOAD_FIRMWARE
 	bool "Support loading of firmwares"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_MDEV
 	help
 	  Some devices need to load firmware before they can be usable.
@@ -70,13 +70,13 @@ config FREETZ_BUSYBOX_FEATURE_MDEV_LOAD_FIRMWARE
 	  loading into the hardware.
 config FREETZ_BUSYBOX_REV
 	bool "rev"
-	default y
+	default n
 	help
 	  Reverse lines of a file or files.
 
 config FREETZ_BUSYBOX_ACPID
 	bool "acpid"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  acpid listens to ACPI events coming either in textual form from
@@ -92,14 +92,14 @@ config FREETZ_BUSYBOX_ACPID
 
 config FREETZ_BUSYBOX_FEATURE_ACPID_COMPAT
 	bool "Accept and ignore redundant options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ACPID
 	help
 	  Accept and ignore compatibility options -g -m -s -S -v.
 
 config FREETZ_BUSYBOX_BLKID
 	bool "blkid"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	select FREETZ_BUSYBOX_VOLUMEID
 	help
@@ -116,7 +116,7 @@ config FREETZ_BUSYBOX_FEATURE_BLKID_TYPE
 
 config FREETZ_BUSYBOX_DMESG
 	bool "dmesg"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  dmesg is used to examine or control the kernel ring buffer. When the
@@ -129,7 +129,7 @@ config FREETZ_BUSYBOX_DMESG
 
 config FREETZ_BUSYBOX_FEATURE_DMESG_PRETTY
 	bool "Pretty dmesg output"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_DMESG
 	help
 	  If you wish to scrub the syslog level from the output, say 'Y' here.
@@ -150,7 +150,7 @@ config FREETZ_BUSYBOX_FEATURE_DMESG_PRETTY
 
 config FREETZ_BUSYBOX_FBSET
 	bool "fbset"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  fbset is used to show or change the settings of a Linux frame buffer
@@ -160,7 +160,7 @@ config FREETZ_BUSYBOX_FBSET
 
 config FREETZ_BUSYBOX_FEATURE_FBSET_FANCY
 	bool "Turn on extra fbset options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FBSET
 	help
 	  This option enables extended fbset options, allowing one to set the
@@ -170,7 +170,7 @@ config FREETZ_BUSYBOX_FEATURE_FBSET_FANCY
 
 config FREETZ_BUSYBOX_FEATURE_FBSET_READMODE
 	bool "Turn on fbset readmode support"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FBSET
 	help
 	  This option allows fbset to read the video mode database stored by
@@ -179,7 +179,7 @@ config FREETZ_BUSYBOX_FEATURE_FBSET_READMODE
 
 config FREETZ_BUSYBOX_FDFLUSH
 	bool "fdflush"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  fdflush is only needed when changing media on slightly-broken
@@ -192,14 +192,14 @@ config FREETZ_BUSYBOX_FDFLUSH
 
 config FREETZ_BUSYBOX_FDFORMAT
 	bool "fdformat"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  fdformat is used to low-level format a floppy disk.
 
 config FREETZ_BUSYBOX_FDISK
 	bool "fdisk"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  The fdisk utility is used to divide hard disks into one or more
@@ -209,7 +209,7 @@ config FREETZ_BUSYBOX_FDISK
 
 config FREETZ_BUSYBOX_FDISK_SUPPORT_LARGE_DISKS
 	bool "Support over 4GB disks"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FDISK
 	depends on !FREETZ_BUSYBOX_LFS   # with FREETZ_BUSYBOX_LFS no special code is needed
 	help
@@ -217,7 +217,7 @@ config FREETZ_BUSYBOX_FDISK_SUPPORT_LARGE_DISKS
 
 config FREETZ_BUSYBOX_FEATURE_FDISK_WRITABLE
 	bool "Write support"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FDISK
 	help
 	  Enabling this option allows you to create or change a partition table
@@ -266,7 +266,7 @@ config FREETZ_BUSYBOX_FEATURE_GPT_LABEL
 
 config FREETZ_BUSYBOX_FEATURE_FDISK_ADVANCED
 	bool "Support expert mode"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FDISK && FREETZ_BUSYBOX_FEATURE_FDISK_WRITABLE
 	help
 	  Enabling this option allows you to do terribly unsafe things like
@@ -276,7 +276,7 @@ config FREETZ_BUSYBOX_FEATURE_FDISK_ADVANCED
 
 config FREETZ_BUSYBOX_FINDFS
 	bool "findfs"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	select FREETZ_BUSYBOX_VOLUMEID
 	help
@@ -286,13 +286,13 @@ config FREETZ_BUSYBOX_FINDFS
 
 config FREETZ_BUSYBOX_FLOCK
 	bool "flock"
-	default y
+	default n
 	help
 	  Manage locks from shell scripts
 
 config FREETZ_BUSYBOX_FREERAMDISK
 	bool "freeramdisk"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Linux allows you to create ramdisks. This utility allows you to
@@ -304,7 +304,7 @@ config FREETZ_BUSYBOX_FREERAMDISK
 
 config FREETZ_BUSYBOX_FSCK_MINIX
 	bool "fsck_minix"
-	default y
+	default n
 	help
 	  The minix filesystem is a nice, small, compact, read-write filesystem
 	  with little overhead. It is not a journaling filesystem however and
@@ -315,14 +315,14 @@ config FREETZ_BUSYBOX_FSCK_MINIX
 
 config FREETZ_BUSYBOX_MKFS_EXT2
 	bool "mkfs_ext2"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Utility to create EXT2 filesystems.
 
 config FREETZ_BUSYBOX_MKFS_MINIX
 	bool "mkfs_minix"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  The minix filesystem is a nice, small, compact, read-write filesystem
@@ -331,7 +331,7 @@ config FREETZ_BUSYBOX_MKFS_MINIX
 
 config FREETZ_BUSYBOX_FEATURE_MINIX2
 	bool "Support Minix fs v2 (fsck_minix/mkfs_minix)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FSCK_MINIX || FREETZ_BUSYBOX_MKFS_MINIX
 	help
 	  If you wish to be able to create version 2 minix filesystems, enable
@@ -348,14 +348,14 @@ config FREETZ_BUSYBOX_MKFS_REISER
 
 config FREETZ_BUSYBOX_MKFS_VFAT
 	bool "mkfs_vfat"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Utility to create FAT32 filesystems.
 
 config FREETZ_BUSYBOX_GETOPT
 	bool "getopt"
-	default y
+	default n
 	help
 	  The getopt utility is used to break up (parse) options in command
 	  lines to make it easy to write complex shell scripts that also check
@@ -366,21 +366,21 @@ config FREETZ_BUSYBOX_GETOPT
 
 config FREETZ_BUSYBOX_FEATURE_GETOPT_LONG
 	bool "Support option -l"
-	default y if FREETZ_BUSYBOX_LONG_OPTS
+	default n if FREETZ_BUSYBOX_LONG_OPTS
 	depends on FREETZ_BUSYBOX_GETOPT
 	help
 	  Enable support for long options (option -l).
 
 config FREETZ_BUSYBOX_HEXDUMP
 	bool "hexdump"
-	default y
+	default n
 	help
 	  The hexdump utility is used to display binary data in a readable
 	  way that is comparable to the output from most hex editors.
 
 config FREETZ_BUSYBOX_FEATURE_HEXDUMP_REVERSE
 	bool "Support -R, reverse of 'hexdump -Cv'"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HEXDUMP
 	help
 	  The hexdump utility is used to display binary data in an ascii
@@ -390,14 +390,14 @@ config FREETZ_BUSYBOX_FEATURE_HEXDUMP_REVERSE
 
 config FREETZ_BUSYBOX_HD
 	bool "hd"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HEXDUMP
 	help
 	  hd is an alias to hexdump -C.
 
 config FREETZ_BUSYBOX_HWCLOCK
 	bool "hwclock"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  The hwclock utility is used to read and set the hardware clock
@@ -407,7 +407,7 @@ config FREETZ_BUSYBOX_HWCLOCK
 
 config FREETZ_BUSYBOX_FEATURE_HWCLOCK_LONG_OPTIONS
 	bool "Support long options (--hctosys,...)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HWCLOCK && FREETZ_BUSYBOX_LONG_OPTS
 	help
 	  By default, the hwclock utility only uses short options. If you
@@ -428,7 +428,7 @@ config FREETZ_BUSYBOX_FEATURE_HWCLOCK_ADJTIME_FHS
 
 config FREETZ_BUSYBOX_IPCRM
 	bool "ipcrm"
-	default y
+	default n
 	help
 	  The ipcrm utility allows the removal of System V interprocess
 	  communication (IPC) objects and the associated data structures
@@ -436,7 +436,7 @@ config FREETZ_BUSYBOX_IPCRM
 
 config FREETZ_BUSYBOX_IPCS
 	bool "ipcs"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  The ipcs utility is used to provide information on the currently
@@ -444,7 +444,7 @@ config FREETZ_BUSYBOX_IPCS
 
 config FREETZ_BUSYBOX_LOSETUP
 	bool "losetup"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  losetup is used to associate or detach a loop device with a regular
@@ -453,7 +453,7 @@ config FREETZ_BUSYBOX_LOSETUP
 
 config FREETZ_BUSYBOX_LSPCI
 	bool "lspci"
-	default y
+	default n
 	#select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  lspci is a utility for displaying information about PCI buses in the
@@ -463,7 +463,7 @@ config FREETZ_BUSYBOX_LSPCI
 
 config FREETZ_BUSYBOX_LSUSB
 	bool "lsusb"
-	default y
+	default n
 	#select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  lsusb is a utility for displaying information about USB buses in the
@@ -473,7 +473,7 @@ config FREETZ_BUSYBOX_LSUSB
 
 config FREETZ_BUSYBOX_MKSWAP
 	bool "mkswap"
-	default y
+	default n
 	help
 	  The mkswap utility is used to configure a file or disk partition as
 	  Linux swap space. This allows Linux to use the entire file or
@@ -486,14 +486,14 @@ config FREETZ_BUSYBOX_MKSWAP
 
 config FREETZ_BUSYBOX_FEATURE_MKSWAP_UUID
 	bool "UUID support"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_MKSWAP
 	help
 	  Generate swap spaces with universally unique identifiers.
 
 config FREETZ_BUSYBOX_MORE
 	bool "more"
-	default y
+	default n
 	help
 	  more is a simple utility which allows you to read text one screen
 	  sized page at a time. If you want to read text that is larger than
@@ -503,7 +503,7 @@ config FREETZ_BUSYBOX_MORE
 
 config FREETZ_BUSYBOX_MOUNT
 	bool "mount"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  All files and filesystems in Unix are arranged into one big directory
@@ -515,14 +515,14 @@ config FREETZ_BUSYBOX_MOUNT
 
 config FREETZ_BUSYBOX_FEATURE_MOUNT_FAKE
 	bool "Support option -f"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_MOUNT
 	help
 	  Enable support for faking a file system mount.
 
 config FREETZ_BUSYBOX_FEATURE_MOUNT_VERBOSE
 	bool "Support option -v"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_MOUNT
 	help
 	  Enable multi-level -v[vv...] verbose messages. Useful if you
@@ -543,7 +543,7 @@ config FREETZ_BUSYBOX_FEATURE_MOUNT_HELPERS
 
 config FREETZ_BUSYBOX_FEATURE_MOUNT_LABEL
 	bool "Support specifying devices by label or UUID"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_MOUNT
 	select FREETZ_BUSYBOX_VOLUMEID
 	help
@@ -567,7 +567,7 @@ config FREETZ_BUSYBOX_FEATURE_MOUNT_NFS
 
 config FREETZ_BUSYBOX_FEATURE_MOUNT_CIFS
 	bool "Support mounting CIFS/SMB file systems"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_MOUNT
 	help
 	  Enable support for samba mounts.
@@ -575,7 +575,7 @@ config FREETZ_BUSYBOX_FEATURE_MOUNT_CIFS
 config FREETZ_BUSYBOX_FEATURE_MOUNT_FLAGS
 	depends on FREETZ_BUSYBOX_MOUNT
 	bool "Support lots of -o flags in mount"
-	default y
+	default n
 	help
 	  Without this, mount only supports ro/rw/remount. With this, it
 	  supports nosuid, suid, dev, nodev, exec, noexec, sync, async, atime,
@@ -585,13 +585,13 @@ config FREETZ_BUSYBOX_FEATURE_MOUNT_FLAGS
 config FREETZ_BUSYBOX_FEATURE_MOUNT_FSTAB
 	depends on FREETZ_BUSYBOX_MOUNT
 	bool "Support /etc/fstab and -a"
-	default y
+	default n
 	help
 	  Support mount all and looking for files in /etc/fstab.
 
 config FREETZ_BUSYBOX_PIVOT_ROOT
 	bool "pivot_root"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  The pivot_root utility swaps the mount points for the root filesystem
@@ -604,7 +604,7 @@ config FREETZ_BUSYBOX_PIVOT_ROOT
 
 config FREETZ_BUSYBOX_RDATE
 	bool "rdate"
-	default y
+	default n
 	help
 	  The rdate utility allows you to synchronize the date and time of your
 	  system clock with the date and time of a remote networked system using
@@ -613,40 +613,40 @@ config FREETZ_BUSYBOX_RDATE
 
 config FREETZ_BUSYBOX_RDEV
 	bool "rdev"
-	default y
+	default n
 	help
 	  Print the device node associated with the filesystem mounted at '/'.
 
 config FREETZ_BUSYBOX_READPROFILE
 	bool "readprofile"
-	default y
+	default n
 	#select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  This allows you to parse /proc/profile for basic profiling.
 
 config FREETZ_BUSYBOX_RTCWAKE
 	bool "rtcwake"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Enter a system sleep state until specified wakeup time.
 
 config FREETZ_BUSYBOX_SCRIPT
 	bool "script"
-	default y
+	default n
 	help
 	  The script makes typescript of terminal session.
 
 config FREETZ_BUSYBOX_SCRIPTREPLAY
 	bool "scriptreplay"
-	default y
+	default n
 	help
 	  This program replays a typescript, using timing information
 	  given by script -t.
 
 config FREETZ_BUSYBOX_SETARCH
 	bool "setarch"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  The linux32 utility is used to create a 32bit environment for the
@@ -656,7 +656,7 @@ config FREETZ_BUSYBOX_SETARCH
 
 config FREETZ_BUSYBOX_SWAPONOFF
 	bool "swaponoff"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  This option enables both the 'swapon' and the 'swapoff' utilities.
@@ -668,14 +668,14 @@ config FREETZ_BUSYBOX_SWAPONOFF
 
 config FREETZ_BUSYBOX_FEATURE_SWAPON_PRI
 	bool "Support priority option -p"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_SWAPONOFF
 	help
 	  Enable support for setting swap device priority in swapon.
 
 config FREETZ_BUSYBOX_SWITCH_ROOT
 	bool "switch_root"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  The switch_root utility is used from initramfs to select a new
@@ -695,7 +695,7 @@ config FREETZ_BUSYBOX_SWITCH_ROOT
 
 config FREETZ_BUSYBOX_UMOUNT
 	bool "umount"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  When you want to remove a mounted filesystem from its current mount
@@ -705,7 +705,7 @@ config FREETZ_BUSYBOX_UMOUNT
 
 config FREETZ_BUSYBOX_FEATURE_UMOUNT_ALL
 	bool "Support option -a"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_UMOUNT
 	help
 	  Support -a option to unmount all currently mounted filesystems.
@@ -715,7 +715,7 @@ comment "Common options for mount/umount"
 
 config FREETZ_BUSYBOX_FEATURE_MOUNT_LOOP
 	bool "Support loopback mounts"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_MOUNT || FREETZ_BUSYBOX_UMOUNT
 	help
 	  Enabling this feature allows automatic mounting of files (containing
@@ -732,7 +732,7 @@ config FREETZ_BUSYBOX_FEATURE_MOUNT_LOOP
 
 config FREETZ_BUSYBOX_FEATURE_MOUNT_LOOP_CREATE
 	bool "Create new loopback devices if needed"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_MOUNT_LOOP
 	help
 	  Linux kernels >= 2.6.24 support unlimited loopback devices. They are
@@ -775,133 +775,133 @@ menu "Filesystem/Volume identification"
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_EXT
 	bool "Ext filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_BTRFS
 	bool "btrfs filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_REISERFS
 	bool "Reiser filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_FAT
 	bool "fat filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_HFS
 	bool "hfs filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_JFS
 	bool "jfs filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 ### config FEATURE_VOLUMEID_UFS
 ###	bool "ufs filesystem"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_VOLUMEID
 ###	help
 ###	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_XFS
 	bool "xfs filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_NTFS
 	bool "ntfs filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_ISO9660
 	bool "iso9660 filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_UDF
 	bool "udf filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_LUKS
 	bool "luks filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_LINUXSWAP
 	bool "linux swap filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 ### config FEATURE_VOLUMEID_LVM
 ###	bool "lvm"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_VOLUMEID
 ###	help
 ###	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_CRAMFS
 	bool "cramfs filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 ### config FEATURE_VOLUMEID_HPFS
 ###	bool "hpfs filesystem"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_VOLUMEID
 ###	help
 ###	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_ROMFS
 	bool "romfs filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_SYSV
 	bool "sysv filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 ### config FEATURE_VOLUMEID_MINIX
 ###	bool "minix filesystem"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_VOLUMEID
 ###	help
 ###	  TODO
@@ -909,77 +909,77 @@ config FREETZ_BUSYBOX_FEATURE_VOLUMEID_SYSV
 ### These only detect partition tables - not used (yet?)
 ### config FEATURE_VOLUMEID_MAC
 ###	bool "mac filesystem"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_VOLUMEID
 ###	help
 ###	  TODO
 ###
 ### config FEATURE_VOLUMEID_MSDOS
 ###	bool "msdos filesystem"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_VOLUMEID
 ###	help
 ###	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_OCFS2
 	bool "ocfs2 filesystem"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO
 
 ### config FEATURE_VOLUMEID_HIGHPOINTRAID
 ###	bool "highpoint raid"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_VOLUMEID
 ###	help
 ###	  TODO
 
 ### config FEATURE_VOLUMEID_ISWRAID
 ###	bool "intel raid"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_VOLUMEID
 ###	help
 ###	  TODO
 
 ### config FEATURE_VOLUMEID_LSIRAID
 ###	bool "lsi raid"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_VOLUMEID
 ###	help
 ###	  TODO
 
 ### config FEATURE_VOLUMEID_VIARAID
 ###	bool "via raid"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_VOLUMEID
 ###	help
 ###	  TODO
 
 ### config FEATURE_VOLUMEID_SILICONRAID
 ###	bool "silicon raid"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_VOLUMEID
 ###	help
 ###	  TODO
 
 ### config FEATURE_VOLUMEID_NVIDIARAID
 ###	bool "nvidia raid"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_VOLUMEID
 ###	help
 ###	  TODO
 
 ### config FEATURE_VOLUMEID_PROMISERAID
 ###	bool "promise raid"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_VOLUMEID
 ###	help
 ###	  TODO
 
 config FREETZ_BUSYBOX_FEATURE_VOLUMEID_LINUXRAID
 	bool "linuxraid"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_VOLUMEID
 	help
 	  TODO

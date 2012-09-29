@@ -8,7 +8,7 @@ menu "Shells"
 
 config FREETZ_BUSYBOX_ASH
 	bool "ash"
-	default y
+	default n
 	depends on !FREETZ_BUSYBOX_NOMMU
 	help
 	  Tha 'ash' shell adds about 60k in the default configuration and is
@@ -19,7 +19,7 @@ config FREETZ_BUSYBOX_ASH
 
 config FREETZ_BUSYBOX_ASH_BASH_COMPAT
 	bool "bash-compatible extensions"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ASH
 	help
 	  Enable bash-compatible extensions.
@@ -33,49 +33,49 @@ config FREETZ_BUSYBOX_ASH_IDLE_TIMEOUT
 
 config FREETZ_BUSYBOX_ASH_JOB_CONTROL
 	bool "Job control"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ASH
 	help
 	  Enable job control in the ash shell.
 
 config FREETZ_BUSYBOX_ASH_ALIAS
 	bool "Alias support"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ASH
 	help
 	  Enable alias support in the ash shell.
 
 config FREETZ_BUSYBOX_ASH_GETOPTS
 	bool "Builtin getopt to parse positional parameters"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ASH
 	help
 	  Enable support for getopts builtin in ash.
 
 config FREETZ_BUSYBOX_ASH_BUILTIN_ECHO
 	bool "Builtin version of 'echo'"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ASH
 	help
 	  Enable support for echo builtin in ash.
 
 config FREETZ_BUSYBOX_ASH_BUILTIN_PRINTF
 	bool "Builtin version of 'printf'"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ASH
 	help
 	  Enable support for printf builtin in ash.
 
 config FREETZ_BUSYBOX_ASH_BUILTIN_TEST
 	bool "Builtin version of 'test'"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ASH
 	help
 	  Enable support for test builtin in ash.
 
 config FREETZ_BUSYBOX_ASH_CMDCMD
 	bool "'command' command to override shell builtins"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ASH
 	help
 	  Enable support for the ash 'command' builtin, which allows
@@ -91,14 +91,14 @@ config FREETZ_BUSYBOX_ASH_MAIL
 
 config FREETZ_BUSYBOX_ASH_OPTIMIZE_FOR_SIZE
 	bool "Optimize for size instead of speed"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ASH
 	help
 	  Compile ash for reduced size at the price of speed.
 
 config FREETZ_BUSYBOX_ASH_RANDOM_SUPPORT
 	bool "Pseudorandom generator and $RANDOM variable"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ASH
 	help
 	  Enable pseudorandom generator and dynamic variable "$RANDOM".
@@ -109,7 +109,7 @@ config FREETZ_BUSYBOX_ASH_RANDOM_SUPPORT
 
 config FREETZ_BUSYBOX_ASH_EXPAND_PRMT
 	bool "Expand prompt string"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ASH
 	help
 	  "PS#" may contain volatile content, such as backquote commands.
@@ -118,7 +118,7 @@ config FREETZ_BUSYBOX_ASH_EXPAND_PRMT
 
 config FREETZ_BUSYBOX_CTTYHACK
 	bool "cttyhack"
-	default y
+	default n
 	help
 	  One common problem reported on the mailing list is the "can't
 	  access tty; job control turned off" error message, which typically
@@ -161,7 +161,7 @@ config FREETZ_BUSYBOX_CTTYHACK
 	  # getty 115200 $(cttyhack)
 config FREETZ_BUSYBOX_HUSH
 	bool "hush"
-	default y
+	default n
 	help
 	  hush is a small shell (25k). It handles the normal flow control
 	  constructs such as if/then/elif/else/fi, for/in/do/done, while loops,
@@ -175,28 +175,28 @@ config FREETZ_BUSYBOX_HUSH
 
 config FREETZ_BUSYBOX_HUSH_BASH_COMPAT
 	bool "bash-compatible extensions"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH
 	help
 	  Enable bash-compatible extensions.
 
 config FREETZ_BUSYBOX_HUSH_BRACE_EXPANSION
 	bool "Brace expansion"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH_BASH_COMPAT
 	help
 	  Enable {abc,def} extension.
 
 config FREETZ_BUSYBOX_HUSH_HELP
 	bool "help builtin"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH
 	help
 	  Enable help builtin in hush. Code size + ~1 kbyte.
 
 config FREETZ_BUSYBOX_HUSH_INTERACTIVE
 	bool "Interactive mode"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH
 	help
 	  Enable interactive mode (prompt and command editing).
@@ -206,14 +206,14 @@ config FREETZ_BUSYBOX_HUSH_INTERACTIVE
 
 config FREETZ_BUSYBOX_HUSH_SAVEHISTORY
 	bool "Save command history to .hush_history"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH_INTERACTIVE && FREETZ_BUSYBOX_FEATURE_EDITING_SAVEHISTORY
 	help
 	  Enable history saving in hush.
 
 config FREETZ_BUSYBOX_HUSH_JOB
 	bool "Job control"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH_INTERACTIVE
 	help
 	  Enable job control: Ctrl-Z backgrounds, Ctrl-C interrupts current
@@ -224,49 +224,49 @@ config FREETZ_BUSYBOX_HUSH_JOB
 
 config FREETZ_BUSYBOX_HUSH_TICK
 	bool "Process substitution"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH
 	help
 	  Enable process substitution `command` and $(command) in hush.
 
 config FREETZ_BUSYBOX_HUSH_IF
 	bool "Support if/then/elif/else/fi"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH
 	help
 	  Enable if/then/elif/else/fi in hush.
 
 config FREETZ_BUSYBOX_HUSH_LOOPS
 	bool "Support for, while and until loops"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH
 	help
 	  Enable for, while and until loops in hush.
 
 config FREETZ_BUSYBOX_HUSH_CASE
 	bool "Support case ... esac statement"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH
 	help
 	  Enable case ... esac statement in hush. +400 bytes.
 
 config FREETZ_BUSYBOX_HUSH_FUNCTIONS
 	bool "Support funcname() { commands; } syntax"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH
 	help
 	  Enable support for shell functions in hush. +800 bytes.
 
 config FREETZ_BUSYBOX_HUSH_LOCAL
 	bool "Support local builtin"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH_FUNCTIONS
 	help
 	  Enable support for local variables in functions.
 
 config FREETZ_BUSYBOX_HUSH_RANDOM_SUPPORT
 	bool "Pseudorandom generator and $RANDOM variable"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH
 	help
 	  Enable pseudorandom generator and dynamic variable "$RANDOM".
@@ -274,14 +274,14 @@ config FREETZ_BUSYBOX_HUSH_RANDOM_SUPPORT
 
 config FREETZ_BUSYBOX_HUSH_EXPORT_N
 	bool "Support 'export -n' option"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH
 	help
 	  export -n unexports variables. It is a bash extension.
 
 config FREETZ_BUSYBOX_HUSH_MODE_X
 	bool "Support 'hush -x' option and 'set -x' command"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH
 	help
 	  This instructs hush to print commands before execution.
@@ -352,14 +352,14 @@ endchoice
 
 config FREETZ_BUSYBOX_SH_MATH_SUPPORT
 	bool "POSIX math support"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ASH || FREETZ_BUSYBOX_HUSH
 	help
 	  Enable math support in the shell via $((...)) syntax.
 
 config FREETZ_BUSYBOX_SH_MATH_SUPPORT_64
 	bool "Extend POSIX math support to 64 bit"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_SH_MATH_SUPPORT
 	help
 	  Enable 64-bit math support in the shell. This will make the shell
@@ -368,7 +368,7 @@ config FREETZ_BUSYBOX_SH_MATH_SUPPORT_64
 
 config FREETZ_BUSYBOX_FEATURE_SH_EXTRA_QUIET
 	bool "Hide message on interactive shell startup"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH || FREETZ_BUSYBOX_ASH
 	help
 	  Remove the busybox introduction when starting a shell.
@@ -426,7 +426,7 @@ config FREETZ_BUSYBOX_FEATURE_SH_NOFORK
 
 config FREETZ_BUSYBOX_FEATURE_SH_HISTFILESIZE
 	bool "Use $HISTFILESIZE"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HUSH || FREETZ_BUSYBOX_ASH
 	help
 	  This option makes busybox shells to use $HISTFILESIZE variable

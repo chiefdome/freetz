@@ -8,7 +8,7 @@ menu "Networking Utilities"
 
 config FREETZ_BUSYBOX_NAMEIF
 	bool "nameif"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	select FREETZ_BUSYBOX_FEATURE_SYSLOG
 	help
@@ -24,7 +24,7 @@ config FREETZ_BUSYBOX_NAMEIF
 
 config FREETZ_BUSYBOX_FEATURE_NAMEIF_EXTENDED
 	bool "Extended nameif"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_NAMEIF
 	help
 	  This extends the nameif syntax to support the bus_info, driver,
@@ -37,26 +37,26 @@ config FREETZ_BUSYBOX_FEATURE_NAMEIF_EXTENDED
 	    new_interface_name  00:80:C8:38:91:B5
 config FREETZ_BUSYBOX_NBDCLIENT
 	bool "nbd-client"
-	default y
+	default n
 	help
 	  Network block device client
 config FREETZ_BUSYBOX_NC
 	bool "nc"
-	default y
+	default n
 	help
 	  A simple Unix utility which reads and writes data across network
 	  connections.
 
 config FREETZ_BUSYBOX_NC_SERVER
 	bool "Netcat server options (-l)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_NC
 	help
 	  Allow netcat to act as a server.
 
 config FREETZ_BUSYBOX_NC_EXTRA
 	bool "Netcat extensions (-eiw and filename)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_NC
 	help
 	  Add -e (support for executing the rest of the command line after
@@ -74,7 +74,7 @@ config FREETZ_BUSYBOX_NC_110_COMPAT
 	  busybox-specific extensions: -f FILE and -ll.
 config FREETZ_BUSYBOX_PING
 	bool "ping"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  ping uses the ICMP protocol's mandatory ECHO_REQUEST datagram to
@@ -82,14 +82,14 @@ config FREETZ_BUSYBOX_PING
 
 config FREETZ_BUSYBOX_PING6
 	bool "ping6"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_IPV6 && FREETZ_BUSYBOX_PING
 	help
 	  This will give you a ping that can talk IPv6.
 
 config FREETZ_BUSYBOX_FEATURE_FANCY_PING
 	bool "Enable fancy ping output"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_PING
 	help
 	  Make the output from the ping applet include statistics, and at the
@@ -102,13 +102,13 @@ config FREETZ_BUSYBOX_STUN_IP
 
 config FREETZ_BUSYBOX_WHOIS
 	bool "whois"
-	default y
+	default n
 	help
 	  whois is a client for the whois directory service
 
 config FREETZ_BUSYBOX_FEATURE_IPV6
 	bool "Enable IPv6 support"
-	default y
+	default n
 	help
 	  Enable IPv6 support in busybox.
 	  This adds IPv6 support in the networking applets.
@@ -126,7 +126,7 @@ config FREETZ_BUSYBOX_FEATURE_UNIX_LOCAL
 
 config FREETZ_BUSYBOX_FEATURE_PREFER_IPV4_ADDRESS
 	bool "Prefer IPv4 addresses from DNS queries"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_IPV6
 	help
 	  Use IPv4 address of network host if it has one.
@@ -149,21 +149,21 @@ config FREETZ_BUSYBOX_VERBOSE_RESOLUTION_ERRORS
 
 config FREETZ_BUSYBOX_ARP
 	bool "arp"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Manipulate the system FREETZ_BUSYBOX_ARP cache.
 
 config FREETZ_BUSYBOX_ARPING
 	bool "arping"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Ping hosts by FREETZ_BUSYBOX_ARP packets.
 
 config FREETZ_BUSYBOX_BRCTL
 	bool "brctl"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Manage ethernet bridges.
@@ -171,7 +171,7 @@ config FREETZ_BUSYBOX_BRCTL
 
 config FREETZ_BUSYBOX_FEATURE_BRCTL_FANCY
 	bool "Fancy options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_BRCTL
 	help
 	  Add support for extended option like:
@@ -182,7 +182,7 @@ config FREETZ_BUSYBOX_FEATURE_BRCTL_FANCY
 
 config FREETZ_BUSYBOX_FEATURE_BRCTL_SHOW
 	bool "Support show, showmac and showstp"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_BRCTL && FREETZ_BUSYBOX_FEATURE_BRCTL_FANCY
 	help
 	  Add support for option which prints the current config:
@@ -190,20 +190,20 @@ config FREETZ_BUSYBOX_FEATURE_BRCTL_SHOW
 
 config FREETZ_BUSYBOX_DNSD
 	bool "dnsd"
-	default y
+	default n
 	help
 	  Small and static DNS server daemon.
 
 config FREETZ_BUSYBOX_ETHER_WAKE
 	bool "ether-wake"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Send a magic packet to wake up sleeping machines.
 
 config FREETZ_BUSYBOX_FAKEIDENTD
 	bool "fakeidentd"
-	default y
+	default n
 	select FREETZ_BUSYBOX_FEATURE_SYSLOG
 	help
 	  fakeidentd listens on the ident port and returns a predefined
@@ -211,20 +211,20 @@ config FREETZ_BUSYBOX_FAKEIDENTD
 
 config FREETZ_BUSYBOX_FTPD
 	bool "ftpd"
-	default y
+	default n
 	help
 	  simple FTP daemon. You have to run it via inetd.
 
 config FREETZ_BUSYBOX_FEATURE_FTP_WRITE
 	bool "Enable upload commands"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FTPD
 	help
 	  Enable all kinds of FTP upload commands (-w option)
 
 config FREETZ_BUSYBOX_FEATURE_FTPD_ACCEPT_BROKEN_LIST
 	bool "Enable workaround for RFC-violating clients"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FTPD
 	help
 	  Some ftp clients (among them KDE's Konqueror) issue illegal
@@ -235,38 +235,38 @@ config FREETZ_BUSYBOX_FEATURE_FTPD_ACCEPT_BROKEN_LIST
 
 config FREETZ_BUSYBOX_FTPGET
 	bool "ftpget"
-	default y
+	default n
 	help
 	  Retrieve a remote file via FTP.
 
 config FREETZ_BUSYBOX_FTPPUT
 	bool "ftpput"
-	default y
+	default n
 	help
 	  Store a remote file via FTP.
 
 config FREETZ_BUSYBOX_FEATURE_FTPGETPUT_LONG_OPTIONS
 	bool "Enable long options in ftpget/ftpput"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_LONG_OPTS && (FREETZ_BUSYBOX_FTPGET || FREETZ_BUSYBOX_FTPPUT)
 	help
 	  Support long options for the ftpget/ftpput applet.
 
 config FREETZ_BUSYBOX_HOSTNAME
 	bool "hostname"
-	default y
+	default n
 	help
 	  Show or set the system's host name.
 
 config FREETZ_BUSYBOX_HTTPD
 	bool "httpd"
-	default y
+	default n
 	help
 	  Serve web pages via an HTTP server.
 
 config FREETZ_BUSYBOX_FEATURE_HTTPD_RANGES
 	bool "Support 'Ranges:' header"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HTTPD
 	help
 	  Makes httpd emit "Accept-Ranges: bytes" header and understand
@@ -275,7 +275,7 @@ config FREETZ_BUSYBOX_FEATURE_HTTPD_RANGES
 
 config FREETZ_BUSYBOX_FEATURE_HTTPD_USE_SENDFILE
 	bool "Use sendfile system call"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HTTPD
 	help
 	  When enabled, httpd will use the kernel sendfile() function
@@ -283,7 +283,7 @@ config FREETZ_BUSYBOX_FEATURE_HTTPD_USE_SENDFILE
 
 config FREETZ_BUSYBOX_FEATURE_HTTPD_SETUID
 	bool "Enable -u <user> option"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HTTPD
 	help
 	  This option allows the server to run as a specific user
@@ -293,7 +293,7 @@ config FREETZ_BUSYBOX_FEATURE_HTTPD_SETUID
 
 config FREETZ_BUSYBOX_FEATURE_HTTPD_BASIC_AUTH
 	bool "Enable Basic http Authentication"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HTTPD
 	help
 	  Utilizes password settings from /etc/httpd.conf for basic
@@ -303,7 +303,7 @@ config FREETZ_BUSYBOX_FEATURE_HTTPD_BASIC_AUTH
 
 config FREETZ_BUSYBOX_FEATURE_HTTPD_AUTH_MD5
 	bool "Support MD5 crypted passwords for http Authentication"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_HTTPD_BASIC_AUTH
 	help
 	  Enables encrypted passwords, and wildcard user/passwords
@@ -317,7 +317,7 @@ config FREETZ_BUSYBOX_FEATURE_HTTPD_AUTH_MD5
 
 config FREETZ_BUSYBOX_FEATURE_HTTPD_CGI
 	bool "Support Common Gateway Interface (CGI)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HTTPD
 	help
 	  This option allows scripts and executables to be invoked
@@ -325,7 +325,7 @@ config FREETZ_BUSYBOX_FEATURE_HTTPD_CGI
 
 config FREETZ_BUSYBOX_FEATURE_HTTPD_CONFIG_WITH_SCRIPT_INTERPR
 	bool "Support for running scripts through an interpreter"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_HTTPD_CGI
 	help
 	  This option enables support for running scripts through an
@@ -336,7 +336,7 @@ config FREETZ_BUSYBOX_FEATURE_HTTPD_CONFIG_WITH_SCRIPT_INTERPR
 
 config FREETZ_BUSYBOX_FEATURE_HTTPD_SET_REMOTE_PORT_TO_ENV
 	bool "Set REMOTE_PORT environment variable for CGI"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_HTTPD_CGI
 	help
 	  Use of this option can assist scripts in generating
@@ -344,7 +344,7 @@ config FREETZ_BUSYBOX_FEATURE_HTTPD_SET_REMOTE_PORT_TO_ENV
 
 config FREETZ_BUSYBOX_FEATURE_HTTPD_ENCODE_URL_STR
 	bool "Enable -e option (useful for CGIs written as shell scripts)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HTTPD
 	help
 	  This option allows html encoding of arbitrary strings for display
@@ -354,7 +354,7 @@ config FREETZ_BUSYBOX_FEATURE_HTTPD_ENCODE_URL_STR
 
 config FREETZ_BUSYBOX_FEATURE_HTTPD_ERROR_PAGES
 	bool "Support for custom error pages"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HTTPD
 	help
 	  This option allows you to define custom error pages in
@@ -367,7 +367,7 @@ config FREETZ_BUSYBOX_FEATURE_HTTPD_ERROR_PAGES
 
 config FREETZ_BUSYBOX_FEATURE_HTTPD_PROXY
 	bool "Support for reverse proxy"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HTTPD
 	help
 	  This option allows you to define URLs that will be forwarded
@@ -379,7 +379,7 @@ config FREETZ_BUSYBOX_FEATURE_HTTPD_PROXY
 
 config FREETZ_BUSYBOX_FEATURE_HTTPD_GZIP
 	bool "Support for FREETZ_BUSYBOX_GZIP content encoding"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HTTPD
 	help
 	  Makes httpd send files using FREETZ_BUSYBOX_GZIP content encoding if the
@@ -387,14 +387,14 @@ config FREETZ_BUSYBOX_FEATURE_HTTPD_GZIP
 
 config FREETZ_BUSYBOX_IFCONFIG
 	bool "ifconfig"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Ifconfig is used to configure the kernel-resident network interfaces.
 
 config FREETZ_BUSYBOX_FEATURE_IFCONFIG_STATUS
 	bool "Enable status reporting output (+7k)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IFCONFIG
 	help
 	  If ifconfig is called with no arguments it will display the status
@@ -402,7 +402,7 @@ config FREETZ_BUSYBOX_FEATURE_IFCONFIG_STATUS
 
 config FREETZ_BUSYBOX_FEATURE_IFCONFIG_SLIP
 	bool "Enable slip-specific options \"keepalive\" and \"outfill\""
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IFCONFIG
 	help
 	  Allow "keepalive" and "outfill" support for SLIP. If you're not
@@ -410,7 +410,7 @@ config FREETZ_BUSYBOX_FEATURE_IFCONFIG_SLIP
 
 config FREETZ_BUSYBOX_FEATURE_IFCONFIG_MEMSTART_IOADDR_IRQ
 	bool "Enable options \"mem_start\", \"io_addr\", and \"irq\""
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IFCONFIG
 	help
 	  Allow the start address for shared memory, start address for I/O,
@@ -418,7 +418,7 @@ config FREETZ_BUSYBOX_FEATURE_IFCONFIG_MEMSTART_IOADDR_IRQ
 
 config FREETZ_BUSYBOX_FEATURE_IFCONFIG_HW
 	bool "Enable option \"hw\" (ether only)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IFCONFIG
 	help
 	  Set the hardware address of this interface, if the device driver
@@ -427,7 +427,7 @@ config FREETZ_BUSYBOX_FEATURE_IFCONFIG_HW
 
 config FREETZ_BUSYBOX_FEATURE_IFCONFIG_BROADCAST_PLUS
 	bool "Set the broadcast automatically"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IFCONFIG
 	help
 	  Setting this will make ifconfig attempt to find the broadcast
@@ -435,7 +435,7 @@ config FREETZ_BUSYBOX_FEATURE_IFCONFIG_BROADCAST_PLUS
 
 config FREETZ_BUSYBOX_IFENSLAVE
 	bool "ifenslave"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Userspace application to bind several interfaces
@@ -443,14 +443,14 @@ config FREETZ_BUSYBOX_IFENSLAVE
 
 config FREETZ_BUSYBOX_IFPLUGD
 	bool "ifplugd"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Network interface plug detection daemon.
 
 config FREETZ_BUSYBOX_IFUPDOWN
 	bool "ifupdown"
-	default y
+	default n
 	help
 	  Activate or deactivate the specified interfaces. This applet makes
 	  use of either "ifconfig" and "route" or the "ip" command to actually
@@ -477,7 +477,7 @@ config FREETZ_BUSYBOX_IFUPDOWN_IFSTATE_PATH
 
 config FREETZ_BUSYBOX_FEATURE_IFUPDOWN_IP
 	bool "Use ip applet"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IFUPDOWN
 	help
 	  Use the iproute "ip" command to implement "ifup" and "ifdown", rather
@@ -485,7 +485,7 @@ config FREETZ_BUSYBOX_FEATURE_IFUPDOWN_IP
 
 config FREETZ_BUSYBOX_FEATURE_IFUPDOWN_IP_BUILTIN
 	bool "Use busybox ip applet"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_IFUPDOWN_IP
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	select FREETZ_BUSYBOX_IP
@@ -514,14 +514,14 @@ config FREETZ_BUSYBOX_FEATURE_IFUPDOWN_IFCONFIG_BUILTIN
 
 config FREETZ_BUSYBOX_FEATURE_IFUPDOWN_IPV4
 	bool "Support for IPv4"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IFUPDOWN
 	help
 	  If you want ifup/ifdown to talk IPv4, leave this on.
 
 config FREETZ_BUSYBOX_FEATURE_IFUPDOWN_IPV6
 	bool "Support for IPv6"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IFUPDOWN && FREETZ_BUSYBOX_FEATURE_IPV6
 	help
 	  If you need support for IPv6, turn this option on.
@@ -529,7 +529,7 @@ config FREETZ_BUSYBOX_FEATURE_IFUPDOWN_IPV6
 ### UNUSED
 ###config FEATURE_IFUPDOWN_IPX
 ###	bool "Support for IPX"
-###	default y
+###	default n
 ###	depends on FREETZ_BUSYBOX_IFUPDOWN
 ###	help
 ###	  If this option is selected you can use busybox to work with IPX
@@ -537,7 +537,7 @@ config FREETZ_BUSYBOX_FEATURE_IFUPDOWN_IPV6
 
 config FREETZ_BUSYBOX_FEATURE_IFUPDOWN_MAPPING
 	bool "Enable mapping support"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IFUPDOWN
 	help
 	  This enables support for the "mapping" stanza, unless you have
@@ -555,49 +555,49 @@ config FREETZ_BUSYBOX_FEATURE_IFUPDOWN_EXTERNAL_DHCP
 
 config FREETZ_BUSYBOX_INETD
 	bool "inetd"
-	default y
+	default n
 	select FREETZ_BUSYBOX_FEATURE_SYSLOG
 	help
 	  Internet superserver daemon
 
 config FREETZ_BUSYBOX_FEATURE_INETD_SUPPORT_BUILTIN_ECHO
 	bool "Support echo service"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_INETD
 	help
 	  Echo received data internal inetd service
 
 config FREETZ_BUSYBOX_FEATURE_INETD_SUPPORT_BUILTIN_DISCARD
 	bool "Support discard service"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_INETD
 	help
 	  Internet /dev/null internal inetd service
 
 config FREETZ_BUSYBOX_FEATURE_INETD_SUPPORT_BUILTIN_TIME
 	bool "Support time service"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_INETD
 	help
 	  Return 32 bit time since 1900 internal inetd service
 
 config FREETZ_BUSYBOX_FEATURE_INETD_SUPPORT_BUILTIN_DAYTIME
 	bool "Support daytime service"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_INETD
 	help
 	  Return human-readable time internal inetd service
 
 config FREETZ_BUSYBOX_FEATURE_INETD_SUPPORT_BUILTIN_CHARGEN
 	bool "Support chargen service"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_INETD
 	help
 	  Familiar character generator internal inetd service
 
 config FREETZ_BUSYBOX_FEATURE_INETD_RPC
 	bool "Support RPC services"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_INETD
 	select FREETZ_BUSYBOX_FEATURE_HAVE_RPC
 	help
@@ -605,7 +605,7 @@ config FREETZ_BUSYBOX_FEATURE_INETD_RPC
 
 config FREETZ_BUSYBOX_IP
 	bool "ip"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  The "ip" applet is a TCP/IP interface configuration and routing
@@ -614,42 +614,42 @@ config FREETZ_BUSYBOX_IP
 
 config FREETZ_BUSYBOX_FEATURE_IP_ADDRESS
 	bool "ip address"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IP
 	help
 	  Address manipulation support for the "ip" applet.
 
 config FREETZ_BUSYBOX_FEATURE_IP_LINK
 	bool "ip link"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IP
 	help
 	  Configure network devices with "ip".
 
 config FREETZ_BUSYBOX_FEATURE_IP_ROUTE
 	bool "ip route"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IP
 	help
 	  Add support for routing table management to "ip".
 
 config FREETZ_BUSYBOX_FEATURE_IP_TUNNEL
 	bool "ip tunnel"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IP
 	help
 	  Add support for tunneling commands to "ip".
 
 config FREETZ_BUSYBOX_FEATURE_IP_RULE
 	bool "ip rule"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IP
 	help
 	  Add support for rule commands to "ip".
 
 config FREETZ_BUSYBOX_FEATURE_IP_SHORT_FORMS
 	bool "Support short forms of ip commands"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IP
 	help
 	  Also support short-form of ip <OBJECT> commands:
@@ -674,39 +674,39 @@ config FREETZ_BUSYBOX_FEATURE_IP_RARE_PROTOCOLS
 
 config FREETZ_BUSYBOX_IPADDR
 	bool
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_IP_SHORT_FORMS && FREETZ_BUSYBOX_FEATURE_IP_ADDRESS
 
 config FREETZ_BUSYBOX_IPLINK
 	bool
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_IP_SHORT_FORMS && FREETZ_BUSYBOX_FEATURE_IP_LINK
 
 config FREETZ_BUSYBOX_IPROUTE
 	bool
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_IP_SHORT_FORMS && FREETZ_BUSYBOX_FEATURE_IP_ROUTE
 
 config FREETZ_BUSYBOX_IPTUNNEL
 	bool
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_IP_SHORT_FORMS && FREETZ_BUSYBOX_FEATURE_IP_TUNNEL
 
 config FREETZ_BUSYBOX_IPRULE
 	bool
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_IP_SHORT_FORMS && FREETZ_BUSYBOX_FEATURE_IP_RULE
 
 config FREETZ_BUSYBOX_IPCALC
 	bool "ipcalc"
-	default y
+	default n
 	help
 	  ipcalc takes an FREETZ_BUSYBOX_IP address and netmask and calculates the
 	  resulting broadcast, network, and host range.
 
 config FREETZ_BUSYBOX_FEATURE_IPCALC_FANCY
 	bool "Fancy IPCALC, more options, adds 1 kbyte"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IPCALC
 	help
 	  Adds the options hostname, prefix and silent to the output of
@@ -714,21 +714,21 @@ config FREETZ_BUSYBOX_FEATURE_IPCALC_FANCY
 
 config FREETZ_BUSYBOX_FEATURE_IPCALC_LONG_OPTIONS
 	bool "Enable long options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_IPCALC && FREETZ_BUSYBOX_LONG_OPTS
 	help
 	  Support long options for the ipcalc applet.
 
 config FREETZ_BUSYBOX_NETSTAT
 	bool "netstat"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  netstat prints information about the Linux networking subsystem.
 
 config FREETZ_BUSYBOX_FEATURE_NETSTAT_WIDE
 	bool "Enable wide netstat output"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_NETSTAT
 	help
 	  Add support for wide columns. Useful when displaying IPv6 addresses
@@ -736,7 +736,7 @@ config FREETZ_BUSYBOX_FEATURE_NETSTAT_WIDE
 
 config FREETZ_BUSYBOX_FEATURE_NETSTAT_PRG
 	bool "Enable PID/Program name output"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_NETSTAT
 	help
 	  Add support for -p flag to print out PID and program name.
@@ -744,20 +744,20 @@ config FREETZ_BUSYBOX_FEATURE_NETSTAT_PRG
 
 config FREETZ_BUSYBOX_NSLOOKUP
 	bool "nslookup"
-	default y
+	default n
 	help
 	  nslookup is a tool to query Internet name servers.
 
 config FREETZ_BUSYBOX_NTPD
 	bool "ntpd"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  The NTP client/server daemon.
 
 config FREETZ_BUSYBOX_FEATURE_NTPD_SERVER
 	bool "Make ntpd usable as a NTP server"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_NTPD
 	help
 	  Make ntpd usable as a NTP server. If you disable this option
@@ -765,20 +765,20 @@ config FREETZ_BUSYBOX_FEATURE_NTPD_SERVER
 
 config FREETZ_BUSYBOX_PSCAN
 	bool "pscan"
-	default y
+	default n
 	help
 	  Simple network port scanner.
 
 config FREETZ_BUSYBOX_ROUTE
 	bool "route"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Route displays or manipulates the kernel's FREETZ_BUSYBOX_IP routing tables.
 
 config FREETZ_BUSYBOX_SLATTACH
 	bool "slattach"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  slattach is a small utility to attach network interfaces to serial
@@ -786,7 +786,7 @@ config FREETZ_BUSYBOX_SLATTACH
 
 #config TC
 #	bool "tc"
-#	default y
+#	default n
 #	help
 #	  show / manipulate traffic control settings
 #
@@ -796,21 +796,21 @@ config FREETZ_BUSYBOX_SLATTACH
 
 config FREETZ_BUSYBOX_TCPSVD
 	bool "tcpsvd"
-	default y
+	default n
 	help
 	  tcpsvd listens on a TCP port and runs a program for each new
 	  connection.
 
 config FREETZ_BUSYBOX_TELNET
 	bool "telnet"
-	default y
+	default n
 	help
 	  Telnet is an interface to the FREETZ_BUSYBOX_TELNET protocol, but is also commonly
 	  used to test other simple protocols.
 
 config FREETZ_BUSYBOX_FEATURE_TELNET_TTYPE
 	bool "Pass TERM type to remote host"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_TELNET
 	help
 	  Setting this option will forward the TERM environment variable to the
@@ -819,7 +819,7 @@ config FREETZ_BUSYBOX_FEATURE_TELNET_TTYPE
 
 config FREETZ_BUSYBOX_FEATURE_TELNET_AUTOLOGIN
 	bool "Pass USER type to remote host"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_TELNET
 	help
 	  Setting this option will forward the USER environment variable to the
@@ -829,7 +829,7 @@ config FREETZ_BUSYBOX_FEATURE_TELNET_AUTOLOGIN
 
 config FREETZ_BUSYBOX_TELNETD
 	bool "telnetd"
-	default y
+	default n
 	select FREETZ_BUSYBOX_FEATURE_SYSLOG
 	help
 	  A daemon for the FREETZ_BUSYBOX_TELNET protocol, allowing you to log onto the host
@@ -872,14 +872,14 @@ config FREETZ_BUSYBOX_TELNETD
 
 config FREETZ_BUSYBOX_FEATURE_TELNETD_STANDALONE
 	bool "Support standalone telnetd (not inetd only)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_TELNETD
 	help
 	  Selecting this will make telnetd able to run standalone.
 
 config FREETZ_BUSYBOX_FEATURE_TELNETD_INETD_WAIT
 	bool "Support -w SEC option (inetd wait mode)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_TELNETD_STANDALONE
 	help
 	  This option allows you to run telnetd in "inet wait" mode.
@@ -900,7 +900,7 @@ config FREETZ_BUSYBOX_FEATURE_TELNETD_INETD_WAIT
 
 config FREETZ_BUSYBOX_TFTP
 	bool "tftp"
-	default y
+	default n
 	help
 	  This enables the Trivial File Transfer Protocol client program. FREETZ_BUSYBOX_TFTP
 	  is usually used for simple, small transfers such as a root image
@@ -908,7 +908,7 @@ config FREETZ_BUSYBOX_TFTP
 
 config FREETZ_BUSYBOX_TFTPD
 	bool "tftpd"
-	default y
+	default n
 	help
 	  This enables the Trivial File Transfer Protocol server program.
 	  It expects that stdin is a datagram socket and a packet
@@ -921,7 +921,7 @@ comment "Common options for tftp/tftpd"
 
 config FREETZ_BUSYBOX_FEATURE_TFTP_GET
 	bool "Enable 'tftp get' and/or tftpd upload code"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_TFTP || FREETZ_BUSYBOX_TFTPD
 	help
 	  Add support for the GET command within the FREETZ_BUSYBOX_TFTP client. This allows
@@ -933,7 +933,7 @@ config FREETZ_BUSYBOX_FEATURE_TFTP_GET
 
 config FREETZ_BUSYBOX_FEATURE_TFTP_PUT
 	bool "Enable 'tftp put' and/or tftpd download code"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_TFTP || FREETZ_BUSYBOX_TFTPD
 	help
 	  Add support for the PUT command within the FREETZ_BUSYBOX_TFTP client. This allows
@@ -942,7 +942,7 @@ config FREETZ_BUSYBOX_FEATURE_TFTP_PUT
 
 config FREETZ_BUSYBOX_FEATURE_TFTP_BLOCKSIZE
 	bool "Enable 'blksize' and 'tsize' protocol options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_TFTP || FREETZ_BUSYBOX_TFTPD
 	help
 	  Allow tftp to specify block size, and tftpd to understand
@@ -950,7 +950,7 @@ config FREETZ_BUSYBOX_FEATURE_TFTP_BLOCKSIZE
 
 config FREETZ_BUSYBOX_FEATURE_TFTP_PROGRESS_BAR
 	bool "Enable tftp progress meter"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_TFTP && FREETZ_BUSYBOX_FEATURE_TFTP_BLOCKSIZE
 	help
 	  Show progress bar.
@@ -965,21 +965,21 @@ config FREETZ_BUSYBOX_TFTP_DEBUG
 
 config FREETZ_BUSYBOX_TRACEROUTE
 	bool "traceroute"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Utility to trace the route of FREETZ_BUSYBOX_IP packets.
 
 config FREETZ_BUSYBOX_TRACEROUTE6
 	bool "traceroute6"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_IPV6 && FREETZ_BUSYBOX_TRACEROUTE
 	help
 	  Utility to trace the route of IPv6 packets.
 
 config FREETZ_BUSYBOX_FEATURE_TRACEROUTE_VERBOSE
 	bool "Enable verbose output"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_TRACEROUTE
 	help
 	  Add some verbosity to traceroute. This includes among other things
@@ -1002,14 +1002,14 @@ config FREETZ_BUSYBOX_FEATURE_TRACEROUTE_USE_ICMP
 
 config FREETZ_BUSYBOX_TUNCTL
 	bool "tunctl"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  tunctl creates or deletes tun devices.
 
 config FREETZ_BUSYBOX_FEATURE_TUNCTL_UG
 	bool "Support owner:group assignment"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_TUNCTL
 	help
 	  Allow to specify owner and group of newly created interface.
@@ -1028,49 +1028,49 @@ config FREETZ_BUSYBOX_IFUPDOWN_UDHCPC_CMD_OPTIONS
 
 config FREETZ_BUSYBOX_UDPSVD
 	bool "udpsvd"
-	default y
+	default n
 	help
 	  udpsvd listens on an UDP port and runs a program for each new
 	  connection.
 
 config FREETZ_BUSYBOX_VCONFIG
 	bool "vconfig"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Creates, removes, and configures VLAN interfaces
 
 config FREETZ_BUSYBOX_WGET
 	bool "wget"
-	default y
+	default n
 	help
 	  wget is a utility for non-interactive download of files from HTTP,
 	  HTTPS, and FTP servers.
 
 config FREETZ_BUSYBOX_FEATURE_WGET_STATUSBAR
 	bool "Enable a nifty process meter (+2k)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_WGET
 	help
 	  Enable the transfer progress bar for wget transfers.
 
 config FREETZ_BUSYBOX_FEATURE_WGET_AUTHENTICATION
 	bool "Enable HTTP authentication"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_WGET
 	help
 	  Support authenticated HTTP transfers.
 
 config FREETZ_BUSYBOX_FEATURE_WGET_LONG_OPTIONS
 	bool "Enable long options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_WGET && FREETZ_BUSYBOX_LONG_OPTS
 	help
 	  Support long options for the wget applet.
 
 config FREETZ_BUSYBOX_FEATURE_WGET_TIMEOUT
 	bool "Enable read timeout option -T SEC"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_WGET
 	help
 	  Supports network read timeout for wget, so that wget will give
@@ -1082,7 +1082,7 @@ config FREETZ_BUSYBOX_FEATURE_WGET_TIMEOUT
 
 config FREETZ_BUSYBOX_ZCIP
 	bool "zcip"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	select FREETZ_BUSYBOX_FEATURE_SYSLOG
 	help

@@ -17,7 +17,7 @@ config FREETZ_BUSYBOX_CHCON
 
 config FREETZ_BUSYBOX_FEATURE_CHCON_LONG_OPTIONS
 	bool "Enable long options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_CHCON && FREETZ_BUSYBOX_LONG_OPTS
 	help
 	  Support long options for the chcon applet.
@@ -68,7 +68,7 @@ config FREETZ_BUSYBOX_RUNCON
 
 config FREETZ_BUSYBOX_FEATURE_RUNCON_LONG_OPTIONS
 	bool "Enable long options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_RUNCON && FREETZ_BUSYBOX_LONG_OPTS
 	help
 	  Support long options for the runcon applet.

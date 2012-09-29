@@ -9,7 +9,7 @@ menu "Console Utilities"
 
 config FREETZ_BUSYBOX_CHVT
 	bool "chvt"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  This program is used to change to another terminal.
@@ -17,27 +17,27 @@ config FREETZ_BUSYBOX_CHVT
 
 config FREETZ_BUSYBOX_FGCONSOLE
 	bool "fgconsole"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  This program prints active (foreground) console number.
 
 config FREETZ_BUSYBOX_CLEAR
 	bool "clear"
-	default y
+	default n
 	help
 	  This program clears the terminal screen.
 
 config FREETZ_BUSYBOX_DEALLOCVT
 	bool "deallocvt"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  This program deallocates unused virtual consoles.
 
 config FREETZ_BUSYBOX_DUMPKMAP
 	bool "dumpkmap"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  This program dumps the kernel's keyboard translation table to
@@ -45,21 +45,21 @@ config FREETZ_BUSYBOX_DUMPKMAP
 
 config FREETZ_BUSYBOX_KBD_MODE
 	bool "kbd_mode"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  This program reports and sets keyboard mode.
 
 config FREETZ_BUSYBOX_LOADFONT
 	bool "loadfont"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  This program loads a console font from standard input.
 
 config FREETZ_BUSYBOX_LOADKMAP
 	bool "loadkmap"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  This program loads a keyboard translation table from
@@ -67,7 +67,7 @@ config FREETZ_BUSYBOX_LOADKMAP
 
 config FREETZ_BUSYBOX_OPENVT
 	bool "openvt"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  This program is used to start a command on an unused
@@ -75,21 +75,21 @@ config FREETZ_BUSYBOX_OPENVT
 
 config FREETZ_BUSYBOX_RESET
 	bool "reset"
-	default y
+	default n
 	help
 	  This program is used to reset the terminal screen, if it
 	  gets messed up.
 
 config FREETZ_BUSYBOX_RESIZE
 	bool "resize"
-	default y
+	default n
 	help
 	  This program is used to (re)set the width and height of your current
 	  terminal.
 
 config FREETZ_BUSYBOX_FEATURE_RESIZE_PRINT
 	bool "Print environment variables"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_RESIZE
 	help
 	  Prints the newly set size (number of columns and rows) of
@@ -99,7 +99,7 @@ config FREETZ_BUSYBOX_FEATURE_RESIZE_PRINT
 
 config FREETZ_BUSYBOX_SETCONSOLE
 	bool "setconsole"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  This program redirects the system console to another device,
@@ -107,21 +107,21 @@ config FREETZ_BUSYBOX_SETCONSOLE
 
 config FREETZ_BUSYBOX_FEATURE_SETCONSOLE_LONG_OPTIONS
 	bool "Enable long options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_SETCONSOLE && FREETZ_BUSYBOX_LONG_OPTS
 	help
 	  Support long options for the setconsole applet.
 
 config FREETZ_BUSYBOX_SETFONT
 	bool "setfont"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Allows to load console screen map. Useful for i18n.
 
 config FREETZ_BUSYBOX_FEATURE_SETFONT_TEXTUAL_MAP
 	bool "Support reading textual screen maps"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_SETFONT
 	help
 	  Support reading textual screen maps.
@@ -136,7 +136,7 @@ config FREETZ_BUSYBOX_DEFAULT_SETFONT_DIR
 
 config FREETZ_BUSYBOX_SETKEYCODES
 	bool "setkeycodes"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  This program loads entries into the kernel's scancode-to-keycode
@@ -144,14 +144,14 @@ config FREETZ_BUSYBOX_SETKEYCODES
 
 config FREETZ_BUSYBOX_SETLOGCONS
 	bool "setlogcons"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  This program redirects the output console of kernel messages.
 
 config FREETZ_BUSYBOX_SHOWKEY
 	bool "showkey"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Shows keys pressed.
@@ -161,14 +161,14 @@ comment "Common options for loadfont and setfont"
 
 config FREETZ_BUSYBOX_FEATURE_LOADFONT_PSF2
 	bool "Support for PSF2 console fonts"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_LOADFONT || FREETZ_BUSYBOX_SETFONT
 	help
 	  Support PSF2 console fonts.
 
 config FREETZ_BUSYBOX_FEATURE_LOADFONT_RAW
 	bool "Support for old (raw) console fonts"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_LOADFONT || FREETZ_BUSYBOX_SETFONT
 	help
 	  Support old (raw) console fonts.

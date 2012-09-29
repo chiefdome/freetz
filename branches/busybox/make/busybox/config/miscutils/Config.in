@@ -8,7 +8,7 @@ menu "Miscellaneous Utilities"
 
 config FREETZ_BUSYBOX_CONSPY
 	bool "conspy"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  A text-mode VNC like program for Linux virtual terminals.
@@ -17,7 +17,7 @@ config FREETZ_BUSYBOX_CONSPY
 	  or        conspy -cs NUM  poor man's GNU screen like
 config FREETZ_BUSYBOX_LESS
 	bool "less"
-	default y
+	default n
 	help
 	  'less' is a pager, meaning that it displays text files. It possesses
 	  a wide array of features, and is an improvement over 'more'.
@@ -29,7 +29,7 @@ config FREETZ_BUSYBOX_FEATURE_LESS_MAXLINES
 
 config FREETZ_BUSYBOX_FEATURE_LESS_BRACKETS
 	bool "Enable bracket searching"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_LESS
 	help
 	  This option adds the capability to search for matching left and right
@@ -37,35 +37,35 @@ config FREETZ_BUSYBOX_FEATURE_LESS_BRACKETS
 
 config FREETZ_BUSYBOX_FEATURE_LESS_FLAGS
 	bool "Enable -m/-M"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_LESS
 	help
 	  The -M/-m flag enables a more sophisticated status line.
 
 config FREETZ_BUSYBOX_FEATURE_LESS_MARKS
 	bool "Enable marks"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_LESS
 	help
 	  Marks enable positions in a file to be stored for easy reference.
 
 config FREETZ_BUSYBOX_FEATURE_LESS_REGEXP
 	bool "Enable regular expressions"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_LESS
 	help
 	  Enable regular expressions, allowing complex file searches.
 
 config FREETZ_BUSYBOX_FEATURE_LESS_WINCH
 	bool "Enable automatic resizing on window size changes"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_LESS
 	help
 	  Makes less track window size changes.
 
 config FREETZ_BUSYBOX_FEATURE_LESS_ASK_TERMINAL
 	bool "Use 'tell me cursor position' ESC sequence to measure window"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_LESS_WINCH
 	help
 	  Makes less track window size changes.
@@ -78,7 +78,7 @@ config FREETZ_BUSYBOX_FEATURE_LESS_ASK_TERMINAL
 
 config FREETZ_BUSYBOX_FEATURE_LESS_DASHCMD
 	bool "Enable flag changes ('-' command)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_LESS
 	help
 	  This enables the ability to change command-line flags within
@@ -86,74 +86,74 @@ config FREETZ_BUSYBOX_FEATURE_LESS_DASHCMD
 
 config FREETZ_BUSYBOX_FEATURE_LESS_LINENUMS
 	bool "Enable dynamic switching of line numbers"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_LESS_DASHCMD
 	help
 	  Enables "-N" command.
 config FREETZ_BUSYBOX_NANDWRITE
 	bool "nandwrite"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Write to the specified MTD device, with bad blocks awareness
 
 config FREETZ_BUSYBOX_NANDDUMP
 	bool "nanddump"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Dump the content of raw NAND chip
 config FREETZ_BUSYBOX_SETSERIAL
 	bool "setserial"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Retrieve or set Linux serial port.
 config FREETZ_BUSYBOX_UBIATTACH
 	bool "ubiattach"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Attach MTD device to an UBI device.
 
 config FREETZ_BUSYBOX_UBIDETACH
 	bool "ubidetach"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Detach MTD device from an UBI device.
 
 config FREETZ_BUSYBOX_UBIMKVOL
 	bool "ubimkvol"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Create a UBI volume.
 
 config FREETZ_BUSYBOX_UBIRMVOL
 	bool "ubirmvol"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Delete a UBI volume.
 
 config FREETZ_BUSYBOX_UBIRSVOL
 	bool "ubirsvol"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Resize a UBI volume.
 
 config FREETZ_BUSYBOX_UBIUPDATEVOL
 	bool "ubiupdatevol"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Update a UBI volume.
 
 config FREETZ_BUSYBOX_ADJTIMEX
 	bool "adjtimex"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Adjtimex reads and optionally sets adjustment parameters for
@@ -168,7 +168,7 @@ config FREETZ_BUSYBOX_BBCONFIG
 
 config FREETZ_BUSYBOX_FEATURE_COMPRESS_BBCONFIG
 	bool "Compress bbconfig data"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_BBCONFIG
 	help
 	  Store bbconfig data in compressed form, uncompress them on-the-fly
@@ -182,7 +182,7 @@ config FREETZ_BUSYBOX_FEATURE_COMPRESS_BBCONFIG
 
 config FREETZ_BUSYBOX_BEEP
 	bool "beep"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  The beep applets beeps in a given freq/Hz.
@@ -205,14 +205,14 @@ config FREETZ_BUSYBOX_FEATURE_BEEP_LENGTH_MS
 
 config FREETZ_BUSYBOX_CHAT
 	bool "chat"
-	default y
+	default n
 	help
 	  Simple chat utility.
 
 config FREETZ_BUSYBOX_FEATURE_CHAT_NOFAIL
 	bool "Enable NOFAIL expect strings"
 	depends on FREETZ_BUSYBOX_CHAT
-	default y
+	default n
 	help
 	  When enabled expect strings which are started with a dash trigger
 	  no-fail mode. That is when expectation is not met within timeout
@@ -231,7 +231,7 @@ config FREETZ_BUSYBOX_FEATURE_CHAT_TTY_HIFI
 config FREETZ_BUSYBOX_FEATURE_CHAT_IMPLICIT_CR
 	bool "Enable implicit Carriage Return"
 	depends on FREETZ_BUSYBOX_CHAT
-	default y
+	default n
 	help
 	  When enabled make chat to terminate all SEND strings with a "\r"
 	  unless "\c" is met anywhere in the string.
@@ -239,7 +239,7 @@ config FREETZ_BUSYBOX_FEATURE_CHAT_IMPLICIT_CR
 config FREETZ_BUSYBOX_FEATURE_CHAT_SWALLOW_OPTS
 	bool "Swallow options"
 	depends on FREETZ_BUSYBOX_CHAT
-	default y
+	default n
 	help
 	  Busybox chat require no options. To make it not fail when used
 	  in place of original chat (which has a bunch of options) turn
@@ -248,7 +248,7 @@ config FREETZ_BUSYBOX_FEATURE_CHAT_SWALLOW_OPTS
 config FREETZ_BUSYBOX_FEATURE_CHAT_SEND_ESCAPES
 	bool "Support weird SEND escapes"
 	depends on FREETZ_BUSYBOX_CHAT
-	default y
+	default n
 	help
 	  Original chat uses some escape sequences in SEND arguments which
 	  are not sent to device but rather performs special actions.
@@ -259,27 +259,27 @@ config FREETZ_BUSYBOX_FEATURE_CHAT_SEND_ESCAPES
 config FREETZ_BUSYBOX_FEATURE_CHAT_VAR_ABORT_LEN
 	bool "Support variable-length ABORT conditions"
 	depends on FREETZ_BUSYBOX_CHAT
-	default y
+	default n
 	help
 	  Original chat uses fixed 50-bytes length ABORT conditions. Say N here.
 
 config FREETZ_BUSYBOX_FEATURE_CHAT_CLR_ABORT
 	bool "Support revoking of ABORT conditions"
 	depends on FREETZ_BUSYBOX_CHAT
-	default y
+	default n
 	help
 	  Support CLR_ABORT directive.
 
 config FREETZ_BUSYBOX_CHRT
 	bool "chrt"
-	default y
+	default n
 	help
 	  manipulate real-time attributes of a process.
 	  This requires sched_{g,s}etparam support in your libc.
 
 config FREETZ_BUSYBOX_CROND
 	bool "crond"
-	default y
+	default n
 	select FREETZ_BUSYBOX_FEATURE_SYSLOG
 	help
 	  Crond is a background daemon that parses individual crontab
@@ -293,13 +293,13 @@ config FREETZ_BUSYBOX_CROND
 config FREETZ_BUSYBOX_FEATURE_CROND_D
 	bool "Support option -d to redirect output to stderr"
 	depends on FREETZ_BUSYBOX_CROND
-	default y
+	default n
 	help
 	  -d sets loglevel to 0 (most verbose) and directs all output to stderr.
 
 config FREETZ_BUSYBOX_FEATURE_CROND_CALL_SENDMAIL
 	bool "Report command output via email (using sendmail)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_CROND
 	help
 	  Command output will be sent to corresponding user via email.
@@ -313,7 +313,7 @@ config FREETZ_BUSYBOX_FEATURE_CROND_DIR
 
 config FREETZ_BUSYBOX_CRONTAB
 	bool "crontab"
-	default y
+	default n
 	help
 	  Crontab manipulates the crontab for a particular user. Only
 	  the superuser may specify a different user and/or crontab directory.
@@ -322,14 +322,14 @@ config FREETZ_BUSYBOX_CRONTAB
 
 config FREETZ_BUSYBOX_DC
 	bool "dc"
-	default y
+	default n
 	help
 	  Dc is a reverse-polish desk calculator which supports unlimited
 	  precision arithmetic.
 
 config FREETZ_BUSYBOX_FEATURE_DC_LIBM
 	bool "Enable power and exp functions (requires libm)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_DC
 	help
 	  Enable power and exp functions.
@@ -357,7 +357,7 @@ config FREETZ_BUSYBOX_DEVFSD
 
 config FREETZ_BUSYBOX_DEVFSD_MODLOAD
 	bool "Adds support for MODLOAD keyword in devsfd.conf"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_DEVFSD
 	help
 	  This actually doesn't work with busybox modutils but needs
@@ -365,7 +365,7 @@ config FREETZ_BUSYBOX_DEVFSD_MODLOAD
 
 config FREETZ_BUSYBOX_DEVFSD_FG_NP
 	bool "Enables the -fg and -np options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_DEVFSD
 	help
 	  -fg  Run the daemon in the foreground.
@@ -374,7 +374,7 @@ config FREETZ_BUSYBOX_DEVFSD_FG_NP
 
 config FREETZ_BUSYBOX_DEVFSD_VERBOSE
 	bool "Increases logging (and size)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_DEVFSD
 	help
 	  Increases logging to stderr or syslog.
@@ -394,21 +394,21 @@ config FREETZ_BUSYBOX_FEATURE_DEVFS
 
 config FREETZ_BUSYBOX_DEVMEM
 	bool "devmem"
-	default y
+	default n
 	help
 	  devmem is a small program that reads and writes from physical
 	  memory using /dev/mem.
 
 config FREETZ_BUSYBOX_EJECT
 	bool "eject"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Used to eject cdroms. (defaults to /dev/cdrom)
 
 config FREETZ_BUSYBOX_FEATURE_EJECT_SCSI
 	bool "SCSI support"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_EJECT
 	help
 	  Add the -s option to eject, this allows to eject SCSI-Devices and
@@ -416,7 +416,7 @@ config FREETZ_BUSYBOX_FEATURE_EJECT_SCSI
 
 config FREETZ_BUSYBOX_FBSPLASH
 	bool "fbsplash"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Shows splash image and progress bar on framebuffer device.
@@ -466,7 +466,7 @@ config FREETZ_BUSYBOX_FLASH_ERASEALL
 
 config FREETZ_BUSYBOX_IONICE
 	bool "ionice"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Set/set program io scheduling class and priority
@@ -481,7 +481,7 @@ config FREETZ_BUSYBOX_INOTIFYD
 
 config FREETZ_BUSYBOX_LAST
 	bool "last"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_WTMP
 	help
 	  'last' displays a list of the last users that logged into the system.
@@ -506,7 +506,7 @@ endchoice
 
 config FREETZ_BUSYBOX_HDPARM
 	bool "hdparm"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Get/Set hard drive parameters. Primarily intended for ATA
@@ -515,7 +515,7 @@ config FREETZ_BUSYBOX_HDPARM
 
 config FREETZ_BUSYBOX_FEATURE_HDPARM_GET_IDENTITY
 	bool "Support obtaining detailed information directly from drives"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HDPARM
 	help
 	  Enables the -I and -i options to obtain detailed information
@@ -525,7 +525,7 @@ config FREETZ_BUSYBOX_FEATURE_HDPARM_GET_IDENTITY
 
 config FREETZ_BUSYBOX_FEATURE_HDPARM_HDIO_SCAN_HWIF
 	bool "Register an IDE interface (DANGEROUS)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HDPARM
 	help
 	  Enables the 'hdparm -R' option to register an IDE interface.
@@ -533,7 +533,7 @@ config FREETZ_BUSYBOX_FEATURE_HDPARM_HDIO_SCAN_HWIF
 
 config FREETZ_BUSYBOX_FEATURE_HDPARM_HDIO_UNREGISTER_HWIF
 	bool "Un-register an IDE interface (DANGEROUS)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HDPARM
 	help
 	  Enables the 'hdparm -U' option to un-register an IDE interface.
@@ -541,7 +541,7 @@ config FREETZ_BUSYBOX_FEATURE_HDPARM_HDIO_UNREGISTER_HWIF
 
 config FREETZ_BUSYBOX_FEATURE_HDPARM_HDIO_DRIVE_RESET
 	bool "Perform device reset (DANGEROUS)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HDPARM
 	help
 	  Enables the 'hdparm -w' option to perform a device reset.
@@ -549,7 +549,7 @@ config FREETZ_BUSYBOX_FEATURE_HDPARM_HDIO_DRIVE_RESET
 
 config FREETZ_BUSYBOX_FEATURE_HDPARM_HDIO_TRISTATE_HWIF
 	bool "Tristate device for hotswap (DANGEROUS)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HDPARM
 	help
 	  Enables the 'hdparm -x' option to tristate device for hotswap,
@@ -558,14 +558,14 @@ config FREETZ_BUSYBOX_FEATURE_HDPARM_HDIO_TRISTATE_HWIF
 
 config FREETZ_BUSYBOX_FEATURE_HDPARM_HDIO_GETSET_DMA
 	bool "Get/set using_dma flag"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HDPARM
 	help
 	  Enables the 'hdparm -d' option to get/set using_dma flag.
 
 config FREETZ_BUSYBOX_MAKEDEVS
 	bool "makedevs"
-	default y
+	default n
 	help
 	  'makedevs' is a utility used to create a batch of devices with
 	  one command.
@@ -597,25 +597,25 @@ endchoice
 
 config FREETZ_BUSYBOX_MAN
 	bool "man"
-	default y
+	default n
 	help
 	  Format and display manual pages.
 
 config FREETZ_BUSYBOX_MICROCOM
 	bool "microcom"
-	default y
+	default n
 	help
 	  The poor man's minicom utility for chatting with serial port devices.
 
 config FREETZ_BUSYBOX_MOUNTPOINT
 	bool "mountpoint"
-	default y
+	default n
 	help
 	  mountpoint checks if the directory is a mountpoint.
 
 config FREETZ_BUSYBOX_MT
 	bool "mt"
-	default y
+	default n
 	help
 	  mt is used to control tape devices. You can use the mt utility
 	  to advance or rewind a tape past a specified number of archive
@@ -623,7 +623,7 @@ config FREETZ_BUSYBOX_MT
 
 config FREETZ_BUSYBOX_RAIDAUTORUN
 	bool "raidautorun"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  raidautorun tells the kernel md driver to
@@ -631,7 +631,7 @@ config FREETZ_BUSYBOX_RAIDAUTORUN
 
 config FREETZ_BUSYBOX_READAHEAD
 	bool "readahead"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_LFS
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
@@ -661,7 +661,7 @@ config FREETZ_BUSYBOX_RFKILL
 
 config FREETZ_BUSYBOX_RUNLEVEL
 	bool "runlevel"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_UTMP
 	help
 	  find the current and previous system runlevel.
@@ -671,20 +671,20 @@ config FREETZ_BUSYBOX_RUNLEVEL
 
 config FREETZ_BUSYBOX_RX
 	bool "rx"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Receive files using the Xmodem protocol.
 
 config FREETZ_BUSYBOX_SETSID
 	bool "setsid"
-	default y
+	default n
 	help
 	  setsid runs a program in a new session
 
 config FREETZ_BUSYBOX_STRINGS
 	bool "strings"
-	default y
+	default n
 	help
 	  strings prints the printable character sequences for each file
 	  specified.
@@ -698,7 +698,7 @@ config FREETZ_BUSYBOX_TASKSET
 
 config FREETZ_BUSYBOX_FEATURE_TASKSET_FANCY
 	bool "Fancy output"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_TASKSET
 	help
 	  Add code for fancy output. This merely silences a compiler-warning
@@ -707,7 +707,7 @@ config FREETZ_BUSYBOX_FEATURE_TASKSET_FANCY
 
 config FREETZ_BUSYBOX_TIME
 	bool "time"
-	default y
+	default n
 	help
 	  The time command runs the specified program with the given arguments.
 	  When the command finishes, time writes a message to standard output
@@ -715,14 +715,14 @@ config FREETZ_BUSYBOX_TIME
 
 config FREETZ_BUSYBOX_TIMEOUT
 	bool "timeout"
-	default y
+	default n
 	help
 	  Runs a program and watches it. If it does not terminate in
 	  specified number of seconds, it is sent a signal.
 
 config FREETZ_BUSYBOX_TTYSIZE
 	bool "ttysize"
-	default y
+	default n
 	help
 	  A replacement for "stty size". Unlike stty, can report only width,
 	  only height, or both, in any order. It also does not complain on
@@ -731,20 +731,20 @@ config FREETZ_BUSYBOX_TTYSIZE
 
 config FREETZ_BUSYBOX_VOLNAME
 	bool "volname"
-	default y
+	default n
 	help
 	  Prints a CD-ROM volume name.
 
 config FREETZ_BUSYBOX_WALL
 	bool "wall"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_UTMP
 	help
 	  Write a message to all users that are logged in.
 
 config FREETZ_BUSYBOX_WATCHDOG
 	bool "watchdog"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  The watchdog utility is used with hardware or software watchdog

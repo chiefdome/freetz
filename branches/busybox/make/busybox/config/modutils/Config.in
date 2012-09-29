@@ -8,14 +8,14 @@ menu "Linux Module Utilities"
 
 config FREETZ_BUSYBOX_MODINFO
 	bool "modinfo"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Show information about a Linux Kernel module
 
 config FREETZ_BUSYBOX_MODPROBE_SMALL
 	bool "Simplified modutils"
-	default y
+	default n
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
 	  Simplified modutils.
@@ -49,7 +49,7 @@ config FREETZ_BUSYBOX_MODPROBE_SMALL
 
 config FREETZ_BUSYBOX_FEATURE_MODPROBE_SMALL_OPTIONS_ON_CMDLINE
 	bool "Accept module options on modprobe command line"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_MODPROBE_SMALL
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
@@ -57,7 +57,7 @@ config FREETZ_BUSYBOX_FEATURE_MODPROBE_SMALL_OPTIONS_ON_CMDLINE
 
 config FREETZ_BUSYBOX_FEATURE_MODPROBE_SMALL_CHECK_ALREADY_LOADED
 	bool "Skip loading of already loaded modules"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_MODPROBE_SMALL
 	help
 	  Check if the module is already loaded.
@@ -202,7 +202,7 @@ config FREETZ_BUSYBOX_FEATURE_INSMOD_LOAD_MAP
 
 config FREETZ_BUSYBOX_FEATURE_INSMOD_LOAD_MAP_FULL
 	bool "Symbols in load map"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FEATURE_INSMOD_LOAD_MAP && !FREETZ_BUSYBOX_MODPROBE_SMALL
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
@@ -212,7 +212,7 @@ config FREETZ_BUSYBOX_FEATURE_INSMOD_LOAD_MAP_FULL
 
 config FREETZ_BUSYBOX_FEATURE_CHECK_TAINTED_MODULE
 	bool "Support tainted module checking with new kernels"
-	default y
+	default n
 	depends on (FREETZ_BUSYBOX_LSMOD || FREETZ_BUSYBOX_FEATURE_2_4_MODULES) && !FREETZ_BUSYBOX_MODPROBE_SMALL
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
@@ -223,7 +223,7 @@ config FREETZ_BUSYBOX_FEATURE_CHECK_TAINTED_MODULE
 
 config FREETZ_BUSYBOX_FEATURE_MODUTILS_ALIAS
 	bool "Support for module.aliases file"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_DEPMOD || FREETZ_BUSYBOX_MODPROBE
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help
@@ -240,7 +240,7 @@ config FREETZ_BUSYBOX_FEATURE_MODUTILS_ALIAS
 
 config FREETZ_BUSYBOX_FEATURE_MODUTILS_SYMBOLS
 	bool "Support for module.symbols file"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_DEPMOD || FREETZ_BUSYBOX_MODPROBE
 	select FREETZ_BUSYBOX_PLATFORM_LINUX
 	help

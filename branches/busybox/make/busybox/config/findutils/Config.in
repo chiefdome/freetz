@@ -8,13 +8,13 @@ menu "Finding Utilities"
 
 config FREETZ_BUSYBOX_FIND
 	bool "find"
-	default y
+	default n
 	help
 	  find is used to search your system to find specified files.
 
 config FREETZ_BUSYBOX_FEATURE_FIND_PRINT0
 	bool "Enable -print0: NUL-terminated output"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Causes output names to be separated by a NUL character
@@ -24,7 +24,7 @@ config FREETZ_BUSYBOX_FEATURE_FIND_PRINT0
 
 config FREETZ_BUSYBOX_FEATURE_FIND_MTIME
 	bool "Enable -mtime: modified time matching"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Allow searching based on the modification time of
@@ -32,7 +32,7 @@ config FREETZ_BUSYBOX_FEATURE_FIND_MTIME
 
 config FREETZ_BUSYBOX_FEATURE_FIND_MMIN
 	bool "Enable -mmin: modified time matching by minutes"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Allow searching based on the modification time of
@@ -40,14 +40,14 @@ config FREETZ_BUSYBOX_FEATURE_FIND_MMIN
 
 config FREETZ_BUSYBOX_FEATURE_FIND_PERM
 	bool "Enable -perm: permissions matching"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Enable searching based on file permissions.
 
 config FREETZ_BUSYBOX_FEATURE_FIND_TYPE
 	bool "Enable -type: file type matching (file/dir/link/...)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Enable searching based on file type (file,
@@ -55,21 +55,21 @@ config FREETZ_BUSYBOX_FEATURE_FIND_TYPE
 
 config FREETZ_BUSYBOX_FEATURE_FIND_XDEV
 	bool "Enable -xdev: 'stay in filesystem'"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  This option allows find to restrict searches to a single filesystem.
 
 config FREETZ_BUSYBOX_FEATURE_FIND_MAXDEPTH
 	bool "Enable -mindepth N and -maxdepth N"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  This option enables -mindepth N and -maxdepth N option.
 
 config FREETZ_BUSYBOX_FEATURE_FIND_NEWER
 	bool "Enable -newer: compare file modification times"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Support the 'find -newer' option for finding any files which have
@@ -77,14 +77,14 @@ config FREETZ_BUSYBOX_FEATURE_FIND_NEWER
 
 config FREETZ_BUSYBOX_FEATURE_FIND_INUM
 	bool "Enable -inum: inode number matching"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Support the 'find -inum' option for searching by inode number.
 
 config FREETZ_BUSYBOX_FEATURE_FIND_EXEC
 	bool "Enable -exec: execute commands"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Support the 'find -exec' option for executing commands based upon
@@ -92,21 +92,21 @@ config FREETZ_BUSYBOX_FEATURE_FIND_EXEC
 
 config FREETZ_BUSYBOX_FEATURE_FIND_USER
 	bool "Enable -user: username/uid matching"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Support the 'find -user' option for searching by username or uid.
 
 config FREETZ_BUSYBOX_FEATURE_FIND_GROUP
 	bool "Enable -group: group/gid matching"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Support the 'find -group' option for searching by group name or gid.
 
 config FREETZ_BUSYBOX_FEATURE_FIND_NOT
 	bool "Enable the 'not' (!) operator"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Support the '!' operator to invert the test results.
@@ -115,28 +115,28 @@ config FREETZ_BUSYBOX_FEATURE_FIND_NOT
 
 config FREETZ_BUSYBOX_FEATURE_FIND_DEPTH
 	bool "Enable -depth"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Process each directory's contents before the directory itself.
 
 config FREETZ_BUSYBOX_FEATURE_FIND_PAREN
 	bool "Enable parens in options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Enable usage of parens '(' to specify logical order of arguments.
 
 config FREETZ_BUSYBOX_FEATURE_FIND_SIZE
 	bool "Enable -size: file size matching"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Support the 'find -size' option for searching by file size.
 
 config FREETZ_BUSYBOX_FEATURE_FIND_PRUNE
 	bool "Enable -prune: exclude subdirectories"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  If the file is a directory, dont descend into it. Useful for
@@ -144,7 +144,7 @@ config FREETZ_BUSYBOX_FEATURE_FIND_PRUNE
 
 config FREETZ_BUSYBOX_FEATURE_FIND_DELETE
 	bool "Enable -delete: delete files/dirs"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND && FREETZ_BUSYBOX_FEATURE_FIND_DEPTH
 	help
 	  Support the 'find -delete' option for deleting files and directories.
@@ -153,14 +153,14 @@ config FREETZ_BUSYBOX_FEATURE_FIND_DELETE
 
 config FREETZ_BUSYBOX_FEATURE_FIND_PATH
 	bool "Enable -path: match pathname with shell pattern"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  The -path option matches whole pathname instead of just filename.
 
 config FREETZ_BUSYBOX_FEATURE_FIND_REGEX
 	bool "Enable -regex: match pathname with regex"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  The -regex option matches whole pathname against regular expression.
@@ -174,19 +174,19 @@ config FREETZ_BUSYBOX_FEATURE_FIND_CONTEXT
 
 config FREETZ_BUSYBOX_FEATURE_FIND_LINKS
 	bool "Enable -links: link count matching"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_FIND
 	help
 	  Support the 'find -links' option for matching number of links.
 config FREETZ_BUSYBOX_GREP
 	bool "grep"
-	default y
+	default n
 	help
 	  grep is used to search files for a specified pattern.
 
 config FREETZ_BUSYBOX_FEATURE_GREP_EGREP_ALIAS
 	bool "Enable extended regular expressions (egrep & grep -E)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_GREP
 	help
 	  Enabled support for extended regular expressions. Extended
@@ -195,7 +195,7 @@ config FREETZ_BUSYBOX_FEATURE_GREP_EGREP_ALIAS
 
 config FREETZ_BUSYBOX_FEATURE_GREP_FGREP_ALIAS
 	bool "Alias fgrep to grep -F"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_GREP
 	help
 	  fgrep sees the search pattern as a normal string rather than
@@ -204,7 +204,7 @@ config FREETZ_BUSYBOX_FEATURE_GREP_FGREP_ALIAS
 
 config FREETZ_BUSYBOX_FEATURE_GREP_CONTEXT
 	bool "Enable before and after context flags (-A, -B and -C)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_GREP
 	help
 	  Print the specified number of leading (-B) and/or trailing (-A)
@@ -212,14 +212,14 @@ config FREETZ_BUSYBOX_FEATURE_GREP_CONTEXT
 	  Print the specified number of context lines (-C).
 config FREETZ_BUSYBOX_XARGS
 	bool "xargs"
-	default y
+	default n
 	help
 	  xargs is used to execute a specified command for
 	  every item from standard input.
 
 config FREETZ_BUSYBOX_FEATURE_XARGS_SUPPORT_CONFIRMATION
 	bool "Enable -p: prompt and confirmation"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_XARGS
 	help
 	  Support -p: prompt the user whether to run each command
@@ -227,14 +227,14 @@ config FREETZ_BUSYBOX_FEATURE_XARGS_SUPPORT_CONFIRMATION
 
 config FREETZ_BUSYBOX_FEATURE_XARGS_SUPPORT_QUOTES
 	bool "Enable single and double quotes and backslash"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_XARGS
 	help
 	  Support quoting in the input.
 
 config FREETZ_BUSYBOX_FEATURE_XARGS_SUPPORT_TERMOPT
 	bool "Enable -x: exit if -s or -n is exceeded"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_XARGS
 	help
 	  Support -x: exit if the command size (see the -s or -n option)
@@ -242,7 +242,7 @@ config FREETZ_BUSYBOX_FEATURE_XARGS_SUPPORT_TERMOPT
 
 config FREETZ_BUSYBOX_FEATURE_XARGS_SUPPORT_ZERO_TERM
 	bool "Enable -0: NUL-terminated input"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_XARGS
 	help
 	  Support -0: input items are terminated by a NUL character

@@ -4,7 +4,7 @@ menu "Mail Utilities"
 
 config FREETZ_BUSYBOX_MAKEMIME
 	bool "makemime"
-	default y
+	default n
 	help
 	  Create MIME-formatted messages.
 
@@ -17,14 +17,14 @@ config FREETZ_BUSYBOX_FEATURE_MIME_CHARSET
 
 config FREETZ_BUSYBOX_POPMAILDIR
 	bool "popmaildir"
-	default y
+	default n
 	help
 	  Simple yet powerful POP3 mail popper. Delivers content
 	  of remote mailboxes to local Maildir.
 
 config FREETZ_BUSYBOX_FEATURE_POPMAILDIR_DELIVERY
 	bool "Allow message filters and custom delivery program"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_POPMAILDIR
 	help
 	  Allow to use a custom program to filter the content
@@ -34,13 +34,13 @@ config FREETZ_BUSYBOX_FEATURE_POPMAILDIR_DELIVERY
 
 config FREETZ_BUSYBOX_REFORMIME
 	bool "reformime"
-	default y
+	default n
 	help
 	  Parse MIME-formatted messages.
 
 config FREETZ_BUSYBOX_FEATURE_REFORMIME_COMPAT
 	bool "Accept and ignore options other than -x and -X"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_REFORMIME
 	help
 	  Accept (for compatibility only) and ignore options
@@ -48,7 +48,7 @@ config FREETZ_BUSYBOX_FEATURE_REFORMIME_COMPAT
 
 config FREETZ_BUSYBOX_SENDMAIL
 	bool "sendmail"
-	default y
+	default n
 	help
 	  Barebones sendmail.
 

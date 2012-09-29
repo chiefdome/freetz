@@ -9,14 +9,14 @@ menu "Runit Utilities"
 
 config FREETZ_BUSYBOX_RUNSV
 	bool "runsv"
-	default y
+	default n
 	help
 	  runsv starts and monitors a service and optionally an appendant log
 	  service.
 
 config FREETZ_BUSYBOX_RUNSVDIR
 	bool "runsvdir"
-	default y
+	default n
 	help
 	  runsvdir starts a runsv process for each subdirectory, or symlink to
 	  a directory, in the services directory dir, up to a limit of 1000
@@ -33,7 +33,7 @@ config FREETZ_BUSYBOX_FEATURE_RUNSVDIR_LOG
 
 config FREETZ_BUSYBOX_SV
 	bool "sv"
-	default y
+	default n
 	help
 	  sv reports the current status and controls the state of services
 	  monitored by the runsv supervisor.
@@ -48,7 +48,7 @@ config FREETZ_BUSYBOX_SV_DEFAULT_SERVICE_DIR
 
 config FREETZ_BUSYBOX_SVLOGD
 	bool "svlogd"
-	default y
+	default n
 	help
 	  svlogd continuously reads log data from its standard input, optionally
 	  filters log messages, and writes the data to one or more automatically
@@ -56,33 +56,33 @@ config FREETZ_BUSYBOX_SVLOGD
 
 config FREETZ_BUSYBOX_CHPST
 	bool "chpst"
-	default y
+	default n
 	help
 	  chpst changes the process state according to the given options, and
 	  execs specified program.
 
 config FREETZ_BUSYBOX_SETUIDGID
 	bool "setuidgid"
-	default y
+	default n
 	help
 	  Sets soft resource limits as specified by options
 
 config FREETZ_BUSYBOX_ENVUIDGID
 	bool "envuidgid"
-	default y
+	default n
 	help
 	  Sets $UID to account's uid and $GID to account's gid
 
 config FREETZ_BUSYBOX_ENVDIR
 	bool "envdir"
-	default y
+	default n
 	help
 	  Sets various environment variables as specified by files
 	  in the given directory
 
 config FREETZ_BUSYBOX_SOFTLIMIT
 	bool "softlimit"
-	default y
+	default n
 	help
 	  Sets soft resource limits as specified by options
 

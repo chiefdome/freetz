@@ -8,19 +8,19 @@ menu "Login/Password Management Utilities"
 
 config FREETZ_BUSYBOX_ADD_SHELL
        bool "add-shell"
-       default y if FREETZ_BUSYBOX_DESKTOP
+       default n if FREETZ_BUSYBOX_DESKTOP
        help
          Add shells to /etc/shells.
 
 config FREETZ_BUSYBOX_REMOVE_SHELL
        bool "remove-shell"
-       default y if FREETZ_BUSYBOX_DESKTOP
+       default n if FREETZ_BUSYBOX_DESKTOP
        help
          Remove shells from /etc/shells.
 
 config FREETZ_BUSYBOX_FEATURE_SHADOWPASSWDS
 	bool "Support for shadow passwords"
-	default y
+	default n
 	help
 	  Build support for shadow password in /etc/shadow. This file is only
 	  readable by root and thus the encrypted passwords are no longer
@@ -28,7 +28,7 @@ config FREETZ_BUSYBOX_FEATURE_SHADOWPASSWDS
 
 config FREETZ_BUSYBOX_USE_BB_PWD_GRP
 	bool "Use internal password and group functions rather than system functions"
-	default y
+	default n
 	help
 	  If you leave this disabled, busybox will use the system's password
 	  and group functions. And if you are using the GNU C library
@@ -53,7 +53,7 @@ config FREETZ_BUSYBOX_USE_BB_PWD_GRP
 
 config FREETZ_BUSYBOX_USE_BB_SHADOW
 	bool "Use internal shadow password functions"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_USE_BB_PWD_GRP && FREETZ_BUSYBOX_FEATURE_SHADOWPASSWDS
 	help
 	  If you leave this disabled, busybox will use the system's shadow
@@ -72,7 +72,7 @@ config FREETZ_BUSYBOX_USE_BB_SHADOW
 
 config FREETZ_BUSYBOX_USE_BB_CRYPT
 	bool "Use internal crypt functions"
-	default y
+	default n
 	help
 	  Busybox has internal DES and MD5 crypt functions.
 	  They produce results which are identical to corresponding
@@ -94,7 +94,7 @@ config FREETZ_BUSYBOX_USE_BB_CRYPT
 
 config FREETZ_BUSYBOX_USE_BB_CRYPT_SHA
 	bool "Enable SHA256/512 crypt functions"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_USE_BB_CRYPT
 	help
 	  Enable this if you have passwords starting with "$5$" or "$6$"
@@ -106,13 +106,13 @@ config FREETZ_BUSYBOX_USE_BB_CRYPT_SHA
 
 config FREETZ_BUSYBOX_ADDUSER
 	bool "adduser"
-	default y
+	default n
 	help
 	  Utility for creating a new user account.
 
 config FREETZ_BUSYBOX_FEATURE_ADDUSER_LONG_OPTIONS
 	bool "Enable long options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ADDUSER && FREETZ_BUSYBOX_LONG_OPTS
 	help
 	  Support long options for the adduser applet.
@@ -147,20 +147,20 @@ config FREETZ_BUSYBOX_LAST_SYSTEM_ID
 
 config FREETZ_BUSYBOX_ADDGROUP
 	bool "addgroup"
-	default y
+	default n
 	help
 	  Utility for creating a new group account.
 
 config FREETZ_BUSYBOX_FEATURE_ADDGROUP_LONG_OPTIONS
 	bool "Enable long options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ADDGROUP && FREETZ_BUSYBOX_LONG_OPTS
 	help
 	  Support long options for the addgroup applet.
 
 config FREETZ_BUSYBOX_FEATURE_ADDUSER_TO_GROUP
 	bool "Support for adding users to groups"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_ADDGROUP
 	help
 	  If  called  with two non-option arguments,
@@ -169,19 +169,19 @@ config FREETZ_BUSYBOX_FEATURE_ADDUSER_TO_GROUP
 
 config FREETZ_BUSYBOX_DELUSER
 	bool "deluser"
-	default y
+	default n
 	help
 	  Utility for deleting a user account.
 
 config FREETZ_BUSYBOX_DELGROUP
 	bool "delgroup"
-	default y
+	default n
 	help
 	  Utility for deleting a group account.
 
 config FREETZ_BUSYBOX_FEATURE_DEL_USER_FROM_GROUP
 	bool "Support for removing users from groups"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_DELGROUP
 	help
 	  If called with two non-option arguments, deluser
@@ -189,7 +189,7 @@ config FREETZ_BUSYBOX_FEATURE_DEL_USER_FROM_GROUP
 
 config FREETZ_BUSYBOX_GETTY
 	bool "getty"
-	default y
+	default n
 	select FREETZ_BUSYBOX_FEATURE_SYSLOG
 	help
 	  getty lets you log in on a tty. It is normally invoked by init.
@@ -208,7 +208,7 @@ config FREETZ_BUSYBOX_GETTY
 
 config FREETZ_BUSYBOX_LOGIN
 	bool "login"
-	default y
+	default n
 	select FREETZ_BUSYBOX_FEATURE_SYSLOG
 	help
 	  login is used when signing onto a system.
@@ -218,7 +218,7 @@ config FREETZ_BUSYBOX_LOGIN
 
 config FREETZ_BUSYBOX_LOGIN_SESSION_AS_CHILD
 	bool "Run logged in session in a child process"
-	default y if FREETZ_BUSYBOX_PAM
+	default n if FREETZ_BUSYBOX_PAM
 	depends on FREETZ_BUSYBOX_LOGIN
 	help
 	  Run the logged in session in a child process.  This allows
@@ -237,14 +237,14 @@ config FREETZ_BUSYBOX_PAM
 config FREETZ_BUSYBOX_LOGIN_SCRIPTS
 	bool "Support for login scripts"
 	depends on FREETZ_BUSYBOX_LOGIN
-	default y
+	default n
 	help
 	  Enable this if you want login to execute $LOGIN_PRE_SUID_SCRIPT
 	  just prior to switching from root to logged-in user.
 
 config FREETZ_BUSYBOX_FEATURE_NOLOGIN
 	bool "Support for /etc/nologin"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_LOGIN
 	help
 	  The file /etc/nologin is used by (some versions of) login(1).
@@ -252,7 +252,7 @@ config FREETZ_BUSYBOX_FEATURE_NOLOGIN
 
 config FREETZ_BUSYBOX_FEATURE_SECURETTY
 	bool "Support for /etc/securetty"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_LOGIN
 	help
 	  The file /etc/securetty is used by (some versions of) login(1).
@@ -261,7 +261,7 @@ config FREETZ_BUSYBOX_FEATURE_SECURETTY
 
 config FREETZ_BUSYBOX_PASSWD
 	bool "passwd"
-	default y
+	default n
 	select FREETZ_BUSYBOX_FEATURE_SYSLOG
 	help
 	  passwd changes passwords for user and group accounts. A normal user
@@ -274,14 +274,14 @@ config FREETZ_BUSYBOX_PASSWD
 
 config FREETZ_BUSYBOX_FEATURE_PASSWD_WEAK_CHECK
 	bool "Check new passwords for weakness"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_PASSWD
 	help
 	  With this option passwd will refuse new passwords which are "weak".
 
 config FREETZ_BUSYBOX_CRYPTPW
 	bool "cryptpw"
-	default y
+	default n
 	help
 	  Encrypts the given password with the crypt(3) libc function
 	  using the given salt. Debian has this utility under mkpasswd
@@ -289,7 +289,7 @@ config FREETZ_BUSYBOX_CRYPTPW
 
 config FREETZ_BUSYBOX_CHPASSWD
 	bool "chpasswd"
-	default y
+	default n
 	help
 	  Reads a file of user name and password pairs from standard input
 	  and uses this information to update a group of existing users.
@@ -303,7 +303,7 @@ config FREETZ_BUSYBOX_FEATURE_DEFAULT_PASSWD_ALGO
 
 config FREETZ_BUSYBOX_SU
 	bool "su"
-	default y
+	default n
 	select FREETZ_BUSYBOX_FEATURE_SYSLOG
 	help
 	  su is used to become another user during a login session.
@@ -314,17 +314,17 @@ config FREETZ_BUSYBOX_SU
 
 config FREETZ_BUSYBOX_FEATURE_SU_SYSLOG
 	bool "Enable su to write to syslog"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_SU
 
 config FREETZ_BUSYBOX_FEATURE_SU_CHECKS_SHELLS
 	bool "Enable su to check user's shell to be listed in /etc/shells"
 	depends on FREETZ_BUSYBOX_SU
-	default y
+	default n
 
 config FREETZ_BUSYBOX_SULOGIN
 	bool "sulogin"
-	default y
+	default n
 	select FREETZ_BUSYBOX_FEATURE_SYSLOG
 	help
 	  sulogin is invoked when the system goes into single user
@@ -332,7 +332,7 @@ config FREETZ_BUSYBOX_SULOGIN
 
 config FREETZ_BUSYBOX_VLOCK
 	bool "vlock"
-	default y
+	default n
 	help
 	  Build the "vlock" applet which allows you to lock (virtual) terminals.
 

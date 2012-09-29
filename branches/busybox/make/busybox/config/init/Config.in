@@ -8,7 +8,7 @@ menu "Init Utilities"
 
 config FREETZ_BUSYBOX_BOOTCHARTD
 	bool "bootchartd"
-	default y
+	default n
 	help
 	  bootchartd is commonly used to profile the boot process
 	  for the purpose of speeding it up. In this case, it is started
@@ -22,7 +22,7 @@ config FREETZ_BUSYBOX_BOOTCHARTD
 
 config FREETZ_BUSYBOX_FEATURE_BOOTCHARTD_BLOATED_HEADER
 	bool "Compatible, bloated header"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_BOOTCHARTD
 	help
 	  Create extended header file compatible with "big" bootchartd.
@@ -39,20 +39,20 @@ config FREETZ_BUSYBOX_FEATURE_BOOTCHARTD_BLOATED_HEADER
 
 config FREETZ_BUSYBOX_FEATURE_BOOTCHARTD_CONFIG_FILE
 	bool "Support bootchartd.conf"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_BOOTCHARTD
 	help
 	  Enable reading and parsing of $PWD/bootchartd.conf
 	  and /etc/bootchartd.conf files.
 config FREETZ_BUSYBOX_HALT
 	bool "poweroff, halt, and reboot"
-	default y
+	default n
 	help
 	  Stop all processes and either halt, reboot, or power off the system.
 
 config FREETZ_BUSYBOX_FEATURE_CALL_TELINIT
 	bool "Call telinit on shutdown and reboot"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_HALT && !FREETZ_BUSYBOX_INIT
 	help
 	  Call an external program (normally telinit) to facilitate
@@ -71,14 +71,14 @@ config FREETZ_BUSYBOX_TELINIT_PATH
 	  locating telinit executable.
 config FREETZ_BUSYBOX_INIT
 	bool "init"
-	default y
+	default n
 	select FREETZ_BUSYBOX_FEATURE_SYSLOG
 	help
 	  init is the first program run when the system boots.
 
 config FREETZ_BUSYBOX_FEATURE_USE_INITTAB
 	bool "Support reading an inittab file"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_INIT
 	help
 	  Allow init to read an inittab file when the system boot.
@@ -105,7 +105,7 @@ config FREETZ_BUSYBOX_FEATURE_KILL_DELAY
 
 config FREETZ_BUSYBOX_FEATURE_INIT_SCTTY
 	bool "Run commands with leading dash with controlling tty"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_INIT
 	help
 	  If this option is enabled, init will try to give a controlling
@@ -120,19 +120,19 @@ config FREETZ_BUSYBOX_FEATURE_INIT_SCTTY
 
 config FREETZ_BUSYBOX_FEATURE_INIT_SYSLOG
 	bool "Enable init to write to syslog"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_INIT
 
 config FREETZ_BUSYBOX_FEATURE_EXTRA_QUIET
 	bool "Be _extra_ quiet on boot"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_INIT
 	help
 	  Prevent init from logging some messages to the console during boot.
 
 config FREETZ_BUSYBOX_FEATURE_INIT_COREDUMPS
 	bool "Support dumping core for child processes (debugging only)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_INIT
 	help
 	  If this option is enabled and the file /.init_enable_core
@@ -142,7 +142,7 @@ config FREETZ_BUSYBOX_FEATURE_INIT_COREDUMPS
 
 config FREETZ_BUSYBOX_FEATURE_INITRD
 	bool "Support running init from within an initrd (not initramfs)"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_INIT
 	help
 	  Legacy support for running init under the old-style initrd. Allows
@@ -164,14 +164,14 @@ config FREETZ_BUSYBOX_INIT_TERMINAL_TYPE
 	  sets TERM to "vt102" if one is found.
 config FREETZ_BUSYBOX_MESG
 	bool "mesg"
-	default y
+	default n
 	help
 	  Mesg controls access to your terminal by others. It is typically
 	  used to allow or disallow other users to write to your terminal
 
 config FREETZ_BUSYBOX_FEATURE_MESG_ENABLE_ONLY_GROUP
 	bool "Enable writing to tty only by group, not by everybody"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_MESG
 	help
 	  Usually, ttys are owned by group "tty", and "write" tool is

@@ -9,19 +9,19 @@ menu "Debian Utilities"
 
 config FREETZ_BUSYBOX_MKTEMP
 	bool "mktemp"
-	default y
+	default n
 	help
 	  mktemp is used to create unique temporary files
 
 config FREETZ_BUSYBOX_PIPE_PROGRESS
 	bool "pipe_progress"
-	default y
+	default n
 	help
 	  Display a dot to indicate pipe activity.
 
 config FREETZ_BUSYBOX_RUN_PARTS
 	bool "run-parts"
-	default y
+	default n
 	help
 	  run-parts is a utility designed to run all the scripts in a directory.
 
@@ -36,14 +36,14 @@ config FREETZ_BUSYBOX_RUN_PARTS
 
 config FREETZ_BUSYBOX_FEATURE_RUN_PARTS_LONG_OPTIONS
 	bool "Enable long options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_RUN_PARTS && FREETZ_BUSYBOX_LONG_OPTS
 	help
 	  Support long options for the run-parts applet.
 
 config FREETZ_BUSYBOX_FEATURE_RUN_PARTS_FANCY
 	bool "Support additional arguments"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_RUN_PARTS
 	help
 	  Support additional options:
@@ -52,7 +52,7 @@ config FREETZ_BUSYBOX_FEATURE_RUN_PARTS_FANCY
 
 config FREETZ_BUSYBOX_START_STOP_DAEMON
 	bool "start-stop-daemon"
-	default y
+	default n
 	help
 	  start-stop-daemon is used to control the creation and
 	  termination of system-level processes, usually the ones
@@ -60,7 +60,7 @@ config FREETZ_BUSYBOX_START_STOP_DAEMON
 
 config FREETZ_BUSYBOX_FEATURE_START_STOP_DAEMON_FANCY
 	bool "Support additional arguments"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_START_STOP_DAEMON
 	help
 	  Support additional arguments.
@@ -70,14 +70,14 @@ config FREETZ_BUSYBOX_FEATURE_START_STOP_DAEMON_FANCY
 
 config FREETZ_BUSYBOX_FEATURE_START_STOP_DAEMON_LONG_OPTIONS
 	bool "Enable long options"
-	default y
+	default n
 	depends on FREETZ_BUSYBOX_START_STOP_DAEMON && FREETZ_BUSYBOX_LONG_OPTS
 	help
 	  Support long options for the start-stop-daemon applet.
 
 config FREETZ_BUSYBOX_WHICH
 	bool "which"
-	default y
+	default n
 	help
 	  which is used to find programs in your PATH and
 	  print out their pathnames.
