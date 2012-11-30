@@ -1,0 +1,18 @@
+--- configure
++++ configure
+@@ -14457,6 +14457,7 @@
+ 
+     g_module_supported=""
+ 
++if false; then
+     found_gmodule=no
+ 
+ pkg_failed=no
+@@ -14618,6 +14619,7 @@
+             g_module_supported=""
+             ;;
+     esac
++fi
+ 
+      if test x"$g_module_supported" != x; then
+   HAVE_GMODULE_TRUE=

@@ -1,0 +1,216 @@
+#!/bin/bash
+
+usage()
+{
+	cat << 'EOF'
+usage: extract-images [<Freetz base directory>] [-be|-le] <input file>
+    - Freetz base directory defaults to '.'
+    - SquashFS and boot loader encoding can be '-be' (big endian) or '-le'
+      (little endian). Default is to try both types.
+    - Input file (e.g. recover exe or mtdblock dump) to be searched for
+      kernel.image and/or urlader.image
+EOF
+}
+
+# Print usage info to stdout (no error, just info)
+if [ $# -eq 0 ]; then
+	usage
+	exit 0
+fi
+
+# Parametrised helper function for 'extract_bootloader' doing the actual work
+do_extract_bl()
+{
+	local BOOTLOADER_MAGIC="$1"
+	local ENDIAN_TYPE="$2"
+	# Find bootloader candidates ('sfk hexfind' dumps offsets and hexdump contexts)
+	hexfind_dump="$($mod_base/tools/sfk hexfind "$input_file" -bin /$BOOTLOADER_MAGIC/ -quiet)"
+	# Isolate arrays of bootloader offset candidates (hex & dec)
+	bootloader_offs_hex=($(echo "$hexfind_dump" | sed -nr 's/.*hit at offset 0x(.*)/\1/p'))
+	[ "$bootloader_offs_hex" ] || return
+	bootloader_offs=($(echo "$hexfind_dump" | sed -nr 's/.*hit at offset (.*)/\1/p' | xargs printf "%d\n"))
+	# Find bootloader candidates and isolate their offsets
+	for (( i=0; i<${#bootloader_offs[@]}; i++ )); do
+		# For each bootloader candidate create a new numbered 'urlader.image' file
+		output_file="$output_dir/urlader.image${count}"
+		offs=${bootloader_offs[i]}
+		# Bootloader files are either 64K or 128K long. Try both variants.
+		tail -c +$(($offs+1)) "$input_file" | head -c +65536 > "$output_file.64k"
+		tail -c +$(($offs+1)) "$input_file" | head -c +131072 > "$output_file.128k"
+		# Identify the right candidate by grepping for known bootloader text strings
+		local candidate_found=0
+		for candidate in "$output_file.64k" "$output_file.128k"; do
+			if [ $candidate_found -eq 1 ]; then
+				rm -f "$candidate"
+				continue
+			fi
+			if grep -iq 'entering passive mode' "$candidate" && grep -iq 'ftp.\? server ready' "$candidate"; then
+				mv "$candidate" "$output_file"
+				echo "    $output_file - loader @ $offs, $ENDIAN_TYPE endian"
+				n=$((n+1))
+				count="-$n"
+				candidate_found=1
+			else
+				# If candidate does not match, remove it
+				rm -f "$candidate"
+			fi
+		done
+	done
+}
+
+# Extracts urlader.image candidates from input file, based on bootloader magic
+# string. Applies heuristic check for typical strings occurring in AVM
+# bootloaders. Detects older ADAM as well as newer EVA bootloaders.
+extract_bootloader()
+{
+	echo -e "\nExtracting bootloader (urlader.image) ..."
+	n=1
+	unset count
+	[ "$endian" == "-any" -o "$endian" == "-le" ] && \
+		do_extract_bl "$BOOTLOADER_MAGIC_LE" "little"
+	[ "$endian" == "-any" -o "$endian" == "-be" ] && \
+		do_extract_bl "$BOOTLOADER_MAGIC_BE" "big"
+	[ $n -eq 1 ] && echo "    No bootloader candidate found in input file"
+}
+
+
+# Parametrised helper function for 'extract_kernel_filesystem' doing the actual work
+do_extract_kfs()
+{
+	local SQUASHFS_MAGIC="$1"
+	local ENDIAN_TYPE="$2"
+
+	# Find SquashFS candidates ('sfk hexfind' dumps offsets and hexdump contexts)
+	hexfind_dump="$($mod_base/tools/sfk hexfind "$input_file" -bin /$SQUASHFS_MAGIC/ -quiet)"
+	# Isolate arrays of SquashFS offset candidates (hex & dec)
+	squashfs_offs_hex=($(echo "$hexfind_dump" | sed -nr 's/.*hit at offset 0x(.*)/\1/p'))
+	[ "$squashfs_offs_hex" ] || return
+	squashfs_offs=($(echo "$hexfind_dump" | sed -nr 's/.*hit at offset (.*)/\1/p' | xargs printf "%d\n"))
+	for (( i=0; i<${#squashfs_offs[@]}; i++ )); do
+		# Isolate array of SquashFS length candidates from hexdump lines, considering endian type
+		# Note: 4 bytes of length information are found at (SquashFS magic offset + 8)
+		tmp=$(echo "$hexfind_dump" | grep " 0*${squashfs_offs_hex[i]}\$" | sed -r 's/([^ ]+ ){2}([^ ]+).*/\2/')
+		if [ "$ENDIAN_TYPE" == "big" ]; then
+			squashfs_length[i]=$(printf "%d" "0x$tmp")
+		else
+			squashfs_length[i]=$(printf "%d" "0x${tmp:6:2}${tmp:4:2}${tmp:2:2}${tmp:0:2}")
+		fi
+		# Special case: filesystem length 0 can happen if a raw (mtdblock) dump
+		# from the box is processed, because the box seems to erase the length
+		# info when flashing.
+		[ ${squashfs_length[i]} -eq 0 ] && squashfs_length[i]=$((input_file_size-squashfs_offs[i]))
+	done
+
+	# Find kernel candidates ('sfk hexfind' dumps offsets and hexdump contexts)
+	hexfind_dump="$($mod_base/tools/sfk hexfind "$input_file" -bin /$KERNEL_MAGIC/ -quiet)"
+	# Isolate arrays of kernel offset candidates (hex & dec)
+	kernel_offs_hex=($(echo "$hexfind_dump" | sed -nr 's/.*hit at offset 0x(.*)/\1/p'))
+	[ "$kernel_offs_hex" ] || return
+	kernel_offs=($(echo "$hexfind_dump" | sed -nr 's/.*hit at offset (.*)/\1/p' | xargs printf "%d\n"))
+	for (( i=0; i<${#kernel_offs[@]}; i++ )); do
+		# Isolate array of kernel length candidates from hexdump lines (always little endian)
+		# Note: 4 bytes of length information are found at (kernel magic offset + 4)
+		tmp=$(echo "$hexfind_dump" | grep " 0*${kernel_offs_hex[i]}\$" | sed -r 's/([^ ]+ )([^ ]+).*/\2/')
+		kernel_length[i]=$(printf "%d" "0x${tmp:6:2}${tmp:4:2}${tmp:2:2}${tmp:0:2}")
+		# Pad kernel length to 256
+		kernel_pad=$(( (256 - kernel_length[i] % 256) % 256 ))
+		kernel_length[i]=$(( kernel_length[i] + kernel_pad ))
+	done
+
+	# Check all combinations of kernel vs SquashFS offset candidates to find plausible ones
+	for (( k=0; k<${#kernel_offs[@]}; k++ )); do
+		# Sanity check #1: kernel offset + length must not exceed total file size
+		[ $((kernel_offs[k] + kernel_length[k])) -le $input_file_size ] || continue
+		for (( s=0; s<${#squashfs_offs[@]}; s++ )); do
+			# Sanity check #2: SquashFS offset + length must not exceed total file size
+			[ $((squashfs_offs[s] + squashfs_length[s])) -le $input_file_size ] || continue
+			# Sanity check #3: kernel + SquashFS lengths must be 85-100% of total file size
+			percentage=$(( (kernel_length[k] + squashfs_length[s]) * 100 / input_file_size ))
+			[ $percentage -ge 85 -a $percentage -le 100 ] || continue
+			# Check layout: does SquashFS immediately follow kernel?
+			gap=$((squashfs_offs[s] - kernel_length[k] - kernel_offs[k]))
+			if [ $gap -eq 0 ]; then
+				# Hidden root (SquashFS contained in kernel.image)
+				file_length=$((kernel_length[k] + squashfs_length[s]))
+				output_file="$output_dir/hr_kernel.image${count}"
+				echo "    $output_file - kernel @ ${kernel_offs[k]}, $ENDIAN_TYPE endian SquashFS @ ${squashfs_offs[s]}, total length = $file_length"
+				echo "        This is a \"hidden root\" image (compound kernel + SquashFS)."
+				echo "        For your convenience I will split them for you so you do not have to use tools/find-squashfs"
+				tail -c +$((kernel_offs[k]+1)) "$input_file" | head -c +$file_length > "$output_file"
+			fi
+			# Save kernel and filesystem as separate files
+			# Sanity check #4: kernel and SquashFS must not intersect
+			[ $gap -lt 0 ] && gap=$((kernel_offs[k] - squashfs_length[s] - squashfs_offs[s]))
+			[ $gap -lt 0 ] && continue
+			# Plausible candidates for kernel and filesystem
+			output_file="$output_dir/kernel.image${count}"
+			echo "    $output_file - kernel @ ${kernel_offs[k]}, length = ${kernel_length[k]}"
+			echo "        If you are interested in an uncompressed kernel, use tools/unpack-kernel"
+			tail -c +$((kernel_offs[k]+1)) "$input_file" | head -c +${kernel_length[k]} > "$output_file"
+			output_file="$output_dir/filesystem.image${count}"
+			echo "    $output_file - $ENDIAN_TYPE endian SquashFS @ ${squashfs_offs[s]}, length = ${squashfs_length[s]}"
+			echo "        If you want to see the unpacked filesystem, try tools/build/bin/fakeroot '--' tools/unsquashfs*"
+			echo "        The unpacked SquashFS may contain filesystem_core.squashfs which you can then also unsquash."
+			tail -c +$((squashfs_offs[s]+1)) "$input_file" | head -c +${squashfs_length[s]} > "$output_file"
+			n=$((n+1))
+			count="-$n"
+		done
+	done
+}
+
+# Extracts kernel.image (and possibly filesystem.image) candidates from input
+# file, based on kernel and SquashFS magic strings. Applies heuristic sanity
+# checks for offsets, sizes and gaps between kernel and filesystem.
+extract_kernel_filesystem()
+{
+	echo -e "\nExtracting kernel + filesystem ..."
+	n=1
+	unset count
+	[ "$endian" == "-any" -o "$endian" == "-le" ] && \
+		do_extract_kfs "$SQUASHFS_MAGIC_LE" "little"
+	[ "$endian" == "-any" -o "$endian" == "-be" ] && \
+		do_extract_kfs "$SQUASHFS_MAGIC_BE" "big"
+	[ $n -eq 1 ] && echo "    No kernel + filesystem candidates found in $input_file"
+}
+
+# Parameter handling
+mod_base="."
+endian="-any"
+case $# in
+	0)
+		usage
+		exit 0
+		;;
+	1)
+		input_file="$1"
+		;;
+	2)
+		[ "$1" == "-be" -o "$1" == "-le" ] && endian="$1" || mod_base="$1"
+		input_file="$2"
+		;;
+	3)
+		mod_base="$1"
+		[ "$2" == "-be" -o "$2" == "-le" ] && endian="$2" || { usage >&2; exit 1; }
+		input_file="$3"
+		;;
+	*)
+		usage >&2
+		exit 1
+		;;
+esac
+
+# Magic byte sequences (hex) to identify kernel, SquashFS and bootloader
+KERNEL_MAGIC="8112EDFE"
+SQUASHFS_MAGIC_LE="68737173"
+SQUASHFS_MAGIC_BE="73717368"
+BOOTLOADER_MAGIC_LE="00908040"
+BOOTLOADER_MAGIC_BE="40809000"
+
+input_file_size=$(stat -c %s "$input_file")
+
+output_dir="$(basename "$input_file").unp"
+rm -rf "$output_dir"
+mkdir -p "$output_dir"
+
+extract_bootloader
+extract_kernel_filesystem

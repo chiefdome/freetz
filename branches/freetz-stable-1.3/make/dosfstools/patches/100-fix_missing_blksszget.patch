@@ -1,0 +1,10 @@
+--- src/mkdosfs.c
++++ src/mkdosfs.c
+@@ -62,6 +62,7 @@
+ #include <unistd.h>
+ #include <time.h>
+ #include <errno.h>
++#include <linux/fs.h>
+ 
+ #include <asm/types.h>
+ 

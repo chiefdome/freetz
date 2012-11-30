@@ -1,0 +1,113 @@
+--- iptables/xtables.c
++++ iptables/xtables.c
+@@ -1409,6 +1409,7 @@
+ 	}
+ }
+ 
++#ifdef ENABLE_IPV6
+ const char *xtables_ip6addr_to_numeric(const struct in6_addr *addrp)
+ {
+ 	/* 0000:0000:0000:0000:0000:0000:000.000.000.000
+@@ -1717,6 +1718,7 @@
+ 			}
+ 	}
+ }
++#endif
+ 
+ void xtables_save_string(const char *value)
+ {
+--- iptables/Makefile.am
++++ iptables/Makefile.am
+@@ -13,6 +13,9 @@
+ libxtables_la_CFLAGS  = ${AM_CFLAGS} -DNO_SHARED_LIBS=1
+ libxtables_la_LIBADD  =
+ endif
++if ENABLE_IPV6
++libxtables_la_CFLAGS  += -DENABLE_IPV6
++endif
+ 
+ xtables_multi_SOURCES  = xtables-multi.c
+ xtables_multi_CFLAGS   = ${AM_CFLAGS} -DIPTABLES_MULTI
+--- iptables/Makefile.in
++++ iptables/Makefile.in
+@@ -52,6 +52,7 @@
+ sbin_PROGRAMS = xtables-multi$(EXEEXT)
+ @ENABLE_IPV4_TRUE@@ENABLE_SAVE_RESTORE_TRUE@am__append_13 = iptables-restore iptables-save
+ @ENABLE_IPV6_TRUE@@ENABLE_SAVE_RESTORE_TRUE@am__append_14 = ip6tables-restore ip6tables-save
++@ENABLE_IPV6_TRUE@am__append_15 = -DENABLE_IPV6
+ subdir = iptables
+ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+ 	$(srcdir)/xtables.pc.in
+@@ -281,8 +282,8 @@
+ lib_LTLIBRARIES = libxtables.la
+ libxtables_la_SOURCES = xtables.c xtoptions.c
+ libxtables_la_LDFLAGS = -version-info ${libxtables_vcurrent}:0:${libxtables_vage}
+-@ENABLE_SHARED_FALSE@libxtables_la_CFLAGS = ${AM_CFLAGS} -DNO_SHARED_LIBS=1
+-@ENABLE_SHARED_TRUE@libxtables_la_CFLAGS = ${AM_CFLAGS}
++@ENABLE_SHARED_FALSE@libxtables_la_CFLAGS = ${AM_CFLAGS} -DNO_SHARED_LIBS=1 $(am__append_15)
++@ENABLE_SHARED_TRUE@libxtables_la_CFLAGS = ${AM_CFLAGS} $(am__append_15)
+ @ENABLE_SHARED_FALSE@libxtables_la_LIBADD = 
+ @ENABLE_SHARED_TRUE@libxtables_la_LIBADD = -ldl
+ xtables_multi_SOURCES = xtables-multi.c $(am__append_2) \
+--- extensions/libxt_TCPMSS.c
++++ extensions/libxt_TCPMSS.c
+@@ -5,7 +5,9 @@
+ #include <stdio.h>
+ #include <xtables.h>
+ #include <netinet/ip.h>
++#ifdef ENABLE_IPV6
+ #include <netinet/ip6.h>
++#endif
+ #include <linux/netfilter/xt_TCPMSS.h>
+ 
+ enum {
+@@ -32,10 +34,12 @@
+ 	__TCPMSS_help(sizeof(struct iphdr));
+ }
+ 
++#ifdef ENABLE_IPV6
+ static void TCPMSS_help6(void)
+ {
+ 	__TCPMSS_help(sizeof(struct ip6_hdr));
+ }
++#endif
+ 
+ static const struct xt_option_entry TCPMSS4_opts[] = {
+ 	{.name = "set-mss", .id = O_SET_MSS, .type = XTTYPE_UINT16,
+@@ -45,6 +49,7 @@
+ 	XTOPT_TABLEEND,
+ };
+ 
++#ifdef ENABLE_IPV6
+ static const struct xt_option_entry TCPMSS6_opts[] = {
+ 	{.name = "set-mss", .id = O_SET_MSS, .type = XTTYPE_UINT16,
+ 	 .min = 0, .max = UINT16_MAX - sizeof(struct ip6_hdr),
+@@ -52,6 +57,7 @@
+ 	{.name = "clamp-mss-to-pmtu", .id = O_CLAMP_MSS, .type = XTTYPE_NONE},
+ 	XTOPT_TABLEEND,
+ };
++#endif
+ 
+ static void TCPMSS_parse(struct xt_option_call *cb)
+ {
+@@ -105,6 +111,7 @@
+ 	.x6_options	= TCPMSS4_opts,
+ };
+ 
++#ifdef ENABLE_IPV6
+ static struct xtables_target tcpmss_target6 = {
+ 	.family		= NFPROTO_IPV6,
+ 	.name		= "TCPMSS",
+@@ -118,9 +125,12 @@
+ 	.x6_fcheck	= TCPMSS_check,
+ 	.x6_options	= TCPMSS6_opts,
+ };
++#endif
+ 
+ void _init(void)
+ {
+ 	xtables_register_target(&tcpmss_target);
++#ifdef ENABLE_IPV6
+ 	xtables_register_target(&tcpmss_target6);
++#endif
+ }

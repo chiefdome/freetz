@@ -1,0 +1,66 @@
+--- configure
++++ configure
+@@ -9147,6 +9147,7 @@
+   ;;
+ esac
+ 
++if false; then
+ { echo "$as_me:$LINENO: checking dynamic linker characteristics" >&5
+ echo $ECHO_N "checking dynamic linker characteristics... $ECHO_C" >&6; }
+ library_names_spec=
+@@ -9809,6 +9810,7 @@
+   # Fast installation is not necessary
+   enable_fast_install=needless
+ fi
++fi
+ 
+ striplib=
+ old_striplib=
+@@ -13162,6 +13164,7 @@
+   ;;
+ esac
+ 
++if false; then
+ { echo "$as_me:$LINENO: checking dynamic linker characteristics" >&5
+ echo $ECHO_N "checking dynamic linker characteristics... $ECHO_C" >&6; }
+ library_names_spec=
+@@ -13772,6 +13775,7 @@
+   # Fast installation is not necessary
+   enable_fast_install=needless
+ fi
++fi
+ 
+ 
+ # The else clause should only fire when bootstrapping the
+@@ -15783,6 +15787,7 @@
+   ;;
+ esac
+ 
++if false; then
+ { echo "$as_me:$LINENO: checking dynamic linker characteristics" >&5
+ echo $ECHO_N "checking dynamic linker characteristics... $ECHO_C" >&6; }
+ library_names_spec=
+@@ -16393,6 +16398,7 @@
+   # Fast installation is not necessary
+   enable_fast_install=needless
+ fi
++fi
+ 
+ 
+ # The else clause should only fire when bootstrapping the
+@@ -18404,6 +18410,7 @@
+   ;;
+ esac
+ 
++if false; then
+ { echo "$as_me:$LINENO: checking dynamic linker characteristics" >&5
+ echo $ECHO_N "checking dynamic linker characteristics... $ECHO_C" >&6; }
+ library_names_spec=
+@@ -19014,6 +19021,7 @@
+   # Fast installation is not necessary
+   enable_fast_install=needless
+ fi
++fi
+ 
+ 
+ # The else clause should only fire when bootstrapping the
