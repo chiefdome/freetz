@@ -1,5 +1,0 @@
-config FREETZ_LIB_libusb
-	bool "libusb (libusb.so)"
-	default n
-	help
-		A library for accessing Linux USB devices.

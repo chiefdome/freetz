@@ -1,1 +1,0 @@
-[ "$EXTERNAL_FREETZ_PACKAGE_USBIP" == "y" ] && EXTERNAL_FILES+=" /usr/bin/bind_driver /usr/bin/usbipd"

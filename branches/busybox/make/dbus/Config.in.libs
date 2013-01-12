@@ -1,5 +1,0 @@
-config FREETZ_LIB_libdbus
-	bool "libdbus (libdbus.so)"
-	default n
-	help
-		D-Bus shared library
